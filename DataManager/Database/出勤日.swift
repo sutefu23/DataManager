@@ -8,6 +8,12 @@
 
 import Foundation
 
+public extension Date {
+    var isHoliday : Bool {
+        return self.day.isHoliday
+    }
+}
+
 extension Day {
     var isWorkday : Bool {
         return !isHoliday
@@ -164,7 +170,7 @@ private class 出勤日DB型 {
         }
         lock.unlock()
         let db = FileMakerDB.pm_osakaname
-        let list : [スケジュール管理詳細型] = db.find(at: day)
+        let list : [スケジュール型] = db.find(at: day)
         let isHoliday = list.contains { $0.種類 == "休日" }
         lock.lock()
         isHolidayCache[day] = isHoliday

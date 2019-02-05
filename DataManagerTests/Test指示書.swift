@@ -13,8 +13,9 @@ class TestOrder : XCTestCase {
     func testFind1() {
         let db = FileMakerDB.pm_osakaname
         
-        let order : 指示書詳細型? = db.find(伝票番号: 19013047)?.first
-        XCTAssertNotNil(order)
+        let num = 19013047
+        let order : 指示書型? = db.find(伝票番号: num)?.first
+        XCTAssertEqual(num, order?.伝票番号)
     }
 
 }

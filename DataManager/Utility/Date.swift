@@ -31,7 +31,7 @@ public enum 週型 : Int {
     }
 }
 
-public extension Date {
+extension Date {
     // MARK: 初期化
     /// FileMakerDataAPIの日付と時間
     init?<T>(fmJSONDay:T?, fmJSONTime:T? = nil) where T : StringProtocol{

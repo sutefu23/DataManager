@@ -8,81 +8,8 @@
 
 import Foundation
 
-public class FileMakerRecord {
-    let fieldData : [String:Any]
-    let portalData : [String : Any]
-    let name : String
-    
-    required init?(json data:Any, name:String = "") {
-        guard let dic = data as? [String:Any] else { return nil }
-        guard let field = dic["fieldData"] as? [String:Any] else { return nil }
-        self.fieldData = field
-        self.portalData = dic["portalData"] as? [String:Any] ?? [:]
-        self.name = name
-    }
-    
-    
-    func output(_ key:String) {
-        print(self[key] ?? "")
-    }
 
-    // MARK: -
-    subscript(_ key:String) -> Any? {
-        if name.isEmpty {
-            let data = fieldData[key]
-            return data
-        } else {
-            let data2 = fieldData["\(name)::\(key)"]
-            return data2
-        }
-    }
-    
-    func portal<T>(forKey key:String) -> [T]? where T : FileMakerRecord {
-        guard let source = portalData[key] as? [Any] else { return nil }
-        return source.compactMap { T(json: $0, name: key) }
-    }
-    
-    var recordId : Int {
-        return integer(forKey: "recordId")!
-    }
-    
-    func string(forKey key:String) -> String? {
-        return self[key] as? String
-    }
-    
-    func integer(forKey key:String) -> Int? {
-        return fieldData[key] as? Int
-    }
-    
-    func double(forKey key:String) -> Double? {
-        return fieldData[key] as? Double
-    }
-    
-    func day(forKey key: String) -> Day? {
-        guard let day = string(forKey: key) else { return nil }
-        return Day(fmJSONDay: day)
-    }
-    
-    func time(forKey key:String) -> Time? {
-        guard let time = string(forKey: key) else { return nil }
-        return Time(fmJSONTime: time)
-    }
-    
-    func date(forKey key:String) -> Date? {
-        guard let date = string(forKey: key) else { return nil }
-        return Date(fmJSONDayTime: date)
-    }
-    
-    func date(dayKey:String, timeKey:String) -> Date? {
-        let day = string(forKey: dayKey)
-        let time = string(forKey: timeKey)
-        return Date(fmJSONDay: day, fmJSONTime: time)
-    }
-
-}
-
-
-public struct FileMakerSearchItem {
+struct FileMakerSearchItem {
     let fieldName : String
     let fieldData : String
     
@@ -91,12 +18,12 @@ public struct FileMakerSearchItem {
     }
 }
 
-public enum FileMakerSortType : String, Encodable {
+enum FileMakerSortType : String, Encodable {
     case 昇順 = "ascend"
     case 降順 = "descend"
 }
 
-public struct FileMakerSortItem : Encodable {
+struct FileMakerSortItem : Encodable {
     let fieldName : String
     let sortOrder : FileMakerSortType
 }
@@ -227,7 +154,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
                     let code      = messages[0]["code"] as? String else { return }
                 isOk = (Int(code) == 0)
                 if let res = response["data"] {
-                    newRequest = (res as? [Any])?.compactMap { T(json:$0) } ?? []
+                    newRequest = (res as? [Any])?.compactMap { T(json:$0, name:"") } ?? []
                 }
                 }.resume()
             sem.wait()
@@ -283,7 +210,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
                     let code      = messages[0]["code"] as? String else { return }
                 isOk = (Int(code) == 0)
                 if let res = response["data"] {
-                    newResult = (res as? [Any])?.compactMap { T(json:$0) } ?? []
+                    newResult = (res as? [Any])?.compactMap { T(json:$0, name:"") } ?? []
                 }
                 }.resume()
             sem.wait()
@@ -299,7 +226,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
     }
     
     // MARK: - <URLSessionDelegate>
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let credential : URLCredential?
         if let trust = challenge.protectionSpace.serverTrust {
             credential = URLCredential(trust: trust)

@@ -47,16 +47,13 @@ struct Day : Hashable, Comparable {
         return left.day < right.day
     }
     
-    var week : 週型 {
+    public var week : 週型 {
         return weekCache[self]
     }
     
     var fmString : String {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
     }
-//    var fm_yyyymmdd : String {
-//        return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
-//    }
 }
 
 class WeekCache {
@@ -95,4 +92,15 @@ extension Date {
         self = date
     }
     
+    init(_ day:Day, _ time:Time) {
+        var comp = DateComponents()
+        comp.year = day.year
+        comp.month = day.month
+        comp.day = day.day
+        comp.hour = time.hour
+        comp.minute = time.minute
+        comp.second = time.second
+        let date = cal.date(from: comp)!
+        self = date
+    }
 }
