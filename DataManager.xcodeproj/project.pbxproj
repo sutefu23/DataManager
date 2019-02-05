@@ -7,9 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		141203712201C3EA0054B56F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203702201C3EA0054B56F /* Date.swift */; };
+		141203732201C5890054B56F /* 出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203722201C5890054B56F /* 出勤日.swift */; };
+		141203752201D6000054B56F /* スケジュール管理詳細.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203742201D6000054B56F /* スケジュール管理詳細.swift */; };
+		141203772201D60B0054B56F /* 指示書詳細.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203762201D60B0054B56F /* 指示書詳細.swift */; };
+		141203792201D82F0054B56F /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203782201D82F0054B56F /* Day.swift */; };
+		1412037B2201D8360054B56F /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412037A2201D8360054B56F /* Time.swift */; };
+		149BCAFD2208216B004066DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFC2208216B004066DD /* String.swift */; };
+		149BCAFF22082BF2004066DD /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFE22082BF2004066DD /* Lock.swift */; };
+		149BCB0122082D87004066DD /* Test出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0022082D87004066DD /* Test出勤日.swift */; };
+		149BCB032208419E004066DD /* Test指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB022208419E004066DD /* Test指示書.swift */; };
+		149BCB05220854F6004066DD /* 伝票状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB04220854F6004066DD /* 伝票状態.swift */; };
+		149BCB07220854FE004066DD /* 工程状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB06220854FE004066DD /* 工程状態.swift */; };
+		149BCB09220858FE004066DD /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB08220858FE004066DD /* 伝票種類.swift */; };
+		149BCB0B22085EF0004066DD /* エッチング指示書テーブル.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0A22085EF0004066DD /* エッチング指示書テーブル.swift */; };
+		149BCB0D22085F60004066DD /* 指示書進捗内訳テーブル.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0C22085F60004066DD /* 指示書進捗内訳テーブル.swift */; };
 		8E392EDA21FD61D900CEDF18 /* DataManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E392ED021FD61D900CEDF18 /* DataManager.framework */; };
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +39,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		141203702201C3EA0054B56F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		141203722201C5890054B56F /* 出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "出勤日.swift"; sourceTree = "<group>"; };
+		141203742201D6000054B56F /* スケジュール管理詳細.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "スケジュール管理詳細.swift"; sourceTree = "<group>"; };
+		141203762201D60B0054B56F /* 指示書詳細.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書詳細.swift"; sourceTree = "<group>"; };
+		141203782201D82F0054B56F /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		1412037A2201D8360054B56F /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		149BCAFC2208216B004066DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		149BCAFE22082BF2004066DD /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
+		149BCB0022082D87004066DD /* Test出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test出勤日.swift"; sourceTree = "<group>"; };
+		149BCB022208419E004066DD /* Test指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書.swift"; sourceTree = "<group>"; };
+		149BCB04220854F6004066DD /* 伝票状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票状態.swift"; sourceTree = "<group>"; };
+		149BCB06220854FE004066DD /* 工程状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程状態.swift"; sourceTree = "<group>"; };
+		149BCB08220858FE004066DD /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
+		149BCB0A22085EF0004066DD /* エッチング指示書テーブル.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "エッチング指示書テーブル.swift"; sourceTree = "<group>"; };
+		149BCB0C22085F60004066DD /* 指示書進捗内訳テーブル.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書進捗内訳テーブル.swift"; sourceTree = "<group>"; };
 		8E392ED021FD61D900CEDF18 /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E392ED321FD61D900CEDF18 /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		8E392ED421FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392ED921FD61D900CEDF18 /* DataManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerTests.swift; sourceTree = "<group>"; };
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +82,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1412036F2201C3DF0054B56F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */,
+				141203702201C3EA0054B56F /* Date.swift */,
+				141203782201D82F0054B56F /* Day.swift */,
+				1412037A2201D8360054B56F /* Time.swift */,
+				149BCAFC2208216B004066DD /* String.swift */,
+				149BCAFE22082BF2004066DD /* Lock.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		8E392EC621FD61D900CEDF18 = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +116,9 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				8E392EEB21FD625800CEDF18 /* Database */,
+				8E392EEC21FD626B00CEDF18 /* pm_osakaname */,
+				1412036F2201C3DF0054B56F /* Utility */,
 				8E392ED321FD61D900CEDF18 /* DataManager.h */,
 				8E392ED421FD61D900CEDF18 /* Info.plist */,
 			);
@@ -81,9 +129,33 @@
 			isa = PBXGroup;
 			children = (
 				8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */,
+				149BCB0022082D87004066DD /* Test出勤日.swift */,
+				149BCB022208419E004066DD /* Test指示書.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
+			sourceTree = "<group>";
+		};
+		8E392EEB21FD625800CEDF18 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				141203722201C5890054B56F /* 出勤日.swift */,
+				141203762201D60B0054B56F /* 指示書詳細.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		8E392EEC21FD626B00CEDF18 /* pm_osakaname */ = {
+			isa = PBXGroup;
+			children = (
+				141203742201D6000054B56F /* スケジュール管理詳細.swift */,
+				149BCB04220854F6004066DD /* 伝票状態.swift */,
+				149BCB06220854FE004066DD /* 工程状態.swift */,
+				149BCB08220858FE004066DD /* 伝票種類.swift */,
+				149BCB0A22085EF0004066DD /* エッチング指示書テーブル.swift */,
+				149BCB0C22085F60004066DD /* 指示書進捗内訳テーブル.swift */,
+			);
+			path = pm_osakaname;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +220,7 @@
 				TargetAttributes = {
 					8E392ECF21FD61D900CEDF18 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 					8E392ED821FD61D900CEDF18 = {
 						CreatedOnToolsVersion = 10.1;
@@ -194,6 +267,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				141203752201D6000054B56F /* スケジュール管理詳細.swift in Sources */,
+				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
+				149BCB0D22085F60004066DD /* 指示書進捗内訳テーブル.swift in Sources */,
+				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
+				1412037B2201D8360054B56F /* Time.swift in Sources */,
+				141203792201D82F0054B56F /* Day.swift in Sources */,
+				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
+				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
+				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
+				149BCB0B22085EF0004066DD /* エッチング指示書テーブル.swift in Sources */,
+				141203712201C3EA0054B56F /* Date.swift in Sources */,
+				141203732201C5890054B56F /* 出勤日.swift in Sources */,
+				149BCAFD2208216B004066DD /* String.swift in Sources */,
+				141203772201D60B0054B56F /* 指示書詳細.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +289,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */,
+				149BCB0122082D87004066DD /* Test出勤日.swift in Sources */,
+				149BCB032208419E004066DD /* Test指示書.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +429,7 @@
 		8E392EE521FD61D900CEDF18 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -359,6 +449,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mac.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -366,6 +457,7 @@
 		8E392EE621FD61D900CEDF18 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -392,6 +484,7 @@
 		8E392EE821FD61D900CEDF18 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
@@ -410,6 +503,7 @@
 		8E392EE921FD61D900CEDF18 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
