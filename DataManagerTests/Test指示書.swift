@@ -11,10 +11,9 @@ import XCTest
 
 class TestOrder : XCTestCase {
     func testFind1() {
-        let db = FileMakerDB.pm_osakaname
         
         let num = 19013047
-        let order : 指示書型? = db.find(伝票番号: num)?.first
+        let order : 指示書型? = 指示書型.find(伝票番号: num)?.first
         XCTAssertEqual(num, order?.伝票番号)
     }
 

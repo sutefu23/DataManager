@@ -37,3 +37,4 @@ extension FileMakerDB {
         return result.compactMap { スケジュール型($0) }
     }
 }
+

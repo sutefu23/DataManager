@@ -12,6 +12,29 @@ public extension Date {
     var isHoliday : Bool {
         return self.day.isHoliday
     }
+    
+    var nextDay : Date {
+        return cal.date(byAdding: .day, value: 1, to: self)!
+    }
+
+    var prevDay : Date {
+        return cal.date(byAdding: .day, value: -1, to: self)!
+    }
+
+    var nextWorkDay : Date {
+        var day = self.nextDay
+        while day.isHoliday {
+            day = day.nextDay
+        }
+        return day
+    }
+    
+    func date(ofHour hour:Int, minute:Int) -> Date {
+        var coms = cal.dateComponents([.year, .month, .day, .hour, .minute], from: self)
+        coms.hour = hour
+        coms.minute = minute
+        return cal.date(from: coms)!
+    }
 }
 
 extension Day {

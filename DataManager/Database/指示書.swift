@@ -8,7 +8,7 @@
 
 import Foundation
 
-class 指示書型 {
+public class 指示書型 {
     let record : FileMakerRecord
     
     init?(_ record:FileMakerRecord) {
@@ -26,37 +26,21 @@ class 指示書型 {
         self.record = record
     }
     
-    let 伝票番号 : Int
-    let 表示用伝票番号 : String
-    var 伝票種類 : 伝票種類型 { return record.伝票種類(forKey: "伝票種類")! }
-    var 伝票状態 : 伝票状態型 { return record.伝票状態(forKey: "伝票状態")! }
-    var 工程状態 : 工程状態型 { return record.工程状態(forKey: "工程状態")! }
+    public let 伝票番号 : Int
+    public let 表示用伝票番号 : String
+    public var 伝票種類 : 伝票種類型 { return record.伝票種類(forKey: "伝票種類")! }
+    public var 伝票状態 : 伝票状態型 { return record.伝票状態(forKey: "伝票状態")! }
+    public var 工程状態 : 工程状態型 { return record.工程状態(forKey: "工程状態")! }
     
-    lazy var 進捗情報 : [進捗型] = {
+    public lazy var 進捗一覧 : [進捗型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
-        return list.compactMap { 進捗型($0) }
+        return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }()
 
 }
 
-class 進捗型 {
-    let record : FileMakerRecord
-    
-    init?(_ record:FileMakerRecord) {
-        self.record = record
-    }
-    
-    var 社員名称 : String { return record.string(forKey: "社員名称")! }
-    var 工程名称 : String { return record.string(forKey: "工程名称")! }
-    var 作業内容 : 作業内容型 { return record.作業内容(forKey: "進捗コード")! }
-    var 登録日 : Day { return record.day(forKey: "登録日")! }
-    var 登録時間 : Time { return record.time(forKey: "登録時間")! }
-    var 登録日時 : Date { return record.date(dayKey: "登録日", timeKey: "登録時間")! }
-
-}
-
-extension FileMakerDB {
-    func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil) -> [指示書型]? {
+public extension 指示書型 {
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil) -> [指示書型]? {
         var items = [FileMakerSearchItem]()
         if let num = 伝票番号 {
             let item = FileMakerSearchItem(fieldName:"伝票番号", fieldData:"\(num)")
@@ -66,12 +50,13 @@ extension FileMakerDB {
             let item = FileMakerSearchItem(fieldName:"伝票種類", fieldData:"\(type.fmString)")
             items.append(item)
         }
-        if let day = 製作納期 {
+        if let day = 製作納期?.day {
             let item = FileMakerSearchItem(fieldName:"製作納期", fieldData:"\(day.fmString)")
             items.append(item)
         }
         if items.isEmpty { return nil }
-        let list : [FileMakerRecord]? = find(layout: "エッチング指示書テーブル詳細", searchItems: items)
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", searchItems: items)
         return list?.compactMap { 指示書型($0) }
     }
 }

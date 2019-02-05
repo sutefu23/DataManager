@@ -8,25 +8,24 @@
 
 import Foundation
 
-public enum 作業内容型 {
+let statemap : [String : 作業内容型] = {
+    var map = [String : 作業内容型]()
+    for state in 作業内容型.allCases {
+        map[state.code] = state
+        map[state.caption] = state
+    }
+    return map
+}()
+
+public enum 作業内容型 : CaseIterable {
     case 受取
     case 開始
     case 仕掛
     case 完了
     
-    init?(code:String) {
-        switch code.uppercased() {
-        case "F500":
-            self = .受取
-        case "F1000":
-            self = .開始
-        case "F1500":
-            self = .仕掛
-        case "F2000":
-            self = .完了
-        default:
-            return nil
-        }
+    init?(_ code:String) {
+        guard let state = statemap[code.uppercased()] else { return nil }
+        self = state
     }
     
     var code : String {
@@ -51,6 +50,6 @@ public enum 作業内容型 {
 extension FileMakerRecord {
     func 作業内容(forKey key:String) -> 作業内容型? {
         guard let code = string(forKey: key) else { return nil }
-        return 作業内容型(code:code)
+        return 作業内容型(code)
     }
 }
