@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 伝票種類型 {
+public enum 伝票種類型 :CustomStringConvertible {
     case 箱文字
     case 切文字
     case エッチング
@@ -29,7 +29,7 @@ public enum 伝票種類型 {
         }
     }
     
-    public var caption : String { return fmString }
+    public var description : String { return fmString }
 
     var fmString : String {
         switch self {

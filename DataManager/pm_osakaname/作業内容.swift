@@ -12,12 +12,12 @@ let statemap : [String : 作業内容型] = {
     var map = [String : 作業内容型]()
     for state in 作業内容型.allCases {
         map[state.code] = state
-        map[state.caption] = state
+        map[state.description] = state
     }
     return map
 }()
 
-public enum 作業内容型 : CaseIterable {
+public enum 作業内容型 : CaseIterable, CustomStringConvertible {
     case 受取
     case 開始
     case 仕掛
@@ -37,7 +37,7 @@ public enum 作業内容型 : CaseIterable {
         }
     }
     
-    public var caption : String {
+    public var description: String {
         switch self {
         case .受取: return "受取"
         case .開始: return "開始"

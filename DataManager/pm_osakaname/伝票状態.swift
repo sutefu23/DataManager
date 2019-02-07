@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 伝票状態型 {
+public enum 伝票状態型 : CustomStringConvertible {
     case 未製作
     case 製作中
     case 発送済

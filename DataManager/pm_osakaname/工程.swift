@@ -12,13 +12,13 @@ let processmap : [String : 工程型] = {
     var map = [String : 工程型]()
     for process in 工程型.allCases {
         map[process.code] = process
-        map[process.caption] = process
+        map[process.description] = process
     }
     map["レーザー・ウォーター"] = .レーザー
     return map
 }()
 
-public enum 工程型 : Int, Comparable, CaseIterable {
+public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
     case 営業 = 10
     case 校正 = 20
     case 管理 = 30
@@ -109,7 +109,7 @@ public enum 工程型 : Int, Comparable, CaseIterable {
         
     }
     
-    public var caption : String {
+    public var description : String {
         switch self {
         case .シャーリング: return "シャーリング"
         case .プレーナー: return "プレーナー"
