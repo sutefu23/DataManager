@@ -13,14 +13,19 @@ class FileMakerRecord {
     let portalData : [String : Any]
     let name : String
     
-    required init?(json data:Any, name:String) {
+    init?(json data:Any) {
         guard let dic = data as? [String:Any] else { return nil }
         guard let field = dic["fieldData"] as? [String:Any] else { return nil }
         self.fieldData = field
         self.portalData = dic["portalData"] as? [String:Any] ?? [:]
-        self.name = name
+        self.name = ""
     }
-    
+    init?(portal name:String, json data:Any) {
+        self.name = name
+        guard let dic = data as? [String:Any] else { return nil }
+        self.fieldData = dic
+        self.portalData = [:]
+    }
     
     func output(_ key:String) {
         print(self[key] ?? "")
@@ -39,7 +44,7 @@ class FileMakerRecord {
     
     func portal(forKey key:String) -> [FileMakerRecord]? {
         guard let source = portalData[key] as? [Any] else { return nil }
-        return source.compactMap { FileMakerRecord(json: $0, name: key) }
+        return source.compactMap { FileMakerRecord(portal:key, json: $0) }
     }
     
     var recordId : Int {

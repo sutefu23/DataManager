@@ -27,14 +27,8 @@ private let tableName = "スケジュール管理テーブル"
 extension FileMakerDB {
     func find(at day:Day) -> [スケジュール型] {
         let str = day.fmString
-        var result : [FileMakerRecord] = []
-        if let list : [FileMakerRecord] = find(layout: "スケジュール管理詳細", searchItems: [FileMakerSearchItem(fieldName:"開始日", fieldData:str), FileMakerSearchItem(fieldName: "終了日ソート", fieldData: "=")]) {
-            result.append(contentsOf: list)
-        }
-        if let list :[FileMakerRecord] = find(layout: "スケジュール管理詳細2", searchItems: [FileMakerSearchItem(fieldName:"開始日", fieldData:">=\(str)"), FileMakerSearchItem(fieldName: "終了日", fieldData: "<=\(str)")]) {
-            result.append(contentsOf: list)
-        }
-        return result.compactMap { スケジュール型($0) }
+        let list = find(layout: "スケジュール管理詳細", query: [["開始日" : str, "終了日ソート" : "="], ["開始日" : ">=\(str)", "終了日" : "<=\(str)"]])
+        return list?.compactMap { スケジュール型($0) } ?? []
     }
 }
 

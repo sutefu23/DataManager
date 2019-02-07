@@ -8,20 +8,20 @@
 
 import Foundation
 
-public extension Date {
-    var isHoliday : Bool {
+extension Date {
+    public var isHoliday : Bool {
         return self.day.isHoliday
     }
     
-    var nextDay : Date {
+    public var nextDay : Date {
         return cal.date(byAdding: .day, value: 1, to: self)!
     }
 
-    var prevDay : Date {
+    public var prevDay : Date {
         return cal.date(byAdding: .day, value: -1, to: self)!
     }
 
-    var nextWorkDay : Date {
+    public var nextWorkDay : Date {
         var day = self.nextDay
         while day.isHoliday {
             day = day.nextDay
@@ -29,13 +29,22 @@ public extension Date {
         return day
     }
     
-    func date(ofHour hour:Int, minute:Int) -> Date {
+    public func date(ofHour hour:Int, minute:Int) -> Date {
         var coms = cal.dateComponents([.year, .month, .day, .hour, .minute], from: self)
         coms.hour = hour
         coms.minute = minute
         return cal.date(from: coms)!
     }
+    
+    var dayNumber : Int {
+        return cal.component(.day, from: self)
+    }
+    
+    public var dayWeekString : String {
+        return "\(dayNumber)(\(week.description))"
+    }
 }
+
 
 extension Day {
     var isWorkday : Bool {

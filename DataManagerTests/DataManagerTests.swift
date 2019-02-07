@@ -39,9 +39,7 @@ class DataManagerTests: XCTestCase {
 
     func test検索() {
         let file = FileMakerDB(server: "192.168.1.153", filename: "laser" ,user: "admin", password: "ws")
-        guard let records : [FileMakerRecord] = file.find(layout: "窒素ガスタンク記録一覧", searchItems:[
-            FileMakerSearchItem(fieldName: "点検日時", fieldData: ">01/13/2019")
-            ]) else {
+        guard let records : [FileMakerRecord] = file.find(layout: "窒素ガスタンク記録一覧", query:[["点検日時" : ">01/13/2019"]]) else {
                 XCTAssert(false)
                 return
         }
@@ -55,9 +53,7 @@ class DataManagerTests: XCTestCase {
     
     func testRecord() {
         let file = FileMakerDB.laser
-        guard let records : [FileMakerRecord] = file.find(layout: "三菱レーザー加工条件一覧", searchItems:[
-            FileMakerSearchItem(fieldName: "材質", fieldData: "ソーダガラス")
-            ]) else {
+        guard let records : [FileMakerRecord] = file.find(layout: "三菱レーザー加工条件一覧", query:[["材質" : "ソーダガラス"]]) else {
                 XCTAssert(false)
                 return
         }

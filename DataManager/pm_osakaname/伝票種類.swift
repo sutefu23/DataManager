@@ -29,6 +29,8 @@ public enum 伝票種類型 {
         }
     }
     
+    public var caption : String { return fmString }
+
     var fmString : String {
         switch self {
         case .箱文字 : return "箱文字"

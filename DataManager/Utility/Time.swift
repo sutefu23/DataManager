@@ -13,7 +13,7 @@ struct Time : Hashable, Comparable {
     let minute : Int
     let second : Int
     
-    init(hour:Int, minute:Int, second:Int) {
+    init(hour:Int, minute:Int, second:Int = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
@@ -50,3 +50,15 @@ extension Date {
     }
 
 }
+
+let time0400 = Time(hour: 4, minute: 0)
+let time0830 = Time(hour: 8, minute: 30)
+let time1000 = Time(hour: 10, minute: 00)
+let time1010 = Time(hour: 10, minute: 10)
+let time1200 = Time(hour: 12, minute: 00)
+let time1300 = Time(hour: 13, minute: 00)
+let time1500 = Time(hour: 15, minute: 00)
+let time1510 = Time(hour: 15, minute: 10)
+let time1730 = Time(hour: 17, minute: 30)
+let time1740 = Time(hour: 17, minute: 40)
+let time2200 = Time(hour: 22, minute: 00)

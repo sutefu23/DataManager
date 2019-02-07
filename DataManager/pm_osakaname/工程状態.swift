@@ -22,6 +22,13 @@ public enum 工程状態型 {
         }
     }
 
+    public var descripton : String {
+        switch self {
+        case .通常 : return "通常"
+        case .保留 : return "保留"
+        case .校正中 : return "校正中"
+        }
+    }
 }
 
 extension FileMakerRecord {

@@ -8,16 +8,6 @@
 
 import Foundation
 
-
-struct FileMakerSearchItem {
-    let fieldName : String
-    let fieldData : String
-    
-    func makeQuery() -> [String:String] {
-        return [fieldName : fieldData]
-    }
-}
-
 enum FileMakerSortType : String, Encodable {
     case 昇順 = "ascend"
     case 降順 = "descend"
@@ -111,9 +101,9 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         return true
     }
 
-    func fetch<T>(layout:String, sortItems:[FileMakerSortItem] = []) -> [T]? where T : FileMakerRecord {
+    func fetch(layout:String, sortItems:[FileMakerSortItem] = []) -> [FileMakerRecord]? {
         guard let token = self.prepareToken() else { return nil }
-        var result : [T] = []
+        var result : [FileMakerRecord] = []
 
         var offset = 1
         let limit = 100
@@ -121,7 +111,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         
         repeat {
             var isOk = false
-            var newRequest : [T] = []
+            var newRequest : [FileMakerRecord] = []
             newRequest.reserveCapacity(100)
             var url = dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
             var comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -154,7 +144,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
                     let code      = messages[0]["code"] as? String else { return }
                 isOk = (Int(code) == 0)
                 if let res = response["data"] {
-                    newRequest = (res as? [Any])?.compactMap { T(json:$0, name:"") } ?? []
+                    newRequest = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
                 }.resume()
             sem.wait()
@@ -174,34 +164,33 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         let limit : Int
     }
     
-    func find<T>(layout:String, recordId:Int) -> T? where T : FileMakerRecord {
-        let item = FileMakerSearchItem(fieldName: "recordId", fieldData: "\(recordId)")
-        return self.find(layout: layout, searchItems: [item])?.first
+    func find(layout:String, recordId:Int) -> FileMakerRecord? {
+        return self.find(layout: layout, query: [["recordId" : "\(recordId)"]])?.first
     }
     
-    func find<T>(layout:String, searchItems:[FileMakerSearchItem], sortItems:[FileMakerSortItem] = []) -> [T]? where T : FileMakerRecord {
+    func find(layout:String, query:[[String:String]], sortItems:[FileMakerSortItem] = [], max:Int? = nil) -> [FileMakerRecord]? {
         guard let token = self.prepareToken() else { return nil }
         var offset = 1
         let limit = 100
-        var isRepeat = false
-        var result : [T] = []
+        var result : [FileMakerRecord] = []
 
-        let query = searchItems.map { $0.makeQuery() }
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         repeat {
             var isOk = false
             let sort : [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems
             let json = SearchRequest(query: query, sort:sort , offset: offset, limit: limit)
             let encoder = JSONEncoder()
             guard let data = try? encoder.encode(json) else { return nil }
-            var newResult : [T] = []
+            let rawData = String(data: data, encoding: .utf8)
+            var newResult : [FileMakerRecord] = []
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let config = URLSessionConfiguration.default
-            let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-            session.uploadTask(with: request, from: data) { data, _, error in
+            request.httpBody = data
+            session.dataTask(with: request) { data, _, error in
                 defer { self.sem.signal() }
                 guard   let data      = data, error == nil,
                     let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
@@ -210,7 +199,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
                     let code      = messages[0]["code"] as? String else { return }
                 isOk = (Int(code) == 0)
                 if let res = response["data"] {
-                    newResult = (res as? [Any])?.compactMap { T(json:$0, name:"") } ?? []
+                    newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
                 }.resume()
             sem.wait()
@@ -218,10 +207,9 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
             let count = newResult.count
             result.append(contentsOf: newResult)
             offset += limit
-            isRepeat = count >= limit
-        } while(isRepeat)
-
-
+            if let max = max, result.count >= max { break }
+            if count < limit { break }
+        } while(true)
         return result
     }
     

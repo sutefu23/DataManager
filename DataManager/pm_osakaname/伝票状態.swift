@@ -23,6 +23,15 @@ public enum 伝票状態型 {
         default: return nil
         }
     }
+    
+    public var description : String {
+        switch self {
+        case .未製作: return "未製作"
+        case .製作中: return "製作中"
+        case .発送済: return "発送済"
+        case .キャンセル: return "キャンセル"
+        }
+    }
 
 }
 

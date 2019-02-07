@@ -28,9 +28,11 @@ public class 指示書型 {
     
     public let 伝票番号 : Int
     public let 表示用伝票番号 : String
+    public var 受注日 : Date { return record.date(forKey: "受注日")! }
     public var 伝票種類 : 伝票種類型 { return record.伝票種類(forKey: "伝票種類")! }
     public var 伝票状態 : 伝票状態型 { return record.伝票状態(forKey: "伝票状態")! }
     public var 工程状態 : 工程状態型 { return record.工程状態(forKey: "工程状態")! }
+    public var 製作納期 : Date { return record.date(forKey: "製作納期")! }
     
     public lazy var 進捗一覧 : [進捗型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
@@ -39,24 +41,22 @@ public class 指示書型 {
 
 }
 
+struct OrderQuery : Encodable {
+    var 伝票番号 : Int?
+    var 製作納期 : String?
+    var 伝票種類 : String?
+}
+
 public extension 指示書型 {
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil) -> [指示書型]? {
-        var items = [FileMakerSearchItem]()
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil, limit:Int = 100) -> [指示書型]? {
+        var query = [String:String]()
         if let num = 伝票番号 {
-            let item = FileMakerSearchItem(fieldName:"伝票番号", fieldData:"\(num)")
-            items.append(item)
+            query["伝票番号"] = "\(num)"
         }
-        if let type = 伝票種類 {
-            let item = FileMakerSearchItem(fieldName:"伝票種類", fieldData:"\(type.fmString)")
-            items.append(item)
-        }
-        if let day = 製作納期?.day {
-            let item = FileMakerSearchItem(fieldName:"製作納期", fieldData:"\(day.fmString)")
-            items.append(item)
-        }
-        if items.isEmpty { return nil }
+        query["伝票種類"] = 伝票種類?.fmString
+        query["製作納期"] = 製作納期?.day.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", searchItems: items)
+        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
 }

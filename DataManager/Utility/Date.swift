@@ -78,7 +78,7 @@ extension Date {
     }
     
     /// FileMakerDataAPIの日時
-    init?(fmJSONDayTime:String?) {
+    public init?(fmJSONDayTime:String?) {
         guard let group = fmJSONDayTime?.split(separator: " ") else { return nil }
         switch group.count {
         case 1:
@@ -92,11 +92,11 @@ extension Date {
     
     // MARK: 日付計算
     /// 曜日
-    var week : 週型 {
+    public var week : 週型 {
         return 週型(rawValue: cal.component(.weekday, from: self))!
     }
     /// 日付が同じかどうかを比べる（時間は違っていてok）
-    func isEqualDay(to: Date) -> Bool {
+    public func isEqualDay(to: Date) -> Bool {
         return self.day == to.day
     }
     
