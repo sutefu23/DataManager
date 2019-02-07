@@ -12,39 +12,78 @@ public class 指示書型 {
     let record : FileMakerRecord
     
     init?(_ record:FileMakerRecord) {
-        guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { return nil }
+        self.record = record
+        guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { fatalError() }
         self.表示用伝票番号 = numstr
         let div = numstr.split(separator: "-")
         if div.count != 2 { return nil }
         if div[0].count >= 4 {
-            guard let num = Int(div[0]+div[1]), num >= 100000 else { return nil }
+            guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
             self.伝票番号 = num
         } else {
-            guard let num = Int(div[1]), num >= 1 else { return nil }
+            guard let num = Int(div[1]), num >= 1 else { fatalError() }
             self.伝票番号 = num
         }
-        self.record = record
+        guard let mark = record.string(forKey: "略号") else { fatalError() }
+        self.略号 = make略号(mark)
     }
     
     public let 伝票番号 : Int
     public let 表示用伝票番号 : String
+    public let 略号 : Set<略号型>
+    
     public var 受注日 : Date { return record.date(forKey: "受注日")! }
     public var 伝票種類 : 伝票種類型 { return record.伝票種類(forKey: "伝票種類")! }
     public var 伝票状態 : 伝票状態型 { return record.伝票状態(forKey: "伝票状態")! }
     public var 工程状態 : 工程状態型 { return record.工程状態(forKey: "工程状態")! }
+    public var 承認状態 : String { return record.string(forKey: "承認状態")! }
     public var 製作納期 : Date { return record.date(forKey: "製作納期")! }
+    public var 出荷納期 : Date { return record.date(forKey: "出荷納期")! }
     
+    public var 品名 : String { return record.string(forKey: "品名")! }
+    public var 仕様 : String { return record.string(forKey: "仕様")! }
+    public var 社名 : String { return record.string(forKey: "社名")! }
+    public var 文字数 : String { return record.string(forKey: "文字数")! }
+    public var セット数 : String { return record.string(forKey: "セット数")! }
+    public var 備考 : String { return record.string(forKey: "備考")! }
+    public var 管理用メモ : String { return record.string(forKey: "管理用メモ")! }
+
+    public var 材質1 : String { return record.string(forKey: "材質1")! }
+    public var 材質2 : String { return record.string(forKey: "材質2")! }
+    public var 表面仕上1 : String { return record.string(forKey: "表面仕上1")! }
+    public var 表面仕上2 : String { return record.string(forKey: "表面仕上2")! }
+    
+    public var 上段左 : String { return record.string(forKey: "上段左")! }
+    public var 上段中央 : String { return record.string(forKey: "上段中央")! }
+    public var 上段右 : String { return record.string(forKey: "上段右")! }
+    public var 下段左 : String { return record.string(forKey: "下段左")! }
+    public var 下段中央 : String { return record.string(forKey: "下段中央")! }
+    public var 下段右 : String { return record.string(forKey: "下段右")! }
+
     public lazy var 進捗一覧 : [進捗型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
         return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }()
-
-}
-
-struct OrderQuery : Encodable {
-    var 伝票番号 : Int?
-    var 製作納期 : String?
-    var 伝票種類 : String?
+    
+    lazy var 変更一覧 : [FileMakerRecord] = {
+        guard let list : [FileMakerRecord] = record.portal(forKey: "指示書変更内容履歴テーブル") else { return [] }
+        return list
+    }()
+    
+    lazy var 添付資料一覧 : [FileMakerRecord] = {
+        guard let list : [FileMakerRecord] = record.portal(forKey: "指示書工程写真保存テーブル") else { return [] }
+        return list
+    }()
+    
+    lazy var 集荷時間一覧 : [FileMakerRecord] = {
+        guard let list : [FileMakerRecord] = record.portal(forKey: "集荷時間マスタ_確認用") else { return [] }
+        return list
+    }()
+    
+    lazy var 外注一覧 : [FileMakerRecord] = {
+        guard let list : [FileMakerRecord] = record.portal(forKey: "資材発注テーブル") else { return [] }
+        return list
+    }()
 }
 
 public extension 指示書型 {
@@ -56,7 +95,7 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.day.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
+        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
 }

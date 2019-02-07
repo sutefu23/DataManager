@@ -12,6 +12,7 @@
 		141203752201D6000054B56F /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203742201D6000054B56F /* スケジュール.swift */; };
 		141203792201D82F0054B56F /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203782201D82F0054B56F /* Day.swift */; };
 		1412037B2201D8360054B56F /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412037A2201D8360054B56F /* Time.swift */; };
+		1431E187220C2BC900E68ED7 /* 略号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1431E186220C2BC900E68ED7 /* 略号.swift */; };
 		14552F6422099833000BDCB8 /* 作業内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6322099833000BDCB8 /* 作業内容.swift */; };
 		14552F6622099B76000BDCB8 /* 指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6522099B76000BDCB8 /* 指示書.swift */; };
 		14552F6822099D32000BDCB8 /* FileMakerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6722099D32000BDCB8 /* FileMakerRecord.swift */; };
@@ -46,6 +47,7 @@
 		141203742201D6000054B56F /* スケジュール.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "スケジュール.swift"; sourceTree = "<group>"; };
 		141203782201D82F0054B56F /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		1412037A2201D8360054B56F /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		1431E186220C2BC900E68ED7 /* 略号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "略号.swift"; sourceTree = "<group>"; };
 		14552F6322099833000BDCB8 /* 作業内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業内容.swift"; sourceTree = "<group>"; };
 		14552F6522099B76000BDCB8 /* 指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書.swift"; sourceTree = "<group>"; };
 		14552F6722099D32000BDCB8 /* FileMakerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRecord.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				149BCB08220858FE004066DD /* 伝票種類.swift */,
 				14552F6322099833000BDCB8 /* 作業内容.swift */,
 				14DA57142209A81E00831625 /* 工程.swift */,
+				1431E186220C2BC900E68ED7 /* 略号.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				14552F6422099833000BDCB8 /* 作業内容.swift in Sources */,
 				14552F6822099D32000BDCB8 /* FileMakerRecord.swift in Sources */,
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
+				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,

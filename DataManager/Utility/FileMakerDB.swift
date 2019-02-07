@@ -101,7 +101,8 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         return true
     }
 
-    func fetch(layout:String, sortItems:[FileMakerSortItem] = []) -> [FileMakerRecord]? {
+    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = []) -> [FileMakerRecord]? {
+        let sortItems = sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         guard let token = self.prepareToken() else { return nil }
         var result : [FileMakerRecord] = []
 
@@ -168,7 +169,7 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         return self.find(layout: layout, query: [["recordId" : "\(recordId)"]])?.first
     }
     
-    func find(layout:String, query:[[String:String]], sortItems:[FileMakerSortItem] = [], max:Int? = nil) -> [FileMakerRecord]? {
+    func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) -> [FileMakerRecord]? {
         guard let token = self.prepareToken() else { return nil }
         var offset = 1
         let limit = 100
@@ -177,11 +178,11 @@ final class FileMakerDB : NSObject, URLSessionDelegate {
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        let sort : [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
+        let encoder = JSONEncoder()
         repeat {
             var isOk = false
-            let sort : [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems
             let json = SearchRequest(query: query, sort:sort , offset: offset, limit: limit)
-            let encoder = JSONEncoder()
             guard let data = try? encoder.encode(json) else { return nil }
             let rawData = String(data: data, encoding: .utf8)
             var newResult : [FileMakerRecord] = []

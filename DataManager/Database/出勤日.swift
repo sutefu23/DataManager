@@ -172,35 +172,43 @@ private class 出勤日DB型 {
     private var isHolidayCache : [Day : Bool] = [:]
     private let lock = Lock()
     
+    private func isHoidayCacheData(of day:Day) -> Bool? {
+        lock.lock()
+        defer { lock.unlock() }
+        return isHolidayCache[day]
+    }
+    private func setIsHolidayCacheData(day:Day, isHoliday:Bool) {
+        lock.lock()
+        isHolidayCache[day] = isHoliday
+        lock.unlock()
+    }
+    
     init() {
         self.baseline = max(workdays.max()!, holidays.max()!)
         self.oldline = min(workdays.min()!, holidays.min()!)
     }
     func isHoliday(of day:Day) -> Bool {
+        if let isHoliday = isHoidayCacheData(of: day) { return isHoliday }
+        let isHoliday : Bool
         if day < oldline {
             fatalError() // 想定していない
-        }
-        if day <= baseline {
+        } else if day <= baseline {
             switch day.week {
             case .日:
-                return true
+                isHoliday = true
             case .土:
-                return workdays.contains(day) == false
+                isHoliday = (workdays.contains(day) == false)
             default:
-                return holidays.contains(day)
+                isHoliday = holidays.contains(day)
             }
         } else {
-            return dynamicIsHoliday(day)
+            isHoliday = dynamicIsHoliday(day)
         }
+        setIsHolidayCacheData(day: day, isHoliday: isHoliday)
+        return isHoliday
     }
     
     func dynamicIsHoliday(_ day:Day) -> Bool {
-        lock.lock()
-        if let isHoliday = isHolidayCache[day] {
-            lock.unlock()
-            return isHoliday
-        }
-        lock.unlock()
         let db = FileMakerDB.pm_osakaname
         let list : [スケジュール型] = db.find(at: day)
         let isHoliday = list.contains { $0.種類 == "休日" }
