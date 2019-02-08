@@ -49,7 +49,7 @@ public enum 作業内容型 : CaseIterable, CustomStringConvertible {
 
 extension FileMakerRecord {
     func 作業内容(forKey key:String) -> 作業内容型? {
-        guard let code = string(forKey: key) else { return nil }
+        guard let code = string(forKey: key)?.applyingTransform(.fullwidthToHalfwidth, reverse: false) else { return nil }
         return 作業内容型(code)
     }
 }

@@ -18,6 +18,9 @@ let processmap : [String : 工程型] = {
     map["組立・検品"] = .組立検品
     map["照合・検査"] = .照合検査
     map["ルーターカット"] = .ルーター
+    map["附属品準備"] = .付属品準備
+    map["腐食"] = .腐蝕
+    map["タップ"] = .タップ
     return map
 }()
 
@@ -32,7 +35,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
     case レーザー = 60
     case レーザー（アクリル） = 61
     case 照合検査 = 62
-    case 腐食 = 70
+    case 腐蝕 = 70
     case オブジェ = 80
     case フォーミング = 90
     case シャーリング = 91
@@ -54,7 +57,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
     case 塗装 = 200
     case 外注 = 210
     case 拭き取り = 220
-    case 附属品準備 = 240
+    case 付属品準備 = 240
     case 組立検品 = 260
     case 発送 = 270
     case 経理 = 280
@@ -82,7 +85,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
         case .レーザー: return "P006"
         case .レーザー（アクリル）: return "P006A"
         case .照合検査 : return "P006B"
-        case .腐食 : return "P007"
+        case .腐蝕 : return "P007"
         case .オブジェ : return "P008"
         case .フォーミング: return "P009"
         case .シャーリング : return "P009A"
@@ -104,12 +107,11 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
         case .塗装 : return "P020"
         case .外注 : return "P021"
         case .拭き取り : return "P022"
-        case .附属品準備 : return "P024"
+        case .付属品準備 : return "P024"
         case .組立検品 : return "P026"
         case .発送 : return "P027"
         case .経理 : return "P028"
         }
-        
     }
     
     public var description : String {
@@ -134,9 +136,9 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
         case .フォーミング: return "フォーミング"
         case .タレパン: return "タレパン"
         case .表面仕上: return "表面仕上"
-        case .仕上: return "表面仕上"
+        case .仕上: return "仕上"
         case .印刷: return "印刷"
-        case .腐食: return "腐食"
+        case .腐蝕: return "腐蝕"
         case .外注: return "外注"
         case .塗装: return "塗装"
         case .発送: return "発送"
@@ -145,10 +147,10 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
         case .研磨: return "研磨"
         case .ルーター: return "ルーター"
         case .拭き取り: return "拭き取り"
-        case .附属品準備: return "附属品準備"
+        case .付属品準備: return "付属品準備"
         case .組立検品: return "組立検品"
         case .レーザー溶接: return "レーザー溶接"
-        case .タップ: return "タップ"
+        case .タップ: return "タップ(ルーター)"
         case .裏加工: return "裏加工"
         }
     }

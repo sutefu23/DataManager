@@ -48,7 +48,6 @@ extension Date {
         let comp = cal.dateComponents([.hour, .minute, .second], from: self)
         return Time(hour: comp.hour!, minute: comp.minute!, second: comp.second!)
     }
-
 }
 
 let time0400 = Time(hour: 4, minute: 0)
