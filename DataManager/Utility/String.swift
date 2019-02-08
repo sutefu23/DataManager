@@ -29,7 +29,6 @@ extension Substring {
         }
         return self
     }
-    
 }
 
 private var numberSet : CharacterSet = {
