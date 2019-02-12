@@ -18,7 +18,7 @@ struct FileMakerSortItem : Encodable {
     let sortOrder : FileMakerSortType
 }
 
-let maxConnection = 4
+let maxConnection = 3
 
 final class FileMakerDB {
     static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")

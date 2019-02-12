@@ -15,6 +15,8 @@ let processmap : [String : 工程型] = {
         map[process.description] = process
     }
     map["レーザー・ウォーター"] = .レーザー
+    map["アクリル"] = .レーザー（アクリル）
+    map["アクリル（レーザー）"] = .レーザー（アクリル）
     map["組立・検品"] = .組立検品
     map["照合・検査"] = .照合検査
     map["ルーターカット"] = .ルーター

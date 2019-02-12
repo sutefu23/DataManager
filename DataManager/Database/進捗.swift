@@ -17,7 +17,10 @@ public class 進捗型 {
     var 登録時間 : Time
 
     init?(_ record:FileMakerRecord) {
-        guard let process = record.工程(forKey: "工程名称") else { fatalError() }
+        guard let process = record.工程(forKey: "工程名称") else {
+            if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
+            fatalError()
+        }
         guard let state = record.作業内容(forKey: "進捗コード") else { fatalError() }
         guard let name = record.string(forKey: "社員名称") else { fatalError() }
         guard let day = record.day(forKey: "登録日") else { fatalError() }
