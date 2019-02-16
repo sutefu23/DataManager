@@ -11,20 +11,8 @@ import XCTest
 
 class DataManagerTests: XCTestCase {
 
-    func test接続() {
-        let file = FileMakerDB(server: "192.168.1.153", filename: "laser" ,user: "admin", password: "ws")
-        XCTAssertNil(file.activeToken)
-        XCTAssertFalse(file.isConnect)
-        let token = file.prepareToken()
-        XCTAssertNotNil(token)
-        let result = file.logout()
-        XCTAssertNil(file.activeToken)
-        XCTAssertTrue(result)
-    }
-    
     func test読み出し() {
         let file = FileMakerDB(server: "192.168.1.153", filename: "laser" ,user: "admin", password: "ws")
-        XCTAssertNil(file.activeToken)
         guard let records : [FileMakerRecord] = file.fetch(layout: "窒素ガスタンク記録一覧") else {
             XCTAssert(false)
             return
@@ -33,8 +21,6 @@ class DataManagerTests: XCTestCase {
         let data = records.first?.string(forKey: "点検日時")
         XCTAssertNotNil(data)
         XCTAssert(data?.isEmpty == false)
-        let result = file.logout()
-        XCTAssertTrue(result)
     }
 
     func test検索() {
@@ -47,8 +33,6 @@ class DataManagerTests: XCTestCase {
         let data = records.first?.string(forKey: "点検日時")
         XCTAssertNotNil(data)
         XCTAssert(data?.isEmpty == false)
-        let result = file.logout()
-        XCTAssertTrue(result)
     }
     
     func testRecord() {
