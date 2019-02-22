@@ -6,7 +6,8 @@
 //  Copyright © 2019 四熊泰之. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+//#import <Cocoa/Cocoa.h>
 
 //! Project version number for DataManager.
 FOUNDATION_EXPORT double DataManagerVersionNumber;
