@@ -11,10 +11,10 @@ import Foundation
 import XCTest
 @testable import DataManager
 
-class TestProcess : XCTestCase {
+class TestState : XCTestCase {
     func testMake() {
         var p : 工程型?
-        p = processmap["付属品準備"]
+        p = stateMap["付属品準備"]
         XCTAssertNotNil(p)
         p = 工程型("付属品準備")
         XCTAssertNotNil(p)

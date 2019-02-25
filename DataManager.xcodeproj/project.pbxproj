@@ -19,8 +19,6 @@
 		14552F6622099B76000BDCB8 /* 指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6522099B76000BDCB8 /* 指示書.swift */; };
 		14552F6822099D32000BDCB8 /* FileMakerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6722099D32000BDCB8 /* FileMakerRecord.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
-		14681F142212B3BC00C41D15 /* 作業バー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F132212B3BC00C41D15 /* 作業バー.swift */; };
-		14681F182212E23500C41D15 /* 工程図詳細.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F172212E23500C41D15 /* 工程図詳細.swift */; };
 		149BCAFD2208216B004066DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFC2208216B004066DD /* String.swift */; };
 		149BCAFF22082BF2004066DD /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFE22082BF2004066DD /* Lock.swift */; };
 		149BCB0122082D87004066DD /* Test出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0022082D87004066DD /* Test出勤日.swift */; };
@@ -34,6 +32,7 @@
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
+		8EBD198622248C6D000644C1 /* 作業.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD198522248C6D000644C1 /* 作業.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,8 +58,6 @@
 		14552F6522099B76000BDCB8 /* 指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書.swift"; sourceTree = "<group>"; };
 		14552F6722099D32000BDCB8 /* FileMakerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRecord.swift; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
-		14681F132212B3BC00C41D15 /* 作業バー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業バー.swift"; sourceTree = "<group>"; };
-		14681F172212E23500C41D15 /* 工程図詳細.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図詳細.swift"; sourceTree = "<group>"; };
 		149BCAFC2208216B004066DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		149BCAFE22082BF2004066DD /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		149BCB0022082D87004066DD /* Test出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test出勤日.swift"; sourceTree = "<group>"; };
@@ -77,6 +74,7 @@
 		8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerTests.swift; sourceTree = "<group>"; };
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
+		8EBD198522248C6D000644C1 /* 作業.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +115,6 @@
 			isa = PBXGroup;
 			children = (
 				14681F112212B3AE00C41D15 /* 工程図.swift */,
-				14681F172212E23500C41D15 /* 工程図詳細.swift */,
-				14681F132212B3BC00C41D15 /* 作業バー.swift */,
 			);
 			path = "工程図";
 			sourceTree = "<group>";
@@ -144,6 +140,7 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				8EBD198422248C43000644C1 /* 作業ツリー */,
 				14681F102212B37200C41D15 /* 工程図 */,
 				8E392EEB21FD625800CEDF18 /* Database */,
 				8E392EEC21FD626B00CEDF18 /* pm_osakaname */,
@@ -190,6 +187,14 @@
 			path = pm_osakaname;
 			sourceTree = "<group>";
 		};
+		8EBD198422248C43000644C1 /* 作業ツリー */ = {
+			isa = PBXGroup;
+			children = (
+				8EBD198522248C6D000644C1 /* 作業.swift */,
+			);
+			path = "作業ツリー";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -226,11 +231,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E392EE721FD61D900CEDF18 /* Build configuration list for PBXNativeTarget "DataManagerTests" */;
 			buildPhases = (
-				67475325675FA6F37BE5205E /* [CP] Check Pods Manifest.lock */,
 				8E392ED521FD61D900CEDF18 /* Sources */,
 				8E392ED621FD61D900CEDF18 /* Frameworks */,
 				8E392ED721FD61D900CEDF18 /* Resources */,
-				463C40D2D58DFA67CEB6823C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -296,53 +299,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		463C40D2D58DFA67CEB6823C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DataManagerTests/Pods-DataManagerTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AMSMB2/AMSMB2.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMSMB2.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DataManagerTests/Pods-DataManagerTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		67475325675FA6F37BE5205E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DataManagerTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		8E392ECC21FD61D900CEDF18 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -354,8 +310,6 @@
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
-				14681F182212E23500C41D15 /* 工程図詳細.swift in Sources */,
-				14681F142212B3BC00C41D15 /* 作業バー.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
@@ -364,6 +318,7 @@
 				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
 				14681F122212B3AE00C41D15 /* 工程図.swift in Sources */,
+				8EBD198622248C6D000644C1 /* 作業.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
 				14DA57192209B0C600831625 /* 進捗.swift in Sources */,
 				141203712201C3EA0054B56F /* Date.swift in Sources */,

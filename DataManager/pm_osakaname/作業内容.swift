@@ -17,11 +17,11 @@ let statemap : [String : 作業内容型] = {
     return map
 }()
 
-public enum 作業内容型 : CaseIterable, CustomStringConvertible {
-    case 受取
-    case 開始
-    case 仕掛
-    case 完了
+public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Comparable {
+    case 受取 = 0
+    case 開始 = 1
+    case 仕掛 = 2
+    case 完了 = 3
     
     init?(_ code:String) {
         guard let state = statemap[code.uppercased()] else { return nil }
@@ -44,6 +44,10 @@ public enum 作業内容型 : CaseIterable, CustomStringConvertible {
         case .仕掛: return "仕掛"
         case .完了: return "完了"
         }
+    }
+    
+    public static func < (left:作業内容型, right:作業内容型) -> Bool {
+        return left.rawValue < right.rawValue
     }
 }
 

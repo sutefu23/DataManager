@@ -8,11 +8,11 @@
 
 import Foundation
 
-let processmap : [String : 工程型] = {
+let stateMap : [String : 工程型] = {
     var map = [String : 工程型]()
-    for process in 工程型.allCases {
-        map[process.code] = process
-        map[process.description] = process
+    for state in 工程型.allCases {
+        map[state.code] = state
+        map[state.description] = state
     }
     map["レーザー・ウォーター"] = .レーザー
     map["アクリル"] = .レーザー（アクリル）
@@ -71,8 +71,8 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
     var number : Int { return self.rawValue }
     
     public init?(_ code:String) {
-        guard let process = processmap[code.uppercased()] else { return nil }
-        self = process
+        guard let state = stateMap[code.uppercased()] else { return nil }
+        self = state
     }
     
     public var code : String {
