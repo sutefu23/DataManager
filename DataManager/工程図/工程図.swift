@@ -9,12 +9,25 @@
 import Foundation
 
 public class 工程図型 {
+    
     init(_ list:[作業型]) {
         
     }
     
     /// 工程図フォルダから工程読み出し
-    init(_ url:URL) throws {
+    public init(_ url:URL) throws {
+        
+    }
+    
+    public init(_ orders:[指示書型]) throws {
+        var list : [(指示書型, [作業型])] = []
+        for order in orders {
+            let work = order.make作業ツリー()
+            list.append((order, work))
+        }
+    }
+    
+    public func writeToURL(_ url:URL) throws {
         
     }
 }

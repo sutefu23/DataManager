@@ -40,6 +40,10 @@ struct Time : Hashable, Comparable {
         if left.minute != right.minute { return left.minute < right.minute }
         return left.second < right.second
     }
+    
+    var hourMinuteString : String {
+        return "\(make2dig(self.hour)):\(make2dig(self.minute))"
+    }
 }
 
 extension Date {
