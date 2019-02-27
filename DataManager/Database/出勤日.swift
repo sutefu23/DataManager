@@ -39,7 +39,16 @@ extension Date {
     var dayNumber : Int {
         return cal.component(.day, from: self)
     }
+
+    var monthNumber : Int {
+        return cal.component(.month, from: self)
+    }
+
+    public var monthDayWeekString : String {
+        return "\(monthNumber)/\(dayNumber) (\(week.description))"
+    }
     
+
     public var dayWeekString : String {
         return "\(dayNumber)(\(week.description))"
     }
