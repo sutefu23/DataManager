@@ -77,5 +77,12 @@ final class FileMakerDB {
         stockSession(session)
         return result
     }
+    
+    func downloadObject(url:URL) -> Data? {
+        let session = self.prepareSesion()
+        let result = session.download(url)
+        stockSession(session)
+        return result
+    }
 }
 

@@ -6,7 +6,11 @@
 //  Copyright © 2019 四熊泰之. All rights reserved.
 //
 
-import Foundation
+#if os(macOS)
+import Cocoa
+#else
+import UIKit
+#endif
 
 public class 指示書型 {
     let record : FileMakerRecord
@@ -60,6 +64,9 @@ public class 指示書型 {
     public var 下段中央 : String { return record.string(forKey: "下段中央")! }
     public var 下段右 : String { return record.string(forKey: "下段右")! }
 
+    var 図URL : URL? { return record.url(forKey: "図") }
+    fileprivate var imageCache : Any?
+
     public lazy var 進捗一覧 : [進捗型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
         return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
@@ -98,4 +105,19 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+}
+
+extension 指示書型 {
+#if os(macOS)
+    public var 図 : NSImage? {
+        if let image = self.imageCache as? NSImage { return image }
+        guard let url = self.図URL else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        guard let data = db.downloadObject(url: url) else { return nil }
+        let image = NSImage(data: data)
+        self.imageCache = image
+        return image
+    }
+#else
+#endif
 }

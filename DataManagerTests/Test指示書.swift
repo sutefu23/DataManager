@@ -77,5 +77,10 @@ class TestOrder : XCTestCase {
         let list5 = order?.外注一覧
         XCTAssertNotNil(list5)
 
+        let picURL = order?.図URL
+        XCTAssertNotNil(picURL)
+        
+        let pic = order?.図
+        XCTAssertNotNil(pic)
     }
 }

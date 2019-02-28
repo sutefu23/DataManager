@@ -84,5 +84,16 @@ class FileMakerRecord {
         return Date(fmJSONDay: day, fmJSONTime: time)
     }
     
+    func url(forKey key:String) -> URL? {
+        guard let url = string(forKey: key) else { return nil }
+        return URL(string: url)
+    }
+    
+    func object(forKey key:String) -> Data? {
+        guard let url = self.url(forKey: key) else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        let data = db.downloadObject(url: url)
+        return data
+    }
 }
 

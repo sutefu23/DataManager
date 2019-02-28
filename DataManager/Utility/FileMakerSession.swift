@@ -78,9 +78,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-        session.dataTask(with: request) { _, _, error in
+        self.session.dataTask(with: request) { _, _, error in
             defer { self.sem.signal() }
             }.resume()
         sem.wait()
@@ -98,7 +96,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         }
         completionHandler(.useCredential, credential)
     }
-
+    
     func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = []) -> [FileMakerRecord]? {
         let sortItems = sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         guard let token = self.prepareToken() else { return nil }
@@ -132,9 +130,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
             request.httpMethod = "GET"
             //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            let config = URLSessionConfiguration.default
-            let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-            session.dataTask(with: request) { data, _, error in
+            self.session.dataTask(with: request) { data, _, error in
                 defer { self.sem.signal() }
                 guard   let data      = data, error == nil,
                     let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
@@ -155,6 +151,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         } while (isRepeat)
         return result
     }
+    
     
     struct SearchRequest : Encodable {
         let query : [[String:String]]
@@ -211,5 +208,18 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         } while(true)
         return result
     }
-
+    
+    func download(_ url:URL) -> Data? {
+        var result : Data? = nil
+        self.session.downloadTask(with: url) { (data , res, error) in
+            if error == nil {
+                if let url = data {
+                    result = try? Data(contentsOf: url)
+                }
+            }
+            self.sem.signal()
+        }.resume()
+        self.sem.wait()
+        return result
+    }
 }
