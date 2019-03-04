@@ -40,6 +40,26 @@ struct Day : Hashable, Comparable {
         }
         
     }
+    
+    // FileMakerの日付
+    init?(fmDate: String) {
+        if fmDate.isEmpty { return nil }
+        let digs = fmDate.split(separator: "/")
+        if digs.count != 3 {
+            let now = Date().day.year
+            if let date = Day(fmDate: "\(now)/\(fmDate)") {
+                self = date
+                return
+            } else {
+                return nil
+            }
+        }
+        guard let year = Int(digs[0]), let month = Int(digs[1]), let day = Int(digs[2]) else { return nil }
+        self.year = year
+        self.month = month
+        self.day = day
+    }
+
 
     static func <(left:Day, right:Day) -> Bool {
         if left.year != right.year { return left.year < right.year }
@@ -53,6 +73,22 @@ struct Day : Hashable, Comparable {
     
     var fmString : String {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
+    }
+    
+    var nextDay : Day {
+        if self.day < 28 {
+            return Day(year: self.year, month: self.month, day: self.day+1)
+        }
+        let date = Date(self)
+        return date.nextDay.day
+    }
+    
+    var prevDay : Day {
+        if self.day > 1 {
+            return Day(year: self.year, month: self.month, day: self.day-1)
+        }
+        let date = Date(self)
+        return date.prevDay.day
     }
 }
 

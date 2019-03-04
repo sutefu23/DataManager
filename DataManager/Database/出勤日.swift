@@ -9,9 +9,9 @@
 import Foundation
 
 extension Date {
-    public var isHoliday : Bool {
-        return self.day.isHoliday
-    }
+//    public var isHoliday : Bool {
+//        return self.day.isHoliday
+//    }
     
     public var nextDay : Date {
         return cal.date(byAdding: .day, value: 1, to: self)!
@@ -21,14 +21,6 @@ extension Date {
         return cal.date(byAdding: .day, value: -1, to: self)!
     }
 
-    public var nextWorkDay : Date {
-        var day = self.nextDay
-        while day.isHoliday {
-            day = day.nextDay
-        }
-        return day
-    }
-    
     public func date(ofHour hour:Int, minute:Int) -> Date {
         var coms = cal.dateComponents([.year, .month, .day, .hour, .minute], from: self)
         coms.hour = hour
@@ -73,7 +65,7 @@ extension Day {
 }
 private let db = 出勤日DB型()
 
-private class 出勤日DB型 {
+class 出勤日DB型 {
     // 2016/10/01 ~ 2019/03/31
     /// 土日以外の休日
     let holidays : Set<Day> = [

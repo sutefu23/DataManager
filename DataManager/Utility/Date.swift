@@ -90,6 +90,12 @@ extension Date {
         }
     }
     
+    // FileMakerの日付
+    public init?(fmDate: String) {
+        guard let day = Day(fmDate: fmDate) else { return nil }
+        self = Date(day)
+    }
+
     // MARK: 日付計算
     /// 曜日
     public var week : 週型 {
@@ -100,4 +106,11 @@ extension Date {
         return self.day == to.day
     }
     
+}
+
+public extension TimeInterval {
+    var minuteString : String {
+        let min = Int(self / 60)
+        return String(min)
+    }
 }

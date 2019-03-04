@@ -18,7 +18,13 @@ struct Time : Hashable, Comparable {
         self.minute = minute
         self.second = second
     }
-    
+
+    init(_ hour:Int, _ minute:Int, _ second:Int = 0) {
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+    }
+
     init?<T>(fmJSONTime:T?) where T : StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
@@ -44,6 +50,13 @@ struct Time : Hashable, Comparable {
     var hourMinuteString : String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }
+    
+    var allSeconds : Int {
+        return hour * 60 * 60 + minute * 60 + second
+    }
+}
+func -(left:Time, right:Time) -> TimeInterval {
+    return TimeInterval(left.allSeconds - right.allSeconds)
 }
 
 extension Date {

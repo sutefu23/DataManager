@@ -56,11 +56,14 @@ class FileMakerRecord {
     }
     
     func integer(forKey key:String) -> Int? {
-        return self[key] as? Int
+        guard let str = self[key] as? String else { return nil }
+        return Int(str)
+//        return self[key] as? Int
     }
     
     func double(forKey key:String) -> Double? {
-        return self[key] as? Double
+        guard let str = self[key] as? String else { return nil }
+        return Double(str)
     }
     
     func day(forKey key: String) -> Day? {
