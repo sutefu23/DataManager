@@ -75,6 +75,14 @@ struct Day : Hashable, Comparable {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
     }
     
+    var monthDayString : String {
+        return "\(make2dig(month))/\(make2dig(day))"
+    }
+    
+    var description : String {
+        return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
+    }
+    
     var nextDay : Day {
         if self.day < 28 {
             return Day(year: self.year, month: self.month, day: self.day+1)

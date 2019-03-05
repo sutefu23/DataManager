@@ -192,8 +192,9 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                     let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
                     let response  = json["response"] as? [String: Any],
                     let messages  = json["messages"] as? [[String: Any]],
-                    let code      = messages[0]["code"] as? String else { return }
-                isOk = (Int(code) == 0)
+                    let code      = messages[0]["code"] as? String,
+                    let codeNum = Int(code) else { return }
+                isOk = (codeNum == 0 || codeNum == 401)
                 if let res = response["data"] {
                     newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
@@ -222,4 +223,16 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         self.sem.wait()
         return result
     }
+}
+
+func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {
+    guard let range = range else { return nil }
+    let from = range.lowerBound
+    let to = range.upperBound
+    if from == to {
+        return "\(from.day.fmString)"
+    } else {
+        return "\(from.day.fmString)...\(to.day.fmString)"
+    }
+
 }

@@ -106,6 +106,14 @@ extension Date {
         return self.day == to.day
     }
     
+    public var monthDayString : String {
+        return self.day.monthDayString
+    }
+    
+    public var dataString : String {
+        return "\(self.day.description) \(self.time.description)"
+    }
+    
 }
 
 public extension TimeInterval {

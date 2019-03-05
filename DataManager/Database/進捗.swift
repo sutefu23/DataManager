@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 進捗型 {
+public class 進捗型 : Equatable {
     let record : FileMakerRecord
 
     public let 工程 : 工程型
@@ -34,6 +34,10 @@ public class 進捗型 {
         self.登録日 = day
         self.登録時間 = time
         self.登録日時 = Date(day, time)
+    }
+    
+    public static func ==(left:進捗型, right:進捗型) -> Bool {
+        return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.社員名称 == right.社員名称 && left.登録日時 == right.登録日時
     }
 }
 
@@ -69,10 +73,8 @@ public extension Array where Element == 進捗型 {
 
 public extension 進捗型 {
     static func find(検索期間 range:ClosedRange<Date>, 工程 state:工程型, 作業内容 type:作業内容型) -> [進捗型]? {
-        let from = range.lowerBound
-        let to = range.upperBound
         var query = [String:String]()
-        query["登録日"] = "\(from.day.fmString)...\(to.day.fmString)"
+        query["登録日"] = makeQueryDayString(range)
         query["工程コード"] = "\(state.code)"
         query["進捗コード"] = "\(type.code)"
         let db = FileMakerDB.pm_osakaname

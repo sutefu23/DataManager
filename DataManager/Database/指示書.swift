@@ -105,6 +105,18 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期 range:ClosedRange<Date>, limit:Int = 100) -> [指示書型]? {
+        var query = [String:String]()
+        if let num = 伝票番号 {
+            query["伝票番号"] = "\(num)"
+        }
+        query["伝票種類"] = 伝票種類?.fmString
+        query["製作納期"] = makeQueryDayString(range)
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
+        return list?.compactMap { 指示書型($0) }
+    }
 }
 
 extension 指示書型 {

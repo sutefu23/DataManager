@@ -45,6 +45,10 @@ extension Date {
         return "\(dayNumber)(\(week.description))"
     }
     
+    public var monthDayHourMinuteString : String {
+        return "\(self.day.monthDayString) \(self.time.hourMinuteString)"
+    }
+    
     public var dayWeekToMinuteString : String {
         return "\(self.dayWeekString) \(self.time.hourMinuteString)"
     }

@@ -56,9 +56,15 @@ struct 勤務時間型 {
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
         (from:Time(17,30), to:Time(17,40)),
-        (from:Time(10,00), to:Time(10,10)),
         ])
-    
+
+    static let handa : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(20, 00), 休憩時間: [
+        (from:Time(10,00), to:Time(10,10)),
+        (from:Time(12,00), to:Time(13,00)),
+        (from:Time(15,00), to:Time(15,10)),
+        (from:Time(17,30), to:Time(17,40)),
+        ])
+
     var 始業 : Time
     var 終業 : Time
     var 休憩時間 : [(from:Time, to:Time)]
@@ -95,9 +101,15 @@ struct 勤務時間型 {
 }
 
 public class カレンダー型 {
-    public static let standard : カレンダー型 = カレンダー型()
-    private let dayDB = 出勤日DB型()
-    private let timeDB = 勤務時間型.standard
+    public static let standard : カレンダー型 = カレンダー型(day: 出勤日DB型(), time: 勤務時間型.standard)
+    public static let handa : カレンダー型 = カレンダー型(day: 出勤日DB型(), time: 勤務時間型.handa)
+    private let dayDB : 出勤日DB型
+    private let timeDB : 勤務時間型
+    
+    init(day:出勤日DB型, time:勤務時間型) {
+        self.dayDB = day
+        self.timeDB = time
+    }
 }
 
 // MARK: 日付

@@ -51,6 +51,10 @@ struct Time : Hashable, Comparable {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }
     
+    var description : String {
+        return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
+    }
+    
     var allSeconds : Int {
         return hour * 60 * 60 + minute * 60 + second
     }

@@ -150,7 +150,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
         case .ルーター: return "ルーター"
         case .拭き取り: return "拭き取り"
         case .付属品準備: return "付属品準備"
-        case .組立検品: return "組立検品"
+        case .組立検品: return "組立・検品"
         case .レーザー溶接: return "レーザー溶接"
         case .タップ: return "タップ(ルーター)"
         case .裏加工: return "裏加工"
