@@ -110,6 +110,10 @@ extension Date {
         return self.day.monthDayString
     }
     
+    public var monthDayJString : String {
+        return self.day.monthDayJString
+    }
+    
     public var dataString : String {
         return "\(self.day.description) \(self.time.description)"
     }

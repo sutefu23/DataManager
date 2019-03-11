@@ -210,6 +210,13 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return result
     }
     
+    func update(layout:String, query:[[String:String]], fields:[String:String]) {
+        
+    }
+    
+    func insert(layout:String, fields:[String:String]) {
+    }
+    
     func download(_ url:URL) -> Data? {
         var result : Data? = nil
         self.session.downloadTask(with: url) { (data , res, error) in

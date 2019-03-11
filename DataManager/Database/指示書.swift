@@ -117,6 +117,10 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    static func update(new管理用メモ:String, for伝票番号:Int? = nil) {
+//        let fields = [String:String]()
+//        fields[""]
+    }
 }
 
 extension 指示書型 {
