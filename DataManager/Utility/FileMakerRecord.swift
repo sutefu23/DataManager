@@ -56,13 +56,15 @@ class FileMakerRecord {
     }
     
     func integer(forKey key:String) -> Int? {
-        guard let str = self[key] as? String else { return nil }
+        if let value = self[key] as? Int { return value }
+        guard let str = string(forKey: key) else { return nil }
         return Int(str)
 //        return self[key] as? Int
     }
     
     func double(forKey key:String) -> Double? {
-        guard let str = self[key] as? String else { return nil }
+        if let value = self[key] as? Double { return value }
+        guard let str = string(forKey: key) else { return nil }
         return Double(str)
     }
     

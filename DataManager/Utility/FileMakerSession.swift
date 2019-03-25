@@ -8,6 +8,16 @@
 
 import Foundation
 
+struct FileMakerPortal {
+    let name : String
+    let limit : Int?
+    
+    init(name:String, limit:Int? = nil) {
+        self.name = name
+        self.limit = limit
+    }
+}
+
 class FileMakerSession : NSObject, URLSessionDelegate {
     let dbURL : URL
     let user : String
@@ -97,7 +107,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         completionHandler(.useCredential, credential)
     }
     
-    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = []) -> [FileMakerRecord]? {
+    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = [], portals:[FileMakerPortal] = []) -> [FileMakerRecord]? {
         let sortItems = sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         guard let token = self.prepareToken() else { return nil }
         var result : [FileMakerRecord] = []
@@ -122,6 +132,20 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                 let str = String(data: data, encoding: .utf8)
                 let item = URLQueryItem(name: "_sort", value: str)
                 queryItems.append(item)
+            }
+            // portal
+            var names : [String] = []
+            for portal in portals where portal.limit != 0 {
+                if let limit = portal.limit {
+                    names.append(portal.name)
+                    let name = "_limit.\(portal.name)"
+                    let item = URLQueryItem(name: "_limit.\(portal.name)", value: "\(limit)")
+                    queryItems.append(item)
+                }
+            }
+            if names.isEmpty == false {
+                let value = "[" + names.map { return "\"" + $0 + "\"" }.joined(separator: ",") + "]"
+                queryItems.append(URLQueryItem(name: "portal", value: value))
             }
             comp.queryItems = queryItems
             url = comp.url!

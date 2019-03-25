@@ -16,6 +16,7 @@ class TestIsHoliday: XCTestCase {
         XCTAssertTrue(Day(2019,1,1).dynamicIsHoliday)
         XCTAssertFalse(Day(2019,1,7).dynamicIsHoliday)
         XCTAssertTrue(Day(2019,1,1).dynamicIsHoliday)
+        XCTAssertTrue(Day(2019,3,31).dynamicIsHoliday)
     }
 
 }

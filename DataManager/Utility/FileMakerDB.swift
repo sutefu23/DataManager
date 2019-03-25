@@ -60,9 +60,9 @@ final class FileMakerDB {
         sem.signal()
     }
     
-    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = []) -> [FileMakerRecord]? {
+    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = [], portals:[FileMakerPortal] = []) -> [FileMakerRecord]? {
         let session = self.prepareSesion()
-        let result = session.fetch(layout: layout, sortItems: sortItems)
+        let result = session.fetch(layout: layout, sortItems: sortItems, portals: portals)
         stockSession(session)
         return result
     }
