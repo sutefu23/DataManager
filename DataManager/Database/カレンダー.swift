@@ -33,7 +33,7 @@ public extension Date {
         return cal.calcWorkTime(from: self, to: to)
     }
     
-    public func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
+    func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
         var day = self.day.nextDay
         while cal.isHoliday(of: day) {
             day = day.nextDay
@@ -41,7 +41,7 @@ public extension Date {
         return Date(day)
     }
     
-    public func 前出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
+    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
         var day = self.day.prevDay
         while cal.isHoliday(of: day) {
             day = day.prevDay

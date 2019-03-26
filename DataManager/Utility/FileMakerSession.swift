@@ -63,7 +63,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         session.dataTask(with: request) { data, _, error in
             defer { self.sem.signal() }
             guard   let data      = data, error == nil,
-                let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
+                let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                 let response  = json["response"] as? [String: Any],
                 let messages  = json["messages"] as? [[String: Any]],
                 let code      = messages[0]["code"] as? String else { return }
@@ -84,12 +84,12 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     @discardableResult func logout() -> Bool {
         guard let token = self.activeToken else { return false }
         let url = self.dbURL.appendingPathComponent("sessions").appendingPathComponent(token)
-        var errorCode : String? = nil
+//        var errorCode : String? = nil
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         self.session.dataTask(with: request) { _, _, error in
-            defer { self.sem.signal() }
+            self.sem.signal()
             }.resume()
         sem.wait()
         self.ticket = nil
@@ -157,7 +157,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
             self.session.dataTask(with: request) { data, _, error in
                 defer { self.sem.signal() }
                 guard   let data      = data, error == nil,
-                    let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
+                    let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                     let response  = json["response"] as? [String: Any],
                     let messages  = json["messages"] as? [[String: Any]],
                     let code      = messages[0]["code"] as? String else { return }
@@ -213,7 +213,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
             session.dataTask(with: request) { data, _, error in
                 defer { self.sem.signal() }
                 guard   let data      = data, error == nil,
-                    let json      = try? JSONSerialization.jsonObject(with: data) as! [String: Any],
+                    let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                     let response  = json["response"] as? [String: Any],
                     let messages  = json["messages"] as? [[String: Any]],
                     let code      = messages[0]["code"] as? String,
