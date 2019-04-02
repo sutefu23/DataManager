@@ -118,6 +118,14 @@ extension Date {
         return "\(self.day.description) \(self.time.description)"
     }
     
+    public var fmImportDay : String {
+        return self.day.fmImportString
+    }
+    
+    public var fmImportTime : String {
+        return self.time.fmImportString
+    }
+    
 }
 
 public extension TimeInterval {

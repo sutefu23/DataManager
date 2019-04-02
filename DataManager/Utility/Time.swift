@@ -47,6 +47,10 @@ struct Time : Hashable, Comparable {
         return left.second < right.second
     }
     
+    var fmImportString : String {
+        return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
+    }
+    
     var hourMinuteString : String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }

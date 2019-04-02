@@ -23,12 +23,12 @@ public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Compar
     case 仕掛 = 2
     case 完了 = 3
     
-    init?(_ code:String) {
+    public init?(_ code:String) {
         guard let state = statemap[code.uppercased()] else { return nil }
         self = state
     }
     
-    var code : String {
+    public var code : String {
         switch self {
         case .受取: return "F500"
         case .開始: return "F1000"
