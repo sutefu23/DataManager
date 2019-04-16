@@ -24,7 +24,7 @@ public class 進捗型 : Equatable {
             fatalError()
         }
         self.record = record
-        guard let type = record.作業内容(forKey: "進捗コード") else { fatalError() }
+        guard let type = record.作業内容(forKey: "進捗コード") else { return nil }
         guard let name = record.string(forKey: "社員名称") else { fatalError() }
         guard let day = record.day(forKey: "登録日") else { fatalError() }
         guard let time = record.time(forKey: "登録時間") else { fatalError() }

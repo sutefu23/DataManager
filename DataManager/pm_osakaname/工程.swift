@@ -23,10 +23,12 @@ let stateMap : [String : 工程型] = {
     map["附属品準備"] = .付属品準備
     map["腐食"] = .腐蝕
     map["タップ"] = .タップ
+    map["洗い場"] = .表面仕上
+    map["検査"] = .照合検査
     return map
 }()
 
-public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible {
+public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, Hashable {
     case 営業 = 10
     case 校正 = 20
     case 管理 = 30

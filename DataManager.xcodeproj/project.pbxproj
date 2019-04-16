@@ -16,6 +16,7 @@
 		1412037B2201D8360054B56F /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412037A2201D8360054B56F /* Time.swift */; };
 		1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430C032220CFFBE0095BA9C /* Test工程.swift */; };
 		1431E187220C2BC900E68ED7 /* 略号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1431E186220C2BC900E68ED7 /* 略号.swift */; };
+		1436782922643B3A00335943 /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1436782822643B3A00335943 /* TestDate.swift */; };
 		143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143FA9DC224F5EA9000F2029 /* 社員.swift */; };
 		14552F6422099833000BDCB8 /* 作業内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6322099833000BDCB8 /* 作業内容.swift */; };
 		14552F6622099B76000BDCB8 /* 指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14552F6522099B76000BDCB8 /* 指示書.swift */; };
@@ -62,6 +63,7 @@
 		1412037A2201D8360054B56F /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		1430C032220CFFBE0095BA9C /* Test工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test工程.swift"; sourceTree = "<group>"; };
 		1431E186220C2BC900E68ED7 /* 略号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "略号.swift"; sourceTree = "<group>"; };
+		1436782822643B3A00335943 /* TestDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDate.swift; sourceTree = "<group>"; };
 		143FA9DC224F5EA9000F2029 /* 社員.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "社員.swift"; sourceTree = "<group>"; };
 		14552F6322099833000BDCB8 /* 作業内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業内容.swift"; sourceTree = "<group>"; };
 		14552F6522099B76000BDCB8 /* 指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書.swift"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				1430C032220CFFBE0095BA9C /* Test工程.swift */,
 				1404C86D222CE8D900F3B025 /* Test進捗.swift */,
 				14BEE9E52240A8B300B2750B /* Test資材.swift */,
+				1436782822643B3A00335943 /* TestDate.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
@@ -365,6 +368,7 @@
 				149BCB032208419E004066DD /* Test指示書.swift in Sources */,
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,
 				1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */,
+				1436782922643B3A00335943 /* TestDate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

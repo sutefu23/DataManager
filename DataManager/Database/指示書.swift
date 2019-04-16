@@ -64,6 +64,8 @@ public class 指示書型 {
     public var 下段中央 : String { return record.string(forKey: "下段中央")! }
     public var 下段右 : String { return record.string(forKey: "下段右")! }
 
+    public var 合計金額 : Int { return record.integer(forKey: "合計金額") ?? 0}
+    
     var 図URL : URL? { return record.url(forKey: "図") }
     fileprivate var imageCache : Any?
 
@@ -93,6 +95,40 @@ public class 指示書型 {
     }()
 }
 
+extension 指示書型 {
+    public var 製作文字数概算 : Int {
+        let leftLast, rightLast : Int
+        var left = self.文字数.makeNumbers()
+        if let last = left.last {
+            leftLast = last
+        } else {
+            left = [1]
+            leftLast = 1
+        }
+        var right = (self.伝票種類 == .加工) ? [1] : self.セット数.makeNumbers()
+        if let last = right.last {
+            rightLast = last
+        } else {
+            right = [1]
+            rightLast = 1
+        }
+        while left.count < right.count { left.append(leftLast) }
+        while right.count < left.count { right.append(rightLast) }
+        var total = 0
+        for (l, r) in zip(left, right) {
+            total += l * r
+        }
+        if self.伝票種類 == .箱文字 {
+            let type = self.仕様
+            if type.contains("W") || type.contains("リング") || (type.contains("表") && type.contains("バック")) {
+                total *= 2
+            }
+        }
+        return total
+    }
+
+}
+
 public extension 指示書型 {
     static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
@@ -105,6 +141,19 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    
+    static func find2(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil, limit:Int = 100) -> [指示書型]? {
+        var query = [String:String]()
+        if let num = 伝票番号 {
+            query["伝票番号"] = "\(num)"
+        }
+        query["伝票種類"] = 伝票種類?.fmString
+        query["製作納期"] = 製作納期?.day.fmString
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
+        return list?.compactMap { 指示書型($0) }
+    }
+
     
     static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期 range:ClosedRange<Date>? = nil,  出荷納期 range2:ClosedRange<Date>? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()

@@ -79,6 +79,10 @@ struct Day : Hashable, Comparable {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     
+    public var yearMonthString : String {
+        return "\(year)/\(make2dig(month))"
+    }
+
     var monthDayString : String {
         return "\(make2dig(month))/\(make2dig(day))"
     }

@@ -33,6 +33,10 @@ public enum 週型 : Int {
 
 extension Date {
     // MARK: 初期化
+    public init?(year:Int, month:Int, day:Int) {
+        let date = Day(year: year, month: month, day: day)
+        self = Date(date)
+    }
     /// FileMakerDataAPIの日付と時間
     init?<T>(fmJSONDay:T?, fmJSONTime:T? = nil) where T : StringProtocol{
         guard let fmJSONDay = fmJSONDay else { return nil }
@@ -96,6 +100,23 @@ extension Date {
         self = Date(day)
     }
 
+    // 装飾表示
+    public var yearMonthString : String {
+        return day.yearMonthString
+    }
+    
+    // MARK: - 日付処理
+    public var nextMonth : Date {
+        let day = cal.date(byAdding: .month, value: 1, to: self)!.day
+        return Date(day)
+    }
+    
+    public var monthFirstDay : Date {
+        let day = self.day
+        let day1 = Day(year: day.year, month: day.month, day: 1)
+        return Date(day1)
+    }
+    
     // MARK: 日付計算
     /// 曜日
     public var week : 週型 {
