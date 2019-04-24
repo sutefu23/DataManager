@@ -19,4 +19,7 @@ class TestIsHoliday: XCTestCase {
         XCTAssertTrue(Day(2019,3,31).dynamicIsHoliday)
     }
 
+    func testLongHoliday() {
+        XCTAssertTrue(Day(2019,5,1).dynamicIsHoliday)
+    }
 }
