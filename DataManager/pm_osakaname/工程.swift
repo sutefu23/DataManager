@@ -49,6 +49,8 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     case 仕上 = 110
     case 切文字 = 120
     case 溶接 = 130
+    case 立ち上がり_溶接 = 131
+    case 裏加工_溶接 = 133
     case 立ち上がり = 140
     case 半田 = 150
     case レーザー溶接 = 152
@@ -73,7 +75,9 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     var number : Int { return self.rawValue }
     
     public init?(_ code:String) {
-        guard let state = stateMap[code.uppercased()] else { return nil }
+        guard let state = stateMap[code.uppercased()] else {
+            return nil
+        }
         self = state
     }
     
@@ -99,6 +103,8 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .仕上 : return "P011"
         case .切文字 : return "P012"
         case .溶接 : return "P013"
+        case .立ち上がり_溶接: return "P013A"
+        case .裏加工_溶接: return "P013C"
         case .立ち上がり : return "P014"
         case .半田 : return "P015"
         case .レーザー溶接 : return "P015B"
@@ -136,6 +142,8 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .立ち上がり: return "立ち上がり"
         case .半田: return "半田"
         case .溶接: return "溶接"
+        case .立ち上がり_溶接: return "立ち上がり（溶接)"
+        case .裏加工_溶接: return "裏加工(溶接)"
         case .加工: return "加工"
         case .フォーミング: return "フォーミング"
         case .タレパン: return "タレパン"

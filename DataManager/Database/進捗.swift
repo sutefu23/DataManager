@@ -21,6 +21,7 @@ public class 進捗型 : Equatable {
     init?(_ record:FileMakerRecord) {
         guard let state = record.工程(forKey: "工程名称") else {
             if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
+//            return nil
             fatalError()
         }
         self.record = record
