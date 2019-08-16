@@ -27,7 +27,8 @@ private let tableName = "スケジュール管理テーブル"
 extension FileMakerDB {
     func find(at day:Day) -> [スケジュール型] {
         let str = day.fmString
-        let list = find(layout: "スケジュール管理詳細", query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
+//        let list = find(layout: "スケジュール管理詳細", query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
+        let list = find(layout: "DataAPI_スケジュール", query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
         let result = list?.compactMap { スケジュール型($0) } ?? []
         return result
 //        let list = find(layout: "スケジュール管理詳細", query: [["開始日" : str, "終了日" : "="]]) ?? []

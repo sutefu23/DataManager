@@ -79,7 +79,8 @@ public extension 進捗型 {
         query["工程コード"] = "\(state.code)"
         query["進捗コード"] = "\(type.code)"
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_進捗", query: [query])
+//        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
         return list?.compactMap { 進捗型($0) }
     }
 }

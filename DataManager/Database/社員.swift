@@ -8,6 +8,8 @@
 
 import Foundation
 
+public var 全社員一覧 = [社員型]()
+
 public struct 社員型 {
     /// 指定された文字列が社員コードとして使用可能かチェックする。実際に登録されたコードかどうかは確認しない
     public static func isValid社員コード(_ code:String) -> Bool {

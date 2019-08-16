@@ -145,8 +145,7 @@ extension Date {
     
     public var fmImportTime : String {
         return self.time.fmImportString
-    }
-    
+    }    
 }
 
 public extension TimeInterval {

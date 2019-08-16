@@ -74,9 +74,9 @@ public class 指示書型 {
         return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }()
     
-    lazy var 変更一覧 : [FileMakerRecord] = {
+    lazy var 変更一覧 : [指示書変更内容履歴型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書変更内容履歴テーブル") else { return [] }
-        return list
+        return list.compactMap { 指示書変更内容履歴型($0) }
     }()
     
     lazy var 添付資料一覧 : [FileMakerRecord] = {
@@ -89,9 +89,9 @@ public class 指示書型 {
         return list
     }()
     
-    lazy var 外注一覧 : [FileMakerRecord] = {
+    lazy var 外注一覧 : [発注型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "資材発注テーブル") else { return [] }
-        return list
+        return list.compactMap { 発注型($0) }
     }()
 }
 
@@ -137,8 +137,9 @@ public extension 指示書型 {
         }
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.day.fmString
-        let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
+         let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+//        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
     
@@ -150,17 +151,21 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.day.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+//        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
 
     
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期 range:ClosedRange<Date>? = nil,  出荷納期 range2:ClosedRange<Date>? = nil, limit:Int = 100) -> [指示書型]? {
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Date>? = nil, 製作納期 range:ClosedRange<Date>? = nil,  出荷納期 range2:ClosedRange<Date>? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
+        if let range0 = range0 {
+            query["受注日"] = makeQueryDayString(range0)
+        }
         if let range = range {
             query["製作納期"] = makeQueryDayString(range)
         }
@@ -168,9 +173,11 @@ public extension 指示書型 {
             query["出荷納期"] = makeQueryDayString(range2)
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+//        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    
     static func update(new管理用メモ:String, for伝票番号:Int? = nil) {
 //        let fields = [String:String]()
 //        fields[""]
@@ -190,4 +197,26 @@ extension 指示書型 {
     }
 #else
 #endif
+}
+let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
+public extension 指示書型 {
+    var is外注塗装あり : Bool {
+        return self.外注一覧.contains { 外注先会社コード.contains($0.会社コード) }
+    }
+    
+    var is内作塗装あり : Bool {
+        return self.進捗一覧.contains {
+            return $0.工程 == .塗装 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
+        }
+    }
+    
+    var is外注シートあり : Bool {
+        return self.外注一覧.contains { $0.会社コード == "0074" }
+    }
+    
+    var is社内研磨あり : Bool {
+        return self.進捗一覧.contains {
+            return $0.工程 == .研磨 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
+        }
+    }
 }

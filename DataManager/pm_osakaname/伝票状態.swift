@@ -32,7 +32,6 @@ public enum 伝票状態型 : CustomStringConvertible {
         case .キャンセル: return "キャンセル"
         }
     }
-
 }
 
 extension FileMakerRecord {

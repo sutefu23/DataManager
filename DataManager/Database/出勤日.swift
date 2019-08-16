@@ -28,12 +28,16 @@ extension Date {
         return cal.date(from: coms)!
     }
     
-    var dayNumber : Int {
+    public var dayNumber : Int {
         return cal.component(.day, from: self)
     }
 
-    var monthNumber : Int {
+    public var monthNumber : Int {
         return cal.component(.month, from: self)
+    }
+
+    public var yearNumber : Int {
+        return cal.component(.year, from: self)
     }
 
     public var monthDayWeekString : String {

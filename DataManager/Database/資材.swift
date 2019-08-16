@@ -59,18 +59,7 @@ public extension 資材型 {
 public extension 資材型 {
     static func fetch() -> [資材型]? {
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.fetch(layout: "資材テーブル詳細")
+        let list : [FileMakerRecord]? = db.fetch(layout: "DataAPI_資材")
         return list?.compactMap { 資材型($0) }
     }
-    /*
-    static func find(工程 state:工程型, 作業内容 type:作業内容型) -> [進捗型]? {
-        var query = [String:String]()
-        query["登録日"] = makeQueryDayString(range)
-        query["工程コード"] = "\(state.code)"
-        query["進捗コード"] = "\(type.code)"
-        let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
-        return list?.compactMap { 進捗型($0) }
-    }
- */
 }

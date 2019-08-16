@@ -12,11 +12,16 @@ import XCTest
 class TestItem: XCTestCase {
 
     func testFetch() {
-//        guard let items = 資材型.fetch() else {
-//            XCTAssert(false)
-//            return
-//        }
-//        XCTAssert(items.count > 1)
+        guard let items = 資材型.fetch() else {
+            XCTAssert(false)
+            return
+        }
+        
+        let firstItem = items[0]
+        XCTAssertFalse(firstItem.製品名称.isEmpty)
+        XCTAssertFalse(firstItem.図番.isEmpty)
+        XCTAssertFalse(firstItem.版数.isEmpty)
+        return
     }
 
 }
