@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct Day : Hashable, Comparable {
-    let year : Int
-    let month : Int
-    let day : Int
+public struct Day : Hashable, Comparable {
+    public let year : Int
+    public let month : Int
+    public let day : Int
     
-    init(year:Int, month:Int, day:Int) {
+    public init(year:Int, month:Int, day:Int) {
         self.init(year, month, day)
     }
-    init(_ year:Int, _ month:Int, _ day:Int) {
+    public init(_ year:Int, _ month:Int, _ day:Int) {
         self.year = year
         self.month = month
         self.day = day
@@ -61,7 +61,7 @@ struct Day : Hashable, Comparable {
     }
 
 
-    static func <(left:Day, right:Day) -> Bool {
+    public static func <(left:Day, right:Day) -> Bool {
         if left.year != right.year { return left.year < right.year }
         if left.month != right.month { return left.month < right.month }
         return left.day < right.day
@@ -71,11 +71,11 @@ struct Day : Hashable, Comparable {
         return weekCache[self]
     }
     
-    var fmString : String {
+    public var fmString : String {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
     }
     
-    var fmImportString : String {
+    public var fmImportString : String {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     
@@ -83,11 +83,11 @@ struct Day : Hashable, Comparable {
         return "\(year)/\(make2dig(month))"
     }
 
-    var monthDayString : String {
+    public var monthDayString : String {
         return "\(make2dig(month))/\(make2dig(day))"
     }
 
-    var monthDayJString : String {
+    public var monthDayJString : String {
         return "\(make2dig(month))月\(make2dig(day))日"
     }
 
@@ -95,7 +95,7 @@ struct Day : Hashable, Comparable {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     
-    var nextDay : Day {
+    public var nextDay : Day {
         if self.day < 28 {
             return Day(year: self.year, month: self.month, day: self.day+1)
         }
@@ -103,7 +103,7 @@ struct Day : Hashable, Comparable {
         return date.nextDay.day
     }
     
-    var prevDay : Day {
+    public var prevDay : Day {
         if self.day > 1 {
             return Day(year: self.year, month: self.month, day: self.day-1)
         }
@@ -134,12 +134,12 @@ private let weekCache = WeekCache()
 
 extension Date {
     /// 日付
-    var day : Day {
+    public var day : Day {
         let comp = cal.dateComponents([.year, .month, .day], from: self)
         return Day(year: comp.year!, month: comp.month!, day: comp.day!)
     }
     
-    init(_ day:Day) {
+    public init(_ day:Day) {
         var comp = DateComponents()
         comp.year = day.year
         comp.month = day.month
@@ -148,7 +148,7 @@ extension Date {
         self = date
     }
     
-    init(_ day:Day, _ time:Time) {
+    public init(_ day:Day, _ time:Time) {
         var comp = DateComponents()
         comp.year = day.year
         comp.month = day.month

@@ -8,18 +8,18 @@
 
 import Foundation
 
-struct Time : Hashable, Comparable {
-    let hour : Int
-    let minute : Int
-    let second : Int
+public struct Time : Hashable, Comparable {
+    public let hour : Int
+    public let minute : Int
+    public let second : Int
     
-    init(hour:Int, minute:Int, second:Int = 0) {
+    public init(hour:Int, minute:Int, second:Int = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
     }
 
-    init(_ hour:Int, _ minute:Int, _ second:Int = 0) {
+    public init(_ hour:Int, _ minute:Int, _ second:Int = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
@@ -41,7 +41,7 @@ struct Time : Hashable, Comparable {
         }
     }
     
-    static func <(left:Time, right:Time) -> Bool {
+    public static func <(left:Time, right:Time) -> Bool {
         if left.hour != right.hour { return left.hour < right.hour }
         if left.minute != right.minute { return left.minute < right.minute }
         return left.second < right.second
@@ -63,13 +63,13 @@ struct Time : Hashable, Comparable {
         return hour * 60 * 60 + minute * 60 + second
     }
 }
-func -(left:Time, right:Time) -> TimeInterval {
+public func -(left:Time, right:Time) -> TimeInterval {
     return TimeInterval(left.allSeconds - right.allSeconds)
 }
 
 extension Date {
     // MARK: 時間計算
-    var time : Time {
+    public var time : Time {
         let comp = cal.dateComponents([.hour, .minute, .second], from: self)
         return Time(hour: comp.hour!, minute: comp.minute!, second: comp.second!)
     }

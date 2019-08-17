@@ -19,7 +19,7 @@ public class 進捗型 : Equatable {
     var 登録時間 : Time
 
     init?(_ record:FileMakerRecord) {
-        guard let state = record.工程(forKey: "工程名称") else {
+        guard let state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
             if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
 //            return nil
             fatalError()
@@ -85,3 +85,8 @@ public extension 進捗型 {
     }
 }
 
+public extension Array where Element == 進捗型 {
+    func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool {
+        return self.contains { $0.工程 == 工程 && $0.作業内容 == 作業内容}
+    }
+}

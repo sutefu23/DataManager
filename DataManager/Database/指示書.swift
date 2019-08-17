@@ -64,6 +64,14 @@ public class 指示書型 {
     public var 下段中央 : String { return record.string(forKey: "下段中央")! }
     public var 下段右 : String { return record.string(forKey: "下段右")! }
 
+    public var 単価1 : Int { return record.integer(forKey: "単価1") ?? 0 }
+    public var 数量1 : Int { return record.integer(forKey: "数量1") ?? 0 }
+    public var 伝票種別 : String { return record.string(forKey: "伝票種別")! }
+    public var 経理状態 : 経理状態型 {
+        if let state = record.経理状態(forKey: "経理状態") { return state }
+        return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
+    }
+    
     public var 合計金額 : Int { return record.integer(forKey: "合計金額") ?? 0}
     
     var 図URL : URL? { return record.url(forKey: "図") }
@@ -218,5 +226,23 @@ public extension 指示書型 {
         return self.進捗一覧.contains {
             return $0.工程 == .研磨 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
         }
+    }
+    
+    var is半田あり : Bool {
+        return self.略号.contains(.半田)
+    }
+    
+    var is溶接あり : Bool {
+        return self.略号.contains(.溶接)
+    }
+    
+    var 金額 : Int {
+        var value = self.合計金額
+        if value <= 0 {
+            value = self.単価1
+            let count = self.単価1
+            if count > 0 { value += count }
+        }
+        return value
     }
 }

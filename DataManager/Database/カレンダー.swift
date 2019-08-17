@@ -51,7 +51,7 @@ public extension Date {
 }
 
 struct 勤務時間型 {
-    static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(22, 00), 休憩時間: [
+    static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(19, 00), 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
