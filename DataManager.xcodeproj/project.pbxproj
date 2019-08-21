@@ -27,6 +27,14 @@
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */; };
+		14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985310230BCE91007734E0 /* 資源マスタ情報.swift */; };
+		14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985312230BCEA7007734E0 /* 供給資源情報.swift */; };
+		14985315230BCEB4007734E0 /* カレンダ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985314230BCEB4007734E0 /* カレンダ情報.swift */; };
+		14985317230BCEC2007734E0 /* 作業別工程情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985316230BCEC1007734E0 /* 作業別工程情報.swift */; };
+		14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985318230BCECD007734E0 /* 必要資源情報.swift */; };
+		1498531B230BCEE7007734E0 /* コンストレイン情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498531A230BCEE7007734E0 /* コンストレイン情報.swift */; };
+		1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498531C230BCEF6007734E0 /* 区分情報.swift */; };
+		14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985324230BCF1C007734E0 /* マイルストーン情報.swift */; };
 		149BCAFD2208216B004066DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFC2208216B004066DD /* String.swift */; };
 		149BCAFF22082BF2004066DD /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFE22082BF2004066DD /* Lock.swift */; };
 		149BCB0122082D87004066DD /* Test出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0022082D87004066DD /* Test出勤日.swift */; };
@@ -36,6 +44,8 @@
 		149BCB09220858FE004066DD /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB08220858FE004066DD /* 伝票種類.swift */; };
 		14BEE9E42240928F00B2750B /* 資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E32240928F00B2750B /* 資材.swift */; };
 		14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E52240A8B300B2750B /* Test資材.swift */; };
+		14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2167230CCDBE00CE4253 /* TestEtc.swift */; };
+		14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2169230D083F00CE4253 /* グループ階層.swift */; };
 		14BFA248222773E000D78CC5 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA247222773E000D78CC5 /* Downloader.swift */; };
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
@@ -78,6 +88,14 @@
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
 		149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書変更内容履歴.swift"; sourceTree = "<group>"; };
+		14985310230BCE91007734E0 /* 資源マスタ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源マスタ情報.swift"; sourceTree = "<group>"; };
+		14985312230BCEA7007734E0 /* 供給資源情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "供給資源情報.swift"; sourceTree = "<group>"; };
+		14985314230BCEB4007734E0 /* カレンダ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダ情報.swift"; sourceTree = "<group>"; };
+		14985316230BCEC1007734E0 /* 作業別工程情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業別工程情報.swift"; sourceTree = "<group>"; };
+		14985318230BCECD007734E0 /* 必要資源情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "必要資源情報.swift"; sourceTree = "<group>"; };
+		1498531A230BCEE7007734E0 /* コンストレイン情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "コンストレイン情報.swift"; sourceTree = "<group>"; };
+		1498531C230BCEF6007734E0 /* 区分情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "区分情報.swift"; sourceTree = "<group>"; };
+		14985324230BCF1C007734E0 /* マイルストーン情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "マイルストーン情報.swift"; sourceTree = "<group>"; };
 		149BCAFC2208216B004066DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		149BCAFE22082BF2004066DD /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		149BCB0022082D87004066DD /* Test出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test出勤日.swift"; sourceTree = "<group>"; };
@@ -87,6 +105,8 @@
 		149BCB08220858FE004066DD /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
 		14BEE9E32240928F00B2750B /* 資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材.swift"; sourceTree = "<group>"; };
 		14BEE9E52240A8B300B2750B /* Test資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材.swift"; sourceTree = "<group>"; };
+		14BF2167230CCDBE00CE4253 /* TestEtc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEtc.swift; sourceTree = "<group>"; };
+		14BF2169230D083F00CE4253 /* グループ階層.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "グループ階層.swift"; sourceTree = "<group>"; };
 		14BFA247222773E000D78CC5 /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
@@ -142,6 +162,15 @@
 			isa = PBXGroup;
 			children = (
 				14681F112212B3AE00C41D15 /* 工程図.swift */,
+				14985310230BCE91007734E0 /* 資源マスタ情報.swift */,
+				14985312230BCEA7007734E0 /* 供給資源情報.swift */,
+				14985314230BCEB4007734E0 /* カレンダ情報.swift */,
+				14985316230BCEC1007734E0 /* 作業別工程情報.swift */,
+				14985318230BCECD007734E0 /* 必要資源情報.swift */,
+				1498531A230BCEE7007734E0 /* コンストレイン情報.swift */,
+				1498531C230BCEF6007734E0 /* 区分情報.swift */,
+				14985324230BCF1C007734E0 /* マイルストーン情報.swift */,
+				14BF2169230D083F00CE4253 /* グループ階層.swift */,
 			);
 			path = "工程図";
 			sourceTree = "<group>";
@@ -188,6 +217,7 @@
 				1404C86D222CE8D900F3B025 /* Test進捗.swift */,
 				14BEE9E52240A8B300B2750B /* Test資材.swift */,
 				1436782822643B3A00335943 /* TestDate.swift */,
+				14BF2167230CCDBE00CE4253 /* TestEtc.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
@@ -343,22 +373,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				14552F6422099833000BDCB8 /* 作業内容.swift in Sources */,
+				14985317230BCEC2007734E0 /* 作業別工程情報.swift in Sources */,
 				14552F6822099D32000BDCB8 /* FileMakerRecord.swift in Sources */,
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
+				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
 				1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */,
+				1498531B230BCEE7007734E0 /* コンストレイン情報.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
+				1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */,
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
 				14BFA248222773E000D78CC5 /* Downloader.swift in Sources */,
+				14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */,
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
 				149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */,
+				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
 				14552F6622099B76000BDCB8 /* 指示書.swift in Sources */,
+				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,
 				1425D99D230778B700A2D6AB /* Month.swift in Sources */,
 				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
@@ -369,6 +406,8 @@
 				146508AC22FD4CF40095AD83 /* 発注.swift in Sources */,
 				14DA57192209B0C600831625 /* 進捗.swift in Sources */,
 				141203712201C3EA0054B56F /* Date.swift in Sources */,
+				14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */,
+				14985315230BCEB4007734E0 /* カレンダ情報.swift in Sources */,
 				141203732201C5890054B56F /* 出勤日.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
 			);
@@ -382,6 +421,7 @@
 				149BCB0122082D87004066DD /* Test出勤日.swift in Sources */,
 				14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */,
 				149BCB032208419E004066DD /* Test指示書.swift in Sources */,
+				14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */,
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,
 				1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */,
 				1436782922643B3A00335943 /* TestDate.swift in Sources */,

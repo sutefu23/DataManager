@@ -13,6 +13,13 @@ public struct Day : Hashable, Comparable {
     public let month : Int
     public let day : Int
     
+    public init() {
+        let date = Date()
+        self.year = date.yearNumber
+        self.month = date.monthNumber
+        self.day = date.dayNumber
+    }
+    
     public init(year:Int, month:Int, day:Int) {
         self.init(year, month, day)
     }

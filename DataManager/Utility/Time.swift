@@ -13,6 +13,12 @@ public struct Time : Hashable, Comparable {
     public let minute : Int
     public let second : Int
     
+    public init() {
+        self.hour = 0
+        self.minute = 0
+        self.second = 0
+    }
+    
     public init(hour:Int, minute:Int, second:Int = 0) {
         self.hour = hour
         self.minute = minute

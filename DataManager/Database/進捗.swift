@@ -47,6 +47,10 @@ public extension 進捗型 {
         return record.伝票種類(forKey: "伝票種類")
     }
     
+    var 社員番号 : Int? {
+        return record.integer(forKey: "社員番号")
+    }
+    
     var 伝票番号 : Int? {
         return record.integer(forKey: "伝票番号")
     }
@@ -85,8 +89,12 @@ public extension 進捗型 {
     }
 }
 
-public extension Array where Element == 進捗型 {
+public extension Sequence where Element == 進捗型 {
     func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool {
         return self.contains { $0.工程 == 工程 && $0.作業内容 == 作業内容}
+    }
+    
+    func findFirst(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
+        return self.first { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
     }
 }

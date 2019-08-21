@@ -24,15 +24,20 @@ public class 指示書型 {
         if div[0].count >= 4 {
             guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
             self.伝票番号 = num
+            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
+            self.比較用伝票番号 = high * 1_00_000 + low
         } else {
             guard let num = Int(div[1]), num >= 1 else { fatalError() }
             self.伝票番号 = num
+            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
+            self.比較用伝票番号 = high * 1_000_000 + low
         }
         guard let mark = record.string(forKey: "略号") else { fatalError() }
         self.略号 = make略号(mark)
     }
     
     public let 伝票番号 : Int
+    public let 比較用伝票番号 : Int
     public let 表示用伝票番号 : String
     public let 略号 : Set<略号型>
     
@@ -101,6 +106,8 @@ public class 指示書型 {
         guard let list : [FileMakerRecord] = record.portal(forKey: "資材発注テーブル") else { return [] }
         return list.compactMap { 発注型($0) }
     }()
+    
+    lazy var 登録日時 : Date = { record.date(dayKey: "登録日", timeKey: "登録時間")! }()
 }
 
 extension 指示書型 {
