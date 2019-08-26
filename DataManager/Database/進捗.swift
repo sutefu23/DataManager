@@ -74,6 +74,15 @@ public extension Array where Element == 進捗型 {
         }
         return state
     }
+    
+    func 作業内容(工程:[工程型], 日時:Date? = nil) -> 作業内容型? {
+        var state : 作業内容型? = nil
+        for progress in self where 工程.contains(progress.工程) {
+            if let date = 日時, progress.登録日時 > date { continue }
+            state = progress.作業内容
+        }
+        return state
+    }
 }
 
 public extension 進捗型 {
