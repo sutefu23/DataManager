@@ -51,6 +51,10 @@ public extension 進捗型 {
         return record.integer(forKey: "社員番号")
     }
     
+    var 作業者 : 社員型 {
+        return 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称)
+    }
+    
     var 伝票番号 : Int? {
         return record.integer(forKey: "伝票番号")
     }
@@ -86,14 +90,39 @@ public extension Array where Element == 進捗型 {
 }
 
 public extension 進捗型 {
-    static func find(検索期間 range:ClosedRange<Date>, 工程 state:工程型, 作業内容 type:作業内容型) -> [進捗型]? {
+    static func find(登録期間 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
         var query = [String:String]()
         query["登録日"] = makeQueryDayString(range)
-        query["工程コード"] = "\(state.code)"
-        query["進捗コード"] = "\(type.code)"
+        if let type = type {
+            query["伝票種類"] = type.fmString
+        }
+        if let state = state {
+            query["工程コード"] = "\(state.code)"
+        }
+        if let work = work {
+            query["進捗コード"] = "\(work.code)"
+        }
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_進捗", query: [query])
 //        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
+        return list?.compactMap { 進捗型($0) }
+    }
+    static func find(作業期間 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
+        var query = [String:String]()
+        query["受注日"] = "<=\(range.upperBound.day.fmString)"
+        query["出荷納期"] = ">=\(range.lowerBound.day.fmString)"
+        if let type = type {
+            query["伝票種類"] = type.fmString
+        }
+        if let state = state {
+            query["工程コード"] = "\(state.code)"
+        }
+        if let work = work {
+            query["進捗コード"] = "\(work.code)"
+        }
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_進捗", query: [query])
+        //        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
         return list?.compactMap { 進捗型($0) }
     }
 }

@@ -33,18 +33,24 @@ public extension Date {
         return cal.calcWorkTime(from: self, to: to)
     }
     
-    func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
+    func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Date {
+        let count = (count > 0) ? count : 1
         var day = self.day.nextDay
-        while cal.isHoliday(of: day) {
-            day = day.nextDay
+        for _ in 1...count {
+            while cal.isHoliday(of: day) {
+                day = day.nextDay
+            }
         }
         return Date(day)
     }
     
-    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard) -> Date {
+    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Date {
+        let count = (count > 0) ? count : 1
         var day = self.day.prevDay
-        while cal.isHoliday(of: day) {
-            day = day.prevDay
+        for _ in 1...count {
+            while cal.isHoliday(of: day) {
+                day = day.prevDay
+            }
         }
         return Date(day)
     }

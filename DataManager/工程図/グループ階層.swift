@@ -52,7 +52,7 @@ public func make工程別進捗リスト(_ orders:[指示書型]) -> [(工程図
     let group1 = 工程図グループ型(name: "営業", order: 1)
     let group2 = 工程図グループ型(name: "管理", order: 1)
     let group3 = 工程図グループ型(name: "原稿", order: 1)
-    
+
     var list : [(工程図グループ型, 工程図工程型)] = []
     for order in orders {
         let state1 = order.進捗一覧.make工程(name: order.表示用伝票番号) {
