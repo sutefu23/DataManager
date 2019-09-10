@@ -19,15 +19,23 @@ public class 工程図工程型 {
     public var 名称 : String
     public var 開始日時 : Date
     public var 終了日時 : Date
-    
+    public var 進捗度 : Int?
+    public var 行番号 : String?
+    public var 備考1 : String?
+
     public init(name:String, from:Date, to:Date) {
         self.名称 = name
         self.開始日時 = from
         self.終了日時 = to
         self.工程ID = makeID()
     }
+    
+    public func clone() -> 工程図工程型 {
+        let clone = 工程図工程型(name: self.名称, from: self.開始日時, to: self.終了日時)
+        return clone
+    }
 }
-public class 工程図グループ型 {
+public class 工程図グループ型 : Hashable {
     public let グループID : String
     public var 名称 : String
     public var order : Double
@@ -36,6 +44,16 @@ public class 工程図グループ型 {
         self.名称 = name
         self.グループID = makeID()
         self.order = order
+    }
+    
+    public static func ==(left:工程図グループ型, right:工程図グループ型) -> Bool {
+        return left.グループID == right.グループID && left.名称 == right.名称 && left.order == right.order
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.グループID)
+        hasher.combine(self.名称)
+        hasher.combine(self.order)
     }
 }
 

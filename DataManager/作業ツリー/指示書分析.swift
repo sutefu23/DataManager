@@ -98,7 +98,6 @@ public class 工程ライン型 {
         self.target = target
         self.processor = processor
     }
-    
 }
 
 protocol 工程分析器型 {
@@ -109,12 +108,6 @@ protocol 工程分析器型 {
 // MARK: - 管理
 class 管理分析器型 : 工程分析器型 {
     func process(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) throws -> (next:工程分析器型, target:工程ライン型.Target)? {
-        
-        
-        
-        
-        
-        
         return nil
     }
     func accept(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) -> 工程ライン型.State? {

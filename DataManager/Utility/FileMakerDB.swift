@@ -20,7 +20,11 @@ struct FileMakerSortItem : Encodable {
 
 let maxConnection = 3
 
-final class FileMakerDB {
+public final class FileMakerDB {
+    public static func flushSessions() {
+        FileMakerDB.pm_osakaname.closeAllSessions()
+    }
+    
     static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
     static let laser : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
     
@@ -40,6 +44,11 @@ final class FileMakerDB {
     private let lock = Lock()
     private let sem : DispatchSemaphore
 
+    func closeAllSessions() {
+        sessions.forEach { $0.logout() }
+        sessions.removeAll()
+    }
+    
     private func prepareSesion() -> FileMakerSession {
         sem.wait()
         lock.lock()

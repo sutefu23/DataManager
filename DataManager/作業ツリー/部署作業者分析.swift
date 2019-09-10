@@ -8,6 +8,22 @@
 
 import Foundation
 
+public struct GroupSet : Hashable {
+    var group1 : 工程図グループ型
+    var group2 : 工程図グループ型
+    var group3 : 工程図グループ型
+    
+    init(_ group1:工程図グループ型, _ group2:工程図グループ型, _ group3:工程図グループ型) {
+        self.group1 = group1
+        self.group2 = group2
+        self.group3 = group3
+    }
+    
+    public static func ==(left:GroupSet, right:GroupSet) -> Bool {
+        return left.group1 == right.group1 && left.group2 == right.group2 && left.group3 == right.group3
+    }
+}
+
 public struct 工程社員型 : Hashable, Comparable {
     public let 工程 : 工程型
     public let 社員 : 社員型
@@ -18,8 +34,23 @@ public struct 工程社員型 : Hashable, Comparable {
     }
 }
 
+class LineCounter {
+    var map : [GroupSet : Int] = [:]
+    func count(_ group1:工程図グループ型, _ group2:工程図グループ型, _ group3:工程図グループ型) -> Int {
+        let key = GroupSet(group1, group2, group3)
+        if var result = map[key] {
+            result += 1
+            map[key] = result
+            return result
+        }
+        map[key] = 0
+        return 0
+    }
+}
+
 public class 部署作業者分析型 {
-    public var lines : [(工程図グループ型, 工程図グループ型, 工程図グループ型, 工程図工程型)]
+    public var lines : [(GroupSet, 工程図工程型)]
+    public var connections : [コンストレイン情報型] = []
     var range : ClosedRange<Date>
     var type : 伝票種類型?
     
@@ -44,7 +75,6 @@ public class 部署作業者分析型 {
                 currentLines.append((work.工程社員, work))
             }
 
-            text += "\(order.表示用伝票番号)\t\(order.伝票種類)\t\(order.登録日時)\t\(order.受注日)\t\(order.出荷納期)\t\(order.進捗一覧.count)\n"
             let orderType = order.伝票種類
             if let type = type {
                 if type != orderType { continue }
@@ -60,14 +90,6 @@ public class 部署作業者分析型 {
             if let line = make入力工程(order) { append(line) }
             if let line = makeレーザー工程(order) { append(line) }
             lines.append(contentsOf: currentLines)
-
-            // 校正・保留の追加
-            for work in order.校正一覧 + order.保留一覧 {
-                if range.upperBound < work.開始日時 || work.完了日時 < range.lowerBound { break }
-                for (_, target) in currentLines where target.作業種類 == .通常 && target.contains(work) {
-                    
-                }
-            }
         }
         lines.sort { (line1, line2) -> Bool in
             if line1.0 != line2.0 { return line1.0 < line2.0 }
@@ -107,13 +129,52 @@ public class 部署作業者分析型 {
                 order += 1
             }
             let result = 工程図工程型(name: "\(line.1.伝票番号)", from: line.1.開始日時, to: line.1.完了日時)
-            self.lines.append((group1, group2, group3, result))
+            result.備考1 = "\(line.1.伝票番号)"
+            self.lines.append((GroupSet(group1, group2, group3), result))
         }
+        // 校正・保留の追加
+//        let lineCounter = LineCounter()
+        var newLines = [(GroupSet, 工程図工程型)]()
+        var newLines2 = [(GroupSet, 工程図工程型)]()
+        for order in orders {
+            workloop: for work in order.校正一覧 + order.保留一覧 {
+                if range.upperBound < work.開始日時 || work.完了日時 < range.lowerBound { break }
+                for (groupSet, result) in self.lines + newLines {
+                    let range = result.開始日時...result.終了日時
+                    if range.contains(work.開始日時) && range.contains(work.完了日時) {
+                        let head = result
+                        let tail = head.clone()
+                        head.終了日時 = work.開始日時
+                        tail.開始日時 = work.完了日時
+                        let name = (order.担当者2 ?? order.担当者1 ?? order.担当者3)?.社員名称 ?? ""
+                        let middle = 工程図工程型(name: work.作業種類.string + (name.isEmpty ? "" : ":" + name) , from: work.開始日時.addingTimeInterval(60), to: work.完了日時.addingTimeInterval(-60))
+                        middle.進捗度 = 100
+                        middle.備考1 = "\(order.伝票番号)"
+                        if order.伝票番号 == 190810981 {
+                            NSLog("")
+                        }
+                        let connect1 = コンストレイン情報型(先行工程ID: head.工程ID, 後続工程ID: middle.工程ID)
+                        let connect2 = コンストレイン情報型(先行工程ID: middle.工程ID, 後続工程ID: tail.工程ID)
+                        newLines2.append((groupSet, middle))
+                        newLines.append((groupSet, tail))
+                        self.connections.append(contentsOf: [connect1, connect2])
+                        break
+                    }
+                    
+                }
+            }
+        }
+        self.lines.append(contentsOf: newLines2)
+        self.lines.append(contentsOf: newLines)
+
     }
     
     public func make作業別工程情報() -> [作業別工程情報型] {
         var list = [作業別工程情報型]()
-        for (group, group2, group3, state) in lines {
+        for (groupSet, state) in lines {
+            let group = groupSet.group1
+            let group2 = groupSet.group2
+            let group3 = groupSet.group3
             var result = 作業別工程情報型(第1階層グループ名称: group.名称)
             result.第1階層グループID = group.グループID
             result.第2階層グループ名称 = group2.名称
@@ -124,6 +185,8 @@ public class 部署作業者分析型 {
             result.工程名称 = state.名称
             result.工程開始日 = state.開始日時
             result.工程終了日 = state.終了日時
+            result.進捗度 = state.進捗度
+            result.備考1 = state.備考1
             list.append(result)
         }
         return list
@@ -133,7 +196,7 @@ public class 部署作業者分析型 {
 
 func make営業工程(_ order:指示書型) -> 作業型? {
     guard let progress = order.進捗一覧.findFirst(工程: .管理, 作業内容: .受取) else { return nil }
-    guard let person = order.担当者2 ?? order.担当者1 else { return nil }
+    guard let person = order.担当者2 ?? order.担当者1 ?? order.担当者3 else { return nil }
     return 作業型(progress, state: .営業, from: order.登録日時, worker: person)
 }
 

@@ -200,6 +200,21 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    
+    static func find(進捗入力日 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程:工程型? = nil, 作業内容:作業内容型? = nil) -> [指示書型]? {
+        guard let list = 進捗型.find(登録期間: range, 伝票種類: type, 工程: 工程, 作業内容: 作業内容) else { return nil }
+        var numbers = Set<Int>()
+        for progress in list {
+            if let num = progress.伝票番号 { numbers.insert(num) }
+        }
+        var result : [指示書型] = []
+        for num in numbers {
+            if let order = 指示書型.find(伝票番号: num)?.first {
+                result.append(order)
+            }
+        }
+        return result
+    }
 }
 
 extension 指示書型 {

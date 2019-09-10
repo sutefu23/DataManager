@@ -12,6 +12,14 @@ public enum 作業種類型 {
     case 通常
     case 保留
     case 校正
+    
+    var string : String {
+        switch self {
+        case .通常: return "通常"
+        case .保留: return "保留"
+        case .校正: return "校正"
+        }
+    }
 }
 
 public class 作業型 {
@@ -21,6 +29,8 @@ public class 作業型 {
     public var 完了日時 : Date
     public var 作業者 : 社員型
     public var 伝票番号 : Int
+    
+    public var 進捗度 : Int?
 
     init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date? = nil, to:Date? = nil, worker: 社員型? = nil, 伝票番号 number:Int? = nil) {
         self.作業種類 = type

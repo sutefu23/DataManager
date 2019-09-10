@@ -38,22 +38,26 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     var activeToken : String? {
         guard let ticket = self.ticket else { return nil }
         let now = Date()
-        return now < ticket.expire ? ticket.token : nil
+        if now < ticket.expire {
+            return ticket.token
+        }
+        self.logout(with: ticket.token)
+        return nil
     }
     
     var isConnect : Bool {
         return self.activeToken != nil
     }
     
-    func prepareToken() -> String? {
-        if let token = self.activeToken{ return token }
+    func prepareToken(reuse:Bool = true) -> String? {
+        if reuse == true, let token = self.activeToken{ return token }
         
         var result : String? = nil
         let url = self.dbURL.appendingPathComponent("sessions")
         let auth = "\(user):\(password)".data(using: .utf8)!.base64EncodedString()
         var request = URLRequest(url: url)
         var errorCode : String? = nil
-        let expire : Date = Date(timeIntervalSinceNow: 15*90-30) // 基本は15分で余裕を見て30秒少なくしている
+        let expire : Date = Date(timeIntervalSinceNow: 15*90-60) // 基本は15分で余裕を見て60秒少なくしている
         request.httpMethod = "POST"
         request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -81,10 +85,8 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return self.activeToken
     }
     
-    @discardableResult func logout() -> Bool {
-        guard let token = self.activeToken else { return false }
+    private func logout(with token: String) {
         let url = self.dbURL.appendingPathComponent("sessions").appendingPathComponent(token)
-//        var errorCode : String? = nil
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -93,6 +95,11 @@ class FileMakerSession : NSObject, URLSessionDelegate {
             }.resume()
         sem.wait()
         self.ticket = nil
+    }
+    
+    @discardableResult func logout() -> Bool {
+        guard let token = self.activeToken else { return false }
+        self.logout(with: token)
         return true
     }
     
@@ -266,4 +273,16 @@ func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {
         return "\(from.day.fmString)...\(to.day.fmString)"
     }
 
+}
+
+func makeQueryDayString(_ range:ClosedRange<Day>?) -> String? {
+    guard let range = range else { return nil }
+    let from = range.lowerBound
+    let to = range.upperBound
+    if from == to {
+        return "\(from.fmString)"
+    } else {
+        return "\(from.fmString)...\(to.fmString)"
+    }
+    
 }
