@@ -61,6 +61,30 @@ public class 部署作業者分析型 {
         self.prepareLines()
     }
     
+    func setupLines() {
+        var groups = Dictionary(grouping: lines) { $0.0 }
+        for line in lines {
+            func firstDate(_ val:[(GroupSet, 工程図工程型)]) -> Date {
+                var minDate : Date = val.first!.1.開始日時
+                for v in val {
+                    let date = v.1.開始日時
+                    if date < minDate { minDate = date }
+                }
+                return minDate
+            }
+            guard let list = groups[line.0] else { continue }
+            let numset = Dictionary(grouping: list) { $0.1.備考1! }.sorted {
+                let date1 = firstDate($0.value)
+                let date2 = firstDate($1.value)
+                if date1 != date2 { return date1 < date2 }
+                return $0.key < $1.key
+            }
+            for (index, line) in numset.enumerated() {
+                line.value.forEach { $0.1.行番号 = "\(index+1)" }
+            }
+        }
+    }
+    
     func prepareLines() {
         var lines : [(工程社員型, 作業型)] = []
         let fromDay = range.lowerBound.前出勤日()
@@ -139,7 +163,8 @@ public class 部署作業者分析型 {
         for order in orders {
             workloop: for work in order.校正一覧 + order.保留一覧 {
                 if range.upperBound < work.開始日時 || work.完了日時 < range.lowerBound { break }
-                for (groupSet, result) in self.lines + newLines {
+                let orderString = "\(order.伝票番号)"
+                for (groupSet, result) in self.lines + newLines where result.備考1 == orderString {
                     let range = result.開始日時...result.終了日時
                     if range.contains(work.開始日時) && range.contains(work.完了日時) {
                         let head = result
@@ -149,10 +174,7 @@ public class 部署作業者分析型 {
                         let name = (order.担当者2 ?? order.担当者1 ?? order.担当者3)?.社員名称 ?? ""
                         let middle = 工程図工程型(name: work.作業種類.string + (name.isEmpty ? "" : ":" + name) , from: work.開始日時.addingTimeInterval(60), to: work.完了日時.addingTimeInterval(-60))
                         middle.進捗度 = 100
-                        middle.備考1 = "\(order.伝票番号)"
-                        if order.伝票番号 == 190810981 {
-                            NSLog("")
-                        }
+                        middle.備考1 = orderString
                         let connect1 = コンストレイン情報型(先行工程ID: head.工程ID, 後続工程ID: middle.工程ID)
                         let connect2 = コンストレイン情報型(先行工程ID: middle.工程ID, 後続工程ID: tail.工程ID)
                         newLines2.append((groupSet, middle))
@@ -166,7 +188,8 @@ public class 部署作業者分析型 {
         }
         self.lines.append(contentsOf: newLines2)
         self.lines.append(contentsOf: newLines)
-
+        
+        setupLines()
     }
     
     public func make作業別工程情報() -> [作業別工程情報型] {
@@ -187,45 +210,46 @@ public class 部署作業者分析型 {
             result.工程終了日 = state.終了日時
             result.進捗度 = state.進捗度
             result.備考1 = state.備考1
+            result.行番号 = state.行番号
             list.append(result)
         }
         return list
     }
-
-}
-
-func make営業工程(_ order:指示書型) -> 作業型? {
-    guard let progress = order.進捗一覧.findFirst(工程: .管理, 作業内容: .受取) else { return nil }
-    guard let person = order.担当者2 ?? order.担当者1 ?? order.担当者3 else { return nil }
-    return 作業型(progress, state: .営業, from: order.登録日時, worker: person)
-}
-
-func make管理工程(_ order:指示書型) -> 作業型? {
-    guard let from = order.進捗一覧.findFirst(工程: .管理, 作業内容: .受取) else { return nil }
-    guard let to = order.進捗一覧.findFirst(工程: .管理, 作業内容: .完了) else { return nil }
-    return 作業型(to, from: from.登録日時)
-}
-
-func make原稿工程(_ order:指示書型) -> 作業型? {
-    guard let from = order.進捗一覧.findFirst(工程: .原稿, 作業内容: .開始) else { return nil }
-    guard let to = order.進捗一覧.findFirst(工程: .原稿, 作業内容: .完了) else { return nil }
-    return 作業型(to, from: from.登録日時)
-}
-
-func make入力工程(_ order:指示書型) -> 作業型? {
-    guard let from = order.進捗一覧.findFirst(工程: .入力, 作業内容: .開始) else { return nil }
-    guard let to = order.進捗一覧.findFirst(工程: .入力, 作業内容: .完了) else { return nil }
-    return 作業型(to, from: from.登録日時)
-}
-
-func makeレーザー工程(_ order:指示書型) -> 作業型? {
-    guard let from = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .開始) else { return nil }
-    guard let to = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .完了) else { return nil }
-    return 作業型(to, from: from.登録日時, worker: from.作業者)
-}
-
-func make照合工程(_ order:指示書型) -> 作業型? {
-    guard let from = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .完了) else { return nil }
-    guard let to = order.進捗一覧.findFirst(工程: .照合検査, 作業内容: .完了) else { return nil }
-    return 作業型(to, from: from.登録日時)
+    
+    func make営業工程(_ order:指示書型) -> 作業型? {
+        guard let progress = order.進捗一覧.findFirst(工程: .管理, 作業内容: .受取) else { return nil }
+        guard let person = order.担当者2 ?? order.担当者1 ?? order.担当者3 else { return nil }
+        return 作業型(progress, state: .営業, from: order.登録日時, worker: person)
+    }
+    
+    func make管理工程(_ order:指示書型) -> 作業型? {
+        guard let from = order.進捗一覧.findFirst(工程: .管理, 作業内容: .受取) else { return nil }
+        guard let to = order.進捗一覧.findFirst(工程: .管理, 作業内容: .完了) else { return nil }
+        return 作業型(to, from: from.登録日時)
+    }
+    
+    func make原稿工程(_ order:指示書型) -> 作業型? {
+        guard let from = order.進捗一覧.findFirst(工程: .原稿, 作業内容: .開始) else { return nil }
+        guard let to = order.進捗一覧.findFirst(工程: .原稿, 作業内容: .完了) else { return nil }
+        return 作業型(to, from: from.登録日時)
+    }
+    
+    func make入力工程(_ order:指示書型) -> 作業型? {
+        guard let from = order.進捗一覧.findFirst(工程: .入力, 作業内容: .開始) else { return nil }
+        guard let to = order.進捗一覧.findFirst(工程: .入力, 作業内容: .完了) else { return nil }
+        return 作業型(to, from: from.登録日時)
+    }
+    
+    func makeレーザー工程(_ order:指示書型) -> 作業型? {
+        guard let from = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .開始) else { return nil }
+        guard let to = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .完了) else { return nil }
+        return 作業型(to, from: from.登録日時, worker: from.作業者)
+    }
+    
+    func make照合工程(_ order:指示書型) -> 作業型? {
+        guard let from = order.進捗一覧.findFirst(工程: .レーザー, 作業内容: .完了) else { return nil }
+        guard let to = order.進捗一覧.findFirst(工程: .照合検査, 作業内容: .完了) else { return nil }
+        return 作業型(to, from: from.登録日時)
+    }
+    
 }

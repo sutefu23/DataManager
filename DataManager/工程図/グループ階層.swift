@@ -19,6 +19,7 @@ public class 工程図工程型 {
     public var 名称 : String
     public var 開始日時 : Date
     public var 終了日時 : Date
+    
     public var 進捗度 : Int?
     public var 行番号 : String?
     public var 備考1 : String?
@@ -32,6 +33,7 @@ public class 工程図工程型 {
     
     public func clone() -> 工程図工程型 {
         let clone = 工程図工程型(name: self.名称, from: self.開始日時, to: self.終了日時)
+        clone.備考1 = self.備考1
         return clone
     }
 }
