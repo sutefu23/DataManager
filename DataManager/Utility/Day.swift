@@ -30,7 +30,7 @@ public struct Day : Hashable, Comparable {
     }
     
     init?(fmJSONDay: String) {
-        var parts = fmJSONDay.split(separator: "/")
+        let parts = fmJSONDay.split(separator: "/")
         guard parts.count == 3 else { return nil }
         guard let day0 = Int(parts[0]) else { return nil }
         guard let day1 = Int(parts[1]) else { return nil }
