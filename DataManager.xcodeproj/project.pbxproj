@@ -53,6 +53,7 @@
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
+		8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2CDF892340D22A00E7F147 /* 伝票番号.swift */; };
 		8E392EDA21FD61D900CEDF18 /* DataManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E392ED021FD61D900CEDF18 /* DataManager.framework */; };
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,6 +117,7 @@
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
+		8E2CDF892340D22A00E7F147 /* 伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票番号.swift"; sourceTree = "<group>"; };
 		8E392ED021FD61D900CEDF18 /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E392ED321FD61D900CEDF18 /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		8E392ED421FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				14552F6322099833000BDCB8 /* 作業内容.swift */,
 				14DA57142209A81E00831625 /* 工程.swift */,
 				1431E186220C2BC900E68ED7 /* 略号.swift */,
+				8E2CDF892340D22A00E7F147 /* 伝票番号.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				14552F6822099D32000BDCB8 /* FileMakerRecord.swift in Sources */,
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
+				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,

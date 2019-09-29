@@ -28,7 +28,7 @@ let stateMap : [String : 工程型] = {
     return map
 }()
 
-public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, Hashable {
+public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, Hashable, Codable {
     case 営業 = 10
     case 校正 = 20
     case 管理 = 30

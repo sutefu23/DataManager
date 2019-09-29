@@ -17,7 +17,7 @@ let statemap : [String : 作業内容型] = {
     return map
 }()
 
-public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Comparable {
+public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Comparable, Codable {
     case 受取 = 0
     case 開始 = 1
     case 仕掛 = 2

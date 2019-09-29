@@ -21,7 +21,7 @@ private func calc社員番号<S: StringProtocol>(_ code:S) -> Int? {
     return num
 }
 
-public struct 社員型 : Hashable {
+public struct 社員型 : Hashable, Codable {
     
     public let 社員番号 : Int
     public let 社員名称 : String
