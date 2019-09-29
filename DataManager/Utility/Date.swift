@@ -95,7 +95,7 @@ extension Date {
     }
     
     // FileMakerの日付
-    public init?(fmDate: String) {
+    public init?<S: StringProtocol>(fmDate: S) {
         guard let day = Day(fmDate: fmDate) else { return nil }
         self = Date(day)
     }

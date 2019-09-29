@@ -23,7 +23,7 @@ public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Compar
     case 仕掛 = 2
     case 完了 = 3
     
-    public init?(_ code:String) {
+    public init?<S : StringProtocol>(_ code:S) {
         guard let state = statemap[code.uppercased()] else { return nil }
         self = state
     }

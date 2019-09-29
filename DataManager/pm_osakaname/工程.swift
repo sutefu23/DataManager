@@ -74,7 +74,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     
     var number : Int { return self.rawValue }
     
-    public init?(_ code:String) {
+    public init?<S : StringProtocol>(_ code:S) {
         guard let state = stateMap[code.uppercased()] else {
             return nil
         }

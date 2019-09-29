@@ -49,7 +49,7 @@ public struct Day : Hashable, Comparable {
     }
     
     // FileMakerの日付
-    init?(fmDate: String) {
+    init?<S : StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")
         if digs.count != 3 {

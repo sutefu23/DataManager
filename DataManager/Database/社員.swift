@@ -10,7 +10,7 @@ import Foundation
 
 public var 全社員一覧 = [社員型]()
 
-private func calc社員番号(_ code:String) -> Int? {
+private func calc社員番号<S: StringProtocol>(_ code:S) -> Int? {
     var code = code.uppercased()
     guard let firstCode = code.first else { return nil }
     if firstCode.isNumber == false {
@@ -36,10 +36,10 @@ public struct 社員型 : Hashable {
         self.社員名称 = 社員名称
     }
     
-    public init?(社員コード:String) {
+    public init?<S: StringProtocol>(社員コード:S) {
         guard let num = calc社員番号(社員コード) else { return nil }
         self.社員番号 = num
-        self.社員名称 = 社員コード
+        self.社員名称 = String(社員コード)
     }
     
     public static func ==(left:社員型, right:社員型) -> Bool {
