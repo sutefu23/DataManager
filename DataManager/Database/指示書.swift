@@ -290,18 +290,30 @@ public extension 指示書型 {
         var list = [作業型]()
         var from : Date?
         for change in self.変更一覧 {
-            switch change.内容 {
-            case "保留開始":
+            switch change.種類 {
+            case .保留開始:
                 from = change.日時
-            case "保留解除":
-                guard let from  = from else { break }
-                let to = change.日時
-                if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
-                    list.append(work)
-                }
-            default:
-                break
+            case .保留解除:
+                    guard let from  = from else { break }
+                    let to = change.日時
+                    if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
+                        list.append(work)
+                    }
+                default:
+                    break
             }
+//            switch change.内容 {
+//            case "保留開始":
+//                from = change.日時
+//            case "保留解除":
+//                guard let from  = from else { break }
+//                let to = change.日時
+//                if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
+//                    list.append(work)
+//                }
+//            default:
+//                break
+//            }
         }
         return list
     }

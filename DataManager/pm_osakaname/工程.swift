@@ -65,6 +65,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     case 拭き取り = 220
     case 付属品準備 = 240
     case 組立検品 = 260
+    case 品質管理 = 261
     case 発送 = 270
     case 経理 = 280
     
@@ -119,6 +120,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .拭き取り : return "P022"
         case .付属品準備 : return "P024"
         case .組立検品 : return "P026"
+        case .品質管理 : return "P026B"
         case .発送 : return "P027"
         case .経理 : return "P028"
         }
@@ -160,7 +162,8 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .ルーター: return "ルーター"
         case .拭き取り: return "拭き取り"
         case .付属品準備: return "付属品準備"
-        case .組立検品: return "組立・検品"
+        case .組立検品: return "組立"
+        case .品質管理: return "品質管理"
         case .レーザー溶接: return "レーザー溶接"
         case .タップ: return "タップ(ルーター)"
         case .裏加工: return "裏加工"

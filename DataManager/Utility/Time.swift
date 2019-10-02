@@ -31,6 +31,10 @@ public struct Time : Hashable, Comparable {
         self.second = second
     }
 
+    public init?<S:StringProtocol>(fmTime:S) {
+        self.init(fmJSONTime:fmTime)
+    }
+    
     init?<T>(fmJSONTime:T?) where T : StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
