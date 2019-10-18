@@ -17,6 +17,7 @@ struct FileMakerPortal {
         self.limit = limit
     }
 }
+private let expireMin: Double = 14 // 基本は15分で余裕を見て60秒少なくしている
 
 class FileMakerSession : NSObject, URLSessionDelegate {
     let dbURL : URL
@@ -57,7 +58,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         let auth = "\(user):\(password)".data(using: .utf8)!.base64EncodedString()
         var request = URLRequest(url: url)
         var errorCode : String? = nil
-        let expire : Date = Date(timeIntervalSinceNow: 15*90-60) // 基本は15分で余裕を見て60秒少なくしている
+        let expire : Date = Date(timeIntervalSinceNow: expireMin * 60)
         request.httpMethod = "POST"
         request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

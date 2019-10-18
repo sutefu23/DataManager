@@ -52,7 +52,11 @@ class FileMakerRecord {
     }
     
     func string(forKey key:String) -> String? {
-        return self[key] as? String
+        guard let object = self[key] else { return nil }
+        if let str = object as? String { return str }
+        if let value = object as? Int { return "\(value)" }
+        return nil
+//        return self[key] as? String
     }
     
     func integer(forKey key:String) -> Int? {

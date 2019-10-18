@@ -19,25 +19,35 @@ public class 指示書型 {
         self.record = record
         guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { fatalError() }
         self.表示用伝票番号 = numstr
-        let div = numstr.split(separator: "-")
-        if div.count != 2 { return nil }
-        if div[0].count >= 4 {
-            guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
+        if let num = record.integer(forKey: "伝票番号"), num > 0 {
             self.伝票番号 = num
-            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
-            self.比較用伝票番号 = high * 1_00_000 + low
         } else {
-            guard let num = Int(div[1]), num >= 1 else { fatalError() }
-            self.伝票番号 = num
-            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
-            self.比較用伝票番号 = high * 1_000_000 + low
+            let div = numstr.split(separator: "-")
+            if div.count != 2 { return nil }
+            if div[0].count >= 4 {
+                guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
+                self.伝票番号 = num
+            } else {
+                guard let num = Int(div[1]), num >= 1 else { fatalError() }
+                self.伝票番号 = num
+            }
         }
         guard let mark = record.string(forKey: "略号") else { fatalError() }
         self.略号 = make略号(mark)
     }
     
-    public let 伝票番号 : Int
-    public let 比較用伝票番号 : Int
+    public var 伝票番号 : Int
+    public lazy var 比較用伝票番号 : Int = {
+        let div = self.表示用伝票番号.split(separator: "-")
+        if div.count != 2 { return -1 }
+        if div[0].count >= 4 {
+            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
+            return high * 1_00_000 + low
+        } else {
+            guard let high = Int(div[0]), let low = Int(div[1]) else { fatalError() }
+            return high * 1_000_000 + low
+        }
+    }()
     public let 表示用伝票番号 : String
     public let 略号 : Set<略号型>
     
@@ -76,6 +86,15 @@ public class 指示書型 {
         if let state = record.経理状態(forKey: "経理状態") { return state }
         return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
     }
+    public var ボルト等1 : String { return record.string(forKey: "ボルト等1") ?? "" }
+    public var ボルト等2 :  String { return record.string(forKey: "ボルト等2") ?? "" }
+    public var ボルト等3 : String { return record.string(forKey: "ボルト等3") ?? "" }
+    public var ボルト等4 : String { return record.string(forKey: "ボルト等4") ?? "" }
+
+    public var ボルト本数1 : String { return record.string(forKey: "ボルト本数1") ?? "" }
+    public var ボルト本数2 : String { return record.string(forKey: "ボルト本数2") ?? "" }
+    public var ボルト本数3 : String { return record.string(forKey: "ボルト本数3") ?? "" }
+    public var ボルト本数4 : String { return record.string(forKey: "ボルト本数4") ?? "" }
     
     public var 合計金額 : Int { return record.integer(forKey: "合計金額") ?? 0}
     
@@ -215,10 +234,30 @@ public extension 指示書型 {
         }
         return result
     }
+    
+    static func findActive(伝票種類:伝票種類型? = nil) -> [指示書型]? {
+        var query = [String:String]()
+        let today = Date()
+        query["出荷納期"] = ">=\(today.day.fmString)"
+        query["伝票種類"] = 伝票種類?.fmString
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+        return list?.compactMap {
+            guard let order = 指示書型($0) else { return nil }
+            switch order.伝票状態 {
+            case .キャンセル, .発送済:
+                return nil
+            case .未製作, .製作中:
+                break
+            }
+            if order.承認状態 == "未承認" { return nil }
+            return order
+        }
+    }
 }
 
 extension 指示書型 {
-#if os(macOS)
+    #if os(macOS)
     public var 図 : NSImage? {
         if let image = self.imageCache as? NSImage { return image }
         guard let url = self.図URL else { return nil }
@@ -228,9 +267,20 @@ extension 指示書型 {
         self.imageCache = image
         return image
     }
-#else
-#endif
+    #elseif os(iOS)
+    public var 図 : UIImage? {
+        if let image = self.imageCache as? UIImage { return image }
+        guard let url = self.図URL else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        guard let data = db.downloadObject(url: url) else { return nil }
+        let image = UIImage(data: data)
+        self.imageCache = image
+        return image
+    }
+    #else
+    #endif
 }
+
 let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 public extension 指示書型 {
     var is外注塗装あり : Bool {
@@ -302,18 +352,6 @@ public extension 指示書型 {
                 default:
                     break
             }
-//            switch change.内容 {
-//            case "保留開始":
-//                from = change.日時
-//            case "保留解除":
-//                guard let from  = from else { break }
-//                let to = change.日時
-//                if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
-//                    list.append(work)
-//                }
-//            default:
-//                break
-//            }
         }
         return list
     }
@@ -336,5 +374,24 @@ public extension 指示書型 {
             }
         }
         return list
+    }
+    
+    var 半田溶接振り分け : String {
+        if !is溶接あり && !is半田あり { return "" }
+        let str = self.上段中央 + self.下段中央
+        if str.contains("半田") || str.contains("溶接") {
+            return str
+        }
+        
+        if is半田あり {
+            if is溶接あり {
+                return "半田 溶接"
+            } else {
+                return "半田"
+            }
+        } else {
+            assert(is溶接あり)
+            return "溶接"
+        }
     }
 }
