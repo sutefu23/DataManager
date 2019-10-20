@@ -40,4 +40,17 @@ public struct 伝票番号型 : Hashable, Comparable {
     public static func <(left:伝票番号型, right:伝票番号型) -> Bool {
         return left.number < right.number
     }
+
+    // MARK: - パーツ
+    public var highNumber : Int {
+        return number > 9999_9999 ? number / 1000_00 : number / 100_00
+    }
+
+    public var logNumber : Int {
+        return number > 9999_9999 ? number % 1000_00 : number % 100_00
+    }
+    
+    public var year : Int { 2000 + highNumber / 100 }
+    public var month : Int { highNumber % 100 }
+    
 }
