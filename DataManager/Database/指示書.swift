@@ -17,26 +17,24 @@ public class 指示書型 {
     
     init?(_ record:FileMakerRecord) {
         self.record = record
-        guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { fatalError() }
-        self.表示用伝票番号 = numstr
-        if let num = record.integer(forKey: "伝票番号"), num > 0 {
-            self.伝票番号 = num
-        } else {
-            let div = numstr.split(separator: "-")
-            if div.count != 2 { return nil }
-            if div[0].count >= 4 {
-                guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
-                self.伝票番号 = num
-            } else {
-                guard let num = Int(div[1]), num >= 1 else { fatalError() }
-                self.伝票番号 = num
-            }
-        }
-        guard let mark = record.string(forKey: "略号") else { fatalError() }
-        self.略号 = make略号(mark)
+//        guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { fatalError() }
+//        self.表示用伝票番号 = numstr
+//        if let num = record.integer(forKey: "伝票番号"), num > 0 {
+//            self.伝票番号 = num
+//        } else {
+//            let div = numstr.split(separator: "-")
+//            if div.count != 2 { return nil }
+//            if div[0].count >= 4 {
+//                guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
+//                self.伝票番号 = num
+//            } else {
+//                guard let num = Int(div[1]), num >= 1 else { fatalError() }
+//                self.伝票番号 = num
+//            }
+//        }
     }
     
-    public var 伝票番号 : Int
+    public lazy var 伝票番号 : Int = { record.integer(forKey: "伝票番号")! }()
     public lazy var 比較用伝票番号 : Int = {
         let div = self.表示用伝票番号.split(separator: "-")
         if div.count != 2 { return -1 }
@@ -48,58 +46,75 @@ public class 指示書型 {
             return high * 1_000_000 + low
         }
     }()
-    public let 表示用伝票番号 : String
-    public let 略号 : Set<略号型>
+    public lazy var 表示用伝票番号 : String = { record.string(forKey: "表示用伝票番号")! }()
+    public lazy var 略号 : Set<略号型> = { make略号(record.string(forKey: "略号")!) }()
     
-    public var 受注日 : Date { return record.date(forKey: "受注日")! }
-    public var 伝票種類 : 伝票種類型 { return record.伝票種類(forKey: "伝票種類")! }
-    public var 伝票状態 : 伝票状態型 { return record.伝票状態(forKey: "伝票状態")! }
-    public var 工程状態 : 工程状態型 { return record.工程状態(forKey: "工程状態")! }
-    public var 承認状態 : String { return record.string(forKey: "承認状態")! }
-    public var 製作納期 : Date { return record.date(forKey: "製作納期")! }
-    public var 出荷納期 : Date { return record.date(forKey: "出荷納期")! }
+    public lazy var 受注日 : Date = { record.date(forKey: "受注日")! }()
+    public lazy var 伝票種類 : 伝票種類型  = { record.伝票種類(forKey: "伝票種類")! }()
+    public lazy var 伝票状態 : 伝票状態型 = { record.伝票状態(forKey: "伝票状態")! }()
+    public lazy var 工程状態 : 工程状態型 = { record.工程状態(forKey: "工程状態")! }()
+    public lazy var 承認状態 : 承認状態型 = { record.承認状態(forKey: "承認状態")! }()
+    public lazy var 製作納期 : Date = { record.date(forKey: "製作納期")! }()
+    public lazy var 出荷納期 : Date = { record.date(forKey: "出荷納期")! }()
     
-    public var 品名 : String { return record.string(forKey: "品名")! }
-    public var 仕様 : String { return record.string(forKey: "仕様")! }
-    public var 社名 : String { return record.string(forKey: "社名")! }
-    public var 文字数 : String { return record.string(forKey: "文字数")! }
-    public var セット数 : String { return record.string(forKey: "セット数")! }
-    public var 備考 : String { return record.string(forKey: "備考")! }
-    public var 管理用メモ : String { return record.string(forKey: "管理用メモ")! }
+    public var 品名 : String { record.string(forKey: "品名")! }
+    public var 仕様 : String { record.string(forKey: "仕様")! }
+    public var 社名 : String { record.string(forKey: "社名")! }
+    public var 文字数 : String { record.string(forKey: "文字数")! }
+    public var セット数 : String { record.string(forKey: "セット数")! }
+    public var 備考 : String { record.string(forKey: "備考")! }
+    public var 管理用メモ : String { record.string(forKey: "管理用メモ")! }
 
-    public var 材質1 : String { return record.string(forKey: "材質1")! }
-    public var 材質2 : String { return record.string(forKey: "材質2")! }
-    public var 表面仕上1 : String { return record.string(forKey: "表面仕上1")! }
-    public var 表面仕上2 : String { return record.string(forKey: "表面仕上2")! }
+    public var 材質1 : String { record.string(forKey: "材質1")! }
+    public var 材質2 : String { record.string(forKey: "材質2")! }
+    public var 表面仕上1 : String { record.string(forKey: "表面仕上1")! }
+    public var 表面仕上2 : String { record.string(forKey: "表面仕上2")! }
     
-    public var 上段左 : String { return record.string(forKey: "上段左")! }
-    public var 上段中央 : String { return record.string(forKey: "上段中央")! }
-    public var 上段右 : String { return record.string(forKey: "上段右")! }
-    public var 下段左 : String { return record.string(forKey: "下段左")! }
-    public var 下段中央 : String { return record.string(forKey: "下段中央")! }
-    public var 下段右 : String { return record.string(forKey: "下段右")! }
+    public var 上段左 : String { record.string(forKey: "上段左")! }
+    public var 上段中央 : String { record.string(forKey: "上段中央")! }
+    public var 上段右 : String { record.string(forKey: "上段右")! }
+    public var 下段左 : String { record.string(forKey: "下段左")! }
+    public var 下段中央 : String { record.string(forKey: "下段中央")! }
+    public var 下段右 : String { record.string(forKey: "下段右")! }
 
-    public var 単価1 : Int { return record.integer(forKey: "単価1") ?? 0 }
-    public var 数量1 : Int { return record.integer(forKey: "数量1") ?? 0 }
-    public var 伝票種別 : String { return record.string(forKey: "伝票種別")! }
+    public var 単価1 : Int { record.integer(forKey: "単価1") ?? 0 }
+    public var 数量1 : Int { record.integer(forKey: "数量1") ?? 0 }
+    public var 伝票種別 : String { record.string(forKey: "伝票種別")! }
     public var 経理状態 : 経理状態型 {
         if let state = record.経理状態(forKey: "経理状態") { return state }
         return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
     }
-    public var ボルト等1 : String { return record.string(forKey: "ボルト等1") ?? "" }
-    public var ボルト等2 :  String { return record.string(forKey: "ボルト等2") ?? "" }
-    public var ボルト等3 : String { return record.string(forKey: "ボルト等3") ?? "" }
-    public var ボルト等4 : String { return record.string(forKey: "ボルト等4") ?? "" }
+    public var ボルト等1 : String { record.string(forKey: "ボルト等1") ?? "" }
+    public var ボルト等2 :  String { record.string(forKey: "ボルト等2") ?? "" }
+    public var ボルト等3 : String { record.string(forKey: "ボルト等3") ?? "" }
+    public var ボルト等4 : String { record.string(forKey: "ボルト等4") ?? "" }
 
-    public var ボルト本数1 : String { return record.string(forKey: "ボルト本数1") ?? "" }
-    public var ボルト本数2 : String { return record.string(forKey: "ボルト本数2") ?? "" }
-    public var ボルト本数3 : String { return record.string(forKey: "ボルト本数3") ?? "" }
-    public var ボルト本数4 : String { return record.string(forKey: "ボルト本数4") ?? "" }
+    public var ボルト本数1 : String { record.string(forKey: "ボルト本数1") ?? "" }
+    public var ボルト本数2 : String { record.string(forKey: "ボルト本数2") ?? "" }
+    public var ボルト本数3 : String { record.string(forKey: "ボルト本数3") ?? "" }
+    public var ボルト本数4 : String { record.string(forKey: "ボルト本数4") ?? "" }
     
-    public var 合計金額 : Int { return record.integer(forKey: "合計金額") ?? 0}
+    public var 合計金額 : Int { record.integer(forKey: "合計金額") ?? 0}
     
-    var 図URL : URL? { return record.url(forKey: "図") }
-    fileprivate var imageCache : Any?
+    var 図URL : URL? { record.url(forKey: "図") }
+    #if os(macOS)
+    public lazy var 図 : NSImage? = {
+        guard let url = self.図URL else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        guard let data = db.downloadObject(url: url) else { return nil }
+        let image = NSImage(data: data)
+        return image
+    }()
+    #elseif os(iOS)
+    public lazy var 図 : UIImage? = {
+        guard let url = self.図URL else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        guard let data = db.downloadObject(url: url) else { return nil }
+        let image = UIImage(data: data)
+        return image
+    }()
+    #else
+    #endif
 
     public lazy var 進捗一覧 : [進捗型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
@@ -250,35 +265,10 @@ public extension 指示書型 {
             case .未製作, .製作中:
                 break
             }
-            if order.承認状態 == "未承認" { return nil }
+            if order.承認状態 == .未承認 { return nil }
             return order
         }
     }
-}
-
-extension 指示書型 {
-    #if os(macOS)
-    public var 図 : NSImage? {
-        if let image = self.imageCache as? NSImage { return image }
-        guard let url = self.図URL else { return nil }
-        let db = FileMakerDB.pm_osakaname
-        guard let data = db.downloadObject(url: url) else { return nil }
-        let image = NSImage(data: data)
-        self.imageCache = image
-        return image
-    }
-    #elseif os(iOS)
-    public var 図 : UIImage? {
-        if let image = self.imageCache as? UIImage { return image }
-        guard let url = self.図URL else { return nil }
-        let db = FileMakerDB.pm_osakaname
-        guard let data = db.downloadObject(url: url) else { return nil }
-        let image = UIImage(data: data)
-        self.imageCache = image
-        return image
-    }
-    #else
-    #endif
 }
 
 let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]

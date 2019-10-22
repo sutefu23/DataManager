@@ -67,6 +67,17 @@ public extension 進捗型 {
         guard let number = self.伝票番号 else { return nil }
         return 指示書型.find(伝票番号: number)?.first
     }
+    
+    var レーザー加工機 : レーザー加工機型? {
+        guard self.工程 != .レーザー && self.工程 != .レーザー（アクリル） else { return nil }
+        guard let number = self.社員番号 else { return nil }
+        switch number {
+        case 60:
+            return .hv
+        default:
+            return nil
+        }
+    }
 }
 
 public extension Array where Element == 進捗型 {
