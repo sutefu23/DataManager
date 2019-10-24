@@ -69,11 +69,17 @@ public extension 進捗型 {
     }
     
     var レーザー加工機 : レーザー加工機型? {
-        guard self.工程 != .レーザー && self.工程 != .レーザー（アクリル） else { return nil }
+        guard self.工程 == .レーザー || self.工程 == .レーザー（アクリル） else { return nil }
         guard let number = self.社員番号 else { return nil }
         switch number {
-        case 60:
+        case 61:
             return .hv
+        case 84:
+            return .ex
+        case 38:
+            return .hp
+        case 920:
+            return .sws
         default:
             return nil
         }

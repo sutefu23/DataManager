@@ -60,10 +60,10 @@ extension Date {
 
 
 extension Day {
-    var isWorkday : Bool {
+    public var isWorkday : Bool {
         return !isHoliday
     }
-    var isHoliday : Bool {
+    public var isHoliday : Bool {
         return db.isHoliday(of: self)
     }
     
