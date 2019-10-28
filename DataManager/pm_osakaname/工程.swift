@@ -173,6 +173,11 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     public static func <(left:工程型, right:工程型) -> Bool {
         return left.rawValue < right.rawValue
     }
+    
+    public func 作業時間(from:Date, to:Date) -> TimeInterval {
+        let cal = カレンダー型[self]
+        return cal.calcWorkTime(from: from, to: to)
+    }
 }
 
 extension FileMakerRecord {

@@ -20,9 +20,22 @@ public enum 日付タイプ型 {
     }
 }
 
+public extension TimeInterval {
+    init(作業開始 from:Date, 作業完了 to:Date, by cal:カレンダー型 = カレンダー型.standard) {
+        self = cal.calcWorkTime(from: from, to: to)
+    }
+}
+
+public extension Day {
+    func 日付タイプ(_ cal:カレンダー型 = カレンダー型.standard) -> 日付タイプ型 {
+        return cal.isHoliday(of: self) ? .休日: . 出勤日
+    }
+
+}
+
 public extension Date {
     func 日付タイプ(_ cal:カレンダー型 = カレンダー型.standard) -> 日付タイプ型 {
-        return cal.isHoliday(of: self.day) ? .休日: . 出勤日
+        return self.day.日付タイプ(cal)
     }
     
     func 作業時間(from:Date, by cal:カレンダー型 = カレンダー型.standard) -> TimeInterval {
@@ -34,28 +47,37 @@ public extension Date {
     }
     
     func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Date {
+        return Date(self.day.翌出勤日(by: cal, count: count))
+    }
+    
+    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Date {
+        return Date(self.day.前出勤日(by: cal, count: count))
+    }
+}
+
+public extension Day {
+    func 翌出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Day {
         let count = (count > 0) ? count : 1
-        var day = self.day.nextDay
+        var day = self.nextDay
         for _ in 1...count {
             while cal.isHoliday(of: day) {
                 day = day.nextDay
             }
         }
-        return Date(day)
+        return day
     }
     
-    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Date {
+    func 前出勤日(by cal:カレンダー型 = カレンダー型.standard, count:Int = 1) -> Day {
         let count = (count > 0) ? count : 1
-        var day = self.day.prevDay
+        var day = self.prevDay
         for _ in 1...count {
             while cal.isHoliday(of: day) {
                 day = day.prevDay
             }
         }
-        return Date(day)
+        return day
     }
 }
-
 struct 勤務時間型 {
     static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(19, 00), 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
@@ -107,6 +129,13 @@ struct 勤務時間型 {
 }
 
 public class カレンダー型 {
+    static var 工程別カレンダー : [工程型 : カレンダー型] = [:]
+
+    public static subscript(_ state:工程型) -> カレンダー型 {
+        get { 工程別カレンダー[state] ?? カレンダー型.standard }
+        set { 工程別カレンダー[state] = newValue }
+    }
+    
     public static let standard : カレンダー型 = カレンダー型(day: 出勤日DB型(), time: 勤務時間型.standard)
     public static let handa : カレンダー型 = カレンダー型(day: 出勤日DB型(), time: 勤務時間型.handa)
     private let dayDB : 出勤日DB型
@@ -128,12 +157,12 @@ extension カレンダー型 {
 // MARK: 時間
 extension カレンダー型 {
     func calcWorkTime(from:Date, to:Date) -> TimeInterval {
+        if to < from  {return 0 }
         var day = from.day
         let toDay = to.day
         if day == toDay {
             return timeDB.calcWorkTime(from: from.time, to: to.time)
         }
-        if toDay < day { return 0 }
         var workTime = timeDB.calcWorkTime(from: from.time, to: timeDB.終業)
         day = day.nextDay
         while day != toDay {

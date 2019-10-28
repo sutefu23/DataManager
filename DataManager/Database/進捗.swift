@@ -15,8 +15,8 @@ public class 進捗型 : Equatable {
     public let 作業内容 : 作業内容型
     public let 登録日時 : Date
     public var 社員名称 : String
-    var 登録日 : Day
-    var 登録時間 : Time
+    public var 登録日 : Day
+    public var 登録時間 : Time
 
     init?(_ record:FileMakerRecord) {
         guard let state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
@@ -87,25 +87,37 @@ public extension 進捗型 {
 }
 
 public extension Array where Element == 進捗型 {
-    func 作業内容(工程:工程型, 日時:Date? = nil) -> 作業内容型? {
+    func 作業内容(工程:工程型, 日時:Day? = nil) -> 作業内容型? {
         var state : 作業内容型? = nil
         for progress in self where progress.工程 == 工程 {
-            if let date = 日時, progress.登録日時 > date { continue }
+            if let day = 日時, progress.登録日 >= day { continue }
             state = progress.作業内容
         }
         return state
     }
     
-    func 作業内容(工程:[工程型], 日時:Date? = nil) -> 作業内容型? {
+    func 作業内容(工程:[工程型], 日時:Day? = nil) -> 作業内容型? {
         var state : 作業内容型? = nil
         for progress in self where 工程.contains(progress.工程) {
-            if let date = 日時, progress.登録日時 > date { continue }
+            if let day = 日時, progress.登録日 >= day { continue }
             state = progress.作業内容
         }
         return state
     }
+
 }
 
+public extension Sequence where Element == 進捗型 {
+    func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool {
+        return self.contains { $0.工程 == 工程 && $0.作業内容 == 作業内容}
+    }
+    
+    func findFirst(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
+        return self.first { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
+    }
+}
+
+// MARK: - 検索
 public extension 進捗型 {
     static func find(伝票番号 num:String, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
     var query = [String:String]()
@@ -122,7 +134,7 @@ public extension 進捗型 {
 
     }
     
-    static func find(製作納期 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
+    static func find(製作納期 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
         var query = [String:String]()
         query["製作納期"] = makeQueryDayString(range)
         if let type = type {
@@ -139,7 +151,7 @@ public extension 進捗型 {
         //        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
         return list?.compactMap { 進捗型($0) }
     }
-    static func find(登録期間 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
+    static func find(登録期間 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
         var query = [String:String]()
         query["登録日"] = makeQueryDayString(range)
         if let type = type {
@@ -174,7 +186,7 @@ public extension 進捗型 {
 //        return list?.compactMap { 進捗型($0) }
 //    }
     
-    static func find(伝票作業期間 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
+    static func find(伝票作業期間 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
         guard let list = 進捗型.find(登録期間: range, 伝票種類: type, 工程: state, 作業内容: work) else { return nil }
         
         var numbers = Set<Int>()
@@ -192,12 +204,3 @@ public extension 進捗型 {
     }
 }
 
-public extension Sequence where Element == 進捗型 {
-    func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool {
-        return self.contains { $0.工程 == 工程 && $0.作業内容 == 作業内容}
-    }
-    
-    func findFirst(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
-        return self.first { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
-    }
-}

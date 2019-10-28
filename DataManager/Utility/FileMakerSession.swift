@@ -264,17 +264,17 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     }
 }
 
-func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {
-    guard let range = range else { return nil }
-    let from = range.lowerBound
-    let to = range.upperBound
-    if from == to {
-        return "\(from.day.fmString)"
-    } else {
-        return "\(from.day.fmString)...\(to.day.fmString)"
-    }
-
-}
+//func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {
+//    guard let range = range else { return nil }
+//    let from = range.lowerBound
+//    let to = range.upperBound
+//    if from == to {
+//        return "\(from.day.fmString)"
+//    } else {
+//        return "\(from.day.fmString)...\(to.day.fmString)"
+//    }
+//
+//}
 
 func makeQueryDayString(_ range:ClosedRange<Day>?) -> String? {
     guard let range = range else { return nil }

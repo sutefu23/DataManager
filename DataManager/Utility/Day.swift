@@ -117,6 +117,10 @@ public struct Day : Hashable, Comparable {
         let date = Date(self)
         return date.prevDay.day
     }
+    
+    public var monthDayWeekString : String {
+        return "\(self.month)/\(self.day)(\(self.week))"
+    }
 }
 
 class WeekCache {

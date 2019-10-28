@@ -12,26 +12,13 @@ import Cocoa
 import UIKit
 #endif
 
+let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
+
 public class 指示書型 {
     let record : FileMakerRecord
     
     init?(_ record:FileMakerRecord) {
         self.record = record
-//        guard let numstr = record.string(forKey: "表示用伝票番号"), numstr.count >= 6 else { fatalError() }
-//        self.表示用伝票番号 = numstr
-//        if let num = record.integer(forKey: "伝票番号"), num > 0 {
-//            self.伝票番号 = num
-//        } else {
-//            let div = numstr.split(separator: "-")
-//            if div.count != 2 { return nil }
-//            if div[0].count >= 4 {
-//                guard let num = Int(div[0]+div[1]), num >= 100000 else { fatalError() }
-//                self.伝票番号 = num
-//            } else {
-//                guard let num = Int(div[1]), num >= 1 else { fatalError() }
-//                self.伝票番号 = num
-//            }
-//        }
     }
     
     public lazy var 伝票番号 : Int = { record.integer(forKey: "伝票番号")! }()
@@ -49,13 +36,14 @@ public class 指示書型 {
     public lazy var 表示用伝票番号 : String = { record.string(forKey: "表示用伝票番号")! }()
     public lazy var 略号 : Set<略号型> = { make略号(record.string(forKey: "略号")!) }()
     
-    public lazy var 受注日 : Date = { record.date(forKey: "受注日")! }()
+    public lazy var 登録日時 : Date = { record.date(dayKey: "登録日", timeKey: "登録時間")! }()
+    public lazy var 受注日 : Day = { record.day(forKey: "受注日")! }()
     public lazy var 伝票種類 : 伝票種類型  = { record.伝票種類(forKey: "伝票種類")! }()
     public lazy var 伝票状態 : 伝票状態型 = { record.伝票状態(forKey: "伝票状態")! }()
     public lazy var 工程状態 : 工程状態型 = { record.工程状態(forKey: "工程状態")! }()
     public lazy var 承認状態 : 承認状態型 = { record.承認状態(forKey: "承認状態")! }()
-    public lazy var 製作納期 : Date = { record.date(forKey: "製作納期")! }()
-    public lazy var 出荷納期 : Date = { record.date(forKey: "出荷納期")! }()
+    public lazy var 製作納期 : Day = { record.day(forKey: "製作納期")! }()
+    public lazy var 出荷納期 : Day = { record.day(forKey: "出荷納期")! }()
     
     public var 品名 : String { record.string(forKey: "品名")! }
     public var 仕様 : String { record.string(forKey: "仕様")! }
@@ -121,7 +109,7 @@ public class 指示書型 {
         return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }()
     
-    lazy var 変更一覧 : [指示書変更内容履歴型] = {
+    public lazy var 変更一覧 : [指示書変更内容履歴型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書変更内容履歴テーブル") else { return [] }
         return list.compactMap { 指示書変更内容履歴型($0) }
     }()
@@ -136,15 +124,16 @@ public class 指示書型 {
         return list
     }()
     
-    lazy var 外注一覧 : [発注型] = {
+    public lazy var 外注一覧 : [発注型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "資材発注テーブル") else { return [] }
         return list.compactMap { 発注型($0) }
     }()
     
-    lazy var 登録日時 : Date = { record.date(dayKey: "登録日", timeKey: "登録時間")! }()
-}
+    public lazy var 進捗入力記録一覧 : [作業記録型] = self.make進捗入力記録一覧()
+    public lazy var 工程別作業記録 : [工程型 : [作業記録型]] = Dictionary(grouping: self.進捗入力記録一覧) { $0.工程 }
+    
+    public lazy var 承認情報 : 指示書変更内容履歴型? = { return self.変更一覧.filter { $0.種類 == .指示書承認 }.max { $0.日時 < $1.日時 } }()
 
-extension 指示書型 {
     public var 製作文字数概算 : Int {
         let leftLast, rightLast : Int
         var left = self.文字数.makeNumbers()
@@ -176,29 +165,145 @@ extension 指示書型 {
         return total
     }
 
+    public var is外注塗装あり : Bool {
+        return self.外注一覧.contains { 外注先会社コード.contains($0.会社コード) }
+    }
+    
+    public var is内作塗装あり : Bool {
+        return self.進捗一覧.contains {
+            return $0.工程 == .塗装 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
+        }
+    }
+    
+    public var is外注シートあり : Bool {
+        return self.外注一覧.contains { $0.会社コード == "0074" }
+    }
+    
+    public var is社内研磨あり : Bool {
+        return self.進捗一覧.contains {
+            return $0.工程 == .研磨 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
+        }
+    }
+    
+    public var is半田あり : Bool {
+        return self.略号.contains(.半田)
+    }
+    
+    public var is溶接あり : Bool {
+        return self.略号.contains(.溶接)
+    }
+    
+    public var 金額 : Int {
+        var value = self.合計金額
+        if value <= 0 {
+            value = self.単価1
+            let count = self.単価1
+            if count > 0 { value += count }
+        }
+        return value
+    }
+    
+    public var 担当者1 : 社員型? {
+        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+        return 社員型(社員番号: num, 社員名称: name)
+    }
+    
+    public var 担当者2 : 社員型? {
+        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+        return 社員型(社員番号: num, 社員名称: name)
+    }
+    
+    public var 担当者3 : 社員型? {
+        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+        return 社員型(社員番号: num, 社員名称: name)
+    }
+    
+    public lazy var 保留校正一覧 : [作業型] = {
+        return (self.保留一覧 + self.校正一覧).sorted { $0.開始日時 < $1.開始日時 }
+    }()
+    
+    public lazy var 保留一覧 : [作業型] = {
+        var list = [作業型]()
+        var from : Date?
+        for change in self.変更一覧 {
+            switch change.種類 {
+            case .保留開始:
+                from = change.日時
+            case .保留解除:
+                    guard let from  = from else { break }
+                    let to = change.日時
+                    if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
+                        list.append(work)
+                    }
+                default:
+                    break
+            }
+        }
+        return list
+    }()
+    
+    public lazy var 校正一覧 : [作業型] = {
+        var list = [作業型]()
+        var from : Date?
+        for change in self.変更一覧 {
+            switch change.内容 {
+            case "校正開始":
+                from = change.日時
+            case "校正終了":
+                guard let from  = from else { break }
+                let to = change.日時
+                if let work = 作業型(nil, type: .校正, state: .原稿, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
+                    list.append(work)
+                }
+            default:
+                break
+            }
+        }
+        return list
+    }()
+    
+    public lazy var 半田溶接振り分け : String = {
+        if !is溶接あり && !is半田あり { return "" }
+        let str = self.上段中央 + self.下段中央
+        if str.contains("半田") || str.contains("溶接") {
+            return str
+        }
+        
+        if is半田あり {
+            if is溶接あり {
+                return "半田 溶接"
+            } else {
+                return "半田"
+            }
+        } else {
+            assert(is溶接あり)
+            return "溶接"
+        }
+    }()
 }
 
+// MARK: - 検索パターン
 public extension 指示書型 {
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil, limit:Int = 100) -> [指示書型]? {
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
-        query["製作納期"] = 製作納期?.day.fmString
+        query["製作納期"] = 製作納期?.fmString
          let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
 //        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
     
-    static func find2(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Date? = nil, limit:Int = 100) -> [指示書型]? {
+    static func find2(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
-        query["製作納期"] = 製作納期?.day.fmString
+        query["製作納期"] = 製作納期?.fmString
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
 //        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
@@ -206,7 +311,7 @@ public extension 指示書型 {
     }
 
     
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Date>? = nil, 製作納期 range:ClosedRange<Date>? = nil,  出荷納期 range2:ClosedRange<Date>? = nil) -> [指示書型]? {
+    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Day>? = nil, 製作納期 range:ClosedRange<Day>? = nil,  出荷納期 range2:ClosedRange<Day>? = nil) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
@@ -226,16 +331,16 @@ public extension 指示書型 {
         return list?.compactMap { 指示書型($0) }
     }
     
-    static func find(作業範囲 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil) -> [指示書型]? {
+    static func find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) -> [指示書型]? {
         var query = [String:String]()
-//        query["受注日"] = "<=\(range.upperBound.day.fmString)"
-        query["出荷納期"] = ">=\(range.lowerBound.day.fmString)"
+//        query["受注日"] = "<=\(range.upperBound.fmString)"
+        query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
     
-    static func find(進捗入力日 range:ClosedRange<Date>, 伝票種類 type:伝票種類型? = nil, 工程:工程型? = nil, 作業内容:作業内容型? = nil) -> [指示書型]? {
+    static func find(進捗入力日 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程:工程型? = nil, 作業内容:作業内容型? = nil) -> [指示書型]? {
         guard let list = 進捗型.find(登録期間: range, 伝票種類: type, 工程: 工程, 作業内容: 作業内容) else { return nil }
         var numbers = Set<Int>()
         for progress in list {
@@ -269,119 +374,14 @@ public extension 指示書型 {
             return order
         }
     }
-}
-
-let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
-public extension 指示書型 {
-    var is外注塗装あり : Bool {
-        return self.外注一覧.contains { 外注先会社コード.contains($0.会社コード) }
-    }
     
-    var is内作塗装あり : Bool {
-        return self.進捗一覧.contains {
-            return $0.工程 == .塗装 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
-        }
-    }
-    
-    var is外注シートあり : Bool {
-        return self.外注一覧.contains { $0.会社コード == "0074" }
-    }
-    
-    var is社内研磨あり : Bool {
-        return self.進捗一覧.contains {
-            return $0.工程 == .研磨 && ($0.作業内容 == .開始 || $0.作業内容 == .完了)
-        }
-    }
-    
-    var is半田あり : Bool {
-        return self.略号.contains(.半田)
-    }
-    
-    var is溶接あり : Bool {
-        return self.略号.contains(.溶接)
-    }
-    
-    var 金額 : Int {
-        var value = self.合計金額
-        if value <= 0 {
-            value = self.単価1
-            let count = self.単価1
-            if count > 0 { value += count }
-        }
-        return value
-    }
-    
-    var 担当者1 : 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
-    }
-    
-    var 担当者2 : 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
-    }
-    
-    var 担当者3 : 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
-    }
-    
-    var 保留一覧 : [作業型] {
-        var list = [作業型]()
-        var from : Date?
-        for change in self.変更一覧 {
-            switch change.種類 {
-            case .保留開始:
-                from = change.日時
-            case .保留解除:
-                    guard let from  = from else { break }
-                    let to = change.日時
-                    if let work = 作業型(nil, type: .保留, state: .管理, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
-                        list.append(work)
-                    }
-                default:
-                    break
-            }
-        }
-        return list
-    }
-    
-    var 校正一覧 : [作業型] {
-        var list = [作業型]()
-        var from : Date?
-        for change in self.変更一覧 {
-            switch change.内容 {
-            case "校正開始":
-                from = change.日時
-            case "校正終了":
-                guard let from  = from else { break }
-                let to = change.日時
-                if let work = 作業型(nil, type: .校正, state: .原稿, from: from, to: to, worker: change.作業者, 伝票番号: self.伝票番号) {
-                    list.append(work)
-                }
-            default:
-                break
-            }
-        }
-        return list
-    }
-    
-    var 半田溶接振り分け : String {
-        if !is溶接あり && !is半田あり { return "" }
-        let str = self.上段中央 + self.下段中央
-        if str.contains("半田") || str.contains("溶接") {
-            return str
-        }
-        
-        if is半田あり {
-            if is溶接あり {
-                return "半田 溶接"
-            } else {
-                return "半田"
-            }
-        } else {
-            assert(is溶接あり)
-            return "溶接"
-        }
+    static func find2(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) -> [指示書型]? {
+        var query = [String:String]()
+        query["受注日"] = "<=\(range.upperBound.fmString)"
+        query["出荷納期"] = ">=\(range.lowerBound.fmString)"
+        query["伝票種類"] = type?.fmString
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+        return list?.compactMap { 指示書型($0) }
     }
 }

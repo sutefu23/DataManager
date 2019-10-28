@@ -46,7 +46,7 @@ extension Date {
     
 
     public var dayWeekString : String {
-        return "\(dayNumber)(\(week.description))"
+        return day.dayWeekString
     }
     
     public var monthDayHourMinuteString : String {
@@ -60,6 +60,10 @@ extension Date {
 
 
 extension Day {
+    public var dayWeekString : String {
+        return "\(day)(\(week.description))"
+    }
+
     public var isWorkday : Bool {
         return !isHoliday
     }
