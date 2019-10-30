@@ -384,4 +384,14 @@ public extension 指示書型 {
         let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
         return list?.compactMap { 指示書型($0) }
     }
+    
+    static func find(登録日 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) -> [指示書型]? {
+        var query = [String:String]()
+        query ["登録日"] = makeQueryDayString(range)
+        query["伝票種類"] = type?.fmString
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+        return list?.compactMap { 指示書型($0) }
+    }
+
 }
