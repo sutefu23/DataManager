@@ -130,22 +130,22 @@ public class 作業記録型 {
     }
     
     public lazy var 作業時間 : TimeInterval? = {
-        guard let from = self.開始日時, let to = self.完了日時 else { return nil }
+        guard let from = self.開始日時, var to = self.完了日時 else { return nil }
         if from > to  { return nil }
         var result : TimeInterval = 0
         var current = from
-//        let orderedStops = self.関連保留校正.sorted { $0.開始日時 < $1.開始日時 }.filter { $0.作業種類 != .営業戻し }
-//        return self.工程.作業時間(from: current, to: to) - self.関連保留校正
 
-//        for stop in orderedStops {
-//            if (stop.開始日時...stop.完了日時).contains(current) {
-//                current = stop.完了日時
-//            } else if (current...to).contains(stop.開始日時) {
-//                result += self.工程.作業時間(from: current, to: stop.開始日時)
-//                current = stop.完了日時
-//            }
-//        }
-        return self.工程.作業時間(from: current, to: to) - self.営業戻し時間 - self.原稿校正時間
+        // 保留処理
+        let orderedStops = self.関連保留校正.filter { $0.作業種類 == .保留}.sorted { $0.開始日時 < $1.開始日時 }.filter { $0.作業種類 != .営業戻し }
+        for stop in orderedStops {
+            if (stop.開始日時...stop.完了日時).contains(current) {
+                current = stop.完了日時
+            } else if (current...to).contains(stop.開始日時) {
+                result += self.工程.作業時間(from: current, to: stop.開始日時)
+                current = stop.完了日時
+            }
+        }
+        return result + self.工程.作業時間(from: current, to: to) - self.営業戻し時間 - self.原稿校正時間
     }()
     
     public lazy var 原稿校正時間 : TimeInterval = {

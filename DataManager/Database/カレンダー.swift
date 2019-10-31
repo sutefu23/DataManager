@@ -157,7 +157,7 @@ extension カレンダー型 {
 // MARK: 時間
 extension カレンダー型 {
     func calcWorkTime(from:Date, to:Date) -> TimeInterval {
-        if to < from  {return 0 }
+        if to < from  { return 0 }
         var day = from.day
         let toDay = to.day
         if day == toDay {
