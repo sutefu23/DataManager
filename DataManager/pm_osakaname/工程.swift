@@ -8,6 +8,7 @@
 
 import Foundation
 
+/*
 let stateMap : [String : 工程型] = {
     var map = [String : 工程型]()
     for state in 工程型.allCases {
@@ -61,6 +62,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
     case 印刷 = 180
     case 表面仕上 = 190
     case 塗装 = 200
+    case 乾燥炉 = 202
     case 外注 = 210
     case 拭き取り = 220
     case 付属品準備 = 240
@@ -116,6 +118,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .印刷 : return "P018"
         case .表面仕上 : return "P019"
         case .塗装 : return "P020"
+        case .乾燥炉: return "P020B"
         case .外注 : return "P021"
         case .拭き取り : return "P022"
         case .付属品準備 : return "P024"
@@ -155,6 +158,7 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         case .腐蝕: return "腐蝕"
         case .外注: return "外注"
         case .塗装: return "塗装"
+        case .乾燥炉: return "乾燥炉"
         case .発送: return "発送"
         case .経理: return "経理"
         case .オブジェ: return "オブジェ"
@@ -174,15 +178,149 @@ public enum 工程型 : Int, Comparable, CaseIterable, CustomStringConvertible, 
         return left.rawValue < right.rawValue
     }
     
-    public func 作業時間(from:Date, to:Date) -> TimeInterval {
-        let cal = カレンダー型[self]
-        return cal.calcWorkTime(from: from, to: to)
-    }
 }
 
+ */
 extension FileMakerRecord {
     func 工程(forKey key:String) -> 工程型? {
         guard let code = string(forKey: key) else { return nil }
         return 工程型(code)
     }
+}
+
+public struct 工程型 : Hashable, Comparable {
+    let number : Int
+
+    public init?(_ name: String) {
+        if let state = 名称工程DB[name] {
+            self.init(state.number)
+        } else {
+            self.init(code: name)
+        }
+    }
+
+    init(_ number:Int) { self.number = number }
+    
+    init?(code: String) {
+        var main : Int = 0
+        var sub : Int = 0
+        for (index, ch) in code.uppercased().enumerated() {
+            if ch.isNumber {
+                guard let ascii = ch.asciiValue else { return nil }
+                main = main*10 + Int(ascii) - 48
+            } else {
+                if index == 0 {
+                    if ch != "P" { return nil }
+                } else {
+                    guard let ascii = ch.asciiValue else { return nil }
+                    if ascii < 65 || ascii >= 65 + 26 { return nil }
+                    sub = Int(ascii) - 64
+                }
+            }
+        }
+        self.number = main * 100 + sub
+    }
+    
+    public var description : String {
+        return 工程名称DB[self] ?? ""
+    }
+
+    public func 作業時間(from:Date, to:Date) -> TimeInterval {
+        let cal = カレンダー型[self]
+        return cal.calcWorkTime(from: from, to: to)
+    }
+
+    public var code : String {
+        let main = number / 100
+        let sub = number % 100
+        var str = "P"
+        if main < 100 { str += "0" }
+        if main < 10 { str += "0" }
+        str += "\(main)"
+        if sub > 0 {
+            str += String(Character(UnicodeScalar(UInt8(sub+64))))
+        }
+        return str
+    }
+    
+    public static func < (left:工程型, right:工程型) -> Bool { return left.number < right.number  }
+}
+
+class 工程名称DB型 {
+    var map : [工程型 : String]
+    var reversedMap : [String : 工程型]
+    
+    init() {
+        var map : [工程型 : String] = [:]
+        var map2 : [String : 工程型] = [
+            "レーザー・ウォーター" : .レーザー,
+            "アクリル" : .レーザー（アクリル）,
+            "アクリル（レーザー）" : .レーザー（アクリル）,
+            "組立・検品" : .組立,
+            "照合・検査" : .照合検査,
+            "ルーターカット" : .ルーター,
+            "附属品準備" : .付属品準備,
+            "腐食" : .腐蝕,
+            "タップ" : .タップ,
+            "洗い場" : .表面仕上,
+            "検査" : .照合検査
+        ]
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord] = db.fetch(layout: "DataAPI_工程") ?? []
+        for record in list {
+            guard let code = record.string(forKey: "工程コード"), let state = 工程型(code: code), let name = record.string(forKey: "工程名") else { continue }
+            map[state] = name
+            map2[name] = state
+        }
+        self.map = map
+        self.reversedMap = map2
+    }
+    
+    subscript(_ state: 工程型) -> String? { return map[state] }
+}
+
+let 工程名称DB : 工程名称DB型 = 工程名称DB型()
+var 名称工程DB : [String : 工程型] { 工程名称DB.reversedMap }
+
+public extension 工程型 {
+    static let 営業 = 工程型(code:"P001")!
+    static let 校正 = 工程型(code:"P002")!
+    static let 管理 = 工程型(code:"P003")!
+    static let 設計 = 工程型(code:"P003B")!
+    static let 原稿 = 工程型(code:"P004")!
+    static let 出力 = 工程型(code:"P004B")!
+    static let 入力 = 工程型(code:"P005")!
+    static let レーザー = 工程型(code:"P006")!
+    static let レーザー（アクリル） = 工程型(code:"P006A")!
+    static let 照合検査 = 工程型(code:"P006B")!
+    static let 腐蝕 = 工程型(code:"P007")!
+    static let オブジェ = 工程型(code:"P008")!
+    static let フォーミング = 工程型(code:"P009")!
+    static let シャーリング = 工程型(code:"P009A")!
+    static let プレーナー = 工程型(code:"P009B")!
+    static let タレパン = 工程型(code:"P009C")!
+    static let 加工 = 工程型(code:"P010")!
+    static let 仕上 = 工程型(code:"P011")!
+    static let 切文字 = 工程型(code:"P012")!
+    static let 溶接 = 工程型(code:"P013")!
+    static let 立ち上がり_溶接 = 工程型(code:"P013A")!
+    static let 裏加工_溶接 = 工程型(code:"P013C")!
+    static let 立ち上がり = 工程型(code:"P014")!
+    static let 半田 = 工程型(code:"P015")!
+    static let レーザー溶接 = 工程型(code:"P015B")!
+    static let 裏加工 = 工程型(code:"P015C")!
+    static let 研磨 = 工程型(code:"P016")!
+    static let ルーター = 工程型(code:"P017")!
+    static let タップ = 工程型(code:"P017B")!
+    static let 印刷 = 工程型(code:"P018")!
+    static let 表面仕上 = 工程型(code:"P019")!
+    static let 塗装 = 工程型(code:"P020")!
+    static let 乾燥炉 = 工程型(code:"P020B")!
+    static let 外注 = 工程型(code:"P021")!
+    static let 拭き取り = 工程型(code:"P022")!
+    static let 付属品準備 = 工程型(code:"P024")!
+    static let 組立 = 工程型(code:"P026")!
+    static let 品質管理 = 工程型(code:"P026B")!
+    static let 発送 = 工程型(code:"P027")!
+    static let 経理 = 工程型(code:"P028")!
 }

@@ -59,8 +59,8 @@ public extension 進捗型 {
         return record.integer(forKey: "伝票番号")
     }
     
-    var 製作納期 : Date? {
-        return record.date(forKey: "製作納期")
+    var 製作納期 : Day? {
+        return record.day(forKey: "製作納期")
     }
     
     var 指示書 : 指示書型? {
