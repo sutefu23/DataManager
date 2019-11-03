@@ -17,12 +17,11 @@ class TestOrder : XCTestCase {
         XCTAssertEqual(num, order?.伝票番号)
         
         let day = Day(year: 2019, month: 2, day: 7)
-        let date = Date(day)
-        order = 指示書型.find(製作納期: date)?.first
-        XCTAssertEqual(order?.製作納期, date)
+        order = 指示書型.find(製作納期: day)?.first
+        XCTAssertEqual(order?.製作納期, day)
         
-        order = 指示書型.find(伝票種類: .箱文字, 製作納期: date)?.first
-        XCTAssertEqual(order?.製作納期, date)
+        order = 指示書型.find(伝票種類: .箱文字, 製作納期: day)?.first
+        XCTAssertEqual(order?.製作納期, day)
     }
 
     func testProperty() {

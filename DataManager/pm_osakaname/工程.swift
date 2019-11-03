@@ -188,10 +188,11 @@ extension FileMakerRecord {
     }
 }
 
-public struct 工程型 : Hashable, Comparable {
+public struct 工程型 : Hashable, Comparable, Codable {
     let number : Int
 
-    public init?(_ name: String) {
+    public init?<S : StringProtocol>(_ name: S) {
+        let name = String(name)
         if let state = 名称工程DB[name] {
             self.init(state.number)
         } else {
@@ -230,25 +231,30 @@ public struct 工程型 : Hashable, Comparable {
         return cal.calcWorkTime(from: from, to: to)
     }
 
-    public var code : String {
-        let main = number / 100
-        let sub = number % 100
-        var str = "P"
-        if main < 100 { str += "0" }
-        if main < 10 { str += "0" }
-        str += "\(main)"
-        if sub > 0 {
-            str += String(Character(UnicodeScalar(UInt8(sub+64))))
-        }
-        return str
-    }
+    public var code : String { return 工程名称DB.codeMap[self]! }
     
     public static func < (left:工程型, right:工程型) -> Bool { return left.number < right.number  }
+    public static func == (left:工程型, right:工程型) -> Bool { return left.number == right.number  }
 }
+
+//private func makeCode(_ state:工程型) -> String {
+//    let number = state.number
+//    let main = number / 100
+//    let sub = number % 100
+//    var str = "P"
+//    if main < 100 { str += "0" }
+//    if main < 10 { str += "0" }
+//    str += "\(main)"
+//    if sub > 0 {
+//        str += String(Character(UnicodeScalar(UInt8(sub+64))))
+//    }
+//    return str
+//}
 
 class 工程名称DB型 {
     var map : [工程型 : String]
     var reversedMap : [String : 工程型]
+    var codeMap : [工程型 : String]
     
     init() {
         var map : [工程型 : String] = [:]
@@ -265,15 +271,18 @@ class 工程名称DB型 {
             "洗い場" : .表面仕上,
             "検査" : .照合検査
         ]
+        var map3 : [工程型 : String] = [:]
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = db.fetch(layout: "DataAPI_工程") ?? []
         for record in list {
             guard let code = record.string(forKey: "工程コード"), let state = 工程型(code: code), let name = record.string(forKey: "工程名") else { continue }
             map[state] = name
             map2[name] = state
+            map3[state] = code.uppercased()
         }
         self.map = map
         self.reversedMap = map2
+        self.codeMap = map3
     }
     
     subscript(_ state: 工程型) -> String? { return map[state] }

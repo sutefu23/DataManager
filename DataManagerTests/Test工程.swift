@@ -14,8 +14,6 @@ import XCTest
 class TestState : XCTestCase {
     func testMake() {
         var p : 工程型?
-        p = stateMap["付属品準備"]
-        XCTAssertNotNil(p)
         p = 工程型("付属品準備")
         XCTAssertNotNil(p)
     }
