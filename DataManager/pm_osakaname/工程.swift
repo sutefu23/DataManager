@@ -235,6 +235,22 @@ public struct 工程型 : Hashable, Comparable, Codable {
     
     public static func < (left:工程型, right:工程型) -> Bool { return left.number < right.number  }
     public static func == (left:工程型, right:工程型) -> Bool { return left.number == right.number  }
+    
+    // MARK: - Codable
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+//        var dv = try container.decode(Double.self)
+        var number = try container.decode(Int.self)
+        if number < 100 || (number % 100) > 25 {
+            number = (number / 10)*100 + number % 100
+        }
+        self.init(number)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.number)
+    }
 }
 
 //private func makeCode(_ state:工程型) -> String {
