@@ -109,6 +109,18 @@ public class 作業記録型 {
         return from...to
     }()
 
+    /// rangeに含まれる時間を含む
+    public func isOverlap(range: ClosedRange<Day>) -> Bool {
+        if let from = self.開始日時?.day {
+            if range.contains(from) { return true }
+        }
+        if let to = self.完了日時?.day {
+            if range.contains(to) { return true }
+        }
+        guard let from = self.開始日時?.day, let to = self.完了日時?.day else { return false }
+        return (from...to).contains(range.lowerBound)
+    }
+    
     init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date?, to:Date?, worker: 社員型? = nil, 伝票番号 number:Int? = nil) {
         self.作業種類 = type
         guard let worker = worker ?? progress?.作業者 else { return nil }

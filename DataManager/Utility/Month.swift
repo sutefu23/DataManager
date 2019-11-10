@@ -57,12 +57,34 @@ public struct Month {
         return Month(year: year, month: month)
     }
     
+    public var nextMonth : Month {
+        var year = self.year
+        var month = self.month+1
+        if month > 12 {
+            month = 1
+            year += 1
+        }
+        return Month(year, month)
+    }
+    
     public var shortYearMonthString : String {
         var yearString = "\(shortYear)"
         var monthString = "\(month)"
         if yearString.count == 1 { yearString = "0" + yearString }
         if monthString.count == 1 { monthString = "0" + monthString }
         return yearString + monthString
+    }
+    
+    public var yearMonthJString : String {
+        return "\(year)年\(month)月"
+    }
+    
+    public var firstDay : Day {
+        return Day(self.year, self.month, 1)
+    }
+    
+    public var lastDay : Day {
+        return self.nextMonth.firstDay.prevDay
     }
     
     public var weeks : [ClosedRange<Day>] {

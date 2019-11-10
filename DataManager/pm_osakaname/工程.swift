@@ -220,6 +220,7 @@ public struct 工程型 : Hashable, Comparable, Codable {
             }
         }
         self.number = main * 100 + sub
+        if number <= 0 { return nil }
     }
     
     public var description : String {

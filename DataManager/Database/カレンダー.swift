@@ -113,8 +113,8 @@ struct 勤務時間型 {
     }
     
     func calcWorkTime(from:Time, to:Time) -> TimeInterval {
-        let from = round(from)
-        let to = round(to)
+//        let from = from
+//        let to = to
         var offset : TimeInterval = 0
         for rest in self.休憩時間 {
             if from <= rest.from && rest.to <= to {

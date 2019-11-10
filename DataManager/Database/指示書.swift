@@ -57,7 +57,9 @@ public class 指示書型 {
     public var 材質2 : String { record.string(forKey: "材質2")! }
     public var 表面仕上1 : String { record.string(forKey: "表面仕上1")! }
     public var 表面仕上2 : String { record.string(forKey: "表面仕上2")! }
-    
+    public var 板厚1 : String { record.string(forKey: "板厚1")! }
+    public var 板厚2 : String { record.string(forKey: "板厚2")! }
+
     public var 上段左 : String { record.string(forKey: "上段左")! }
     public var 上段中央 : String { record.string(forKey: "上段中央")! }
     public var 上段右 : String { record.string(forKey: "上段右")! }
@@ -83,6 +85,10 @@ public class 指示書型 {
     public var ボルト本数4 : String { record.string(forKey: "ボルト本数4") ?? "" }
     
     public var 合計金額 : Int { record.integer(forKey: "合計金額") ?? 0}
+    public lazy var インシデント一覧 : [インシデント型] = {
+        let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }
+        return list.sorted { $0.日時 < $1.日時 }
+    }()
     
     var 図URL : URL? { record.url(forKey: "図") }
     #if os(macOS)
@@ -263,18 +269,14 @@ public class 指示書型 {
     }()
     
     public lazy var 半田溶接振り分け : String = {
-        if !is溶接あり && !is半田あり { return "" }
         let str = self.上段中央 + self.下段中央
-        if str.contains("半田") || str.contains("溶接") {
-            return str
+        if !is溶接あり && !is半田あり {
+            return self.伝票種類 == .箱文字 ? str : ""
         }
+        if str.contains("半田") || str.contains("溶接") { return str }
         
         if is半田あり {
-            if is溶接あり {
-                return "半田 溶接"
-            } else {
-                return "半田"
-            }
+            return is溶接あり ? "半田 溶接" : "半田"
         } else {
             assert(is溶接あり)
             return "溶接"
