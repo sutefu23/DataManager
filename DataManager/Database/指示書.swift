@@ -215,12 +215,12 @@ public class 指示書型 {
     }
     
     public var 担当者2 : 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+        guard let num = record.integer(forKey: "社員番号2"), let name = record.string(forKey: "担当者2"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
         return 社員型(社員番号: num, 社員名称: name)
     }
     
     public var 担当者3 : 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+        guard let num = record.integer(forKey: "社員番号3"), let name = record.string(forKey: "担当者3"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
         return 社員型(社員番号: num, 社員名称: name)
     }
     
