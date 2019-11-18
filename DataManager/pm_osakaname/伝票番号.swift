@@ -38,7 +38,11 @@ public struct 伝票番号型 : Hashable, Comparable {
     
     // MARK: - Comparable
     public static func <(left:伝票番号型, right:伝票番号型) -> Bool {
-        return left.number < right.number
+        if left.highNumber != right.highNumber {
+            return left.highNumber < right.highNumber
+        } else {
+            return left.lowNumber < right.lowNumber
+        }
     }
 
     // MARK: - パーツ
@@ -46,11 +50,16 @@ public struct 伝票番号型 : Hashable, Comparable {
         return number > 9999_9999 ? number / 1000_00 : number / 100_00
     }
 
-    public var logNumber : Int {
+    public var lowNumber : Int {
         return number > 9999_9999 ? number % 1000_00 : number % 100_00
     }
     
     public var year : Int { 2000 + highNumber / 100 }
     public var month : Int { highNumber % 100 }
+    
+    /// 表示用伝票番号文字列
+    public var visualString : String {
+        return "\(highNumber)-\(lowNumber)"
+    }
     
 }
