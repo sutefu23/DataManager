@@ -140,6 +140,31 @@ public class 指示書型 {
     
     public lazy var 承認情報 : 指示書変更内容履歴型? = { return self.変更一覧.filter { $0.種類 == .指示書承認 }.max { $0.日時 < $1.日時 } }()
 
+    public var 塗装文字数概算 : Int {
+        let leftLast, rightLast : Int
+        var left = self.文字数.makeNumbers()
+        if let last = left.last {
+            leftLast = last
+        } else {
+            left = [1]
+            leftLast = 1
+        }
+        var right = (self.伝票種類 == .加工) ? [1] : self.セット数.makeNumbers()
+        if let last = right.last {
+            rightLast = last
+        } else {
+            right = [1]
+            rightLast = 1
+        }
+        while left.count < right.count { left.append(leftLast) }
+        while right.count < left.count { right.append(rightLast) }
+        var total = 0
+        for (l, r) in zip(left, right) {
+            total += l * r
+        }
+        return total
+    }
+    
     public var 製作文字数概算 : Int {
         let leftLast, rightLast : Int
         var left = self.文字数.makeNumbers()

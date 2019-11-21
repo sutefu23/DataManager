@@ -231,7 +231,7 @@ public struct 工程型 : Hashable, Comparable, Codable {
         let cal = カレンダー型[self]
         return cal.calcWorkTime(from: from, to: to)
     }
-
+    public var isValid : Bool { 工程名称DB.codeMap[self] != nil }
     public var code : String { return 工程名称DB.codeMap[self]! }
     
     public static func < (left:工程型, right:工程型) -> Bool { return left.number < right.number  }

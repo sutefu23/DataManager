@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Time : Hashable, Comparable {
+public struct Time : Hashable, Comparable, CustomStringConvertible {
     public let hour : Int
     public let minute : Int
     public let second : Int
@@ -61,12 +61,16 @@ public struct Time : Hashable, Comparable {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
     }
     
-    var hourMinuteString : String {
+    public var hourMinuteString : String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }
-    
-    var description : String {
+
+    public var hourMinuteSecondString : String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
+    }
+
+    public var description : String {
+        return hourMinuteSecondString
     }
     
     var allSeconds : Int {
