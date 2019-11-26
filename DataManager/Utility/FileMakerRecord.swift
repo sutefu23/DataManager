@@ -11,6 +11,7 @@ import Foundation
 class FileMakerRecord {
     let fieldData : [String:Any]
     let portalData : [String : Any]
+    let recordId: String?
     let name : String
     
     init?(json data:Any) {
@@ -18,13 +19,16 @@ class FileMakerRecord {
         guard let field = dic["fieldData"] as? [String:Any] else { return nil }
         self.fieldData = field
         self.portalData = dic["portalData"] as? [String:Any] ?? [:]
+        self.recordId = dic["recordId"] as? String
         self.name = ""
     }
+    
     init?(portal name:String, json data:Any) {
         self.name = name
         guard let dic = data as? [String:Any] else { return nil }
         self.fieldData = dic
         self.portalData = [:]
+        self.recordId = nil
     }
     
     func output(_ key:String) {
@@ -45,10 +49,6 @@ class FileMakerRecord {
     func portal(forKey key:String) -> [FileMakerRecord]? {
         guard let source = portalData[key] as? [Any] else { return nil }
         return source.compactMap { FileMakerRecord(portal:key, json: $0) }
-    }
-    
-    var recordId : Int {
-        return integer(forKey: "recordId")!
     }
     
     func string(forKey key:String) -> String? {

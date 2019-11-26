@@ -68,16 +68,15 @@ extension Day {
         return !isHoliday
     }
     public var isHoliday : Bool {
-        return db.isHoliday(of: self)
+        return 出勤日DB型.shared.isHoliday(of: self)
     }
     
     var dynamicIsHoliday : Bool {
-        return db.dynamicIsHoliday(self)
+        return 出勤日DB型.shared.dynamicIsHoliday(self)
     }
 }
-private let db = 出勤日DB型()
-
 class 出勤日DB型 {
+    static let shared: 出勤日DB型 = 出勤日DB型()
     // 2016/10/01 ~ 2019/03/31
     /// 土日以外の休日
     let holidays : Set<Day> = [
@@ -187,7 +186,7 @@ class 出勤日DB型 {
     let oldline : Day
     let baseline : Day
     private var isHolidayCache : [Day : Bool] = [:]
-    private let lock = Lock()
+    private let lock = NSLock()
     
     private func isHoidayCacheData(of day:Day) -> Bool? {
         lock.lock()

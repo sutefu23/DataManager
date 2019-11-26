@@ -47,6 +47,8 @@
 		149BCB05220854F6004066DD /* 伝票状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB04220854F6004066DD /* 伝票状態.swift */; };
 		149BCB07220854FE004066DD /* 工程状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB06220854FE004066DD /* 工程状態.swift */; };
 		149BCB09220858FE004066DD /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB08220858FE004066DD /* 伝票種類.swift */; };
+		14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544B238D2EF70080925F /* 指示書文字数.swift */; };
+		14BA544E238D43010080925F /* Test指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544D238D43010080925F /* Test指示書文字数.swift */; };
 		14BEE9E42240928F00B2750B /* 資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E32240928F00B2750B /* 資材.swift */; };
 		14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E52240A8B300B2750B /* Test資材.swift */; };
 		14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2167230CCDBE00CE4253 /* TestEtc.swift */; };
@@ -61,6 +63,7 @@
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
+		8E4745EA238AA53900F104F5 /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4745E9238AA53900F104F5 /* TableGenerator.swift */; };
 		8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8E0792235E0BD500D7832C /* レーザー加工機.swift */; };
 		8EBB920D235C9A6400BA3394 /* 承認状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBB920C235C9A6400BA3394 /* 承認状態.swift */; };
 /* End PBXBuildFile section */
@@ -116,6 +119,8 @@
 		149BCB04220854F6004066DD /* 伝票状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票状態.swift"; sourceTree = "<group>"; };
 		149BCB06220854FE004066DD /* 工程状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程状態.swift"; sourceTree = "<group>"; };
 		149BCB08220858FE004066DD /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
+		14BA544B238D2EF70080925F /* 指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書文字数.swift"; sourceTree = "<group>"; };
+		14BA544D238D43010080925F /* Test指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書文字数.swift"; sourceTree = "<group>"; };
 		14BEE9E32240928F00B2750B /* 資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材.swift"; sourceTree = "<group>"; };
 		14BEE9E52240A8B300B2750B /* Test資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材.swift"; sourceTree = "<group>"; };
 		14BF2167230CCDBE00CE4253 /* TestEtc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEtc.swift; sourceTree = "<group>"; };
@@ -133,6 +138,7 @@
 		8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerTests.swift; sourceTree = "<group>"; };
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
+		8E4745E9238AA53900F104F5 /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
 		8E8E0792235E0BD500D7832C /* レーザー加工機.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "レーザー加工機.swift"; sourceTree = "<group>"; };
 		8EBB920C235C9A6400BA3394 /* 承認状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "承認状態.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,6 +176,7 @@
 				149BCAFC2208216B004066DD /* String.swift */,
 				149BCAFE22082BF2004066DD /* Lock.swift */,
 				14CEBDF1222DFDE40023D0DC /* URL.swift */,
+				8E4745E9238AA53900F104F5 /* TableGenerator.swift */,
 				14C066A923757D47001E73F2 /* Version.swift */,
 			);
 			path = Utility;
@@ -236,6 +243,7 @@
 				1436782822643B3A00335943 /* TestDate.swift */,
 				1470B25A236832820043A7B4 /* TestMonth.swift */,
 				14BF2167230CCDBE00CE4253 /* TestEtc.swift */,
+				14BA544D238D43010080925F /* Test指示書文字数.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
@@ -271,6 +279,7 @@
 				1431E186220C2BC900E68ED7 /* 略号.swift */,
 				8E2CDF892340D22A00E7F147 /* 伝票番号.swift */,
 				8E8E0792235E0BD500D7832C /* レーザー加工機.swift */,
+				14BA544B238D2EF70080925F /* 指示書文字数.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -404,6 +413,7 @@
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
+				8E4745EA238AA53900F104F5 /* TableGenerator.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
@@ -427,6 +437,7 @@
 				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,
 				1425D99D230778B700A2D6AB /* Month.swift in Sources */,
 				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
+				14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
 				14681F122212B3AE00C41D15 /* 工程図.swift in Sources */,
 				1426FBB8231DED92004D3EAC /* 部署作業者分析.swift in Sources */,
@@ -448,6 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14BA544E238D43010080925F /* Test指示書文字数.swift in Sources */,
 				8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */,
 				149BCB0122082D87004066DD /* Test出勤日.swift in Sources */,
 				1470B25B236832820043A7B4 /* TestMonth.swift in Sources */,

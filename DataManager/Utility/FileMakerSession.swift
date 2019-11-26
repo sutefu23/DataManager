@@ -25,7 +25,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     let password : String
     private let sem = DispatchSemaphore(value: 0)
     lazy var session : URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
-
+    
     init(url:URL, user:String, password:String) {
         self.dbURL = url
         self.user = user
@@ -78,7 +78,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                 return
             }
             result = token
-            }.resume()
+        }.resume()
         sem.wait()
         guard let token = result else { return nil }
         guard let code = errorCode, code == "0" else { return nil }
@@ -93,7 +93,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         self.session.dataTask(with: request) { _, _, error in
             self.sem.signal()
-            }.resume()
+        }.resume()
         sem.wait()
         self.ticket = nil
     }
@@ -173,7 +173,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                 if let res = response["data"] {
                     newRequest = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
-                }.resume()
+            }.resume()
             sem.wait()
             if isOk == false { return nil }
             let count = newRequest.count
@@ -192,8 +192,8 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         let limit : Int
     }
     
-    func find(layout:String, recordId:Int) -> FileMakerRecord? {
-        return self.find(layout: layout, query: [["recordId" : "\(recordId)"]])?.first
+    func find(layout:String, recordId:String) -> FileMakerRecord? {
+        return self.find(layout: layout, query: [["recordId" : recordId]])?.first
     }
     
     func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) -> [FileMakerRecord]? {
@@ -230,7 +230,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                 if let res = response["data"] {
                     newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
-                }.resume()
+            }.resume()
             sem.wait()
             if isOk == false { return nil }
             let count = newResult.count
@@ -242,11 +242,91 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return result
     }
     
-    func update(layout:String, query:[[String:String]], fields:[String:String]) {
-        
+    func delete(layout: String, recordId: String) -> Bool {
+        guard let token = self.prepareToken() else { return false }
+        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        var isOk = false
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        session.dataTask(with: request) { data, _, error in
+            defer { self.sem.signal() }
+            guard   let data      = data, error == nil,
+                let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                //                let response  = json["response"] as? [String: Any],
+                let messages  = json["messages"] as? [[String: Any]],
+                let code      = messages[0]["code"] as? String,
+                let codeNum = Int(code) else { return }
+            isOk = (codeNum == 0 || codeNum == 401)
+        }.resume()
+        sem.wait()
+        return isOk
     }
     
-    func insert(layout:String, fields:[String:String]) {
+    
+    func update(layout:String, recordId:String , fields:[String:String]) -> Bool {
+        guard let token = self.prepareToken() else { return false }
+        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        let encoder = JSONEncoder()
+        var isOk = false
+        let json = ["fieldData" : fields]
+        guard let data = try? encoder.encode(json) else { return false }
+        let rawData = String(data: data, encoding: .utf8)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        session.dataTask(with: request) { data, _, error in
+            defer { self.sem.signal() }
+            guard   let data      = data, error == nil,
+                let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+//                let response  = json["response"] as? [String: Any],
+                let messages  = json["messages"] as? [[String: Any]],
+                let code      = messages[0]["code"] as? String,
+                let codeNum = Int(code) else { return }
+            isOk = (codeNum == 0 || codeNum == 401)
+        }.resume()
+        sem.wait()
+        return isOk
+    }
+    
+    func insert(layout:String, fields:[String:String]) -> String? {
+        guard let token = self.prepareToken() else { return nil }
+        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        let encoder = JSONEncoder()
+        var isOk = false
+        let json = ["fieldData" : fields]
+        guard let data = try? encoder.encode(json) else { return nil }
+        let rawData = String(data: data, encoding: .utf8)
+        var result : String? = nil
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        session.dataTask(with: request) { data, _, error in
+            defer { self.sem.signal() }
+            guard   let data      = data, error == nil,
+                let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                let response  = json["response"] as? [String: Any],
+                let messages  = json["messages"] as? [[String: Any]],
+                let code      = messages[0]["code"] as? String,
+                let codeNum = Int(code) else { return }
+            isOk = (codeNum == 0 || codeNum == 401)
+            if let res = response["recordId"] as? String {
+                result = res
+            }
+        }.resume()
+        sem.wait()
+        return result
     }
     
     func download(_ url:URL) -> Data? {

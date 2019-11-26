@@ -21,4 +21,14 @@ class TestProgress: XCTestCase {
         }
     }
 
+    func testFind2() {
+        let day0331 = Day(2019, 3, 1)
+        
+        let list = 進捗型.find(登録期間: day0331...day0331, 作業内容: .完了)
+        XCTAssertNotNil(list)
+        if let list = list {
+            XCTAssertEqual(list.count, 3)
+        }
+    }
+
 }

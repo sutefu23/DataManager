@@ -228,8 +228,8 @@ public struct 工程型 : Hashable, Comparable, Codable {
     }
 
     public func 作業時間(from:Date, to:Date) -> TimeInterval {
-        let cal = カレンダー型[self]
-        return cal.calcWorkTime(from: from, to: to)
+        
+        return TimeInterval(工程: self, 作業開始: from, 作業完了: to)
     }
     public var isValid : Bool { 工程名称DB.codeMap[self] != nil }
     public var code : String { return 工程名称DB.codeMap[self]! }

@@ -8,6 +8,9 @@
 
 import Foundation
 
+private var lock = NSLock()
+private var testCache: [Int : Bool] = [:]
+
 public struct 伝票番号型 : Hashable, Comparable {
     public let number : Int
     
@@ -27,14 +30,26 @@ public struct 伝票番号型 : Hashable, Comparable {
     }
     
     public func testIsValid() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        
+        if let result = testCache[self.number] { return result }
         let orders = 指示書型.find(伝票番号: self.number)
-        return orders?.isEmpty == false
+        let result = orders?.isEmpty == false
+        testCache[self.number] = result
+        return result
     }
     
     // MARK: -
     public static func isValidNumber(_ number:Int) -> Bool {
         return number >= 10_0000 && number <= 9999_99999
     }
+    public static func isValidNumber(_ number:String) -> Bool {
+        guard let number = Int(number) else { return false }
+        return isValidNumber(number)
+//        return number >= 10_0000 && number <= 9999_99999
+    }
+
     
     // MARK: - Comparable
     public static func <(left:伝票番号型, right:伝票番号型) -> Bool {
