@@ -8,7 +8,9 @@
 
 import Foundation
 
-class 指示書文字数型 {
+struct 指示書文字数型 {
+    static let dbName = "DataAPI_指示書文字数"
+    
     init?(_ record:FileMakerRecord) {
         guard let number = record.integer(forKey: "伝票番号"), 伝票番号型.isValidNumber(number) else { return nil }
         self.伝票番号 = number
@@ -53,10 +55,10 @@ class 指示書文字数型 {
         return data
     }
 
-    func insert() -> Bool {
+    mutating func insert() -> Bool {
         if self.recordId != nil { return false }
         let db = FileMakerDB.system
-        if let recordId = db.insert(layout: "DataAPI_指示書文字数", fields: fieldData) {
+        if let recordId = db.insert(layout: 指示書文字数型.dbName, fields: fieldData) {
             self.recordId = recordId
             return true
         } else {
@@ -67,13 +69,13 @@ class 指示書文字数型 {
     func update() -> Bool {
         guard let recordId = self.recordId else { return false }
         let db = FileMakerDB.system
-        return db.update(layout: "DataAPI_指示書文字数", recordId: recordId, fields: fieldData)
+        return db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: fieldData)
     }
     
     func delete() -> Bool {
         guard let recordId = self.recordId else { return false }
         let db = FileMakerDB.system
-        return db.delete(layout: "DataAPI_指示書文字数", recordId: recordId)
+        return db.delete(layout: 指示書文字数型.dbName, recordId: recordId)
     }
 }
 
@@ -82,7 +84,7 @@ extension 指示書文字数型 {
         let db = FileMakerDB.system
         var query = [String:String]()
         query["伝票番号"] = "\(伝票番号)"
-        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書文字数", query: [query])
+        let list : [FileMakerRecord]? = db.find(layout: 指示書文字数型.dbName, query: [query])
         return list?.compactMap { 指示書文字数型($0) }.first
     }
 }
