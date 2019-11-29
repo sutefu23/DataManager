@@ -17,17 +17,17 @@ class TestOrderCounter: XCTestCase {
         let tnum = 15
 
         // 存在しないのを確認
-        let objectx = 指示書文字数型.find(伝票番号: num)
+        let objectx = 指示書文字数Data型.find(伝票番号: num)
         XCTAssertNil(objectx)
         if objectx != nil { return }
             
         // 新規登録
-        let object0 = 指示書文字数型(伝票番号: num, 半田文字数: hnum, 溶接文字数: ynum, 総文字数: tnum)
+        let object0 = 指示書文字数Data型(伝票番号: num, 半田文字数: hnum, 溶接文字数: ynum, 総文字数: tnum)
         XCTAssertNotNil(object0)
         object0?.insert()
 
         // 検索
-        guard let object = 指示書文字数型.find(伝票番号: num) else {
+        guard let object = 指示書文字数Data型.find(伝票番号: num) else {
             XCTAssert(false)
             return
         }
@@ -44,7 +44,7 @@ class TestOrderCounter: XCTestCase {
         XCTAssertTrue(result)
 
         // 検索2
-        guard let object2 = 指示書文字数型.find(伝票番号: num) else {
+        guard let object2 = 指示書文字数Data型.find(伝票番号: num) else {
             XCTAssert(false)
             return
         }

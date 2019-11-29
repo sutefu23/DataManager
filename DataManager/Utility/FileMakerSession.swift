@@ -278,7 +278,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         guard let data = try? encoder.encode(json) else { return false }
         let rawData = String(data: data, encoding: .utf8)
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PATCH"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data

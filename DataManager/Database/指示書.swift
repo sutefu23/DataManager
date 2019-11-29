@@ -69,7 +69,7 @@ public class 指示書型 {
 
     public var 単価1 : Int { record.integer(forKey: "単価1") ?? 0 }
     public var 数量1 : Int { record.integer(forKey: "数量1") ?? 0 }
-    public var 伝票種別 : String { record.string(forKey: "伝票種別")! }
+    public lazy var 伝票種別 : 伝票種別型 = { 伝票種別型(self.record.string(forKey: "伝票種別")!)! }()
     public var 経理状態 : 経理状態型 {
         if let state = record.経理状態(forKey: "経理状態") { return state }
         return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
@@ -307,6 +307,20 @@ public class 指示書型 {
             return "溶接"
         }
     }()
+    
+    public func showInfo() {
+        guard let url = URL(string: "fmp://outsideuser:outsideuser!@192.168.1.153/viewer?script=search&param=\(self.伝票番号)") else { return }
+        #if os(macOS)
+        let ws = NSWorkspace.shared
+        ws.open(url)
+        #elseif os(iOS)
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        #else
+        
+        #endif
+    }
 }
 
 // MARK: - 検索パターン
@@ -421,4 +435,15 @@ public extension 指示書型 {
         return list?.compactMap { 指示書型($0) }
     }
 
+    static func findDirect(伝票番号: Int) -> 指示書型? {
+        var query = [String:String]()
+        query["伝票番号"] = "\(伝票番号)"
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_指示書", query: [query])
+        if list?.count == 1, let record = list?.first, let order = 指示書型(record) {
+            return order
+        } else {
+            return nil
+        }
+    }
 }

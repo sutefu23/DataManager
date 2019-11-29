@@ -83,30 +83,31 @@ public final class FileMakerDB {
     
     func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) -> [FileMakerRecord]? {
         let session = self.prepareSesion()
-        let result = session.find(layout: layout, query: query, sortItems: sortItems, max: max)
-        stockSession(session)
-        return result
+        defer { stockSession(session) }
+        return session.find(layout: layout, query: query, sortItems: sortItems, max: max)
     }
     
     func downloadObject(url:URL) -> Data? {
         let session = self.prepareSesion()
-        let result = session.download(url)
-        stockSession(session)
-        return result
+        defer { stockSession(session) }
+        return session.download(url)
     }
     
     func update(layout:String, recordId:String, fields:[String:String]) -> Bool {
         let session = self.prepareSesion()
+        defer { stockSession(session) }
         return session.update(layout: layout, recordId: recordId,fields: fields)
     }
     
     func delete(layout: String, recordId: String) -> Bool {
         let session = self.prepareSesion()
+        defer { stockSession(session) }
         return session.delete(layout: layout, recordId: recordId)
     }
     
     func insert(layout:String, fields:[String:String]) -> String? {
         let session = self.prepareSesion()
+        defer { stockSession(session) }
         return session.insert(layout: layout, fields: fields)
     }
 }
