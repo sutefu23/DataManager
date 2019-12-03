@@ -11,6 +11,7 @@ import Foundation
 private let serialQueue: OperationQueue = {
    let queue = OperationQueue()
     queue.maxConcurrentOperationCount = 1
+    queue.qualityOfService = .utility
     return queue
 }()
 
