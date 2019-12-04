@@ -308,6 +308,8 @@ public class 指示書型 {
         }
     }()
     
+    public lazy var 指示書文字数: 指示書文字数型 = 指示書文字数型(指示書: self)
+    
     public func showInfo() {
         guard let url = URL(string: "fmp://outsideuser:outsideuser!@192.168.1.153/viewer?script=search&param=\(self.伝票番号)") else { return }
         #if os(macOS)

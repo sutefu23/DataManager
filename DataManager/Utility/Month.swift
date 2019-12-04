@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Month {
+public struct Month : Equatable, Hashable {
     public let year : Int
     public let month : Int
     public var shortYear : Int {
@@ -74,7 +74,17 @@ public struct Month {
         if monthString.count == 1 { monthString = "0" + monthString }
         return yearString + monthString
     }
-    
+
+    public var monthOrYearMonthString : String {
+        var monthString = "\(month)"
+        if Date().yearNumber == self.year {
+            return monthString
+        } else {
+            if monthString.count == 1 { monthString = "0" + monthString }
+            return "\(year)/\(monthString)"
+        }
+    }
+
     public var yearMonthJString : String {
         return "\(year)年\(month)月"
     }

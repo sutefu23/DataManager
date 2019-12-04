@@ -40,6 +40,14 @@ public class 進捗型 : Equatable {
     public static func ==(left:進捗型, right:進捗型) -> Bool {
         return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.社員名称 == right.社員名称 && left.登録日時 == right.登録日時
     }
+    
+    public lazy var 作業種別: 作業種別型 = {
+        作業種別型(self.record.string(forKey: "作業種別コード") ?? "")
+    }()
+    
+    public lazy var 作業系列: 作業系列型? = {
+        作業系列型(系列コード: self.record.string(forKey: "作業系列コード") ?? "")
+    }()
 }
 
 public extension 進捗型 {
@@ -69,6 +77,14 @@ public extension 進捗型 {
     }
     
     var レーザー加工機 : レーザー加工機型? {
+        switch self.作業系列 {
+        case 作業系列型.gx:    return .gx
+        case 作業系列型.ex:    return .ex
+        case 作業系列型.hp:    return .hp
+        case 作業系列型.water: return .sws
+        default:
+            break
+        }
         guard self.工程 == .レーザー || self.工程 == .レーザー（アクリル） else { return nil }
         guard let number = self.社員番号 else { return nil }
         switch number {

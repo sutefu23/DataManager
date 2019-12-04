@@ -125,21 +125,18 @@ public struct Day : Hashable, Comparable {
 
 class WeekCache {
     subscript(day:Day) -> 週型 {
-        sem.wait()
-        defer { sem.signal() }
+        lock.lock()
+        defer { lock.unlock() }
         if let week = cache[day] {
             return week
         } else {
-            sem.signal()
             let week = Date(day).week
-            sem.wait()
             cache[day] = week
-            sem.signal()
             return week
         }
     }
     private var cache : [Day:週型] = [:]
-    private let sem : DispatchSemaphore = DispatchSemaphore(value: 1)
+    private let lock = NSLock()
 }
 private let weekCache = WeekCache()
 
