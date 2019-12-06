@@ -30,7 +30,12 @@ public struct 社員型 : Hashable, Codable {
         if 社員番号 < 100 { return "H0\(社員番号)" }
         return "H\(社員番号)"
     }
-    
+    public var Hなし社員コード : String {
+        if 社員番号 < 10 { return "00\(社員番号)" }
+        if 社員番号 < 100 { return "0\(社員番号)" }
+        return "\(社員番号)"
+    }
+
     public init(社員番号:Int, 社員名称:String) {
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称

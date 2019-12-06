@@ -154,3 +154,15 @@ public extension TimeInterval {
         return String(min)
     }
 }
+
+public func maxDate(_ date1:Date?, _ date2:Date?) -> Date? {
+    guard let date1 = date1 else { return date2 }
+    guard let date2 = date2 else { return date1 }
+    return max(date1, date2)
+}
+
+public func minDate(_ date1:Date?, _ date2:Date?) -> Date? {
+    guard let date1 = date1 else { return date2 }
+    guard let date2 = date2 else { return date1 }
+    return min(date1, date2)
+}

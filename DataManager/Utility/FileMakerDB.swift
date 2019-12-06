@@ -28,7 +28,8 @@ public final class FileMakerDB {
     static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
     static let laser : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
     static let system : FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
-    
+    static let pm_osakaname2 : FileMakerDB = FileMakerDB(server: "192.168.1.155", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
+
     let dbURL : URL
     let user : String
     let password : String
@@ -105,10 +106,16 @@ public final class FileMakerDB {
         return session.delete(layout: layout, recordId: recordId)
     }
     
-    func insert(layout:String, fields:[String:String]) -> String? {
+    @discardableResult func insert(layout:String, fields:[String:String]) -> String? {
         let session = self.prepareSesion()
         defer { stockSession(session) }
         return session.insert(layout: layout, fields: fields)
+    }
+    
+    @discardableResult func execute(layout: String, script:String, param: String) -> Bool {
+        let session = self.prepareSesion()
+        defer { stockSession(session) }
+        return session.execute(layout: layout, script: script, param: param)
     }
 }
 

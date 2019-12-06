@@ -188,6 +188,12 @@ class 出勤日DB型 {
     private var isHolidayCache : [Day : Bool] = [:]
     private let lock = NSLock()
     
+    func flushCache() {
+        lock.lock()
+        isHolidayCache.removeAll()
+        lock.unlock()
+    }
+    
     private func isHoidayCacheData(of day:Day) -> Bool? {
         lock.lock()
         defer { lock.unlock() }

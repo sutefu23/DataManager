@@ -21,7 +21,10 @@ public class 指示書型 {
         self.record = record
     }
     
-    public lazy var 伝票番号 : Int = { record.integer(forKey: "伝票番号")! }()
+    public lazy var 伝票番号 : 伝票番号型 = {
+        let num = record.integer(forKey: "伝票番号")!
+        return 伝票番号型(validNumber: num)
+    }()
     public lazy var 比較用伝票番号 : Int = {
         let div = self.表示用伝票番号.split(separator: "-")
         if div.count != 2 { return -1 }
@@ -224,6 +227,10 @@ public class 指示書型 {
         return self.略号.contains(.溶接)
     }
     
+    public var is承認済有効: Bool {
+        return self.承認状態 == .承認済 && self.伝票状態 != .キャンセル
+    }
+    
     public var 金額 : Int {
         var value = self.合計金額
         if value <= 0 {
@@ -327,7 +334,7 @@ public class 指示書型 {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
+    static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
@@ -340,7 +347,7 @@ public extension 指示書型 {
         return list?.compactMap { 指示書型($0) }
     }
     
-    static func find2(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
+    static func find2(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
@@ -354,7 +361,7 @@ public extension 指示書型 {
     }
 
     
-    static func find(伝票番号:Int? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Day>? = nil, 製作納期 range:ClosedRange<Day>? = nil,  出荷納期 range2:ClosedRange<Day>? = nil) -> [指示書型]? {
+    static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Day>? = nil, 製作納期 range:ClosedRange<Day>? = nil,  出荷納期 range2:ClosedRange<Day>? = nil) -> [指示書型]? {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
@@ -385,9 +392,10 @@ public extension 指示書型 {
     
     static func find(進捗入力日 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程:工程型? = nil, 作業内容:作業内容型? = nil) -> [指示書型]? {
         guard let list = 進捗型.find(登録期間: range, 伝票種類: type, 工程: 工程, 作業内容: 作業内容) else { return nil }
-        var numbers = Set<Int>()
+        var numbers = Set<伝票番号型>()
         for progress in list {
-            if let num = progress.伝票番号 { numbers.insert(num) }
+            let num = progress.伝票番号
+            numbers.insert(num)
         }
         var result : [指示書型] = []
         for num in numbers {

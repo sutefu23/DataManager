@@ -78,26 +78,26 @@ public extension Day {
         return day
     }
 }
-struct 勤務時間型 {
-    static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(19, 00), 休憩時間: [
+public struct 勤務時間型 {
+    static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 40), 終業: Time(19, 00), 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
         (from:Time(17,30), to:Time(17,40)),
         ])
 
-    static let handa : 勤務時間型 = 勤務時間型(始業: Time(8, 30), 終業: Time(20, 00), 休憩時間: [
+    static let handa : 勤務時間型 = 勤務時間型(始業: Time(8, 40), 終業: Time(20, 00), 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
         (from:Time(17,30), to:Time(17,40)),
         ])
 
-    var 始業 : Time
-    var 終業 : Time
-    var 休憩時間 : [(from:Time, to:Time)]
+    public var 始業 : Time
+    public var 終業 : Time
+    public var 休憩時間 : [(from:Time, to:Time)]
 
-    init(始業 from: Time = Time(8, 30), 終業 to: Time) {
+    init(始業 from: Time = Time(8, 40), 終業 to: Time) {
         self.始業 = from
         self.終業 = to
         self.休憩時間 = [
@@ -144,6 +144,7 @@ public let 半田カレンダー: カレンダー型 = 固定カレンダー型(
 public protocol カレンダー型 {
     func isHoliday(of day:Day) -> Bool
     func calcWorkTime(state: 工程型?, from:Date, to:Date) -> TimeInterval
+    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型
 }
 
 class 固定カレンダー型 : カレンダー型 {
@@ -159,7 +160,11 @@ class 固定カレンダー型 : カレンダー型 {
         return dayDB.isHoliday(of:day)
     }
 
+    
 // MARK: 時間
+    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型 {
+        return timeDB
+    }
     func calcWorkTime(state: 工程型?, from:Date, to:Date) -> TimeInterval {
         if to < from  { return 0 }
         var day = from.day
@@ -181,6 +186,8 @@ class 固定カレンダー型 : カレンダー型 {
 }
 
 class 自動カレンダー型 : カレンダー型 {
+   
+    
     let lock = Lock()
     class DayDB {
         let day: Day
@@ -244,6 +251,10 @@ class 自動カレンダー型 : カレンダー型 {
         return dayDB.isHoliday(of:day)
     }
     
+    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型 {
+        return timeDB(of: 日付, state: 工程)
+    }
+
     func timeDB(of day: Day, state: 工程型?) -> 勤務時間型 {
         lock.lock(); defer { lock.unlock() }
         if let db = self.db[day] {
@@ -275,7 +286,6 @@ class 自動カレンダー型 : カレンダー型 {
         workTime += timeDB.calcWorkTime(from: timeDB.始業, to: to.time)
         return workTime
     }
-    
 }
 
 

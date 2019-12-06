@@ -18,6 +18,11 @@ public class 進捗型 : Equatable {
     public var 登録日 : Day
     public var 登録時間 : Time
 
+    public lazy var 伝票番号 : 伝票番号型 = {
+        let number = self.record.integer(forKey: "伝票番号")!
+        return 伝票番号型(validNumber: number)
+    }()
+
     init?(_ record:FileMakerRecord) {
         guard let state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
             if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
@@ -63,17 +68,12 @@ public extension 進捗型 {
         return 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称)
     }
     
-    var 伝票番号 : Int? {
-        return record.integer(forKey: "伝票番号")
-    }
-    
     var 製作納期 : Day? {
         return record.day(forKey: "製作納期")
     }
     
     var 指示書 : 指示書型? {
-        guard let number = self.伝票番号 else { return nil }
-        return 指示書型.find(伝票番号: number)?.first
+        return 指示書型.find(伝票番号: self.伝票番号)?.first
     }
     
     var レーザー加工機 : レーザー加工機型? {
@@ -135,9 +135,9 @@ public extension Sequence where Element == 進捗型 {
 
 // MARK: - 検索
 public extension 進捗型 {
-    static func find(伝票番号 num:String, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
+    static func find(伝票番号 num:伝票番号型, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) -> [進捗型]? {
     var query = [String:String]()
-    query["伝票番号"] = num
+        query["伝票番号"] = "\(num)"
     if let state = state {
         query["工程コード"] = "\(state.code)"
     }
@@ -187,14 +187,15 @@ public extension 進捗型 {
     static func find(伝票作業期間 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) -> [進捗型]? {
         guard let list = 進捗型.find(登録期間: range, 伝票種類: type, 工程: state, 作業内容: work) else { return nil }
         
-        var numbers = Set<Int>()
+        var numbers = Set<伝票番号型>()
         for progress in list {
-            if let num = progress.伝票番号 { numbers.insert(num) }
+            let num = progress.伝票番号
+            numbers.insert(num)
         }
         
         var result : [進捗型] = []
         for num in numbers {
-            if let tmp = 進捗型.find(伝票番号: "\(num)") {
+            if let tmp = 進捗型.find(伝票番号: num) {
                 result.append(contentsOf: tmp)
             }
         }

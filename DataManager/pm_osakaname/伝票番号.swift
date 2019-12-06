@@ -11,21 +11,27 @@ import Foundation
 private var lock = NSLock()
 private var testCache: [Int : Bool] = [:]
 
-public struct 伝票番号型 : Hashable, Comparable {
-    public let number : Int
+func clear伝票番号Cache() {
+    lock.lock()
+    testCache.removeAll()
+    lock.unlock()
+}
+
+public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible {
+    public let 整数値 : Int
     
     public init(validNumber:Int) {
-        self.number = validNumber
+        self.整数値 = validNumber
     }
 
-    public init?(invalidString:String) {
+    public init?<S: StringProtocol>(invalidString:S) {
         guard let number = Int(invalidString) else { return nil }
         self.init(invalidNumber:number)
     }
     
     public init?(invalidNumber:Int) {
         if !伝票番号型.isValidNumber(invalidNumber) { return nil }
-        self.number = invalidNumber
+        self.整数値 = invalidNumber
         if testIsValid() == false { return nil }
     }
     
@@ -33,10 +39,10 @@ public struct 伝票番号型 : Hashable, Comparable {
         lock.lock()
         defer { lock.unlock() }
         
-        if let result = testCache[self.number] { return result }
-        let orders = 指示書型.find(伝票番号: self.number)
+        if let result = testCache[self.整数値] { return result }
+        let orders = 指示書型.find(伝票番号: self)
         let result = orders?.isEmpty == false
-        testCache[self.number] = result
+        testCache[self.整数値] = result
         return result
     }
     
@@ -53,28 +59,33 @@ public struct 伝票番号型 : Hashable, Comparable {
     
     // MARK: - Comparable
     public static func <(left:伝票番号型, right:伝票番号型) -> Bool {
-        if left.highNumber != right.highNumber {
-            return left.highNumber < right.highNumber
+        if left.上位整数値 != right.上位整数値 {
+            return left.上位整数値 < right.上位整数値
         } else {
-            return left.lowNumber < right.lowNumber
+            return left.下位整数値 < right.下位整数値
         }
     }
 
     // MARK: - パーツ
-    public var highNumber : Int {
-        return number > 9999_9999 ? number / 1000_00 : number / 100_00
+    public var 上位整数値 : Int {
+        return 整数値 > 9999_9999 ? 整数値 / 1000_00 : 整数値 / 100_00
     }
 
-    public var lowNumber : Int {
-        return number > 9999_9999 ? number % 1000_00 : number % 100_00
+    public var 下位整数値 : Int {
+        return 整数値 > 9999_9999 ? 整数値 % 1000_00 : 整数値 % 100_00
     }
     
-    public var year : Int { 2000 + highNumber / 100 }
-    public var month : Int { highNumber % 100 }
+    public var 年値 : Int { 2000 + 上位整数値 / 100 }
+    public var 月値 : Int { 上位整数値 % 100 }
     
     /// 表示用伝票番号文字列
-    public var visualString : String {
-        return "\(highNumber)-\(lowNumber)"
+    public var 表示用文字列 : String {
+        return "\(上位整数値)-\(下位整数値)"
+    }
+    
+    // MARK: - CutomString
+    public var description: String {
+        return String(self.整数値)
     }
     
 }

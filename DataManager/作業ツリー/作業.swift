@@ -30,12 +30,12 @@ public class 作業型 {
     public var 開始日時 : Date
     public var 完了日時 : Date
     public var 作業者 : 社員型
-    public var 伝票番号 : Int
+    public var 伝票番号 : 伝票番号型
     
     public var 進捗度 : Int?
     public var 関連保留校正 : [作業型] = []
 
-    init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date? = nil, to:Date? = nil, worker: 社員型? = nil, 伝票番号 number:Int? = nil) {
+    init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date? = nil, to:Date? = nil, worker: 社員型? = nil, 伝票番号 number:伝票番号型? = nil) {
         self.作業種類 = type
         guard let worker = worker ?? progress?.作業者 else { return nil }
         guard let state = state ?? progress?.工程 else { return nil }
@@ -99,7 +99,7 @@ public class 作業記録型 {
     public var 開始日時 : Date?
     public var 完了日時 : Date?
     public var 作業者 : 社員型
-    public var 伝票番号 : Int
+    public var 伝票番号 : 伝票番号型
     
     public var 進捗度 : Int?
     public var 関連保留校正 : [作業型] = []
@@ -121,7 +121,7 @@ public class 作業記録型 {
         return (from...to).contains(range.lowerBound)
     }
     
-    init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date?, to:Date?, worker: 社員型? = nil, 伝票番号 number:Int? = nil) {
+    init?(_ progress:進捗型? = nil, type:作業種類型 = .通常, state:工程型? = nil, from:Date?, to:Date?, worker: 社員型? = nil, 伝票番号 number:伝票番号型? = nil) {
         self.作業種類 = type
         guard let worker = worker ?? progress?.作業者 else { return nil }
         guard let state = state ?? progress?.工程 else { return nil }
@@ -141,8 +141,10 @@ public class 作業記録型 {
         return 工程社員型(工程: self.工程, 社員: self.作業者)
     }
     
-    public lazy var 作業時間 : TimeInterval? = {
-        guard let from = self.開始日時, var to = self.完了日時 else { return nil }
+    public lazy var 作業時間 : TimeInterval? = self.calc作業時間()
+
+    public func calc作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
+        guard let from = maxDate(from, self.開始日時), let to = minDate(to, self.完了日時) else { return nil }
         if from > to  { return nil }
         var result : TimeInterval = 0
         var current = from
@@ -158,7 +160,7 @@ public class 作業記録型 {
             }
         }
         return result + self.工程.作業時間(from: current, to: to) - self.営業戻し時間 - self.原稿校正時間
-    }()
+    }
     
     public lazy var 原稿校正時間 : TimeInterval = {
         if self.工程 != .原稿 { return 0 }
@@ -169,6 +171,22 @@ public class 作業記録型 {
         if self.工程 != .管理 { return 0 }
         return self.関連保留校正.filter { $0.作業種類 == .営業戻し }.reduce(0) { $0 + $1.作業時間 }
     }()
+}
+
+extension Array where Element == 作業記録型 {
+    public func 累積作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
+        var result : TimeInterval? = nil
+        for work in self {
+            if let time = work.calc作業時間(to: to) {
+                if let current = result {
+                    result = current + time
+                } else {
+                    result = time
+                }
+            }
+        }
+        return result
+    }
 }
 
 extension 指示書型 {

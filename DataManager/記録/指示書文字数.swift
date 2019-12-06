@@ -76,7 +76,7 @@ public class 指示書文字数型 {
     }
 
     var recordId: String?
-    public let 伝票番号: Int
+    public let 伝票番号: 伝票番号型
 
     var 初期箱文字文字数: 箱文字文字数型
     var 読み込み時箱文字文字数: 箱文字文字数型

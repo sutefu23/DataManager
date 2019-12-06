@@ -10,6 +10,7 @@ import XCTest
 @testable import DataManager
 
 class TestOrderCounter: XCTestCase {
+    /*
     func testInsertAndFind() {
         let num = 15011234
         let hnum = 5
@@ -57,5 +58,5 @@ class TestOrderCounter: XCTestCase {
         let response = object.delete()
         XCTAssertTrue(response)
     }
-
+*/
 }

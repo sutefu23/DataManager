@@ -231,6 +231,12 @@ public struct 工程型 : Hashable, Comparable, Codable {
         
         return TimeInterval(工程: self, 作業開始: from, 作業完了: to)
     }
+    public func 推定始業時間(of day:Day) -> Time {
+        return 標準カレンダー.勤務時間(工程: self, 日付: day).始業
+    }
+    public func 推定終業時間(of day:Day) -> Time {
+        return 標準カレンダー.勤務時間(工程: self, 日付: day).終業
+    }
     public var isValid : Bool { 工程名称DB.codeMap[self] != nil }
     public var code : String { return 工程名称DB.codeMap[self]! }
     
@@ -307,7 +313,11 @@ class 工程名称DB型 {
     subscript(_ state: 工程型) -> String? { return map[state] }
 }
 
-let 工程名称DB : 工程名称DB型 = 工程名称DB型()
+func flush工程名称DB() {
+    工程名称DB = 工程名称DB型()
+}
+
+private(set) var 工程名称DB : 工程名称DB型 = 工程名称DB型()
 var 名称工程DB : [String : 工程型] { 工程名称DB.reversedMap }
 
 public extension 工程型 {

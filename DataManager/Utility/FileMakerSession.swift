@@ -342,6 +342,41 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         self.sem.wait()
         return result
     }
+    
+    func execute(layout: String, script:String, param: String) -> Bool {
+        guard let token = self.prepareToken() else { return false }
+        var url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
+        components.queryItems = [
+        URLQueryItem(name: "script", value: script),
+        URLQueryItem(name: "script.param", value: param)
+        ]
+        url = components.url!
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+//        let encoder = JSONEncoder()
+        var isOk = false
+//        let json = ["script" : script, "script.param" : param]
+//        guard let data = try? encoder.encode(json) else { return }
+//        let rawData = String(data: data, encoding: .utf8)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //        request.httpBody = data
+        session.dataTask(with: request) { data, _, error in
+            defer { self.sem.signal() }
+            guard   let data      = data, error == nil,
+                let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+//                let response  = json["response"] as? [String: Any],
+                let messages  = json["messages"] as? [[String: Any]],
+                let code      = messages[0]["code"] as? String,
+                let codeNum = Int(code) else { return }
+            isOk = (codeNum == 0 || codeNum == 401)
+        }.resume()
+        sem.wait()
+        return isOk
+    }
 }
 
 //func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {

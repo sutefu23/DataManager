@@ -11,6 +11,12 @@ import Foundation
 private var seriesCache: [String : 作業系列型] = [:]
 private let lock = NSLock()
 
+func flush作業系列Cache() {
+    lock.lock()
+    seriesCache.removeAll()
+    lock.unlock()
+}
+
 public class 作業系列型 : Hashable {
     static let gx = 作業系列型(系列コード: "S001")!
     static let ex = 作業系列型(系列コード: "S002")!

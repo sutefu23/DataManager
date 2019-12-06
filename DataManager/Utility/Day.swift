@@ -66,7 +66,10 @@ public struct Day : Hashable, Comparable {
         self.month = month
         self.day = day
     }
-
+    
+    public var isToday: Bool {
+        return Day() == self
+    }
 
     public static func <(left:Day, right:Day) -> Bool {
         if left.year != right.year { return left.year < right.year }
