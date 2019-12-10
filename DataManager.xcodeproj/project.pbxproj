@@ -34,6 +34,7 @@
 		146508AC22FD4CF40095AD83 /* 発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146508AB22FD4CF40095AD83 /* 発注.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
+		146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146C1F34239F1F1200FE2918 /* 進捗状態.swift */; };
 		146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F1694239904DB003F88A1 /* Test進捗出力.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
@@ -70,6 +71,7 @@
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
 		8E4745EA238AA53900F104F5 /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4745E9238AA53900F104F5 /* TableGenerator.swift */; };
+		8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */; };
 		8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8E0792235E0BD500D7832C /* レーザー加工機.swift */; };
 		8EBB920D235C9A6400BA3394 /* 承認状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBB920C235C9A6400BA3394 /* 承認状態.swift */; };
 		8ED7EEFF239948DC00A47C44 /* 箱文字日報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7EEFE239948DC00A47C44 /* 箱文字日報.swift */; };
@@ -113,6 +115,7 @@
 		146508AB22FD4CF40095AD83 /* 発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
+		146C1F34239F1F1200FE2918 /* 進捗状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗状態.swift"; sourceTree = "<group>"; };
 		146F1694239904DB003F88A1 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
@@ -152,6 +155,7 @@
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
 		8E4745E9238AA53900F104F5 /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
+		8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerError.swift; sourceTree = "<group>"; };
 		8E8E0792235E0BD500D7832C /* レーザー加工機.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "レーザー加工機.swift"; sourceTree = "<group>"; };
 		8EBB920C235C9A6400BA3394 /* 承認状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "承認状態.swift"; sourceTree = "<group>"; };
 		8ED7EEFE239948DC00A47C44 /* 箱文字日報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "箱文字日報.swift"; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 				8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */,
 				1404E905220D905100841373 /* FileMakerSession.swift */,
 				14552F6722099D32000BDCB8 /* FileMakerRecord.swift */,
+				8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */,
 				14BFA247222773E000D78CC5 /* Downloader.swift */,
 				141203702201C3EA0054B56F /* Date.swift */,
 				1425D99C230778B700A2D6AB /* Month.swift */,
@@ -222,6 +227,14 @@
 			path = "工程図";
 			sourceTree = "<group>";
 		};
+		146C1F33239F1EFA00FE2918 /* 状況キャッシュ */ = {
+			isa = PBXGroup;
+			children = (
+				146C1F34239F1F1200FE2918 /* 進捗状態.swift */,
+			);
+			path = "状況キャッシュ";
+			sourceTree = "<group>";
+		};
 		8E392EC621FD61D900CEDF18 = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +256,7 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				146C1F33239F1EFA00FE2918 /* 状況キャッシュ */,
 				8ED7EEFD239948B600A47C44 /* 記録 */,
 				145EE90423966D5C008BC8B4 /* 出力 */,
 				8EBD198422248C43000644C1 /* 作業ツリー */,
@@ -455,6 +469,7 @@
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
 				1460F9B92399DC02006B31C0 /* Utility.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
+				8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */,
 				1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */,
 				1498531B230BCEE7007734E0 /* コンストレイン情報.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
@@ -472,6 +487,7 @@
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
+				146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */,
 				14552F6622099B76000BDCB8 /* 指示書.swift in Sources */,
 				14363C4E238F891A0094FF00 /* 伝票種別.swift in Sources */,
 				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,

@@ -57,9 +57,9 @@ public extension 資材型 {
 
 
 public extension 資材型 {
-    static func fetch() -> [資材型]? {
+    static func fetch() throws -> [資材型] {
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.fetch(layout: "DataAPI_資材")
-        return list?.compactMap { 資材型($0) }
+        let list : [FileMakerRecord] = try db.fetch(layout: "DataAPI_資材")
+        return list.compactMap { 資材型($0) }
     }
 }

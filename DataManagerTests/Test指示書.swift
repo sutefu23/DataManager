@@ -12,7 +12,7 @@ import XCTest
 class TestOrder : XCTestCase {
     func testFind1() {
         var order : 指示書型?
-        let num = 19013047
+        let num = 伝票番号型(validNumber: 19013047)
         order = 指示書型.find(伝票番号: num)?.first
         XCTAssertEqual(num, order?.伝票番号)
         
@@ -26,7 +26,7 @@ class TestOrder : XCTestCase {
 
     func testProperty() {
         var order : 指示書型?
-        let num = 19013047
+        let num = 伝票番号型(validNumber: 19013047)
         order = 指示書型.find(伝票番号: num)?.first
         
         XCTAssertEqual(num, order?.伝票番号)

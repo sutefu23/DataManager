@@ -9,7 +9,9 @@
 import Foundation
 
 private var lock = NSLock()
-private var testCache: [Int : Bool] = [:]
+
+/// 存在確認された伝票の伝票番号
+private var testCache: Set<Int> = Set<Int>()
 
 func clear伝票番号Cache() {
     lock.lock()
@@ -39,11 +41,14 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible {
         lock.lock()
         defer { lock.unlock() }
         
-        if let result = testCache[self.整数値] { return result }
-        let orders = 指示書型.find(伝票番号: self)
-        let result = orders?.isEmpty == false
-        testCache[self.整数値] = result
-        return result
+        if testCache.contains(self.整数値) { return true }
+        let orders = try? 指示書型.find(伝票番号: self)
+        if orders?.isEmpty == false {
+            testCache.insert(self.整数値)
+            return true
+        } else {
+            return false
+        }
     }
     
     // MARK: -

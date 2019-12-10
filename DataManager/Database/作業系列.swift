@@ -34,12 +34,12 @@ public class 作業系列型 : Hashable {
             self.init(cache.record)
             return
         }
-        guard let series = 作業系列型.find(系列コード: code) else { return nil }
+        guard let series = (try? 作業系列型.find(系列コード: code)) else { return nil }
         seriesCache[code] = series
         self.init(series.record)
     }
     
-    init?(_ record:FileMakerRecord) {
+    init(_ record:FileMakerRecord) {
         self.record = record
     }
     
@@ -64,12 +64,12 @@ public class 作業系列型 : Hashable {
 }
 
 extension 作業系列型 {
-    static func find(系列コード: String) -> 作業系列型? {
+    static func find(系列コード: String) throws -> 作業系列型? {
         var query = [String:String]()
         query["系列コード"] = 系列コード
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord]? = db.find(layout: "DataAPI_作業系列", query: [query])
-        return list?.compactMap { 作業系列型($0) }.first
+        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_作業系列", query: [query])
+        return list.compactMap { 作業系列型($0) }.first
 
     }
 }

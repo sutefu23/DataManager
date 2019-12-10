@@ -10,11 +10,15 @@ import XCTest
 @testable import DataManager
 
 class TestOutputProgress: XCTestCase {
-/*
+
     func testOutputProgress() {
-        let record = 進捗出力型(登録日: Day(2019, 10, 17), 登録時間: Time(hour: 10, minute: 15), 伝票番号: 19120617, 工程: .レーザー, 作業内容: .完了, 社員: 社員型(社員コード: "023")!, 作業種別: .手直, 作業系列: .gx)
+        let num = 伝票番号型(validNumber: 1910_0011)
+        let day = Day(2019, 10, 17)
+        let time = Time(10, 15)
+        let date = Date(day, time)
+        let worker = 社員型(社員コード: "023")!
+        let record = 進捗出力型(伝票番号: num, 工程: .レーザー, 作業内容: .完了, 社員: worker, 登録日時間: date, 作業種別: .手直, 作業系列: .gx)
         let list = [record]
         list.exportToDB()
     }
-*/
 }

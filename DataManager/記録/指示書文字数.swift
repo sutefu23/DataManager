@@ -63,7 +63,7 @@ public class 指示書文字数型 {
     public init(指示書 order: 指示書型) {
         self.初期箱文字文字数 = 箱文字文字数型(指示書: order)
 
-        if let data = 箱文字文字数型.find(指示書: order) {
+        if let data = (try? 箱文字文字数型.find(指示書: order)) {
             self.recordId = data.recordId
             self.伝票番号 = order.伝票番号
             self.読み込み時箱文字文字数 = data.箱文字文字数
@@ -118,13 +118,13 @@ public class 指示書文字数型 {
         data["総文字数"] = "\(現箱文字文字数.総文字数)"
         return data
     }
-
+    
     func insert() {
         if self.recordId != nil { return }
         let data = self.fieldData
         let operation = BlockOperation {
             let db = FileMakerDB.system
-            if let recordId = db.insert(layout: 指示書文字数型.dbName, fields: data) {
+            if let recordId = (try? db.insert(layout: 指示書文字数型.dbName, fields: data)) {
                 self.recordId = recordId
             }
         }
@@ -137,7 +137,7 @@ public class 指示書文字数型 {
         let data = self.fieldData
         serialQueue.addOperation {
             let db = FileMakerDB.system
-            let _ = db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+            try? db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
         }
     }
     
@@ -145,7 +145,7 @@ public class 指示書文字数型 {
         guard let recordId = self.recordId else { return }
         serialQueue.addOperation {
             let db = FileMakerDB.system
-            let _ = db.delete(layout: 指示書文字数型.dbName, recordId: recordId)
+            try? db.delete(layout: 指示書文字数型.dbName, recordId: recordId)
         }
     }
     
@@ -159,7 +159,7 @@ public class 指示書文字数型 {
             let data = self.fieldData
             serialQueue.addOperation {
                 let db = FileMakerDB.system
-                let _ = db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+                try? db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
             }
         } else {
             self.insert()
@@ -168,20 +168,24 @@ public class 指示書文字数型 {
 }
 
 extension 箱文字文字数型 {
-    static func find(指示書 order: 指示書型) -> (recordId:String, 箱文字文字数: 箱文字文字数型)? {
-        var result: (recordId:String, 箱文字文字数: 箱文字文字数型)? = nil
+    static func find(指示書 order: 指示書型) throws -> (recordId:String, 箱文字文字数: 箱文字文字数型)? {
+        var result: Result<(recordId:String, 箱文字文字数: 箱文字文字数型)?, Error> = .success(nil)
         let operation = BlockOperation {
             let db = FileMakerDB.system
             var query = [String:String]()
             query["伝票番号"] = "\(order.伝票番号)"
-            let list : [FileMakerRecord]? = db.find(layout: 指示書文字数型.dbName, query: [query])
-            if let record = list?.first, let recordId = record.recordId {
-                let data = 箱文字文字数型(record)
-                result = (recordId, data)
+            do {
+                let list : [FileMakerRecord] = try db.find(layout: 指示書文字数型.dbName, query: [query])
+                if let record = list.first, let recordId = record.recordId {
+                    let data = 箱文字文字数型(record)
+                    result = .success((recordId, data))
+                }
+            } catch {
+                result = .failure(error)
             }
         }
         serialQueue.addOperation(operation)
         operation.waitUntilFinished()
-        return result
+        return try result.get()
     }
 }

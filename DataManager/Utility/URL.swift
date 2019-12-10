@@ -14,3 +14,17 @@ public let デスクトップURL : URL = {
     return desktopURL
 }()
 
+extension URL {
+    var isExists : Bool {
+        let url = self.standardizedFileURL
+        let path = url.path
+        
+        let fm = FileManager.default
+        return fm.fileExists(atPath: path)
+    }
+    
+    var isDirectory : Bool? {
+        let resource = try? self.resourceValues(forKeys: [.isDirectoryKey])
+        return resource?.isDirectory
+    }
+}

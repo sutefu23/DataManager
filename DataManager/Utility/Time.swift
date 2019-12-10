@@ -57,7 +57,7 @@ public struct Time : Hashable, Comparable, CustomStringConvertible {
         return left.second < right.second
     }
     
-    var fmImportString : String {
+    public var fmImportString : String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
     }
     

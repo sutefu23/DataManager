@@ -8,6 +8,9 @@
 
 import Foundation
 
+public let 標準始業時間 = Time(8, 40)
+public let 標準終業時間 = Time(19, 00)
+
 public enum 日付タイプ型 {
     case 出勤日
     case 休日
@@ -79,14 +82,14 @@ public extension Day {
     }
 }
 public struct 勤務時間型 {
-    static let standard : 勤務時間型 = 勤務時間型(始業: Time(8, 40), 終業: Time(19, 00), 休憩時間: [
+    static let standard : 勤務時間型 = 勤務時間型(始業: 標準始業時間, 終業: 標準終業時間, 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
         (from:Time(17,30), to:Time(17,40)),
         ])
 
-    static let handa : 勤務時間型 = 勤務時間型(始業: Time(8, 40), 終業: Time(20, 00), 休憩時間: [
+    static let handa : 勤務時間型 = 勤務時間型(始業: 標準始業時間, 終業: Time(20, 00), 休憩時間: [
         (from:Time(10,00), to:Time(10,10)),
         (from:Time(12,00), to:Time(13,00)),
         (from:Time(15,00), to:Time(15,10)),
@@ -138,7 +141,6 @@ public struct 勤務時間型 {
 }
 
 public let 標準カレンダー: カレンダー型 = 自動カレンダー型()
-//public let 標準カレンダー: カレンダー型 = 固定カレンダー型(day: 出勤日DB型.shared, time: 勤務時間型.standard)
 public let 半田カレンダー: カレンダー型 = 固定カレンダー型(day: 出勤日DB型.shared, time: 勤務時間型.handa)
 
 public protocol カレンダー型 {
@@ -203,7 +205,7 @@ class 自動カレンダー型 : カレンダー型 {
         
         private func fetchAllProgress() -> [進捗型] {
             if let list = self.allProgress { return list }
-            let list = 進捗型.find(工程: nil, 登録日: day) ?? []
+            let list = (try? 進捗型.find(工程: nil, 登録日: day)) ?? []
             self.allProgress = list
             return list
         }
@@ -221,7 +223,7 @@ class 自動カレンダー型 : カレンダー型 {
             if let state = state {
                 if let cache = map[state] { return cache }
                 if let time = fetchProgress(for: state).map({ $0.登録時間 }).max() {
-                    result = 勤務時間型(終業: max(time, Time(19, 0)))
+                    result = 勤務時間型(終業: max(time, 標準終業時間))
                 } else {
                     result = 勤務時間型.standard
                 }
@@ -229,7 +231,7 @@ class 自動カレンダー型 : カレンダー型 {
             } else {
                 if let cache = self.all { return cache }
                 if let time = fetchAllProgress().map({ $0.登録時間 }).max() {
-                    result = 勤務時間型(終業: max(time, Time(19, 0)))
+                    result = 勤務時間型(終業: max(time, 標準終業時間))
                 } else {
                     result = 勤務時間型.standard
                 }
@@ -287,5 +289,3 @@ class 自動カレンダー型 : カレンダー型 {
         return workTime
     }
 }
-
-

@@ -101,7 +101,7 @@ class FileMakerRecord {
     func object(forKey key:String) -> Data? {
         guard let url = self.url(forKey: key) else { return nil }
         let db = FileMakerDB.pm_osakaname
-        let data = db.downloadObject(url: url)
+        let data = try? db.downloadObject(url: url)
         return data
     }
 }
