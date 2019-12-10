@@ -55,7 +55,6 @@ public extension 資材型 {
     }
 }
 
-
 public extension 資材型 {
     static func fetch() throws -> [資材型] {
         let db = FileMakerDB.pm_osakaname

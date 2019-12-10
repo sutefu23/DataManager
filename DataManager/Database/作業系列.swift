@@ -18,10 +18,11 @@ func flush作業系列Cache() {
 }
 
 public class 作業系列型 : Hashable {
-    static let gx = 作業系列型(系列コード: "S001")!
-    static let ex = 作業系列型(系列コード: "S002")!
-    static let hp = 作業系列型(系列コード: "S003")!
-    static let water = 作業系列型(系列コード: "S004")!
+    public static let null = 作業系列型(系列コード: "S000")!
+    public static let gx = 作業系列型(系列コード: "S001")!
+    public static let ex = 作業系列型(系列コード: "S002")!
+    public static let hp = 作業系列型(系列コード: "S003")!
+    public static let water = 作業系列型(系列コード: "S004")!
 
     
     let record : FileMakerRecord
