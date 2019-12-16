@@ -14,6 +14,13 @@ public let デスクトップURL : URL = {
     return desktopURL
 }()
 
+public let 生産管理集計URL : URL = {
+    let fm = FileManager.default
+    let url = デスクトップURL.appendingPathComponent("生産管理集計", isDirectory: true)
+    try? fm.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+    return url
+}()
+
 extension URL {
     var isExists : Bool {
         let url = self.standardizedFileURL

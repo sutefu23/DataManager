@@ -62,8 +62,13 @@ class FileMakerRecord {
     func integer(forKey key:String) -> Int? {
         if let value = self[key] as? Int { return value }
         guard let str = string(forKey: key) else { return nil }
-        return Int(str)
-//        return self[key] as? Int
+        if let value = Int(str) { return value }
+        if str.last == "\r" {
+            return Int(str.dropLast())
+        } else {
+            return nil
+        }
+//        return Int(str)
     }
     
     func double(forKey key:String) -> Double? {

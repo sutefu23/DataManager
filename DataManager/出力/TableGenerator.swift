@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// 出力するファイル形式
 public enum CSVTarget {
     case excel
     case numbers
@@ -22,18 +23,28 @@ public enum CSVTarget {
     }
 }
 
-public class TableGenerator<S> {
+/// テーブルの形式を指定する
+public class TableGenerator<S, A> where A: Aggregator, A.Element == S {
     let columns: [TableColumn<S>]
-    
+    let aggregator: A
+
+    /// 空のジェネレーター
     public convenience init() {
-        self.init([])
+        let a = NullAggregator<S>() as! A
+        self.init([], aggregator: a)
     }
     
-    init(_ columns: [TableColumn<S>]) {
+    public convenience init(aggregator: A) {
+        self.init([], aggregator: aggregator)
+    }
+
+    init(_ columns: [TableColumn<S>], aggregator:A) {
         self.columns = columns
+        self.aggregator = aggregator
     }
-    
-    public func write(_ source: [S], of format: CSVTarget, to url: URL) throws {
+
+    /// 与えられたデータを元にテーブルを作成する
+    public func makeData(_ source: [S], of format: CSVTarget, to url: URL) -> Data {
         func join(rows: [String]) -> String {
             switch format {
             case .excel:
@@ -49,27 +60,110 @@ public class TableGenerator<S> {
             let line = join(rows: rows)
             lines.append(line)
         }
-        let footer = join(rows: columns.map { $0.makeFooter() })
-        lines.append(footer)
+        for lineResult in self.aggregator.makeResult(columns: columns) {
+            let footer = join(rows: lineResult)
+            lines.append(footer)
+        }
         let data = lines.joined().data(using: format.encoding, allowLossyConversion: true)
-        try data?.write(to: url, options: [.atomicWrite])
+        return data ?? Data()
     }
-    
-    private func nextTable(_ col: TableColumn<S>) -> TableGenerator<S> {
+
+    /// 与えられたデータをurlに出力する
+    public func write(_ source: [S], of format: CSVTarget, to url: URL) throws {
+        let data = makeData(source, of: format, to: url)
+        try data.write(to: url, options: .atomicWrite)
+    }
+
+    /// 与えられたデータをもとにHTMLを作成する
+    public func makeHtml(_ source: [S], title: String = "") -> String {
+        func makeRow(_ data:[String], tag:String = "td") -> String {
+            var line = "<tr>"
+            for d in data {
+                line += "<\(tag)>\(d)</\(tag)>"
+            }
+            line += "</tr>"
+            return line
+        }
+        var line : String = ""
+        line += "<!DOCTYPE html>"
+        line += "<html>"
+        line += "<head>"
+        line += "<title>\(title)</title>"
+        line += "</head>"
+        line += "<body>"
+        line += #"<p><table border="1">"#
+        let header = self.columns.map { $0.name }
+        line += makeRow(header)
+        for data in source {
+            let body = self.columns.map { $0.cell(of: data, for: .numbers)}
+            line += makeRow(body)
+        }
+        for lineResult in self.aggregator.makeResult(columns: columns) {
+            line += makeRow(lineResult)
+        }
+        line += "</table></p>"
+        line += "</body>"
+        line += "</html>"
+        return line
+    }
+
+    // MARK: -
+    private func nextTable(_ col: TableColumn<S>) -> TableGenerator<S, A> {
         var columns = self.columns
         columns.append(col)
-        return TableGenerator<S>(columns)
+        return TableGenerator<S, A>(columns, aggregator: self.aggregator)
     }
-    
-    public func col(_ name: String, _ getter: @escaping (S)->String?) -> TableGenerator<S> {
+    /// カラムを一つ追加したGeneratorを作成する
+    public func col(_ name: String, _ getter: @escaping (S)->String?) -> TableGenerator<S, A> {
         let col = StringColumn<S>(name: name, getter: getter)
         return nextTable(col)
     }
 }
 
-// MAK: -
-class TableColumn<S> {
-    let name: String
+/// 集計
+public protocol Aggregator: class {
+    associatedtype Element
+
+    /// 結果を出力する
+    func makeResult(column:TableColumn<Element>) -> [String]
+    func makeResult(columns:[TableColumn<Element>]) -> [[String]]
+}
+
+extension Aggregator {
+    public func makeResult(column:TableColumn<Element>) -> [String] { return [] }
+
+    public func makeResult(columns:[TableColumn<Element>]) -> [[String]] {
+        var results : [[String]] = []
+        var rows = 0
+        for col in columns {
+            let tmp = self.makeResult(column: col)
+            results.append(tmp)
+            rows = max(rows, tmp.count)
+        }
+        return results.map {
+            if $0.count == rows { return $0 }
+            var tmp = $0
+            for _ in 1...rows-$0.count {
+                tmp.append("")
+            }
+            return tmp
+        }
+    }
+}
+
+public class NullAggregator<S>: Aggregator {
+    public typealias Element = S
+}
+
+public class FooterAggregator<S>: Aggregator {
+    public typealias Element = S
+    /// 結果を出力する
+    public func makeResult(column:TableColumn<Element>) -> [String] { return [column.makeFooter()] }
+}
+
+// MAK: - 各種カラム
+public class TableColumn<S> {
+    public let name: String
     
     init(name: String) {
         self.name = name
@@ -248,5 +342,4 @@ class TimeIntervalColumn<S>: GetterColumn<S, TimeInterval> {
     }
 
 }
-
 

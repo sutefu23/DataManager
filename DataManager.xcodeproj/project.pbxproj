@@ -195,7 +195,6 @@
 				149BCAFC2208216B004066DD /* String.swift */,
 				149BCAFE22082BF2004066DD /* Lock.swift */,
 				14CEBDF1222DFDE40023D0DC /* URL.swift */,
-				8E4745E9238AA53900F104F5 /* TableGenerator.swift */,
 				14C066A923757D47001E73F2 /* Version.swift */,
 				1460F9B82399DC02006B31C0 /* Utility.swift */,
 			);
@@ -205,6 +204,7 @@
 		145EE90423966D5C008BC8B4 /* 出力 */ = {
 			isa = PBXGroup;
 			children = (
+				8E4745E9238AA53900F104F5 /* TableGenerator.swift */,
 				145EE90523967BBB008BC8B4 /* 進捗出力.swift */,
 			);
 			path = "出力";

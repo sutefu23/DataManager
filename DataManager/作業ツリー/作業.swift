@@ -187,8 +187,59 @@ extension Array where Element == 作業記録型 {
         }
         return result
     }
+    
+    public func workTime(mask: ClosedRange<Date>) -> TimeInterval {
+        func maskRange(from:Date?, to: Date?, mask: ClosedRange<Date>) -> ClosedRange<Date>? {
+            let resultFrom: Date = maxDate(from, mask.lowerBound)!
+            let resultTo: Date = minDate(to, mask.upperBound)!
+            return resultFrom <= resultTo ? resultFrom...resultTo : nil
+        }
+        var time: TimeInterval = 0
+        for record in self {
+            if let range = maskRange(from: record.開始日時, to: record.完了日時, mask: mask) {
+                time += record.工程.作業時間(from: range.lowerBound, to: range.upperBound)
+            }
+        }
+        return time
+    }
+    
+    public func maskedFrom(_ date:Date, fill:Bool) -> Date? {
+        let records: [Date] = self.compactMap {
+            if let end = $0.完了日時 {
+                if end < date { return nil }
+            }
+            if fill {
+                return maxDate($0.開始日時, date)
+            } else {
+                if let start = $0.開始日時, start >= date {
+                    return start
+                }
+                return nil
+            }
+        }
+        return records.min()
+    }
+    
+    public func maskedEnd(_ date:Date, fill:Bool) -> Date? {
+        let records: [Date] = self.compactMap {
+            if let start = $0.開始日時 {
+                if date < start { return nil }
+            }
+            if fill {
+                return minDate($0.完了日時, date)
+            } else {
+                if let end = $0.完了日時, end <= date {
+                    return end
+                }
+                return nil
+            }
+        }
+        return records.max()
+    }
+
 }
 
+// MARK: - 工程分析
 extension 指示書型 {
     func make進捗入力記録一覧() -> [作業記録型] {
         var registMap = Set<工程型>()
@@ -197,8 +248,35 @@ extension 指示書型 {
         var accepts : [工程型 : 進捗型] = [:]
         var froms : [工程型 : 進捗型] = [:]
         var completed : [工程型 : 進捗型] = [:]
+        var lastMarked : [工程型 : 進捗型] = [:]
+        func regist(work: 作業記録型, state: 工程型) {
+            works.append(work)
+            registMap.insert(state)
+            accepts[state] = nil
+            froms[state] = nil
+        }
         for progress  in self.進捗一覧 {
             let state = progress.工程
+            func 完了補完(前工程: 工程型, 後工程: 工程型) {
+                if state != 後工程 { return }
+                switch progress.作業内容 {
+                case .受取:
+                    if let from = froms[前工程], let work = 作業記録型(from, from: from.登録日時, to: progress.登録日時) {
+                        regist(work: work, state: 前工程)
+                    }
+                case .開始:
+                    if let from = froms[前工程], let work = 作業記録型(from, from: from.登録日時, to: progress.登録日時) {
+                        regist(work: work, state: 前工程)
+                    }
+                case .仕掛, .完了:
+                    return
+                }
+            }
+            完了補完(前工程: .立ち上がり, 後工程: .半田)
+            完了補完(前工程: .半田, 後工程: .裏加工)
+            完了補完(前工程: .立ち上がり_溶接, 後工程: .溶接)
+            完了補完(前工程: .溶接, 後工程: .裏加工_溶接)
+            
             switch progress.作業内容 {
             case .受取:
                 accepts[state] = progress
@@ -208,23 +286,31 @@ extension 指示書型 {
             case .完了:
                 if let from = froms[state] {
                     if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
-                        works.append(work)
-                        registMap.insert(state)
-                        accepts[state] = nil
-                        froms[state] = nil
+                        regist(work: work, state: state)
                     }
                 } else {
+                    func 開始補完(前工程: 工程型, 後工程: 工程型) -> Bool {
+                        if state != 後工程 { return false }
+                        if let coms = lastMarked[前工程], coms.作業内容 == .完了, let work = 作業記録型(progress, from: coms.登録日時, to: progress.登録日時) {
+                            regist(work: work, state: state)
+                            return true
+                        }
+                        return false
+                    }
+                    if 開始補完(前工程: .照合検査, 後工程: .立ち上がり) { break }
+                    if 開始補完(前工程: .立ち上がり, 後工程: .半田) { break }
+                    if 開始補完(前工程: .半田, 後工程: .裏加工) { break }
+                    if 開始補完(前工程: .照合検査, 後工程: .立ち上がり_溶接) { break }
+                    if 開始補完(前工程: .立ち上がり_溶接, 後工程: .溶接) { break }
+                    if 開始補完(前工程: .溶接, 後工程: .裏加工_溶接) { break }
                     switch state {
                     case .営業:
                         if let work = 作業記録型(progress, from: self.登録日時, to: progress.登録日時) {
-                            works.append(work)
-                            registMap.insert(state)
+                            regist(work: work, state: state)
                         }
                     case .管理:
                         if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
-                            works.append(work)
-                            accepts[state] = nil
-                            registMap.insert(state)
+                            regist(work: work, state: state)
                         }
                     default:
                         completed[state] = progress
@@ -233,6 +319,7 @@ extension 指示書型 {
             case .仕掛:
                 break
             }
+            lastMarked[state] = progress
         }
         let stops = self.保留校正一覧 + make管理戻し()
         for work in works {

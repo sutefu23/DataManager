@@ -19,7 +19,7 @@ public enum 伝票種別型 {
             self = .通常
         case "クレーム":
             self = .クレーム
-        case "作直":
+        case "再製":
             self = .再製
         default:
             return nil
@@ -33,7 +33,7 @@ public enum 伝票種別型 {
         case .クレーム:
             return "クレーム"
         case .再製:
-            return "作直"
+            return "再製"
         }
     }
 }

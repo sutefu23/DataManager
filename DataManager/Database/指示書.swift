@@ -190,15 +190,19 @@ public class 指示書型 {
         for (l, r) in zip(left, right) {
             total += l * r
         }
-        if self.伝票種類 == .箱文字 {
-            let type = self.仕様
-            if type.contains("W") || type.contains("リング") || (type.contains("表") && type.contains("バック")) {
-                total *= 2
-            }
-        }
-        return total
+        return self.isDouble ? total*2 : total
     }
 
+    public var isDouble: Bool {
+        switch self.伝票種類 {
+        case .箱文字:
+            let type = self.仕様
+            return type.contains("W") || type.contains("Ｗ") || type.contains("リング") || (type.contains("表") && type.contains("バック"))
+        case .切文字, .エッチング, .加工, .外注, .校正:
+            return false
+        }
+    }
+    
     public var is外注塗装あり: Bool {
         return self.外注一覧.contains { 外注先会社コード.contains($0.会社コード) }
     }
@@ -318,17 +322,11 @@ public class 指示書型 {
     public lazy var 指示書文字数: 指示書文字数型 = 指示書文字数型(指示書: self)
     
     public func showInfo() {
-        guard let url = URL(string: "fmp://outsideuser:outsideuser!@192.168.1.153/viewer?script=search&param=\(self.伝票番号)") else { return }
-        #if os(macOS)
-        let ws = NSWorkspace.shared
-        ws.open(url)
-        #elseif os(iOS)
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-        #else
-        
-        #endif
+        self.伝票番号.showInfo()
+    }
+    
+    func prepareCache() {
+        let _ = self.工程別作業記録
     }
 }
 
@@ -382,6 +380,36 @@ public extension 指示書型 {
     }
     
     static func find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
+        let progress = try 進捗型.find(登録期間: range, 伝票種類: type)
+        let list = Set<伝票番号型>(progress.map{ $0.伝票番号 })
+        let queue = OperationQueue()
+        let queue2 = OperationQueue()
+        let lock = NSLock()
+        queue.maxConcurrentOperationCount = 2
+        var results: [Result<指示書型, Error>] = []
+        results.reserveCapacity(list.count)
+        for number in list {
+            queue.addOperation {
+                let result: Result<指示書型, Error>
+                do {
+                    guard let order = try 指示書型.findDirect(伝票番号: number) else { return }
+                    queue2.addOperation { order.prepareCache() }
+                    result = .success(order)
+                } catch {
+                    result = .failure(error)
+                }
+                lock.lock()
+                results.append(result)
+                lock.unlock()
+            }
+        }
+        queue.waitUntilAllOperationsAreFinished()
+        queue2.waitUntilAllOperationsAreFinished()
+        return try results.map { try $0.get() }
+    }
+    
+    static func old_find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
+        
         var query = [String:String]()
 //        query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
@@ -447,7 +475,7 @@ public extension 指示書型 {
         }
     }
     
-    static func find2(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
+    static func old_find2(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
         var query = [String:String]()
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"

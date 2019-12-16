@@ -14,9 +14,7 @@ public struct Time : Hashable, Comparable, CustomStringConvertible {
     public let second : Int
     
     public init() {
-        self.hour = 0
-        self.minute = 0
-        self.second = 0
+        self = Date().time
     }
     
     public init(hour:Int, minute:Int, second:Int = 0) {

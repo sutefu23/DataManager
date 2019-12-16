@@ -6,7 +6,11 @@
 //  Copyright © 1 Reiwa 四熊泰之. All rights reserved.
 //
 
-import Foundation
+#if os(macOS)
+import Cocoa
+#else
+import UIKit
+#endif
 
 private var lock = NSLock()
 
@@ -93,4 +97,18 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible {
         return String(self.整数値)
     }
     
+    public func showInfo() {
+        guard let url = URL(string: "fmp://outsideuser:outsideuser!@192.168.1.153/viewer?script=search&param=\(self)") else { return }
+        #if os(macOS)
+        let ws = NSWorkspace.shared
+        ws.open(url)
+        #elseif os(iOS)
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        #else
+        
+        #endif
+    }
+
 }

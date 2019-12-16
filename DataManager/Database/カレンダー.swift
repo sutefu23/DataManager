@@ -9,7 +9,7 @@
 import Foundation
 
 public let 標準始業時間 = Time(8, 40)
-public let 標準終業時間 = Time(19, 00)
+public let 標準終業時間 = Time(17, 30)
 
 public enum 日付タイプ型 {
     case 出勤日
