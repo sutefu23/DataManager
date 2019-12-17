@@ -21,7 +21,6 @@ struct 箱文字日報Data型 {
     var 作業日: Day
     var 件数: Int?
     var 分: Int?
-    var 文字数: Int?
     var 備考: String
     
     init?(_ record: FileMakerRecord) {
@@ -31,16 +30,14 @@ struct 箱文字日報Data型 {
         self.作業日 = day
         self.件数 = record.integer(forKey: "件数")
         self.分 = record.integer(forKey: "分")
-        self.文字数 = record.integer(forKey: "文字数")
         self.備考 = record.string(forKey: "備考") ?? ""
     }
     
-    init(工程: 工程型, 作業日: Day, 件数: Int?, 分: Int?, 文字数: Int?, 備考: String) {
+    init(工程: 工程型, 作業日: Day, 件数: Int?, 分: Int?, 備考: String) {
         self.工程 = 工程
         self.作業日 = 作業日
         self.件数 = 件数
         self.分 = 分
-        self.文字数 = 文字数
         self.備考 = 備考
     }
     
@@ -50,7 +47,6 @@ struct 箱文字日報Data型 {
         data["工程コード"] = 工程.code
         if let number = self.件数 { data["件数"] = "\(number)" } else { data["件数"] = "" }
         if let number = self.分 { data["分"] = "\(number)" } else { data["分"] = "" }
-        if let number = self.文字数 { data["文字数"] = "\(number)" } else { data["文字数"] = "" }
         data["備考"] = 備考
         return data
     }
@@ -76,17 +72,13 @@ public class 箱文字日報型 {
         get { data.分 }
         set { data.分 = newValue }
     }
-    public var 文字数: Int? {
-        get { data.文字数 }
-        set { data.文字数 = newValue }
-    }
     public var 備考: String {
         get { data.備考 }
         set { data.備考 = newValue }
     }
 
-    public init(工程: 工程型, 作業日: Day, 件数: Int?, 分: Int?, 文字数: Int?, 備考: String) {
-        self.data = 箱文字日報Data型(工程: 工程, 作業日: 作業日, 件数: 件数, 分: 分, 文字数: 文字数, 備考: 備考)
+    public init(工程: 工程型, 作業日: Day, 件数: Int?, 分: Int?, 備考: String) {
+        self.data = 箱文字日報Data型(工程: 工程, 作業日: 作業日, 件数: 件数, 分: 分, 備考: 備考)
         self.recordId = nil
     }
     

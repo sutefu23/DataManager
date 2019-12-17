@@ -89,6 +89,11 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return token
     }
     
+    func checkDBAccess() -> Bool {
+        let token = try? self.prepareToken()
+        return token != nil
+    }
+    
     private func logout(with token: String) {
         let url = self.dbURL.appendingPathComponent("sessions").appendingPathComponent(token)
         var request = URLRequest(url: url)

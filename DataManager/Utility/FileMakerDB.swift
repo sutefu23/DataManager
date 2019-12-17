@@ -117,5 +117,13 @@ public final class FileMakerDB {
         defer { stockSession(session) }
         try session.execute(layout: layout, script: script, param: param)
     }
+    
+    /// DBにアクセス可能か調べる
+    public static func testDBAccess() -> Bool {
+        let db = pm_osakaname
+        let session = db.prepareSesion()
+        defer { db.stockSession(session)}
+        return session.checkDBAccess()
+    }
 }
 

@@ -42,12 +42,12 @@ public struct 進捗出力型 {
         self.作業系列 = progress.作業系列
     }
     
-    public init?(csvLine line:String) {
+    public init?(csvLine line:String) throws {
         let cols = line.split(separator: ",")
         if cols.count < 6 { return nil }
         guard let day = Day(fmDate: cols[0]) else { return nil }
         guard let time = Time(fmTime:cols[1]) else { return nil }
-        guard let number = 伝票番号型(invalidString: cols[2]) else { return nil }
+        guard let number = try 伝票番号型(invalidString: cols[2]) else { return nil }
         guard let process = 工程型(cols[3]) else { return nil }
         guard let state = 作業内容型(cols[4]) else { return nil }
         guard let worker = 社員型(社員コード: cols[5]) else { return nil }
@@ -174,11 +174,18 @@ extension Array where Element == 進捗出力型 {
         var targets : [進捗出力型] = []
         if url.isExists {
             let source = try String(contentsOf: url, encoding: .utf8)
-            source.enumerateLines { (line, _) in
-                if let pl = 進捗出力型(csvLine: line), !pl.isDBに重複あり {
-                    targets.append(pl)
+            var convertError: Error? = nil
+            source.enumerateLines { (line, stop) in
+                do {
+                    if let pl = try 進捗出力型(csvLine: line), !pl.isDBに重複あり {
+                        targets.append(pl)
+                    }
+                } catch {
+                    convertError = error
+                    stop = true
                 }
             }
+            if let error = convertError { throw error }
         }
         self.init(targets)
     }

@@ -239,6 +239,29 @@ extension Array where Element == 作業記録型 {
 
 }
 
+class ProgressCounter {
+    var acc: Int = 0
+    var start: Int = 0
+    var work: Int = 0
+    var comp: Int = 0
+    
+    init(_ work: 作業内容型) {
+        self.append(work)
+    }
+    
+    func append(_ work: 作業内容型) {
+        switch work {
+        case .受取: self.acc += 1
+        case .開始: self.start += 1
+        case .仕掛: self.work += 1
+        case .完了: self.comp += 1
+        }
+    }
+    
+    var lessComp: Bool { return comp < start }
+    var lessStart: Bool { return start < comp }
+}
+
 // MARK: - 工程分析
 extension 指示書型 {
     func make進捗入力記録一覧() -> [作業記録型] {
@@ -255,10 +278,21 @@ extension 指示書型 {
             accepts[state] = nil
             froms[state] = nil
         }
-        for progress  in self.進捗一覧 {
+        let list = self.進捗一覧.filter { $0.作業種別 == .通常 }
+        var countMap : [工程型 : ProgressCounter] = [:]
+        for progress in list {
+            let process = progress.工程
+            if let counter = countMap[process] {
+                counter.append(progress.作業内容)
+            } else {
+                let counter = ProgressCounter(progress.作業内容)
+                countMap[process] = counter
+            }
+        }
+        for progress  in list {
             let state = progress.工程
             func 完了補完(前工程: 工程型, 後工程: 工程型) {
-                if state != 後工程 { return }
+                if state != 後工程 || countMap[前工程]?.lessComp != true { return }
                 switch progress.作業内容 {
                 case .受取:
                     if let from = froms[前工程], let work = 作業記録型(from, from: from.登録日時, to: progress.登録日時) {
@@ -290,7 +324,7 @@ extension 指示書型 {
                     }
                 } else {
                     func 開始補完(前工程: 工程型, 後工程: 工程型) -> Bool {
-                        if state != 後工程 { return false }
+                        if state != 後工程 || countMap[前工程]?.lessStart != true { return false }
                         if let coms = lastMarked[前工程], coms.作業内容 == .完了, let work = 作業記録型(progress, from: coms.登録日時, to: progress.登録日時) {
                             regist(work: work, state: state)
                             return true

@@ -21,6 +21,15 @@ public enum FileMakerError: LocalizedError {
     
     public var errorDescription: String? {
         switch self {
+        case .tokenCreate(message: _): return "DBに接続できませんでした"
+        case .response(message: _): return "正常な情報処理がされていません"
+        default:
+            return ""
+        }
+    }
+    
+    public var failureReason: String? {
+        switch self {
         case .tokenCreate(message: let message): return "トークン生成失敗(\(message))"
         case .response(message: let message): return "サーバーエラー: \(message)"
         default:

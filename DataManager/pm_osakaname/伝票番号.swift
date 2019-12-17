@@ -30,24 +30,24 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible {
         self.整数値 = validNumber
     }
 
-    public init?<S: StringProtocol>(invalidString:S) {
+    public init?<S: StringProtocol>(invalidString:S) throws {
         guard let number = Int(invalidString) else { return nil }
-        self.init(invalidNumber:number)
+        try self.init(invalidNumber:number)
     }
     
-    public init?(invalidNumber:Int) {
+    public init?(invalidNumber:Int) throws {
         if !伝票番号型.isValidNumber(invalidNumber) { return nil }
         self.整数値 = invalidNumber
-        if testIsValid() == false { return nil }
+        if try testIsValid() == false { return nil }
     }
     
-    public func testIsValid() -> Bool {
+    public func testIsValid() throws -> Bool {
         lock.lock()
         defer { lock.unlock() }
         
         if testCache.contains(self.整数値) { return true }
-        let orders = try? 指示書型.find(伝票番号: self)
-        if orders?.isEmpty == false {
+        let orders = try 指示書型.find(伝票番号: self)
+        if orders.isEmpty == false {
             testCache.insert(self.整数値)
             return true
         } else {
