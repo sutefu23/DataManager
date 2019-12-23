@@ -16,7 +16,7 @@ private let serialQueue: OperationQueue = {
 }()
 
 struct 箱文字日報Data型 {
-    static let dbName = "DataAPI_箱文字日報"
+    static let dbName = "DataAPI_2"
     var 工程: 工程型
     var 作業日: Day
     var 件数: Int?

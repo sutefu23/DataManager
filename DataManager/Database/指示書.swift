@@ -328,6 +328,16 @@ public class 指示書型 {
     func prepareCache() {
         let _ = self.工程別作業記録
     }
+    
+    public lazy var レーザー加工機: Set<レーザー加工機型> = {
+        var set = Set<レーザー加工機型>()
+        for progress in self.進捗一覧 where progress.作業内容 == .開始 {
+            if let machine = progress.レーザー加工機 {
+                set.insert(machine)
+            }
+        }
+        return set
+    }()
 }
 
 // MARK: - 検索パターン
@@ -379,7 +389,7 @@ public extension 指示書型 {
         return list.compactMap { 指示書型($0) }
     }
     
-    static func find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
+    static func new_find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
         let progress = try 進捗型.find(登録期間: range, 伝票種類: type)
         let list = Set<伝票番号型>(progress.map{ $0.伝票番号 })
         let queue = OperationQueue()
@@ -408,10 +418,10 @@ public extension 指示書型 {
         return try results.map { try $0.get() }
     }
     
-    static func old_find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
+    static func find(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
         
         var query = [String:String]()
-//        query["受注日"] = "<=\(range.upperBound.fmString)"
+        query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])

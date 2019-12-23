@@ -58,7 +58,7 @@ public class 指示書文字数型 {
     public static func synchronizeAll() {
         serialQueue.waitUntilAllOperationsAreFinished()
     }
-    static let dbName = "DataAPI_指示書文字数"
+    static let dbName = "DataAPI_1"
 
     public init(指示書 order: 指示書型) {
         self.初期箱文字文字数 = 箱文字文字数型(指示書: order)

@@ -237,8 +237,9 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                     let response  = json["response"] as? [String: Any],
                     let messages  = json["messages"] as? [[String: Any]],
                     let message = messages[0]["message"] as? String,
-                    let code      = messages[0]["code"] as? String else { return }
-                isOk = (Int(code) == 0)
+                    let code      = messages[0]["code"] as? String,
+                    let errorCode = Int(code) else { return }
+                isOk = (errorCode == 0 || errorCode == 401)
                 errorMessage = message
                 if let res = response["data"] {
                     newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []

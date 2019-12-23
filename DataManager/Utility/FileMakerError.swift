@@ -21,19 +21,22 @@ public enum FileMakerError: LocalizedError {
     
     public var errorDescription: String? {
         switch self {
-        case .tokenCreate(message: _): return "DBに接続できませんでした"
+        case .tokenCreate(message: _): return "データベースに接続できませんでした"
+        case .fetch(message: _): return "データベースからの読み取りができなかった"
+        case .find(message: _): return "データベースの検索ができなかった"
+        case .delete(message: _): return "データベースから削除できなかった"
+        case .update(message: _): return "データベースの更新ができなかった"
+        case .insert(message: _): return "データベースへの登録ができなかった"
+        case .execute(message: _): return "データベースのスクリプトが実行できなかった"
+        case .download(message: _): return "データベースからのダウンロードができなかった"
         case .response(message: _): return "正常な情報処理がされていません"
-        default:
-            return ""
         }
     }
     
     public var failureReason: String? {
         switch self {
-        case .tokenCreate(message: let message): return "トークン生成失敗(\(message))"
-        case .response(message: let message): return "サーバーエラー: \(message)"
-        default:
-            return ""
+        case .tokenCreate(message: let mes), .fetch(message: let mes), .find(message: let mes), .delete(message: let mes), .update(message: let mes), .insert(message: let mes), .execute(message: let mes), .download(message: let mes), .response(message: let mes):
+            return "サーバーエラー: \(mes)"
         }
     }
 }

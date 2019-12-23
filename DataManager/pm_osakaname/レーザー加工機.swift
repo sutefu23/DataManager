@@ -14,4 +14,14 @@ public enum レーザー加工機型 {
     case hp
     case sws
     case gx
+    
+    public var name: String {
+        switch self {
+        case .ex: return "eX"
+        case .gx: return "GX"
+        case .hp: return "HP"
+        case .sws: return "SWS"
+        case .hv: return "HV"
+        }
+    }
 }

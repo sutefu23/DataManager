@@ -49,6 +49,8 @@ public class 進捗型 : Equatable {
     }
     
     public lazy var 作業種別: 作業種別型 = {
+//        guard let str = self.record.string(forKey: "作業種別コード") else { return .通常 }
+//        return 作業種別型(str)
         作業種別型(self.record.string(forKey: "作業種別コード") ?? "")
     }()
     
@@ -88,10 +90,11 @@ public extension 進捗型 {
             break
         }
         guard self.工程 == .レーザー || self.工程 == .レーザー（アクリル） else { return nil }
+        if self.登録日 >= Day(2019, 12, 6) { return nil }
         guard let number = self.社員番号 else { return nil }
         switch number {
         case 61:
-            return .hv
+            return self.登録日 < Day(2019, 11, 10) ? .hv : .gx
         case 84:
             return .ex
         case 38:
@@ -114,15 +117,14 @@ public extension Array where Element == 進捗型 {
         return state
     }
     
-    func 作業内容(工程:[工程型], 日時:Day? = nil) -> 作業内容型? {
-        var state : 作業内容型? = nil
-        for progress in self where 工程.contains(progress.工程) {
-            if let day = 日時, progress.登録日 >= day { continue }
-            state = progress.作業内容
-        }
-        return state
-    }
-
+//    func 作業内容(工程:[工程型], 日時:Day? = nil) -> 作業内容型? {
+//        var state : 作業内容型? = nil
+//        for progress in self where 工程.contains(progress.工程) {
+//            if let day = 日時, progress.登録日 >= day { continue }
+//            state = progress.作業内容
+//        }
+//        return state
+//    }
 }
 
 public extension Sequence where Element == 進捗型 {

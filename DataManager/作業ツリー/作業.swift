@@ -174,7 +174,7 @@ public class 作業記録型 {
 }
 
 extension Array where Element == 作業記録型 {
-    public func 累積作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
+    public func calc累積作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
         var result : TimeInterval? = nil
         for work in self {
             if let time = work.calc作業時間(to: to) {
@@ -264,6 +264,18 @@ class ProgressCounter {
 
 // MARK: - 工程分析
 extension 指示書型 {
+    func setup関連保留校正処理(_ works:[作業記録型]) {
+        let stops = self.保留校正一覧 + make管理戻し()
+        for work in works {
+            guard let range = work.作業期間 else { continue }
+            for stop in stops {
+                if range.overlaps(stop.開始日時...stop.完了日時) {
+                    work.関連保留校正.append(stop)
+                }
+            }
+        }
+    }
+    
     func make進捗入力記録一覧() -> [作業記録型] {
         var registMap = Set<工程型>()
         var works = [作業記録型]()
@@ -355,15 +367,7 @@ extension 指示書型 {
             }
             lastMarked[state] = progress
         }
-        let stops = self.保留校正一覧 + make管理戻し()
-        for work in works {
-            guard let range = work.作業期間 else { continue }
-            for stop in stops {
-                if range.overlaps(stop.開始日時...stop.完了日時) {
-                    work.関連保留校正.append(stop)
-                }
-            }
-        }
+        self.setup関連保留校正処理(works)
         for (state, progress) in froms {
             guard !registMap.contains(state) else { continue }
             if let work = 作業記録型(progress, from: progress.登録日時, to: nil) {
@@ -407,4 +411,26 @@ extension 指示書型 {
         }
         return list
     }
+    
+    public func make作業区間(state: 工程型, from: (process: 工程型, state: 作業内容型), to: (process: 工程型, state: 作業内容型)) -> [作業記録型] {
+        var head: 進捗型? = nil
+        var works: [作業記録型] = []
+        for progress in self.進捗一覧 {
+            if progress.工程 == from.process && progress.作業内容 == from.state {
+                head = progress
+            } else if progress.工程 == to.process && progress.作業内容 == to.state {
+                if let work = 作業記録型(head, type: .通常, state: state, from: head?.登録日時, to: progress.登録日時) {
+                    works.append(work)
+                }
+            }
+        }
+        self.setup関連保留校正処理(works)
+        return works
+    }
+
+    public func calc作業時間(state: 工程型, from: (process: 工程型, state: 作業内容型), to: (process: 工程型, state: 作業内容型)) -> TimeInterval? {
+        let works = self.make作業区間(state: state, from: from, to: to)
+        return works.calc累積作業時間()
+    }
+
 }
