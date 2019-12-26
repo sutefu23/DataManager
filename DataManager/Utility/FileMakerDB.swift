@@ -13,6 +13,29 @@ enum FileMakerSortType : String, Encodable {
     case 降順 = "descend"
 }
 
+private let serverCache = FileMakerServerCache()
+class FileMakerServerCache {
+    private var cache : [String : FileMakerServer] = [:]
+    private let lock = NSLock()
+    
+    func server(_ name: String) -> FileMakerServer {
+        lock.lock()
+        defer { lock.unlock() }
+        if let server = cache[name] { return server}
+        let server = FileMakerServer(name)
+        cache[name] = server
+        return server
+    }
+    
+    func logoutAll() {
+        lock.lock()
+        defer { lock.unlock() }
+        if cache.isEmpty { return }
+        let queue = OperationQueue()
+        cache.values.forEach { $0.logout(queue) }
+    }
+}
+
 struct FileMakerSortItem : Encodable {
     let fieldName : String
     let sortOrder : FileMakerSortType
@@ -20,62 +43,103 @@ struct FileMakerSortItem : Encodable {
 
 let maxConnection = 3
 
-public final class FileMakerDB {
-    public static func flushSessions() {
-        FileMakerDB.pm_osakaname.closeAllSessions()
-    }
-    
-//    static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
-    static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
-    static let laser : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
-    static let system : FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
-//    static let pm_osakaname2 : FileMakerDB = FileMakerDB(server: "192.168.1.155", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
-
-    let dbURL : URL
-    let user : String
-    let password : String
-    
-    init(server:String, filename:String, user:String, password:String) {
-        let serverURL = "https://\(server)/fmi/data/v1/databases/\(filename)/"
-        self.dbURL = URL(string: serverURL)!
-        self.user = user
-        self.password = password
-        self.sem = DispatchSemaphore(value: maxConnection)
-    }
-
+class FileMakerServer : Hashable {
     private var sessions : [FileMakerSession] = []
-    private let lock = Lock()
+    private let lock = NSLock()
     private let sem : DispatchSemaphore
 
-    func closeAllSessions() {
-        sessions.forEach { $0.logout() }
-        sessions.removeAll()
+    let serverURL: URL
+    let name: String
+    
+    init(_ server: String) {
+        self.name = server
+        let serverURL = URL(string: "https://\(server)/fmi/data/v1/databases/")!
+        self.serverURL = serverURL
+        self.sem = DispatchSemaphore(value: maxConnection)
     }
     
-    private func prepareSesion() -> FileMakerSession {
+    func makeURL(with filename: String) -> URL {
+        return self.serverURL.appendingPathComponent(filename)
+    }
+    
+    // MARK: - Hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+    
+    static func ==(left:FileMakerServer, right: FileMakerServer) -> Bool {
+        return left.name == right.name
+    }
+    
+    func pullSession(url: URL, user: String, password: String) -> FileMakerSession {
         sem.wait()
         lock.lock()
         defer { lock.unlock() }
-        if let session = sessions.last {
-            sessions.removeLast(1)
-            return session
-        } else {
-            let session = FileMakerSession(url: self.dbURL, user: self.user, password: self.password)
-            return session
+        for (index, session) in sessions.enumerated() {
+            if session.dbURL == url {
+                sessions.remove(at: index)
+                return session
+            }
         }
+        if sessions.count == maxConnection, let session = sessions.first {
+            sessions.removeFirst(1)
+            session.logout()
+        }
+        let session = FileMakerSession(url: url, user: user, password: password)
+        return session
     }
     
-    private func stockSession(_ session:FileMakerSession) {
+    func putSession(_ session: FileMakerSession) {
         lock.lock()
         self.sessions.append(session)
         lock.unlock()
         sem.signal()
     }
     
+    func logout(_ queue: OperationQueue) {
+        lock.lock()
+        for session in sessions {
+            queue.addOperation { session.logout() }
+        }
+        lock.unlock()
+    }
+}
+
+public final class FileMakerDB {
+    static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
+    static let laser : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
+    static let system : FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
+
+    let dbURL : URL
+    let server: FileMakerServer
+    let user : String
+    let password : String
+
+    init(server:String, filename:String, user:String, password:String) {
+        self.server = serverCache.server(server)
+        self.dbURL = self.server.makeURL(with: filename)
+        self.user = user
+        self.password = password
+    }
+
+    private func execute(_ work:(FileMakerSession) throws -> Void) rethrows {
+        let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+        defer { server.putSession(session) }
+        try work(session)
+    }
+
+    private func execute2<T>(_ work:(FileMakerSession) throws -> T) rethrows -> T {
+         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+         defer { server.putSession(session) }
+         return try work(session)
+     }
+
+    func executeScript(layout: String, script:String, param: String) throws {
+        try self.execute { try $0.execute(layout: layout, script: script, param: param) }
+    }
+
     func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = [], portals:[FileMakerPortal] = []) throws -> [FileMakerRecord] {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        return try session.fetch(layout: layout, sortItems: sortItems, portals: portals)
+        return try self.execute2 { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
     }
     
     func find(layout:String, recordId:Int) throws -> FileMakerRecord? {
@@ -83,47 +147,31 @@ public final class FileMakerDB {
     }
     
     func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) throws -> [FileMakerRecord] {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        return try session.find(layout: layout, query: query, sortItems: sortItems, max: max)
+        return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
     }
     
     func downloadObject(url:URL) throws -> Data? {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        return try session.download(url)
+        return try self.execute2 { try $0.download(url) }
     }
     
     func update(layout:String, recordId:String, fields:[String:String]) throws {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        try session.update(layout: layout, recordId: recordId,fields: fields)
+        return try self.execute { try $0.update(layout: layout, recordId: recordId,fields: fields) }
     }
     
     func delete(layout: String, recordId: String) throws {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        try session.delete(layout: layout, recordId: recordId)
+        return try self.execute { try $0.delete(layout: layout, recordId: recordId) }
     }
     
     @discardableResult func insert(layout:String, fields:[String:String]) throws -> String {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        return try session.insert(layout: layout, fields: fields)
-    }
-    
-    func execute(layout: String, script:String, param: String) throws {
-        let session = self.prepareSesion()
-        defer { stockSession(session) }
-        try session.execute(layout: layout, script: script, param: param)
+        return try self.execute2 { try $0.insert(layout: layout, fields: fields) }
     }
     
     /// DBにアクセス可能か調べる
     public static func testDBAccess() -> Bool {
-        let db = pm_osakaname
-        let session = db.prepareSesion()
-        defer { db.stockSession(session)}
-        return session.checkDBAccess()
+        return pm_osakaname.execute2 { $0.checkDBAccess() }
+    }
+    
+    public static func logputAll() {
+        serverCache.logoutAll()
     }
 }
-

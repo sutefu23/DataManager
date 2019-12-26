@@ -117,6 +117,9 @@ public class 指示書型 {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
         return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }()
+    public lazy var 作業進捗一覧: [進捗型] = {
+        return self.進捗一覧.filter { $0.作業種別 != .その他 }
+    }()
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {
         guard let list : [FileMakerRecord] = record.portal(forKey: "指示書変更内容履歴テーブル") else { return [] }

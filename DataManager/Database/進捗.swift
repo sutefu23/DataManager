@@ -108,6 +108,10 @@ public extension 進捗型 {
 }
 
 public extension Array where Element == 進捗型 {
+    var その他以外: [進捗型] {
+        return self.filter { $0.作業種別 != .その他 }
+    }
+    
     func 作業内容(工程:工程型, 日時:Day? = nil) -> 作業内容型? {
         var state : 作業内容型? = nil
         for progress in self where progress.工程 == 工程 {

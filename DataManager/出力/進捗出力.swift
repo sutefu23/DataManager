@@ -141,7 +141,7 @@ extension Array where Element == 進捗出力型 {
             }
         }
         if count > 0 {
-            try db.execute(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
+            try db.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
         }
     }
     

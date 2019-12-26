@@ -9,6 +9,7 @@
 import XCTest
 @testable import DataManager
 
+/*
 class TestOutputProgress: XCTestCase {
 
     func testOutputProgress() {
@@ -17,8 +18,9 @@ class TestOutputProgress: XCTestCase {
         let time = Time(10, 15)
         let date = Date(day, time)
         let worker = 社員型(社員コード: "023")!
-        let record = 進捗出力型(伝票番号: num, 工程: .レーザー, 作業内容: .完了, 社員: worker, 登録日時間: date, 作業種別: .手直, 作業系列: .gx)
+        let record = 進捗出力型(伝票番号: num, 工程: .レーザー, 作業内容: .完了, 社員: worker, 登録日時: date, 作業種別: .手直, 作業系列: .gx)
         let list = [record]
         list.exportToDB()
     }
 }
+*/

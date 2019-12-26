@@ -12,7 +12,7 @@ import XCTest
 class TestItem: XCTestCase {
 
     func testFetch() {
-        guard let items = 資材型.fetch() else {
+        guard let items = (try? 資材型.fetch()) else {
             XCTAssert(false)
             return
         }

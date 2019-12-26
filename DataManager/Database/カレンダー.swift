@@ -189,8 +189,6 @@ class 固定カレンダー型 : カレンダー型 {
 
 class 自動カレンダー型 : カレンダー型 {
    
-    
-    let lock = Lock()
     class DayDB {
         let day: Day
         private let lock = NSLock()
@@ -240,6 +238,7 @@ class 自動カレンダー型 : カレンダー型 {
             return result
         }
     }
+    private let lock = NSLock()
     private let dayDB: 出勤日DB型
     
     var db: [Day: DayDB]
