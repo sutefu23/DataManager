@@ -87,20 +87,6 @@ public struct 工程型 : Hashable, Comparable, Codable {
     }
 }
 
-//private func makeCode(_ state:工程型) -> String {
-//    let number = state.number
-//    let main = number / 100
-//    let sub = number % 100
-//    var str = "P"
-//    if main < 100 { str += "0" }
-//    if main < 10 { str += "0" }
-//    str += "\(main)"
-//    if sub > 0 {
-//        str += String(Character(UnicodeScalar(UInt8(sub+64))))
-//    }
-//    return str
-//}
-
 class 工程名称DB型 {
     var map : [工程型 : String]
     var reversedMap : [String : 工程型]

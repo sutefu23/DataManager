@@ -24,7 +24,7 @@ struct 箱文字日報Data型 {
     var 備考: String
     
     init?(_ record: FileMakerRecord) {
-        guard let state = record.工程(forKey: "工程") else { return nil }
+        guard let state = record.工程(forKey: "工程コード") else { return nil }
         self.工程 = state
         guard let day = record.day(forKey: "作業日") else { return nil }
         self.作業日 = day

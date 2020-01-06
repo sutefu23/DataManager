@@ -426,6 +426,7 @@ public extension 指示書型 {
         var query = [String:String]()
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
+        query["伝票種類"] = type?.fmString
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
         return list.compactMap { 指示書型($0) }
