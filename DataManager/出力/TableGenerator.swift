@@ -2,344 +2,227 @@
 //  TableGenerator.swift
 //  DataManager
 //
-//  Created by 四熊泰之 on R 1/11/24.
-//  Copyright © Reiwa 1 四熊泰之. All rights reserved.
+//  Created by manager on 2020/01/07.
+//  Copyright © 2020 四熊泰之. All rights reserved.
 //
 
 import Foundation
 
-/// 出力するファイル形式
-public enum CSVTarget {
-    case excel
+public enum ExportType {
     case numbers
+    case excel
+    case html
     
-    var encoding: String.Encoding {
+    func header(title: String) -> String {
+        switch self {
+        case .numbers, .excel:
+            return ""
+        case .html:
+            var line : String = ""
+            line += "<!DOCTYPE html>"
+            line += "<html>"
+            line += "<head>"
+            line += "<title>\(title)</title>"
+            line += "</head>"
+            line += "<body>"
+            line += #"<p><table border="1">"#
+            return line
+        }
+    }
+    func footer() -> String {
+        switch self {
+        case .numbers, .excel:
+            return ""
+        case .html:
+            var line : String = ""
+            line += "</table></p>"
+            line += "</body>"
+            line += "</html>"
+            return line
+        }
+    }
+    
+    func makeLine(_ cols:[String]) -> String {
         switch self {
         case .excel:
-            return .shiftJIS
+            return cols.map { "\"\($0)\"" }.joined(separator: ",") + "\n"
         case .numbers:
-            return .utf8
-        }
-    }
-}
-
-/// テーブルの形式を指定する
-public class TableGenerator<S, A> where A: Aggregator, A.Element == S {
-    let columns: [TableColumn<S>]
-    let aggregator: A
-
-    /// 空のジェネレーター
-    public convenience init() {
-        let a = NullAggregator<S>() as! A
-        self.init([], aggregator: a)
-    }
-    
-    public convenience init(aggregator: A) {
-        self.init([], aggregator: aggregator)
-    }
-
-    init(_ columns: [TableColumn<S>], aggregator:A) {
-        self.columns = columns
-        self.aggregator = aggregator
-    }
-
-    /// 与えられたデータを元にテーブルを作成する
-    public func makeData(_ source: [S], of format: CSVTarget, to url: URL) -> Data {
-        func join(rows: [String]) -> String {
-            switch format {
-            case .excel:
-                return rows.map { "\"\($0)\"" }.joined(separator: ",") + "\n"
-            case .numbers:
-                return rows.joined(separator: "\t") + "\n"
-            }
-        }
-        let header = join(rows: columns.map { $0.name })
-        var lines: [String] = [header]
-        for data in source {
-            let rows = columns.map { $0.cell(of: data, for: format) }
-            let line = join(rows: rows)
-            lines.append(line)
-        }
-        for lineResult in self.aggregator.makeResult(columns: columns) {
-            let footer = join(rows: lineResult)
-            lines.append(footer)
-        }
-        let data = lines.joined().data(using: format.encoding, allowLossyConversion: true)
-        return data ?? Data()
-    }
-
-    /// 与えられたデータをurlに出力する
-    public func write(_ source: [S], of format: CSVTarget, to url: URL) throws {
-        let data = makeData(source, of: format, to: url)
-        try data.write(to: url, options: .atomicWrite)
-    }
-
-    /// 与えられたデータをもとにHTMLを作成する
-    public func makeHtml(_ source: [S], title: String = "") -> String {
-        func makeRow(_ data:[String], tag:String = "td") -> String {
+            return cols.joined(separator: "\t") + "\n"
+        case .html:
+            let tag = "td"
             var line = "<tr>"
-            for d in data {
+            for d in cols {
                 line += "<\(tag)>\(d)</\(tag)>"
             }
             line += "</tr>"
             return line
         }
-        var line : String = ""
-        line += "<!DOCTYPE html>"
-        line += "<html>"
-        line += "<head>"
-        line += "<title>\(title)</title>"
-        line += "</head>"
-        line += "<body>"
-        line += #"<p><table border="1">"#
-        let header = self.columns.map { $0.name }
-        line += makeRow(header)
-        for data in source {
-            let body = self.columns.map { $0.cell(of: data, for: .numbers)}
-            line += makeRow(body)
-        }
-        for lineResult in self.aggregator.makeResult(columns: columns) {
-            line += makeRow(lineResult)
-        }
-        line += "</table></p>"
-        line += "</body>"
-        line += "</html>"
-        return line
-    }
 
-    // MARK: -
-    private func nextTable(_ col: TableColumn<S>) -> TableGenerator<S, A> {
+    }
+    
+    func encode(text: String) -> Data {
+        switch self {
+        case .numbers, .html:
+            return text.data(using: .utf8, allowLossyConversion: true) ?? Data()
+        case .excel:
+            return text.data(using: .shiftJIS, allowLossyConversion: true) ?? Data()
+        }
+    }
+}
+
+class TableColumn<S> {
+    let title: String
+    let getter: (S) -> String?
+    
+    init(title: String, getter:@escaping (S)->String?) {
+        self.title = title
+        self.getter = getter
+    }
+    
+    func value(for source: S) -> String {
+        return getter(source) ?? ""
+    }
+}
+
+public class TableGenerator<S> {
+    let columns: [TableColumn<S>]
+    
+    public init() {
+        self.columns = []
+    }
+    init(_ columns:[TableColumn<S>]) {
+        self.columns = columns
+    }
+    
+    public func makeText(_ source:[S], format: ExportType, title: String) throws -> String {
+        var text = format.header(title: title)
+        let titles = columns.map  {$0.title }
+        text += format.makeLine(titles)
+        for rowSource in source {
+            let cols = columns.map { $0.value(for: rowSource) }
+            text += format.makeLine(cols)
+        }
+        text += format.footer()
+        return text
+    }
+    
+    public func makeData(_ source:[S], format: ExportType, title: String) throws -> Data {
+        let text = try makeText(source, format: format, title: title)
+        let data = format.encode(text: text)
+        return data
+    }
+    
+    public func write(_ source:[S], format: ExportType, to url: URL) throws {
+        let title = url.deletingPathExtension().lastPathComponent
+        let data = try makeData(source, format: format, title: title)
+        try data.write(to: url, options: .atomicWrite)
+    }
+    
+    func appending(_ col: TableColumn<S>) -> TableGenerator<S> {
         var columns = self.columns
         columns.append(col)
-        return TableGenerator<S, A>(columns, aggregator: self.aggregator)
-    }
-    /// カラムを一つ追加したGeneratorを作成する
-    public func col(_ name: String, _ getter: @escaping (S)->String?) -> TableGenerator<S, A> {
-        let col = StringColumn<S>(name: name, getter: getter)
-        return nextTable(col)
+        return TableGenerator(columns)
     }
 }
 
-/// 集計
-public protocol Aggregator: class {
-    associatedtype Element
-
-    /// 結果を出力する
-    func makeResult(column:TableColumn<Element>) -> [String]
-    func makeResult(columns:[TableColumn<Element>]) -> [[String]]
-}
-
-extension Aggregator {
-    public func makeResult(column:TableColumn<Element>) -> [String] { return [] }
-
-    public func makeResult(columns:[TableColumn<Element>]) -> [[String]] {
-        var results : [[String]] = []
-        var rows = 0
-        for col in columns {
-            let tmp = self.makeResult(column: col)
-            results.append(tmp)
-            rows = max(rows, tmp.count)
-        }
-        return results.map {
-            if $0.count == rows { return $0 }
-            var tmp = $0
-            for _ in 1...rows-$0.count {
-                tmp.append("")
-            }
-            return tmp
-        }
-    }
-}
-
-public class NullAggregator<S>: Aggregator {
-    public typealias Element = S
-}
-
-public class FooterAggregator<S>: Aggregator {
-    public typealias Element = S
-    /// 結果を出力する
-    public func makeResult(column:TableColumn<Element>) -> [String] { return [column.makeFooter()] }
-}
-
-// MAK: - 各種カラム
-public class TableColumn<S> {
-    public let name: String
-    
-    init(name: String) {
-        self.name = name
-    }
-    func cell(of row: S, for target: CSVTarget) -> String {
-        return ""
-    }
-    func makeFooter() -> String { return "" }
-}
-
-class GetterColumn<S, T> : TableColumn<S> {
-    let getter: (S)->T?
-    
-    init(name: String, getter: @escaping (S)->T?) {
-        self.getter = getter
-        super.init(name: name)
-    }
-    func convert(data: T, for target: CSVTarget) -> String? {
-        return nil
+public extension TableGenerator {
+    enum IntFormat {
+        case native
     }
     
-    override func cell(of row: S, for target: CSVTarget) -> String {
-        guard let value = getter(row) else { return "" }
-        guard let result = convert(data: value, for: target) else { return "" }
-        return result
-    }
-}
-/// 文字列
-class StringColumn<S> : GetterColumn<S, String> {
-    override func convert(data: String, for target: CSVTarget) -> String? { return data }
-}
-
-/// 整数
-class IntegerColumn<S> : GetterColumn<S, Int> {
-    enum Footer {
-        case no
-        case avg0
-        case avg1
-    }
-    var values : [Int] = []
-    let footer: Footer
-    
-    init(name: String, footer: Footer, getter: @escaping (S) -> Int?) {
-        self.footer = footer
-        super.init(name: name, getter: getter)
+    enum DoubleFormat {
+        case native
+        case round0
+        case round1
     }
     
-    override func convert(data: Int, for target: CSVTarget) -> String? {
-        values.append(data)
-        return "\(data)"
-    }
-    
-    override func makeFooter() -> String {
-        if values.isEmpty { return "" }
-        let total = values.reduce(0) { $0 + $1 }
-        let avg = Double(total) / Double(values.count)
-        switch footer {
-        case .no:
-            return ""
-        case .avg0:
-            return String(format: "%.0f", avg)
-        case .avg1:
-            return String(format: "%.1f", avg)
-        }
-    }
-}
-
-/// 日時
-class DateColumn<S> : GetterColumn<S, Date> {
-    enum Format {
+    enum DateFormat {
         case monthDayHourMinute
         case dayWeekToMinute
     }
-    let format: Format
-    init(name: String, format: Format, getter: @escaping (S) -> Date?) {
-        self.format = format
-        super.init(name: name, getter: getter)
-    }
-    override func convert(data: Date, for target: CSVTarget) -> String? {
-        switch format {
-        case .monthDayHourMinute:
-            return data.monthDayHourMinuteString
-        case .dayWeekToMinute:
-            return data.dayWeekToMinuteString
-        }
-    }
-}
-
-/// 日付
-class DayColumn<S>: GetterColumn<S, Day> {
-    enum Format {
+    enum DayFormat {
         case monthDay
         case monthDayWeek
         case yearMonth
         case monthDayJ
     }
-    let format: Format
-    init(name: String, format: Format, getter: @escaping (S) -> Day?) {
-        self.format = format
-        super.init(name: name, getter: getter)
-    }
-    override func convert(data: Day, for target: CSVTarget) -> String? {
-        switch format {
-        case .monthDay:
-            return data.monthDayString
-        case .yearMonth:
-            return data.yearMonthString
-        case .monthDayWeek:
-            return data.monthDayWeekString
-        case .monthDayJ:
-            return data.monthDayJString
-        }
-    }
-}
-
-///　時間
-class TimeColumn<S>: GetterColumn<S, Time> {
-    enum Format {
+    enum TimeFormat {
         case hourMinute
         case hourMinuteSecond
     }
-    let format: Format
-    init(name: String, format: Format, getter: @escaping (S) -> Time?) {
-        self.format = format
-        super.init(name: name, getter: getter)
+    enum TimeIntervalFormat {
+        case minute0
+        case minute1
     }
-    override func convert(data: Time, for target: CSVTarget) -> String? {
-        switch format {
-        case .hourMinute:
-            return data.hourMinuteString
-        case .hourMinuteSecond:
-            return data.hourMinuteSecondString
+
+    func col(_ title: String, _ getter: @escaping (S)->String?) -> TableGenerator<S> {
+        let col = TableColumn(title: title, getter: getter)
+        return appending(col)
+    }
+    
+    func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S)->Int?) -> TableGenerator<S> {
+        let col = TableColumn<S>(title: title) {
+            if let value = getter($0) {
+                return String(value)
+            } else {
+                return ""
+            }
+        }
+        return appending(col)
+    }
+    
+    func col(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S)->Double?) -> TableGenerator<S> {
+        return self.col(title) {
+            guard let value = getter($0) else { return nil }
+            switch format {
+            case .native:
+                return String(value)
+            case .round0:
+                return String(format: "%.0f", value)
+            case .round1:
+                return String(format: "%.1f", value)
+            }
+        }
+    }
+    
+    func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S)->Day?) -> TableGenerator<S> {
+        return self.col(title) {
+            let day = getter($0)
+            switch format {
+            case .monthDay:
+                return day?.monthDayString
+            case .yearMonth:
+                return day?.yearMonthString
+            case .monthDayWeek:
+                return day?.monthDayWeekString
+            case .monthDayJ:
+                return day?.monthDayJString
+            }
+        }
+    }
+    
+    func col(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S)->Time?) -> TableGenerator<S>
+    {
+        return self.col(title) {
+            guard let time = getter($0) else { return nil }
+            switch format {
+            case .hourMinute:
+                return time.hourMinuteString
+            case .hourMinuteSecond:
+                return time.hourMinuteSecondString
+            }
+        }
+    }
+    
+    func col(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S)->TimeInterval?) -> TableGenerator<S> {
+        return self.col(title) {
+            guard let value = getter($0) else { return nil }
+            switch format {
+            case .minute0:
+                return String(format: "%.0f", value/60)
+            case .minute1:
+                return String(format: "%.1f", value/60)
+            }
         }
     }
 }
-
-/// 分
-class TimeIntervalColumn<S>: GetterColumn<S, TimeInterval> {
-    enum Footer {
-        case no
-        case avg0
-        case avg1
-    }
-    enum Format {
-        case minute
-    }
-    var values: [TimeInterval] = []
-    let format: Format
-    let footer: Footer
-    init(name: String, format: Format, footer: Footer, getter: @escaping (S) -> TimeInterval?) {
-        self.format = format
-        self.footer = footer
-        super.init(name: name, getter: getter)
-    }
-    override func convert(data: TimeInterval, for target: CSVTarget) -> String? {
-        values.append(data)
-        switch format {
-        case .minute:
-            let minute = Int(data/60)
-            return "\(minute)"
-        }
-    }
-
-    override func makeFooter() -> String {
-        if values.isEmpty { return "" }
-        let total = values.reduce(0) { $0 + $1 }
-        let avg = total / Double(values.count)
-        switch footer {
-        case .no:
-            return ""
-        case .avg0:
-            return String(format: "%.0f", avg)
-        case .avg1:
-            return String(format: "%.1f", avg)
-        }
-    }
-
-}
-
