@@ -23,16 +23,20 @@ func clear伝票番号Cache() {
     lock.unlock()
 }
 
-public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible {
+public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
     public let 整数値 : Int
     
-    public init(validNumber:Int) {
+    public init(validNumber: Int) {
         self.整数値 = validNumber
     }
 
     public init?<S: StringProtocol>(invalidString:S) throws {
         guard let number = Int(invalidString) else { return nil }
         try self.init(invalidNumber:number)
+    }
+
+    public init(integerLiteral: Int) {
+        self.init(validNumber: integerLiteral)
     }
     
     public init?(invalidNumber:Int) throws {

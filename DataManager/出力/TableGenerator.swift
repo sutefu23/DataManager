@@ -78,7 +78,7 @@ class TableColumn<S> {
         self.title = title
         self.getter = getter
     }
-    
+
     func value(for source: S) -> String {
         return getter(source) ?? ""
     }
@@ -159,7 +159,16 @@ public extension TableGenerator {
         let col = TableColumn(title: title, getter: getter)
         return appending(col)
     }
+
+    func col(_ title: String, _ getter: @escaping (S)->Substring?) -> TableGenerator<S> {
+        let col = TableColumn<S>(title: title) {
+            guard let str = getter($0) else { return nil }
+            return String(str)
+        }
+        return appending(col)
+    }
     
+
     func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S)->Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
@@ -172,7 +181,7 @@ public extension TableGenerator {
     }
     
     func col(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S)->Double?) -> TableGenerator<S> {
-        return self.col(title) {
+        let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
             case .native:
@@ -183,10 +192,11 @@ public extension TableGenerator {
                 return String(format: "%.1f", value)
             }
         }
+        return appending(col)
     }
     
     func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S)->Day?) -> TableGenerator<S> {
-        return self.col(title) {
+        let col = TableColumn<S>(title: title) {
             let day = getter($0)
             switch format {
             case .monthDay:
@@ -199,11 +209,12 @@ public extension TableGenerator {
                 return day?.monthDayJString
             }
         }
+        return appending(col)
     }
     
     func col(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S)->Time?) -> TableGenerator<S>
     {
-        return self.col(title) {
+        let col = TableColumn<S>(title: title) {
             guard let time = getter($0) else { return nil }
             switch format {
             case .hourMinute:
@@ -212,10 +223,11 @@ public extension TableGenerator {
                 return time.hourMinuteSecondString
             }
         }
+        return appending(col)
     }
     
     func col(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S)->TimeInterval?) -> TableGenerator<S> {
-        return self.col(title) {
+        let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
             case .minute0:
@@ -224,5 +236,37 @@ public extension TableGenerator {
                 return String(format: "%.1f", value/60)
             }
         }
+        return appending(col)
     }
 }
+
+#if targetEnvironment(macCatalyst)
+
+public extension TableGenerator {
+    func share(_ source: [S], format: ExportType, title: String) throws {
+        let url = ダウンロードURL.appendingPathComponent(title)
+        try self.write(source, format: format, to: url)
+    }
+}
+
+#elseif os(iOS)
+import UIKit
+
+public extension TableGenerator {
+    func share(_ source: [S], format: ExportType, title: String) throws {
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title)
+        try self.write(source, format: format, to: url)
+
+        guard let source = UIApplication.shared.windows.last?.rootViewController else { return }
+        let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        controller.excludedActivityTypes = [.airDrop, .mail]
+        controller.popoverPresentationController?.sourceView = source.view
+        //        controller.popoverPresentationController?.sourceRect = self.shareButton.frame
+        source.present(controller, animated: true, completion: nil)
+    }
+}
+
+
+
+#endif
+

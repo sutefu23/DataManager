@@ -372,7 +372,7 @@ public extension 指示書型 {
     }
 
     
-    static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Day>? = nil, 製作納期 range:ClosedRange<Day>? = nil,  出荷納期 range2:ClosedRange<Day>? = nil) throws -> [指示書型] {
+    static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 受注日 range0:ClosedRange<Day>? = nil, 製作納期 range:ClosedRange<Day>? = nil,  出荷納期 range2:ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil) throws -> [指示書型] {
         var query = [String:String]()
         if let num = 伝票番号 {
             query["伝票番号"] = "\(num)"
@@ -387,6 +387,7 @@ public extension 指示書型 {
         if let range2 = range2 {
             query["出荷納期"] = makeQueryDayString(range2)
         }
+        query["伝票状態"] = 伝票状態?.description
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
         return list.compactMap { 指示書型($0) }
@@ -462,7 +463,7 @@ public extension 指示書型 {
             return false
         }
     }
-    
+
     static func find製作納期Active(伝票種類:伝票種類型? = nil) throws -> [指示書型] {
         var query = [String:String]()
         let today = Date()

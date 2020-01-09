@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 進捗型 : Equatable {
+public class 進捗型 : Equatable, Identifiable {
     let record : FileMakerRecord
 
     public let 工程 : 工程型
@@ -18,6 +18,10 @@ public class 進捗型 : Equatable {
     public var 登録日 : Day
     public var 登録時間 : Time
 
+    public var 伝票番号文字列: String {
+        return self.record.string(forKey: "伝票番号")!
+    }
+    
     public lazy var 伝票番号 : 伝票番号型 = {
         guard let number = self.record.integer(forKey: "伝票番号") else {
             fatalError()
@@ -129,6 +133,9 @@ public extension Array where Element == 進捗型 {
 //        }
 //        return state
 //    }
+    func findLast(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
+        return self.last { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
+    }
 }
 
 public extension Sequence where Element == 進捗型 {
