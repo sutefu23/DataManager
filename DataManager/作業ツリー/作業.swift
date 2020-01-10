@@ -339,6 +339,9 @@ extension 指示書型 {
                         regist(work: work, state: state)
                     }
                 } else {
+                    if progress.作業種別 == .在庫 {
+                        break
+                    }
                     func 開始補完(前工程: 工程型, 後工程: 工程型) -> Bool {
                         if state != 後工程 || countMap[前工程]?.lessStart != true { return false }
                         if let coms = lastMarked[前工程], coms.作業内容 == .完了, let work = 作業記録型(progress, from: coms.登録日時, to: progress.登録日時) {
@@ -363,6 +366,23 @@ extension 指示書型 {
                     case .管理:
                         if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
                             regist(work: work, state: state)
+                        } else {
+                            completed[state] = progress
+                        }
+                    case .切文字:
+                        if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
+                            regist(work: work, state: state)
+                        } else {
+                            completed[state] = progress
+                        }
+                    case .レーザー:
+                        if let from = froms[.レーザー（アクリル）] {
+                            if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
+                                regist(work: work, state: state)
+                                froms[.レーザー（アクリル）] = nil
+                            }
+                        } else {
+                            completed[state] = progress
                         }
                     default:
                         completed[state] = progress
