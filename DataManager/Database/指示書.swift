@@ -114,8 +114,8 @@ public class 指示書型 {
     #endif
 
     public lazy var 進捗一覧: [進捗型] = {
-        guard let list : [FileMakerRecord] = record.portal(forKey: "指示書進捗内訳テーブル") else { return [] }
-        return list.compactMap { 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
+        let list = (try? 進捗型.find(伝票番号: self.伝票番号))?.sorted{ $0.登録日時 < $1.登録日時 } ?? []
+        return list
     }()
     public lazy var 作業進捗一覧: [進捗型] = {
         return self.進捗一覧.filter { $0.作業種別 != .その他 }
@@ -345,6 +345,8 @@ public class 指示書型 {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
+    static let dbName = "DataAPI_指示書"
+    
     static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) throws -> [指示書型] {
         var query = [String:String]()
         if let num = 伝票番号 {
@@ -353,7 +355,7 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
          let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
 //        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細営業以外用", query: [query])
         return list.compactMap { 指示書型($0) }
     }
@@ -366,7 +368,7 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
 //        let list : [FileMakerRecord]? = db.find(layout: "エッチング指示書テーブル詳細", query: [query])
         return list.compactMap { 指示書型($0) }
     }
@@ -389,7 +391,7 @@ public extension 指示書型 {
         }
         query["伝票状態"] = 伝票状態?.description
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap { 指示書型($0) }
     }
     
@@ -429,7 +431,7 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap { 指示書型($0) }
     }
     
@@ -470,7 +472,7 @@ public extension 指示書型 {
         query["製作納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap {
             guard let order = 指示書型($0) else { return nil }
             return order.isActive ? order : nil
@@ -483,7 +485,7 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap {
             guard let order = 指示書型($0) else { return nil }
             return order.isActive ? order : nil
@@ -496,7 +498,7 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap { 指示書型($0) }
     }
     
@@ -505,7 +507,7 @@ public extension 指示書型 {
         query ["登録日"] = makeQueryDayString(range)
         query["伝票種類"] = type?.fmString
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         return list.compactMap { 指示書型($0) }
     }
 
@@ -513,7 +515,7 @@ public extension 指示書型 {
         var query = [String:String]()
         query["伝票番号"] = "\(伝票番号)"
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_指示書", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         if list.count == 1, let record = list.first, let order = 指示書型(record) {
             return order
         } else {

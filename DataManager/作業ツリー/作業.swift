@@ -369,12 +369,12 @@ extension 指示書型 {
                         } else {
                             completed[state] = progress
                         }
-                    case .切文字:
-                        if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
-                            regist(work: work, state: state)
-                        } else {
-                            completed[state] = progress
-                        }
+//                    case .切文字:
+//                        if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
+//                            regist(work: work, state: state)
+//                        } else {
+//                            completed[state] = progress
+//                        }
                     case .レーザー:
                         if let from = froms[.レーザー（アクリル）] {
                             if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {

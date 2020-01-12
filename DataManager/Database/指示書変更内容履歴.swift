@@ -48,3 +48,16 @@ public class 指示書変更内容履歴型 {
     public lazy var 社員番号 : Int = { return record.integer(forKey: "社員番号")! }()
     public lazy var 作業者 : 社員型 = { return 社員型(社員番号: self.社員番号, 社員名称: self.社員名称) }()
 }
+
+extension 指示書変更内容履歴型 {
+    static let dbName = "DataAPI_2"
+    
+    public static func find(伝票番号: 伝票番号型) throws -> [指示書変更内容履歴型] {
+        var query = [String:String]()
+        query["伝票番号"] = "\(伝票番号.整数値)"
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord] = try db.find(layout: 指示書変更内容履歴型.dbName, query: [query])
+        return list.compactMap { 指示書変更内容履歴型($0) }
+    }
+    
+}

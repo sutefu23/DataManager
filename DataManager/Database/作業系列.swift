@@ -65,11 +65,13 @@ public class 作業系列型 : Hashable {
 }
 
 extension 作業系列型 {
-    static func find(系列コード: String) throws -> 作業系列型? {
+    static let dbName = "DataAPI_作業系列"
+    
+    public static func find(系列コード: String) throws -> 作業系列型? {
         var query = [String:String]()
         query["系列コード"] = 系列コード
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_作業系列", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [query])
         return list.compactMap { 作業系列型($0) }.first
 
     }

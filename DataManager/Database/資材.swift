@@ -14,7 +14,6 @@ public class 資材型 {
     init?(_ record:FileMakerRecord) {
         self.record = record
     }
-    
 }
 
 public extension 資材型 {
