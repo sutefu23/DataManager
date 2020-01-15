@@ -231,12 +231,11 @@ class 出勤日DB型 {
     }
     
     func dynamicIsHoliday(_ day:Day) -> Bool {
-        let db = FileMakerDB.pm_osakaname
         let isHoliday : Bool
         if day.week == .日 {
             isHoliday = true
         } else {
-            let list : [スケジュール型] = (try? db.find(at: day)) ?? []
+            let list : [スケジュール型] = (try? スケジュール型.find(at: day)) ?? []
             isHoliday = list.contains { $0.種類 == "休日" }
         }
         lock.lock()

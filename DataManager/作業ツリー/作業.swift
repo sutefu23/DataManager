@@ -303,8 +303,35 @@ extension 指示書型 {
                 countMap[process] = counter
             }
         }
+        var フォーミングfrom: 進捗型? = nil
+        var フォーミングto: 進捗型? = nil
         for progress  in list {
             let state = progress.工程
+            if state == .フォーミング {
+                switch progress.作業内容 {
+                case .受取:
+                    if let to = フォーミングto {
+                        if let work = 作業記録型(progress, from: フォーミングfrom?.登録日時, to: to.登録日時) { works.append(work) }
+                        フォーミングto = nil
+                    }
+                    フォーミングfrom = progress
+                case .開始, .仕掛:
+                    break
+                case .完了:
+                    if let work = 作業記録型(progress, from: フォーミングfrom?.登録日時, to: progress.登録日時) { works.append(work) }
+                    フォーミングfrom = nil
+                    フォーミングto = nil
+                }
+                continue
+            } else if state == .タレパン || state == .シャーリング || state == .プレーナー {
+                switch progress.作業内容 {
+                case .受取, .開始, .仕掛:
+                    break
+                case .完了:
+                    フォーミングto = progress
+                }
+                continue
+            }
             func 完了補完(前工程: 工程型, 後工程: 工程型) {
                 if state != 後工程 || countMap[前工程]?.lessComp != true { return }
                 switch progress.作業内容 {
@@ -393,6 +420,7 @@ extension 指示書型 {
             }
             lastMarked[state] = progress
         }
+        if フォーミングfrom != nil || フォーミングto != nil, let work = 作業記録型(フォーミングto ?? フォーミングfrom, state: .フォーミング, from: フォーミングfrom?.登録日時, to: フォーミングto?.登録日時) { works.append(work) }
         self.setup関連保留校正処理(works)
         for (state, progress) in froms {
             guard !registMap.contains(state) else { continue }
@@ -459,4 +487,42 @@ extension 指示書型 {
         return works.calc累積作業時間()
     }
 
+    public func make箱文字滞留期間() -> [作業記録型]? {
+        let worker = self.担当者1 ?? self.担当者2 ?? self.担当者3
+        let list = self.進捗一覧
+        guard let kend = list.findFirst(工程: .管理, 作業内容: .完了)?.登録日時
+            ,let nend = list.findFirst(工程: .入力, 作業内容: .完了)?.登録日時
+            ,let send = list.findFirst(工程: .照合検査, 作業内容: .完了)?.登録日時 else { return nil }
+        let yend = (list.findFirst(工程: .裏加工_溶接, 作業内容: .完了) ?? list.findFirst(工程: .溶接, 作業内容: .完了))?.登録日時
+        let hend = (list.findFirst(工程: .裏加工, 作業内容: .完了) ?? list.findFirst(工程: .裏加工, 作業内容: .仕掛) ?? list.findFirst(工程: .半田, 作業内容: .完了))?.登録日時
+        let hakoend: Date
+        let hakostate: 工程型
+        if let yend = yend {
+            if let hend = hend {
+                if hend > yend {
+                    hakoend = hend
+                    hakostate = .半田
+                } else {
+                    hakoend = yend
+                    hakostate = .溶接
+                }
+            } else {
+                hakoend = yend
+                hakostate = .溶接
+            }
+        } else if let hend = hend {
+            hakoend = hend
+            hakostate = .半田
+        } else { return nil }
+        guard let htime = list.findLast(工程: .発送, 作業内容: .完了)?.登録日時 else { return nil }
+        
+        guard let ekwork = 作業記録型(nil, type: .通常, state: .管理, from: self.登録日時, to: kend, worker: worker, 伝票番号: self.伝票番号)
+        ,let gnwork = 作業記録型(nil, type: .通常, state: .原稿, from: kend, to: nend, worker: worker, 伝票番号: self.伝票番号)
+        ,let lswork = 作業記録型(nil, type: .通常, state: .レーザー, from: nend, to: send, worker: worker, 伝票番号: self.伝票番号)
+        ,let hywork = 作業記録型(nil, type: .通常, state: hakostate, from: send, to: hakoend, worker: worker, 伝票番号: self.伝票番号)
+            ,let akwork = 作業記録型(nil, type: .通常, state: .発送, from: hakoend, to: htime, worker: worker, 伝票番号: self.伝票番号) else { return nil }
+        let result = [ekwork, gnwork, lswork, hywork, akwork]
+        self.setup関連保留校正処理(result)
+        return result
+    }
 }

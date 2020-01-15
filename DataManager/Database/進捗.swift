@@ -125,14 +125,6 @@ public extension Array where Element == 進捗型 {
         return state
     }
     
-//    func 作業内容(工程:[工程型], 日時:Day? = nil) -> 作業内容型? {
-//        var state : 作業内容型? = nil
-//        for progress in self where 工程.contains(progress.工程) {
-//            if let day = 日時, progress.登録日 >= day { continue }
-//            state = progress.作業内容
-//        }
-//        return state
-//    }
     func findLast(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
         return self.last { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
     }
@@ -150,6 +142,7 @@ public extension Sequence where Element == 進捗型 {
 
 // MARK: - 検索
 public extension 進捗型 {
+    static let dbName = "DataAPI_3"
     static func find(伝票番号 num:伝票番号型, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) throws -> [進捗型] {
         var query = [String:String]()
         query["伝票番号"] = "\(num)"
@@ -160,7 +153,7 @@ public extension 進捗型 {
             query["進捗コード"] = "\(work.code)"
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_進捗", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
     
@@ -177,7 +170,7 @@ public extension 進捗型 {
             query["進捗コード"] = "\(work.code)"
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_進捗", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         //        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
         return list.compactMap { 進捗型($0) }
     }
@@ -195,7 +188,7 @@ public extension 進捗型 {
             query["進捗コード"] = "\(work.code)"
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_進捗", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
     
@@ -223,7 +216,7 @@ public extension 進捗型 {
             query["工程コード"] = "\(state.code)"
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: "DataAPI_進捗", query: [query])
+        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
 }

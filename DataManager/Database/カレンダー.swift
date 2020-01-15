@@ -148,6 +148,20 @@ public protocol カレンダー型 {
     func calcWorkTime(state: 工程型?, from:Date, to:Date) -> TimeInterval
     func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型
 }
+ 
+public extension カレンダー型 {
+    func 勤務日数(from: Day, to: Day) -> Int {
+        var day = from
+        var count = 0
+        while day < to {
+            count += 1
+            repeat {
+                day = day.nextDay
+            } while day.isHoliday
+        }
+        return count
+    }
+}
 
 class 固定カレンダー型 : カレンダー型 {
     private let dayDB: 出勤日DB型

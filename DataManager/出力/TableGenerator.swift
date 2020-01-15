@@ -148,6 +148,11 @@ public extension TableGenerator {
         case monthDayHourMinute
         case dayWeekToMinute
     }
+    enum MonthFormat {
+        case shortYearMonth
+        case monthOrYearMonth
+        case yearMonthJ
+    }
     enum DayFormat {
         case monthDay
         case monthDayWeek
@@ -203,6 +208,21 @@ public extension TableGenerator {
         return appending(col)
     }
     
+    func col(_ title: String, _ format: MonthFormat = .shortYearMonth, _ getter: @escaping (S)->Month?) -> TableGenerator<S> {
+        let col = TableColumn<S>(title: title) {
+            let month = getter($0)
+            switch format {
+            case .shortYearMonth:
+                return month?.shortYearMonthString
+            case .yearMonthJ:
+                return month?.yearMonthJString
+            case .monthOrYearMonth:
+                return month?.monthOrYearMonthString
+            }
+        }
+        return appending(col)
+    }
+
     func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S)->Day?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let day = getter($0)
@@ -252,7 +272,7 @@ public extension TableGenerator {
 
 public extension TableGenerator {
     func share(_ source: [S], format: ExportType, title: String) throws {
-        let url = ダウンロードURL.appendingPathComponent(title)
+        let url = 生産管理集計URL.appendingPathComponent(title)
         try self.write(source, format: format, to: url)
     }
 }
@@ -273,8 +293,6 @@ public extension TableGenerator {
         source.present(controller, animated: true, completion: nil)
     }
 }
-
-
 
 #endif
 

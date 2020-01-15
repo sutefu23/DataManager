@@ -9,6 +9,8 @@
 import Foundation
 
 class スケジュール型 {
+    static let dbName = "DataAPI_6"
+
     let record : FileMakerRecord
     
     init?(_ record:FileMakerRecord) {
@@ -24,12 +26,13 @@ class スケジュール型 {
 
 private let tableName = "スケジュール管理テーブル"
 
-extension FileMakerDB {
-    func find(at day:Day) throws -> [スケジュール型] {
+extension スケジュール型 {
+    static func find(at day:Day) throws -> [スケジュール型] {
+        let db = FileMakerDB.pm_osakaname
         let str = day.fmString
-        let list = try find(layout: "DataAPI_スケジュール", query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
+        let list = try db.find(layout: スケジュール型.dbName, query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
         return list.compactMap { スケジュール型($0) }
     }
-    
+
 }
 

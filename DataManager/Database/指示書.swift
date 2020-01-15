@@ -120,10 +120,13 @@ public class 指示書型 {
     public lazy var 作業進捗一覧: [進捗型] = {
         return self.進捗一覧.filter { $0.作業種別 != .その他 }
     }()
+    public lazy var uuid: String = {
+        return self.record.string(forKey: "UUID")!
+    }()
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {
-        guard let list : [FileMakerRecord] = record.portal(forKey: "指示書変更内容履歴テーブル") else { return [] }
-        return list.compactMap { 指示書変更内容履歴型($0) }
+        let list = (try? 指示書変更内容履歴型.find(指示書uuid: self.uuid))?.sorted { $0.日時 < $1.日時 } ?? []
+        return list
     }()
     
     lazy var 添付資料一覧: [FileMakerRecord] = {
@@ -137,8 +140,8 @@ public class 指示書型 {
     }()
     
     public lazy var 外注一覧: [発注型] = {
-        guard let list : [FileMakerRecord] = record.portal(forKey: "資材発注テーブル") else { return [] }
-        return list.compactMap { 発注型($0) }
+        let list = (try? 発注型.find(伝票番号: self.伝票番号)) ?? []
+        return list
     }()
     
     public lazy var 進捗入力記録一覧: [作業記録型] = self.make進捗入力記録一覧()
@@ -345,7 +348,7 @@ public class 指示書型 {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
-    static let dbName = "DataAPI_指示書"
+    static let dbName = "DataAPI_1"
     
     static func find(伝票番号:伝票番号型? = nil, 伝票種類:伝票種類型? = nil, 製作納期:Day? = nil, limit:Int = 100) throws -> [指示書型] {
         var query = [String:String]()

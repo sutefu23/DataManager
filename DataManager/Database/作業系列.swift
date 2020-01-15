@@ -65,7 +65,7 @@ public class 作業系列型 : Hashable {
 }
 
 extension 作業系列型 {
-    static let dbName = "DataAPI_作業系列"
+    static let dbName = "DataAPI_9"
     
     public static func find(系列コード: String) throws -> 作業系列型? {
         var query = [String:String]()

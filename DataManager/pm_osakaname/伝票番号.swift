@@ -114,5 +114,4 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
         
         #endif
     }
-
 }

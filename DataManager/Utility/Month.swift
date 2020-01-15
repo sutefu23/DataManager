@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Month : Equatable, Hashable {
+public struct Month : Comparable, Hashable {
     public let year : Int
     public let month : Int
     public var shortYear : Int {
@@ -127,5 +127,26 @@ public struct Month : Equatable, Hashable {
                 return nil
             }
         }
+    }
+    
+    public static func <(left: Month, right: Month) -> Bool {
+        if left.year != right.year { return left.year < right.year }
+        return left.month < right.month
+    }
+}
+
+/// 特定月範囲の週を取り出す
+public extension ClosedRange where Bound == Month {
+    var workWeeks: [ClosedRange<Day>] {
+        var set = Set<ClosedRange<Day>>()
+        var month = self.lowerBound
+        let to = self.upperBound
+        while month <= to {
+            for week in month.workWeeks {
+                set.insert(week)
+            }
+            month = month.nextMonth
+        }
+        return set.sorted { $0.lowerBound < $1.lowerBound }
     }
 }

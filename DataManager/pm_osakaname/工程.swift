@@ -16,6 +16,7 @@ extension FileMakerRecord {
 }
 
 public struct 工程型 : Hashable, Comparable, Codable {
+    public static let dbName = "DataAPI_7"
     let number : Int
 
     public init?<S : StringProtocol>(_ name: S) {
@@ -111,7 +112,7 @@ class 工程名称DB型 {
         ]
         var map3 : [工程型 : String] = [:]
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = (try? db.fetch(layout: "DataAPI_工程")) ?? []
+        let list : [FileMakerRecord] = (try? db.fetch(layout: 工程型.dbName)) ?? []
         for record in list {
             guard let code = record.string(forKey: "工程コード"), let state = 工程型(code: code), let name = record.string(forKey: "工程名") else { continue }
             map[state] = name

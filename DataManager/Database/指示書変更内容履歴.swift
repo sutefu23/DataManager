@@ -52,9 +52,9 @@ public class 指示書変更内容履歴型 {
 extension 指示書変更内容履歴型 {
     static let dbName = "DataAPI_2"
     
-    public static func find(伝票番号: 伝票番号型) throws -> [指示書変更内容履歴型] {
+    public static func find(指示書uuid: String) throws -> [指示書変更内容履歴型] {
         var query = [String:String]()
-        query["伝票番号"] = "\(伝票番号.整数値)"
+        query["指示書UUID"] = 指示書uuid
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: 指示書変更内容履歴型.dbName, query: [query])
         return list.compactMap { 指示書変更内容履歴型($0) }
