@@ -23,14 +23,14 @@ func clear伝票番号Cache() {
     lock.unlock()
 }
 
-public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
-    public let 整数値 : Int
+public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+    public let 整数値: Int
     
     public init(validNumber: Int) {
         self.整数値 = validNumber
     }
 
-    public init?<S: StringProtocol>(invalidString:S) throws {
+    public init?<S: StringProtocol>(invalidString: S) throws {
         guard let number = Int(invalidString) else { return nil }
         try self.init(invalidNumber:number)
     }
@@ -39,7 +39,7 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
         self.init(validNumber: integerLiteral)
     }
     
-    public init?(invalidNumber:Int) throws {
+    public init?(invalidNumber: Int) throws {
         if !伝票番号型.isValidNumber(invalidNumber) { return nil }
         self.整数値 = invalidNumber
         if try testIsValid() == false { return nil }
@@ -50,8 +50,7 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
         defer { lock.unlock() }
         
         if testCache.contains(self.整数値) { return true }
-        let orders = try 指示書型.find(伝票番号: self)
-        if orders.isEmpty == false {
+        if try 伝票番号型.isExist(伝票番号: self) {
             testCache.insert(self.整数値)
             return true
         } else {
@@ -60,10 +59,10 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
     }
     
     // MARK: -
-    public static func isValidNumber(_ number:Int) -> Bool {
+    public static func isValidNumber(_ number: Int) -> Bool {
         return number >= 10_0000 && number <= 9999_99999
     }
-    public static func isValidNumber(_ number:String) -> Bool {
+    public static func isValidNumber(_ number: String) -> Bool {
         guard let number = Int(number) else { return false }
         return isValidNumber(number)
 //        return number >= 10_0000 && number <= 9999_99999
@@ -71,7 +70,7 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
 
     
     // MARK: - Comparable
-    public static func <(left:伝票番号型, right:伝票番号型) -> Bool {
+    public static func <(left: 伝票番号型, right: 伝票番号型) -> Bool {
         if left.上位整数値 != right.上位整数値 {
             return left.上位整数値 < right.上位整数値
         } else {
@@ -80,19 +79,19 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
     }
 
     // MARK: - パーツ
-    public var 上位整数値 : Int {
+    public var 上位整数値: Int {
         return 整数値 > 9999_9999 ? 整数値 / 1000_00 : 整数値 / 100_00
     }
 
-    public var 下位整数値 : Int {
+    public var 下位整数値: Int {
         return 整数値 > 9999_9999 ? 整数値 % 1000_00 : 整数値 % 100_00
     }
     
-    public var 年値 : Int { 2000 + 上位整数値 / 100 }
-    public var 月値 : Int { 上位整数値 % 100 }
+    public var 年値: Int { 2000 + 上位整数値 / 100 }
+    public var 月値: Int { 上位整数値 % 100 }
     
     /// 表示用伝票番号文字列
-    public var 表示用文字列 : String {
+    public var 表示用文字列: String {
         return "\(上位整数値)-\(下位整数値)"
     }
     
@@ -113,5 +112,17 @@ public struct 伝票番号型 : Hashable, Comparable, CustomStringConvertible, E
         #else
         
         #endif
+    }
+}
+
+extension 伝票番号型 {
+    static let dbName = "DataAPI_10"
+    
+    static func isExist(伝票番号: 伝票番号型) throws -> Bool {
+        var query = [String:String]()
+        query["伝票番号"] = "\(伝票番号)"
+        let db = FileMakerDB.pm_osakaname
+        let list: [FileMakerRecord] = try db.find(layout: 伝票番号型.dbName, query: [query])
+        return list.count == 1
     }
 }
