@@ -8,32 +8,32 @@
 
 import Foundation
 
-public struct Time : Hashable, Comparable, CustomStringConvertible {
-    public let hour : Int
-    public let minute : Int
-    public let second : Int
+public struct Time: Hashable, Comparable, CustomStringConvertible {
+    public let hour: Int
+    public let minute: Int
+    public let second: Int
     
     public init() {
         self = Date().time
     }
     
-    public init(hour:Int, minute:Int, second:Int = 0) {
+    public init(hour: Int, minute: Int, second: Int = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
     }
 
-    public init(_ hour:Int, _ minute:Int, _ second:Int = 0) {
+    public init(_ hour: Int, _ minute: Int, _ second: Int = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
     }
 
-    public init?<S:StringProtocol>(fmTime:S) {
+    public init?<S: StringProtocol>(fmTime: S) {
         self.init(fmJSONTime:fmTime)
     }
     
-    init?<T>(fmJSONTime:T?) where T : StringProtocol {
+    init?<T>(fmJSONTime: T?) where T: StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
             guard let hour = Int(parts[0]) else { return nil }
@@ -49,39 +49,39 @@ public struct Time : Hashable, Comparable, CustomStringConvertible {
         }
     }
     
-    public static func <(left:Time, right:Time) -> Bool {
+    public static func <(left: Time, right: Time) -> Bool {
         if left.hour != right.hour { return left.hour < right.hour }
         if left.minute != right.minute { return left.minute < right.minute }
         return left.second < right.second
     }
     
-    public var fmImportString : String {
+    public var fmImportString: String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
     }
     
-    public var hourMinuteString : String {
+    public var hourMinuteString: String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }
 
-    public var hourMinuteSecondString : String {
+    public var hourMinuteSecondString: String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
     }
 
-    public var description : String {
+    public var description: String {
         return hourMinuteSecondString
     }
     
-    var allSeconds : Int {
+    var allSeconds: Int {
         return hour * 60 * 60 + minute * 60 + second
     }
 }
-public func -(left:Time, right:Time) -> TimeInterval {
+public func -(left: Time, right: Time) -> TimeInterval {
     return TimeInterval(left.allSeconds - right.allSeconds)
 }
 
 extension Date {
     // MARK: 時間計算
-    public var time : Time {
+    public var time: Time {
         let comp = cal.dateComponents([.hour, .minute, .second], from: self)
         return Time(hour: comp.hour!, minute: comp.minute!, second: comp.second!)
     }

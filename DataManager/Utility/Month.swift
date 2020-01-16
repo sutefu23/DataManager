@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Month : Comparable, Hashable {
+public struct Month : Hashable, Strideable {
     public let year : Int
     public let month : Int
     public var shortYear : Int {
@@ -133,8 +133,30 @@ public struct Month : Comparable, Hashable {
         if left.year != right.year { return left.year < right.year }
         return left.month < right.month
     }
+    
+    // MARK: - <Strideable>
+    public func distance(to other: Month) -> Int {
+        if self > other { return -other.distance(to: self) }
+        var count = 0
+        var month = self
+        while month < other {
+            count += 1
+            month = month.nextMonth
+        }
+        return count
+    }
+    
+    public func advanced(by n: Int) -> Month {
+        if n == 1 { return self.nextMonth }
+        if n == -1 { return self.prevMonth }
+        let cal = Calendar(identifier: .gregorian)
+        let date = cal.date(byAdding: .month, value: n, to: Date(self))
+        return date!.month
+    }
+
 }
 
+// MARK: -
 /// 特定月範囲の週を取り出す
 public extension ClosedRange where Bound == Month {
     var workWeeks: [ClosedRange<Day>] {
@@ -149,4 +171,21 @@ public extension ClosedRange where Bound == Month {
         }
         return set.sorted { $0.lowerBound < $1.lowerBound }
     }
+}
+
+extension Date {
+    public var month : Month {
+        let comp = cal.dateComponents([.year, .month], from: self)
+        return Month(year: comp.year!, month: comp.month!)
+    }
+
+    public init(_ month:Month) {
+        var comp = DateComponents()
+        comp.year = month.year
+        comp.month = month.month
+        comp.day = 1
+        let date = cal.date(from: comp)!
+        self = date
+    }
+
 }

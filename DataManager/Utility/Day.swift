@@ -8,10 +8,10 @@
 
 import Foundation
 
-public struct Day : Hashable, Comparable {
-    public let year : Int
-    public let month : Int
-    public let day : Int
+public struct Day: Hashable, Strideable {
+    public let year: Int
+    public let month: Int
+    public let day: Int
     
     public init() {
         let date = Date()
@@ -20,10 +20,10 @@ public struct Day : Hashable, Comparable {
         self.day = date.dayNumber
     }
     
-    public init(year:Int, month:Int, day:Int) {
+    public init(year: Int, month: Int, day: Int) {
         self.init(year, month, day)
     }
-    public init(_ year:Int, _ month:Int, _ day:Int) {
+    public init(_ year: Int, _ month: Int, _ day: Int) {
         self.year = year
         self.month = month
         self.day = day
@@ -45,11 +45,10 @@ public struct Day : Hashable, Comparable {
             self.month = day0
             self.day = day1
         }
-        
     }
     
     // FileMakerの日付
-    public init?<S : StringProtocol>(fmDate: S) {
+    public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")
         if digs.count != 3 {
@@ -71,41 +70,47 @@ public struct Day : Hashable, Comparable {
         return Day() == self
     }
 
-    public static func <(left:Day, right:Day) -> Bool {
+    public static func <(left: Day, right: Day) -> Bool {
         if left.year != right.year { return left.year < right.year }
         if left.month != right.month { return left.month < right.month }
         return left.day < right.day
     }
     
-    public var week : 週型 {
+    public var week: 週型 {
         return weekCache[self]
     }
     
-    public var fmString : String {
+    // MARK: - 文字列表現
+    public var fmString: String {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
     }
     
-    public var fmImportString : String {
+    public var fmImportString: String {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     
-    public var yearMonthString : String {
+    public var yearMonthString: String {
         return "\(year)/\(make2dig(month))"
     }
 
-    public var monthDayString : String {
+    public var monthDayString: String {
         return "\(make2dig(month))/\(make2dig(day))"
     }
 
-    public var monthDayJString : String {
+    public var monthDayJString: String {
         return "\(make2dig(month))月\(make2dig(day))日"
     }
 
-    var description : String {
+    public var monthDayWeekString: String {
+        return "\(self.month)/\(self.day)(\(self.week))"
+    }
+    
+    var description: String {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     
-    public var nextDay : Day {
+    // MARK: - 変更
+    public var nextDay: Day {
         if self.day < 28 {
             return Day(year: self.year, month: self.month, day: self.day+1)
         }
@@ -113,7 +118,7 @@ public struct Day : Hashable, Comparable {
         return date.nextDay.day
     }
     
-    public var prevDay : Day {
+    public var prevDay: Day {
         if self.day > 1 {
             return Day(year: self.year, month: self.month, day: self.day-1)
         }
@@ -121,13 +126,31 @@ public struct Day : Hashable, Comparable {
         return date.prevDay.day
     }
     
-    public var monthDayWeekString : String {
-        return "\(self.month)/\(self.day)(\(self.week))"
+    
+    // MARK: - <Strideable>
+    public func distance(to other: Day) -> Int {
+        if self > other { return -other.distance(to: self) }
+        var count = 0
+        var day = self
+        while day < other {
+            count += 1
+            day = day.nextDay
+        }
+        return count
+    }
+    
+    public func advanced(by n: Int) -> Day {
+        if n == 1 { return self.nextDay }
+        if n == -1 { return self.prevDay }
+        let cal = Calendar(identifier: .gregorian)
+        let date = cal.date(byAdding: .day, value: n, to: Date(self))
+        return date!.day
     }
 }
 
+// MARK: -
 class WeekCache {
-    subscript(day:Day) -> 週型 {
+    subscript(day: Day) -> 週型 {
         lock.lock()
         defer { lock.unlock() }
         if let week = cache[day] {
@@ -138,19 +161,19 @@ class WeekCache {
             return week
         }
     }
-    private var cache : [Day:週型] = [:]
+    private var cache: [Day:週型] = [:]
     private let lock = NSLock()
 }
 private let weekCache = WeekCache()
 
 extension Date {
     /// 日付
-    public var day : Day {
+    public var day: Day {
         let comp = cal.dateComponents([.year, .month, .day], from: self)
         return Day(year: comp.year!, month: comp.month!, day: comp.day!)
     }
     
-    public init(_ day:Day) {
+    public init(_ day: Day) {
         var comp = DateComponents()
         comp.year = day.year
         comp.month = day.month
@@ -159,7 +182,7 @@ extension Date {
         self = date
     }
     
-    public init(_ day:Day, _ time:Time) {
+    public init(_ day: Day, _ time: Time) {
         var comp = DateComponents()
         comp.year = day.year
         comp.month = day.month

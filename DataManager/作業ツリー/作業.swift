@@ -266,7 +266,7 @@ class ProgressCounter {
 extension 指示書型 {
     public static var 作業記録補完: Bool = true
     
-    func setup関連保留校正処理(_ works:[作業記録型]) {
+    func setup関連保留校正処理<S: Sequence>(_ works: S) where S.Element == 作業記録型 {
         let stops = self.保留校正一覧 + make管理戻し()
         for work in works {
             guard let range = work.作業期間 else { continue }
@@ -487,7 +487,7 @@ extension 指示書型 {
         return works.calc累積作業時間()
     }
 
-    public func make箱文字滞留期間() -> [作業記録型]? {
+    public func make箱文字滞留期間() -> [箱文字期間型 : 作業記録型]? {
         let worker = self.担当者1 ?? self.担当者2 ?? self.担当者3
         let list = self.進捗一覧
         guard let kend = list.findFirst(工程: .管理, 作業内容: .完了)?.登録日時
@@ -521,8 +521,101 @@ extension 指示書型 {
         ,let lswork = 作業記録型(nil, type: .通常, state: .レーザー, from: nend, to: send, worker: worker, 伝票番号: self.伝票番号)
         ,let hywork = 作業記録型(nil, type: .通常, state: hakostate, from: send, to: hakoend, worker: worker, 伝票番号: self.伝票番号)
             ,let akwork = 作業記録型(nil, type: .通常, state: .発送, from: hakoend, to: htime, worker: worker, 伝票番号: self.伝票番号) else { return nil }
-        let result = [ekwork, gnwork, lswork, hywork, akwork]
-        self.setup関連保留校正処理(result)
+        let result: [箱文字期間型 : 作業記録型] = [
+            .営業管理 : ekwork,
+            .原稿入力 : gnwork,
+            .レーザー照合 : lswork,
+            .溶接半田 : hywork,
+            .後工程 : akwork]
+        self.setup関連保留校正処理(result.values)
+        return result
+    }
+}
+
+public enum 箱文字期間型: Hashable, CaseIterable {
+    case 営業管理
+    case 原稿入力
+    case レーザー照合
+    case 溶接半田
+    case 後工程
+    
+    public var 関連工程: [工程型] {
+        switch self {
+        case .営業管理:
+            return [.営業, .管理]
+        case .原稿入力:
+            return [.原稿, .入力, .出力]
+        case .レーザー照合:
+            return [.レーザー, .レーザー（アクリル）, .照合検査]
+        case .溶接半田:
+            return [.立ち上がり, .立ち上がり_溶接, .半田, .溶接, .裏加工, .裏加工_溶接]
+        case .後工程:
+            return [.研磨, .表面仕上, .塗装, .乾燥炉, .品質管理, .組立, .発送, .拭き取り]
+        }
+    }
+}
+
+public extension Day {
+    func makeTimeMap(is四熊: Bool = false) throws -> [箱文字期間型 : Time] {
+        var result: [箱文字期間型 : Time] = [:]
+        
+        let list = try 進捗型.find(工程: nil, 伝票種類: .箱文字, 登録日: self).filter {
+            if is四熊 == false && $0.社員番号 == 23 { return false }
+            return $0.登録時間 > 標準終業時間
+        }
+        let group = Dictionary(grouping: list) { $0.工程 }
+        for range in 箱文字期間型.allCases {
+            for process in range.関連工程 {
+                guard let progressList = group[process] else { continue }
+                guard let time = progressList.map({ $0.登録時間 }).max() else { continue }
+                if let current = result[range] {
+                    if current < time {
+                        result[range] = time
+                    }
+                } else {
+                    result[range] = time
+                }
+            }
+        }
+        
+        let list2 = try 指示書変更内容履歴型.find(日付: self,伝票種類: .箱文字).filter { $0.種類 == .指示書承認 && $0.日時.time > 標準終業時間 }
+        for change in list2 {
+            let time = change.日時.time
+            if let current = result[.営業管理] {
+                if current < time {
+                    result[.営業管理] = time
+                }
+            } else {
+                result[.営業管理] = time
+            }
+        }
+        return result
+    }
+}
+
+public extension ClosedRange where Bound == Day {
+    func make平均残業時間Map(is四熊: Bool = false) throws -> [箱文字期間型 : TimeInterval] {
+        var work: [箱文字期間型 : (sum: TimeInterval, count: TimeInterval)] = [:]
+        var day = self.lowerBound
+        while self.contains(day) {
+            if day.isWorkday {
+                let map = try day.makeTimeMap(is四熊: is四熊)
+                for (key, value) in map {
+                    let zanSeconds = value - 標準終業時間
+                    if zanSeconds <= 0 { continue }
+                    if let current = work[key] {
+                        work[key] = (current.sum + zanSeconds, current.count + 1)
+                    } else {
+                        work[key] = (zanSeconds, 1)
+                    }
+                }
+            }
+            day = day.nextDay
+        }
+        var result: [箱文字期間型 : TimeInterval] = [:]
+        for (key, value) in work {
+            result[key] = value.sum / value.count
+        }
         return result
     }
 }

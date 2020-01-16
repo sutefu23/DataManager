@@ -209,12 +209,11 @@ public extension 進捗型 {
         return result
     }
     
-    static func find(工程 state: 工程型?, 登録日 day: Day) throws -> [進捗型] {
+    static func find(工程 state: 工程型?, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day) throws -> [進捗型] {
         var query = [String:String]()
         query["登録日"] = day.fmString
-        if let state = state {
-            query["工程コード"] = "\(state.code)"
-        }
+        query["工程コード"] = state?.code
+        query["伝票種類"] = type?.description
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }

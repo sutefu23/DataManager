@@ -525,4 +525,16 @@ public extension 指示書型 {
             return nil
         }
     }
+    
+    static func findDirect(uuid: String) throws -> 指示書型? {
+        var query = [String:String]()
+        query["UUID"] = uuid
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
+        if list.count == 1, let record = list.first, let order = 指示書型(record) {
+            return order
+        } else {
+            return nil
+        }
+    }
 }

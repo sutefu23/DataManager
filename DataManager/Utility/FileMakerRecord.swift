@@ -8,35 +8,46 @@
 
 import Foundation
 
+struct PortalDataCache {
+    let cache: [FileMakerRecord]?
+}
+
 class FileMakerRecord {
-    let fieldData : [String:Any]
-    let portalData : [String : Any]
+    let fieldData: [String : Any]
+    let portalData: [String : [FileMakerRecord]]
     let recordId: String?
-    let name : String
+    let name: String
     
-    init?(json data:Any) {
-        guard let dic = data as? [String:Any] else { return nil }
-        guard let field = dic["fieldData"] as? [String:Any] else { return nil }
-        self.fieldData = field
-        self.portalData = dic["portalData"] as? [String:Any] ?? [:]
+    init?(json data: Any) {
+        guard let dic = data as? [String : Any] else { return nil }
         self.recordId = dic["recordId"] as? String
+        self.fieldData = dic["fieldData"] as? [String:Any] ?? [:]
+        if let data = dic["portalData"] as? [String : [[String : Any]]] {
+            var portalData = [String : [FileMakerRecord]]()
+            for (key, array) in data {
+                let source = array.map { FileMakerRecord(portal: key, fieldData: $0) }
+                portalData[key] = source
+            }
+            self.portalData = portalData
+        } else {
+            self.portalData = [:]
+        }
         self.name = ""
     }
     
-    init?(portal name:String, json data:Any) {
+    init(portal name: String, fieldData: [String:Any]) {
         self.name = name
-        guard let dic = data as? [String:Any] else { return nil }
-        self.fieldData = dic
+        self.fieldData = fieldData
         self.portalData = [:]
         self.recordId = nil
     }
     
-    func output(_ key:String) {
+    func output(_ key: String) {
         print(self[key] ?? "")
     }
     
     // MARK: -
-    subscript(_ key:String) -> Any? {
+    subscript(_ key: String) -> Any? {
         if name.isEmpty {
             let data = fieldData[key]
             return data
@@ -46,20 +57,18 @@ class FileMakerRecord {
         }
     }
     
-    func portal(forKey key:String) -> [FileMakerRecord]? {
-        guard let source = portalData[key] as? [Any] else { return nil }
-        return source.compactMap { FileMakerRecord(portal:key, json: $0) }
+    func portal(forKey key: String) -> [FileMakerRecord]? {
+        return portalData[key]
     }
     
-    func string(forKey key:String) -> String? {
+    func string(forKey key: String) -> String? {
         guard let object = self[key] else { return nil }
         if let str = object as? String { return str }
         if let value = object as? Int { return "\(value)" }
         return nil
-//        return self[key] as? String
     }
     
-    func integer(forKey key:String) -> Int? {
+    func integer(forKey key: String) -> Int? {
         if let value = self[key] as? Int { return value }
         guard let str = string(forKey: key) else { return nil }
         if let value = Int(str) { return value }
@@ -68,13 +77,17 @@ class FileMakerRecord {
         } else {
             return nil
         }
-//        return Int(str)
     }
     
-    func double(forKey key:String) -> Double? {
+    func double(forKey key: String) -> Double? {
         if let value = self[key] as? Double { return value }
         guard let str = string(forKey: key) else { return nil }
-        return Double(str)
+        if let value = Double(str) { return value }
+        if str.last == "\r" {
+            return Double(str.dropLast())
+        } else {
+            return nil
+        }
     }
     
     func day(forKey key: String) -> Day? {
@@ -82,32 +95,31 @@ class FileMakerRecord {
         return Day(fmJSONDay: day)
     }
     
-    func time(forKey key:String) -> Time? {
+    func time(forKey key: String) -> Time? {
         guard let time = string(forKey: key) else { return nil }
         return Time(fmJSONTime: time)
     }
     
-    func date(forKey key:String) -> Date? {
+    func date(forKey key: String) -> Date? {
         guard let date = string(forKey: key) else { return nil }
         return Date(fmJSONDayTime: date)
     }
     
-    func date(dayKey:String, timeKey:String) -> Date? {
+    func date(dayKey: String, timeKey: String) -> Date? {
         let day = string(forKey: dayKey)
         let time = string(forKey: timeKey)
         return Date(fmJSONDay: day, fmJSONTime: time)
     }
     
-    func url(forKey key:String) -> URL? {
+    func url(forKey key: String) -> URL? {
         guard let url = string(forKey: key) else { return nil }
         return URL(string: url)
     }
     
-    func object(forKey key:String) -> Data? {
+    func object(forKey key: String) -> Data? {
         guard let url = self.url(forKey: key) else { return nil }
         let db = FileMakerDB.pm_osakaname
         let data = try? db.downloadObject(url: url)
         return data
     }
 }
-
