@@ -17,7 +17,8 @@ struct FileMakerPortal {
         self.limit = limit
     }
 }
-private let expireMin: Double = 14 // 基本は15分で余裕を見て60秒少なくしている
+
+private let expireSeconds: Double = 15 * 60 - 60 // 本来は15分だが余裕を見て60秒減らしている
 
 class FileMakerSession : NSObject, URLSessionDelegate {
     let dbURL : URL
@@ -40,6 +41,8 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         guard let ticket = self.ticket else { return nil }
         let now = Date()
         if now < ticket.expire {
+            let expire: Date = Date(timeIntervalSinceNow: expireSeconds) // 寿命更新
+            self.ticket?.expire = expire
             return ticket.token
         }
         self.logout(with: ticket.token)
@@ -51,7 +54,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     }
     
     func prepareToken(reuse:Bool = true) throws -> String {
-        if reuse == true, let token = self.activeToken{ return token }
+        if reuse == true, let token = self.activeToken { return token }
         
         var result : String? = nil
         let url = self.dbURL.appendingPathComponent("sessions")
@@ -59,7 +62,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         var request = URLRequest(url: url)
         var isOk = false
         var errorMessage = ""
-        let expire : Date = Date(timeIntervalSinceNow: expireMin * 60)
+        let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
         request.httpMethod = "POST"
         request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -194,7 +197,6 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         } while (isRepeat)
         return result
     }
-    
     
     struct SearchRequest : Encodable {
         let query : [[String:String]]

@@ -100,12 +100,19 @@ public struct Day: Hashable, Strideable {
     public var monthDayJString: String {
         return "\(make2dig(month))月\(make2dig(day))日"
     }
+    public var shortYearMonthDayString: String {
+        if Day().year == self.year {
+            return monthDayString
+        } else {
+            return fmImportString
+        }
+    }
 
     public var monthDayWeekString: String {
         return "\(self.month)/\(self.day)(\(self.week))"
     }
     
-    var description: String {
+    public var description: String {
         return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
     }
     

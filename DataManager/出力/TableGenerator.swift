@@ -8,22 +8,6 @@
 
 import Foundation
 
-private let ngCharacters: CharacterSet = {
-    var set = CharacterSet()
-    set.insert(charactersIn: ",\"\r\n\t\\")
-    return set
-}()
-
-private func clamp(_ string: String) -> String {
-    let ng = ngCharacters
-    return string.filter {
-        for sc in $0.unicodeScalars {
-            if ng.contains(sc) { return false}
-        }
-        return true
-    }
-}
-
 public enum ExportType {
     case numbers
     case excel
@@ -46,6 +30,7 @@ public enum ExportType {
             return line
         }
     }
+    
     func footer() -> String {
         switch self {
         case .numbers, .excel, .filemaker:
@@ -59,12 +44,28 @@ public enum ExportType {
         }
     }
     
+    private static let ngCharacters: CharacterSet = {
+        var set = CharacterSet()
+        set.insert(charactersIn: ",\"\r\n\t\\")
+        return set
+    }()
+
+    private func clamp(_ string: String) -> String {
+        let ng = ExportType.ngCharacters
+        return string.filter {
+            for sc in $0.unicodeScalars {
+                if ng.contains(sc) { return false}
+            }
+            return true
+        }
+    }
+
     func makeLine(_ cols:[String]) -> String {
         switch self {
         case .filemaker:
             return cols.map { clamp($0) }.joined(separator: ",") + "\n"
         case .excel:
-            return cols.map { "\"\($0)\"" }.joined(separator: ",") + "\n"
+            return cols.map { "\"\(clamp($0))\"" }.joined(separator: ",") + "\n"
         case .numbers:
             return cols.map { clamp($0) }.joined(separator: "\t") + "\n"
         case .html:
@@ -76,7 +77,6 @@ public enum ExportType {
             line += "</tr>"
             return line
         }
-
     }
     
     func encode(text: String) -> Data {

@@ -46,6 +46,9 @@ public struct 社員型 : Hashable, Codable {
         self.社員番号 = num
         self.社員名称 = String(社員コード)
     }
+    public var ベトナム対応社員名称: String {
+        return self.社員名称.replacingOccurrences(of: "　", with: "\n")
+    }
     
     public static func ==(left:社員型, right:社員型) -> Bool {
         return left.社員番号 == right.社員番号

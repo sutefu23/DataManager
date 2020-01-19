@@ -95,6 +95,10 @@ public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, Ex
         return "\(上位整数値)-\(下位整数値)"
     }
     
+    public var バーコード: String {
+        return "*\(整数値)*"
+    }
+    
     // MARK: - CutomString
     public var description: String {
         return String(self.整数値)

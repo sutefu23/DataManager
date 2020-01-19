@@ -31,8 +31,7 @@ class FileMakerServerCache {
         lock.lock()
         defer { lock.unlock() }
         if cache.isEmpty { return }
-        let queue = OperationQueue()
-        cache.values.forEach { $0.logout(queue) }
+        cache.values.forEach { $0.logout() }
     }
 }
 
@@ -44,7 +43,7 @@ struct FileMakerSortItem : Encodable {
 let maxConnection = 3
 
 class FileMakerServer : Hashable {
-    private var sessions : [FileMakerSession] = []
+    private var pool : [FileMakerSession] = []
     private let lock = NSLock()
     private let sem : DispatchSemaphore
 
@@ -75,14 +74,14 @@ class FileMakerServer : Hashable {
         sem.wait()
         lock.lock()
         defer { lock.unlock() }
-        for (index, session) in sessions.enumerated() {
+        for (index, session) in pool.enumerated() {
             if session.dbURL == url {
-                sessions.remove(at: index)
+                pool.remove(at: index)
                 return session
             }
         }
-        if sessions.count == maxConnection, let session = sessions.first {
-            sessions.removeFirst(1)
+        while pool.count >= maxConnection, let session = pool.first {
+            pool.removeFirst(1)
             session.logout()
         }
         let session = FileMakerSession(url: url, user: user, password: password)
@@ -91,16 +90,17 @@ class FileMakerServer : Hashable {
     
     func putSession(_ session: FileMakerSession) {
         lock.lock()
-        self.sessions.append(session)
+        self.pool.append(session)
         lock.unlock()
         sem.signal()
     }
     
-    func logout(_ queue: OperationQueue) {
+    func logout() {
         lock.lock()
-        for session in sessions {
-            queue.addOperation { session.logout() }
+        for session in pool {
+            session.logout()
         }
+        pool.removeAll()
         lock.unlock()
     }
 }

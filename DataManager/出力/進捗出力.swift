@@ -128,7 +128,7 @@ public struct 進捗出力内容型 : Hashable {
 }
 
 // MARK: -
-extension Array where Element == 進捗出力型 {
+extension Sequence where Element == 進捗出力型 {
     /// 生産管理に直接出力する
     public func exportToDB(重複チェック:Bool = false) throws {
         let db = FileMakerDB.pm_osakaname
@@ -143,10 +143,6 @@ extension Array where Element == 進捗出力型 {
         if count > 0 {
             try db.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
         }
-    }
-    
-    func 生産管理との重複削除() -> [進捗出力型] {
-        return self.filter { !$0.isDBに重複あり }
     }
     
     /// 参照リストとの重複を削除する
@@ -168,10 +164,16 @@ extension Array where Element == 進捗出力型 {
         }
         return result
     }
+}
     
-    // MARK: - CSV関連
+extension Array where Element == 進捗出力型 {
+    func 生産管理との重複削除() -> [進捗出力型] {
+        return self.filter { !$0.isDBに重複あり }
+    }
+    
+// MARK: - CSV関連
     init(csv url: URL)  throws {
-        var targets : [進捗出力型] = []
+        var targets: [進捗出力型] = []
         if url.isExists {
             let source = try String(contentsOf: url, encoding: .utf8)
             var convertError: Error? = nil
