@@ -80,6 +80,13 @@ public struct Day: Hashable, Strideable {
         return weekCache[self]
     }
     
+    public var weekDays: ClosedRange<Day> {
+        var from = self
+        while from.week != .日 { from = from.prevDay }
+        let to = from.nextDay.nextDay.nextDay.nextDay.nextDay.nextDay
+        return from...to
+    }
+    
     // MARK: - 文字列表現
     public var fmString: String {
         return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
@@ -199,5 +206,21 @@ extension Date {
         comp.second = time.second
         let date = cal.date(from: comp)!
         self = date
+    }
+}
+
+public extension ClosedRange where Bound == Day {
+    var prevWeekDays: ClosedRange<Day> {
+        let week = self.lowerBound.weekDays
+        let to = week.lowerBound.prevDay
+        let from = to.prevDay.prevDay.prevDay.prevDay.prevDay.prevDay
+        return from...to
+    }
+    
+    var nextWeekDays: ClosedRange<Day> {
+        let week = self.lowerBound.weekDays
+        let from = week.upperBound.nextDay
+        let to = from.nextDay.nextDay.nextDay.nextDay.nextDay.nextDay
+        return from...to
     }
 }

@@ -77,16 +77,38 @@ public class 指示書型 {
         if let state = record.経理状態(forKey: "経理状態") { return state }
         return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
     }
-    public var ボルト等1: String { record.string(forKey: "ボルト等1") ?? "" }
-    public var ボルト等2:  String { record.string(forKey: "ボルト等2") ?? "" }
-    public var ボルト等3: String { record.string(forKey: "ボルト等3") ?? "" }
-    public var ボルト等4: String { record.string(forKey: "ボルト等4") ?? "" }
+    public var ボルト等1: String { record.string(forKey: "ボルト等1")! }
+    public var ボルト等2:  String { record.string(forKey: "ボルト等2")! }
+    public var ボルト等3: String { record.string(forKey: "ボルト等3")! }
+    public var ボルト等4: String { record.string(forKey: "ボルト等4")! }
+    public var ボルト等5: String { record.string(forKey: "ボルト等5")! }
+    public var ボルト等6: String { record.string(forKey: "ボルト等6")! }
+    public var ボルト等7: String { record.string(forKey: "ボルト等7")! }
+    public var ボルト等8: String { record.string(forKey: "ボルト等8")! }
+    public var ボルト等9: String { record.string(forKey: "ボルト等9")! }
+    public var ボルト等10: String { record.string(forKey: "ボルト等10")! }
+    public var ボルト等11: String { record.string(forKey: "ボルト等11")! }
+    public var ボルト等12: String { record.string(forKey: "ボルト等12")! }
+    public var ボルト等13: String { record.string(forKey: "ボルト等13")! }
+    public var ボルト等14: String { record.string(forKey: "ボルト等14")! }
+    public var ボルト等15: String { record.string(forKey: "ボルト等15")! }
 
-    public var ボルト本数1: String { record.string(forKey: "ボルト本数1") ?? "" }
-    public var ボルト本数2: String { record.string(forKey: "ボルト本数2") ?? "" }
-    public var ボルト本数3: String { record.string(forKey: "ボルト本数3") ?? "" }
-    public var ボルト本数4: String { record.string(forKey: "ボルト本数4") ?? "" }
-    
+    public var ボルト本数1: String { record.string(forKey: "ボルト本数1")! }
+    public var ボルト本数2: String { record.string(forKey: "ボルト本数2")! }
+    public var ボルト本数3: String { record.string(forKey: "ボルト本数3")! }
+    public var ボルト本数4: String { record.string(forKey: "ボルト本数4")! }
+    public var ボルト本数5: String { record.string(forKey: "ボルト本数5")! }
+    public var ボルト本数6: String { record.string(forKey: "ボルト本数6")! }
+    public var ボルト本数7: String { record.string(forKey: "ボルト本数7")! }
+    public var ボルト本数8: String { record.string(forKey: "ボルト本数8")! }
+    public var ボルト本数9: String { record.string(forKey: "ボルト本数9")! }
+    public var ボルト本数10: String { record.string(forKey: "ボルト本数10")! }
+    public var ボルト本数11: String { record.string(forKey: "ボルト本数11")! }
+    public var ボルト本数12: String { record.string(forKey: "ボルト本数12")! }
+    public var ボルト本数13: String { record.string(forKey: "ボルト本数13")! }
+    public var ボルト本数14: String { record.string(forKey: "ボルト本数14")! }
+    public var ボルト本数15: String { record.string(forKey: "ボルト本数15")! }
+
     public var 合計金額: Int { record.integer(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }

@@ -164,9 +164,7 @@ public extension ClosedRange where Bound == Month {
         var month = self.lowerBound
         let to = self.upperBound
         while month <= to {
-            for week in month.workWeeks {
-                set.insert(week)
-            }
+            for week in month.workWeeks { set.insert(week) }
             month = month.nextMonth
         }
         return set.sorted { $0.lowerBound < $1.lowerBound }

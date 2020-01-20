@@ -33,7 +33,6 @@ public extension Day {
     func 日付タイプ(_ cal:カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
         return cal.isHoliday(of: self) ? .休日: . 出勤日
     }
-
 }
 
 public extension Date {
