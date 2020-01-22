@@ -131,7 +131,12 @@ public struct 進捗出力内容型 : Hashable {
 extension Sequence where Element == 進捗出力型 {
     /// 生産管理に直接出力する
     public func exportToDB(重複チェック:Bool = false) throws {
+//        FileMakerDB.logputAll()
+        #if os(iOS)
+        let db = FileMakerDB.pm_osakaname2
+        #else
         let db = FileMakerDB.pm_osakaname
+        #endif
         let uuid = UUID()
         var count = 0
         for progress in self {

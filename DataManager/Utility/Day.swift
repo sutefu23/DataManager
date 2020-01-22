@@ -139,7 +139,18 @@ public struct Day: Hashable, Strideable {
         let date = Date(self)
         return date.prevDay.day
     }
-    
+
+    public var prevWorkDay: Day {
+        var day = self.prevDay
+        while day.isHoliday { day = day.prevDay }
+        return day
+    }
+
+    public var nextWorkDay: Day {
+        var day = self.nextDay
+        while day.isHoliday { day = day.nextDay }
+        return day
+    }
     
     // MARK: - <Strideable>
     public func distance(to other: Day) -> Int {

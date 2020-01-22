@@ -83,3 +83,9 @@ public enum 略号型 : CaseIterable {
     }
     
 }
+
+public extension Sequence where Element == 略号型 {
+    var code: String {
+        return self.reduce("") { $0 + $1.code }
+    }
+}
