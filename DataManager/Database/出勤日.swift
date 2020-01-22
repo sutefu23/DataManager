@@ -9,69 +9,65 @@
 import Foundation
 
 extension Date {
-//    public var isHoliday : Bool {
-//        return self.day.isHoliday
-//    }
-    
-    public var nextDay : Date {
+    public var nextDay: Date {
         return cal.date(byAdding: .day, value: 1, to: self)!
     }
 
-    public var prevDay : Date {
+    public var prevDay: Date {
         return cal.date(byAdding: .day, value: -1, to: self)!
     }
 
-    public func date(ofHour hour:Int, minute:Int) -> Date {
+    public func date(ofHour hour: Int, minute: Int) -> Date {
         var coms = cal.dateComponents([.year, .month, .day, .hour, .minute], from: self)
         coms.hour = hour
         coms.minute = minute
         return cal.date(from: coms)!
     }
     
-    public var dayNumber : Int {
+    public var dayNumber: Int {
         return cal.component(.day, from: self)
     }
 
-    public var monthNumber : Int {
+    public var monthNumber: Int {
         return cal.component(.month, from: self)
     }
 
-    public var yearNumber : Int {
+    public var yearNumber: Int {
         return cal.component(.year, from: self)
     }
 
-    public var monthDayWeekString : String {
+    public var monthDayWeekString: String {
         return "\(monthNumber)/\(dayNumber) (\(week.description))"
     }
     
 
-    public var dayWeekString : String {
+    public var dayWeekString: String {
         return day.dayWeekString
     }
     
-    public var monthDayHourMinuteString : String {
+    public var monthDayHourMinuteString: String {
         return "\(self.day.monthDayString) \(self.time.hourMinuteString)"
     }
     
-    public var dayWeekToMinuteString : String {
+    public var dayWeekToMinuteString: String {
         return "\(self.dayWeekString) \(self.time.hourMinuteString)"
     }
 }
 
 
 extension Day {
-    public var dayWeekString : String {
+    public var dayWeekString: String {
         return "\(day)(\(week.description))"
     }
 
-    public var isWorkday : Bool {
+    public var isWorkday: Bool {
         return !isHoliday
     }
-    public var isHoliday : Bool {
+    public var isHoliday: Bool {
         return 出勤日DB型.shared.isHoliday(of: self)
     }
     
-    var dynamicIsHoliday : Bool {
+    var dynamicIsHoliday: Bool {
         return 出勤日DB型.shared.dynamicIsHoliday(self)
     }
 }
@@ -79,7 +75,7 @@ class 出勤日DB型 {
     static let shared: 出勤日DB型 = 出勤日DB型()
     // 2016/10/01 ~ 2019/03/31
     /// 土日以外の休日
-    let holidays : Set<Day> = [
+    let holidays: Set<Day> = [
         Day(2016,10,10),
         Day(2016,11,03),
         Day(2016,11,23),
@@ -129,7 +125,7 @@ class 出勤日DB型 {
         Day(2019,02,11),
         ]
     /// 土曜出勤日
-    let workdays : Set<Day> = [
+    let workdays: Set<Day> = [
         Day(2016,10,15),
         Day(2016,11,05),
         Day(2016,12,24),
@@ -183,9 +179,9 @@ class 出勤日DB型 {
         Day(2019,03,30),
         ]
     
-    let oldline : Day
-    let baseline : Day
-    private var isHolidayCache : [Day : Bool] = [:]
+    let oldline: Day
+    let baseline: Day
+    private var isHolidayCache: [Day: Bool] = [:]
     private let lock = NSLock()
     
     func flushCache() {
@@ -194,12 +190,12 @@ class 出勤日DB型 {
         lock.unlock()
     }
     
-    private func isHoidayCacheData(of day:Day) -> Bool? {
+    private func isHoidayCacheData(of day: Day) -> Bool? {
         lock.lock()
         defer { lock.unlock() }
         return isHolidayCache[day]
     }
-    private func setIsHolidayCacheData(day:Day, isHoliday:Bool) {
+    private func setIsHolidayCacheData(day: Day, isHoliday: Bool) {
         lock.lock()
         isHolidayCache[day] = isHoliday
         lock.unlock()
@@ -209,9 +205,9 @@ class 出勤日DB型 {
         self.baseline = max(workdays.max()!, holidays.max()!)
         self.oldline = min(workdays.min()!, holidays.min()!)
     }
-    func isHoliday(of day:Day) -> Bool {
+    func isHoliday(of day: Day) -> Bool {
         if let isHoliday = isHoidayCacheData(of: day) { return isHoliday }
-        let isHoliday : Bool
+        let isHoliday: Bool
         if day < oldline {
             fatalError() // 想定していない
         } else if day <= baseline {
@@ -230,7 +226,7 @@ class 出勤日DB型 {
         return isHoliday
     }
     
-    func dynamicIsHoliday(_ day:Day) -> Bool {
+    func dynamicIsHoliday(_ day: Day) -> Bool {
         let isHoliday : Bool
         if day.week == .日 {
             isHoliday = true
@@ -244,4 +240,3 @@ class 出勤日DB型 {
         return isHoliday
     }
 }
-

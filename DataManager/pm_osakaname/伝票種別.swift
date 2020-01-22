@@ -13,7 +13,7 @@ public enum 伝票種別型 {
     case クレーム
     case 再製
     
-    init?<T>(_ code: T) where T : StringProtocol {
+    init?<T>(_ code: T) where T: StringProtocol {
         switch code {
         case "":
             self = .通常
@@ -26,7 +26,7 @@ public enum 伝票種別型 {
         }
     }
     
-    public var label : String {
+    public var label: String {
         switch self {
         case .通常:
             return ""

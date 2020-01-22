@@ -15,16 +15,16 @@ private func makeID() -> String {
 }
 
 public class 工程図工程型 {
-    public let 工程ID : String
-    public var 名称 : String
-    public var 開始日時 : Date
-    public var 終了日時 : Date
+    public let 工程ID: String
+    public var 名称: String
+    public var 開始日時: Date
+    public var 終了日時: Date
     
-    public var 進捗度 : Int?
-    public var 行番号 : String?
-    public var 備考1 : String?
+    public var 進捗度: Int?
+    public var 行番号: String?
+    public var 備考1: String?
 
-    public init(name:String, from:Date, to:Date) {
+    public init(name: String, from: Date, to: Date) {
         self.名称 = name
         self.開始日時 = from
         self.終了日時 = to
@@ -37,18 +37,18 @@ public class 工程図工程型 {
         return clone
     }
 }
-public class 工程図グループ型 : Hashable {
-    public let グループID : String
-    public var 名称 : String
-    public var order : Double
+public class 工程図グループ型: Hashable {
+    public let グループID: String
+    public var 名称: String
+    public var order: Double
     
-    public init(name:String, order:Double) {
+    public init(name: String, order: Double) {
         self.名称 = name
         self.グループID = makeID()
         self.order = order
     }
     
-    public static func ==(left:工程図グループ型, right:工程図グループ型) -> Bool {
+    public static func ==(left: 工程図グループ型, right: 工程図グループ型) -> Bool {
         return left.グループID == right.グループID && left.名称 == right.名称 && left.order == right.order
     }
     
@@ -60,7 +60,7 @@ public class 工程図グループ型 : Hashable {
 }
 
 extension Sequence where Element == 進捗型 {
-    func make工程(name: String, _ picker: (Self) -> (from:Date?, to:Date?)) -> 工程図工程型? {
+    func make工程(name: String, _ picker: (Self) -> (from: Date?, to: Date?)) -> 工程図工程型? {
         let result = picker(self)
         guard let from = result.from, let to = result.to else { return nil }
         let state = 工程図工程型(name: name, from: from, to: to)
@@ -68,12 +68,12 @@ extension Sequence where Element == 進捗型 {
     }
 }
 
-public func make工程別進捗リスト(_ orders:[指示書型]) -> [(工程図グループ型, 工程図工程型)]  {
+public func make工程別進捗リスト(_ orders: [指示書型]) -> [(工程図グループ型, 工程図工程型)]  {
     let group1 = 工程図グループ型(name: "営業", order: 1)
     let group2 = 工程図グループ型(name: "管理", order: 1)
     let group3 = 工程図グループ型(name: "原稿", order: 1)
 
-    var list : [(工程図グループ型, 工程図工程型)] = []
+    var list: [(工程図グループ型, 工程図工程型)] = []
     for order in orders {
         let state1 = order.進捗一覧.make工程(name: order.表示用伝票番号) {
             let from = order.登録日時

@@ -57,10 +57,10 @@ public class インシデント型 {
         }
     }
 
-    public var 日時 : Date
-    public var 内容 : String
-    public var 種類 : 種類型
-    public var 社員名称 : String
+    public var 日時: Date
+    public var 内容: String
+    public var 種類: 種類型
+    public var 社員名称: String
 
     init(_ progress: 進捗型) {
         self.日時 = progress.登録日時
@@ -75,7 +75,4 @@ public class インシデント型 {
         self.種類 = 種類型(change.種類)
         self.社員名称 = change.社員名称
     }
-
-    
-    
 }

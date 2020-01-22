@@ -15,7 +15,7 @@ private let serialQueue: OperationQueue = {
     return queue
 }()
 
-struct 箱文字文字数型 : Hashable {
+struct 箱文字文字数型: Hashable {
     var 半田文字数: Int
     var 溶接文字数: Int
     var 総文字数: Int
@@ -110,8 +110,8 @@ public class 指示書文字数型 {
     var isInitial: Bool { return 初期箱文字文字数 == 現箱文字文字数 }
     var isChanged: Bool { return 読み込み時箱文字文字数 != 現箱文字文字数 }
     
-    var fieldData : [String : String] {
-        var data = [String : String]()
+    var fieldData: [String: String] {
+        var data = [String: String]()
         data["伝票番号"] = "\(伝票番号)"
         data["半田文字数"] = "\(現箱文字文字数.半田文字数)"
         data["溶接文字数"] = "\(現箱文字文字数.溶接文字数)"
@@ -168,14 +168,14 @@ public class 指示書文字数型 {
 }
 
 extension 箱文字文字数型 {
-    static func find(指示書 order: 指示書型) throws -> (recordId:String, 箱文字文字数: 箱文字文字数型)? {
-        var result: Result<(recordId:String, 箱文字文字数: 箱文字文字数型)?, Error> = .success(nil)
+    static func find(指示書 order: 指示書型) throws -> (recordId: String, 箱文字文字数: 箱文字文字数型)? {
+        var result: Result<(recordId: String, 箱文字文字数: 箱文字文字数型)?, Error> = .success(nil)
         let operation = BlockOperation {
             let db = FileMakerDB.system
-            var query = [String:String]()
+            var query = [String: String]()
             query["伝票番号"] = "\(order.伝票番号)"
             do {
-                let list : [FileMakerRecord] = try db.find(layout: 指示書文字数型.dbName, query: [query])
+                let list: [FileMakerRecord] = try db.find(layout: 指示書文字数型.dbName, query: [query])
                 if let record = list.first, let recordId = record.recordId {
                     let data = 箱文字文字数型(record)
                     result = .success((recordId, data))

@@ -18,16 +18,18 @@ struct FileMakerPortal {
     }
 }
 
+typealias FileMakerQuery = [String: String]
+
 private let expireSeconds: Double = 15 * 60 - 60 // 本来は15分だが余裕を見て60秒減らしている
 
-class FileMakerSession : NSObject, URLSessionDelegate {
-    let dbURL : URL
-    let user : String
-    let password : String
+class FileMakerSession: NSObject, URLSessionDelegate {
+    let dbURL: URL
+    let user: String
+    let password: String
     private let sem = DispatchSemaphore(value: 0)
-    lazy var session : URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
+    lazy var session: URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
     
-    init(url:URL, user:String, password:String) {
+    init(url: URL, user: String, password: String) {
         self.dbURL = url
         self.user = user
         self.password = password
@@ -36,8 +38,8 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         self.logout()
     }
     
-    private var ticket : (token: String, expire: Date)?
-    var activeToken : String? {
+    private var ticket: (token: String, expire: Date)?
+    var activeToken: String? {
         guard let ticket = self.ticket else { return nil }
         let now = Date()
         if now < ticket.expire {
@@ -49,14 +51,14 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return nil
     }
     
-    var isConnect : Bool {
+    var isConnect: Bool {
         return self.activeToken != nil
     }
     
-    func prepareToken(reuse:Bool = true) throws -> String {
+    func prepareToken(reuse: Bool = true) throws -> String {
         if reuse == true, let token = self.activeToken { return token }
         
-        var result : String? = nil
+        var result: String? = nil
         let url = self.dbURL.appendingPathComponent("sessions")
         let auth = "\(user):\(password)".data(using: .utf8)!.base64EncodedString()
         var request = URLRequest(url: url)
@@ -117,7 +119,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
     
     // MARK: - <URLSessionDelegate>
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let credential : URLCredential?
+        let credential: URLCredential?
         if let trust = challenge.protectionSpace.serverTrust {
             credential = URLCredential(trust: trust)
         } else {
@@ -126,10 +128,10 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         completionHandler(.useCredential, credential)
     }
     
-    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = [], portals:[FileMakerPortal] = []) throws -> [FileMakerRecord] {
+    func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
         let sortItems = sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         let token = try self.prepareToken()
-        var result : [FileMakerRecord] = []
+        var result: [FileMakerRecord] = []
         
         var offset = 1
         let limit = 100
@@ -138,11 +140,11 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         repeat {
             var errorMessage = ""
             var isOk = false
-            var newRequest : [FileMakerRecord] = []
+            var newRequest: [FileMakerRecord] = []
             newRequest.reserveCapacity(100)
             var url = dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
             var comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-            var queryItems : [URLQueryItem] = [
+            var queryItems: [URLQueryItem] = [
                 URLQueryItem(name: "_offset", value: "\(offset)"),
                 URLQueryItem(name: "_limit", value: "\(limit)")
             ]
@@ -154,7 +156,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
                 queryItems.append(item)
             }
             // portal
-            var names : [String] = []
+            var names: [String] = []
             for portal in portals where portal.limit != 0 {
                 if let limit = portal.limit {
                     names.append(portal.name)
@@ -198,18 +200,18 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return result
     }
     
-    struct SearchRequest : Encodable {
-        let query : [[String:String]]
-        let sort : [FileMakerSortItem]?
-        let offset : Int
-        let limit : Int
+    struct SearchRequest: Encodable {
+        let query: [[String:String]]
+        let sort: [FileMakerSortItem]?
+        let offset: Int
+        let limit: Int
     }
     
-    func find(layout:String, recordId:String) throws -> FileMakerRecord? {
-        return try self.find(layout: layout, query: [["recordId" : recordId]]).first
+    func find(layout: String, recordId: String) throws -> FileMakerRecord? {
+        return try self.find(layout: layout, query: [["recordId": recordId]]).first
     }
     
-    func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) throws -> [FileMakerRecord] {
+    func find(layout: String, query: [FileMakerQuery], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
         let token = try self.prepareToken()
         var offset = 1
         let limit = 100
@@ -218,7 +220,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-        let sort : [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
+        let sort: [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         let encoder = JSONEncoder()
         repeat {
             var isOk = false
@@ -226,7 +228,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
             let json = SearchRequest(query: query, sort:sort , offset: offset, limit: limit)
             guard let data = try? encoder.encode(json) else { throw FileMakerError.find(message: "sortItem encoding") }
             let rawData = String(data: data, encoding: .utf8)
-            var newResult : [FileMakerRecord] = []
+            var newResult: [FileMakerRecord] = []
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -283,8 +285,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         if isOk == false { throw FileMakerError.delete(message: errorMessage) }
     }
     
-    
-    func update(layout:String, recordId:String , fields:[String:String]) throws {
+    func update(layout: String, recordId: String , fields: FileMakerQuery) throws {
         let token = try self.prepareToken()
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
         let config = URLSessionConfiguration.default
@@ -314,7 +315,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         if isOk == false { throw FileMakerError.update(message: errorMessage) }
     }
     
-    func insert(layout:String, fields:[String:String]) throws -> String {
+    func insert(layout: String, fields: FileMakerQuery) throws -> String {
         let token = try self.prepareToken()
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         let config = URLSessionConfiguration.default
@@ -322,7 +323,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         let encoder = JSONEncoder()
         var isOk = false
         var errorMessage = ""
-        let json = ["fieldData" : fields]
+        let json = ["fieldData": fields]
         guard let data = try? encoder.encode(json) else { throw FileMakerError.insert(message: "sortItem encoding") }
         let rawData = String(data: data, encoding: .utf8)
         var result = ""
@@ -348,8 +349,8 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return result
     }
     
-    func download(_ url:URL) throws -> Data {
-        var result : Data = Data()
+    func download(_ url: URL) throws -> Data {
+        var result: Data = Data()
         var errorCode: Error? = nil
         self.session.downloadTask(with: url) { (data , res, error) in
             if error == nil {
@@ -368,7 +369,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
         return result
     }
     
-    func execute(layout: String, script:String, param: String) throws {
+    func execute(layout: String, script: String, param: String) throws {
         let token = try self.prepareToken()
         var url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components") }
@@ -413,7 +414,7 @@ class FileMakerSession : NSObject, URLSessionDelegate {
 //
 //}
 
-func makeQueryDayString(_ range:ClosedRange<Day>?) -> String? {
+func makeQueryDayString(_ range: ClosedRange<Day>?) -> String? {
     guard let range = range else { return nil }
     let from = range.lowerBound
     let to = range.upperBound
@@ -422,5 +423,4 @@ func makeQueryDayString(_ range:ClosedRange<Day>?) -> String? {
     } else {
         return "\(from.fmString)...\(to.fmString)"
     }
-    
 }

@@ -13,7 +13,7 @@ public enum 経理状態型 {
     case 受注処理済
     case 売上処理済
     
-    init?(_ text:String) {
+    init?(_ text: String) {
         switch text {
         case "未登録":
             self = .未登録
@@ -26,7 +26,7 @@ public enum 経理状態型 {
         }
     }
     
-    public var text : String {
+    public var text: String {
         switch self {
         case .未登録: return "未登録"
         case .受注処理済: return "受注処理済"
@@ -36,7 +36,7 @@ public enum 経理状態型 {
 }
 
 extension FileMakerRecord {
-    func 経理状態(forKey key:String) -> 経理状態型? {
+    func 経理状態(forKey key: String) -> 経理状態型? {
         guard let name = string(forKey: key) else { return nil }
         return 経理状態型(name)
     }

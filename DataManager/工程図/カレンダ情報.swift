@@ -8,16 +8,16 @@
 
 import Foundation
 
-public struct カレンダ情報型 : 工程図データ型 {
+public struct カレンダ情報型: 工程図データ型 {
     public static let filename = "calendar.tsv"
     public static let header = "カレンダID\tカレンダ名称\t適用開始日\t適用終了日\t開始時刻\t終了時刻\t曜日\tEOR"
 
-    public var カレンダID : Int
-    public var カレンダ名称 : String
-    public var 適用開始日 : Day?
-    public var 適用終了日 : Day?
-    public var 開始時刻 : Time?
-    public var 終了時刻 : Time?
+    public var カレンダID: Int
+    public var カレンダ名称: String
+    public var 適用開始日: Day?
+    public var 適用終了日: Day?
+    public var 開始時刻: Time?
+    public var 終了時刻: Time?
     public var 曜日 : 工程図型.曜日型?
 
     public init(カレンダID: Int, カレンダ名称: String, 適用開始日 : Day? = nil, 適用終了日 : Day?  = nil, 開始時刻 : Time? = nil, 終了時刻 : Time? = nil, 曜日 : 工程図型.曜日型? = nil) {
@@ -43,7 +43,7 @@ public struct カレンダ情報型 : 工程図データ型 {
     }
 }
 
-public func makeカレンダー(from:Date, to:Date) -> [カレンダ情報型] {
+public func makeカレンダー(from: Date, to: Date) -> [カレンダ情報型] {
     let from = from.day, to = to.day
     let cal0 = カレンダ情報型(カレンダID: 0, カレンダ名称: "デフォルト", 適用開始日: from, 適用終了日: to, 曜日:.土曜日)
     let cal1 = カレンダ情報型(カレンダID: 0, カレンダ名称: "デフォルト", 適用開始日: from, 適用終了日: to, 曜日:.日曜日)

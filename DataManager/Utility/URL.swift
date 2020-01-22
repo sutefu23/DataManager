@@ -8,20 +8,20 @@
 
 import Foundation
 
-public let ダウンロードURL : URL = {
+public let ダウンロードURL: URL = {
     let fm = FileManager.default
     let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.downloadsDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
     return desktopURL
 }()
 
 
-public let デスクトップURL : URL = {
+public let デスクトップURL: URL = {
     let fm = FileManager.default
     let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.desktopDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
     return desktopURL
 }()
 
-public let 生産管理集計URL : URL = {
+public let 生産管理集計URL: URL = {
     let fm = FileManager.default
     let url = デスクトップURL.appendingPathComponent("生産管理集計", isDirectory: true)
     try? fm.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
@@ -29,7 +29,7 @@ public let 生産管理集計URL : URL = {
 }()
 
 extension URL {
-    var isExists : Bool {
+    var isExists: Bool {
         let url = self.standardizedFileURL
         let path = url.path
         
@@ -37,7 +37,7 @@ extension URL {
         return fm.fileExists(atPath: path)
     }
     
-    var isDirectory : Bool? {
+    var isDirectory: Bool? {
         let resource = try? self.resourceValues(forKeys: [.isDirectoryKey])
         return resource?.isDirectory
     }

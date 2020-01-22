@@ -42,11 +42,11 @@ public struct 進捗出力型 {
         self.作業系列 = progress.作業系列
     }
     
-    public init?(csvLine line:String) throws {
+    public init?(csvLine line: String) throws {
         let cols = line.split(separator: ",")
         if cols.count < 6 { return nil }
         guard let day = Day(fmDate: cols[0]) else { return nil }
-        guard let time = Time(fmTime:cols[1]) else { return nil }
+        guard let time = Time(fmTime: cols[1]) else { return nil }
         guard let number = try 伝票番号型(invalidString: cols[2]) else { return nil }
         guard let process = 工程型(cols[3]) else { return nil }
         guard let state = 作業内容型(cols[4]) else { return nil }
@@ -61,16 +61,16 @@ public struct 進捗出力型 {
         return "\(登録日.fmImportString),\(登録時間.fmImportString),\(伝票番号),\(工程.code),\(作業内容.code),\(社員.Hなし社員コード),\(作業種別.code),\(作業系列?.系列コード ?? "")\n"
     }
     
-    func makeRecord(識別キー key: UUID) -> [String : String] {
-        var record : [String : String] = [
-            "識別キー" : key.uuidString,
-            "登録日" : self.登録日.fmString,
-            "登録時間" : self.登録時間.fmImportString,
-            "伝票番号" : "\(self.伝票番号.整数値)",
-            "工程コード" : self.工程.code,
-            "作業内容コード" : self.作業内容.code,
-            "社員コード" : self.社員.Hなし社員コード,
-            "作業種別コード" : self.作業種別.code
+    func makeRecord(識別キー key: UUID) -> [String: String] {
+        var record: [String: String] = [
+            "識別キー": key.uuidString,
+            "登録日": self.登録日.fmString,
+            "登録時間": self.登録時間.fmImportString,
+            "伝票番号": "\(self.伝票番号.整数値)",
+            "工程コード": self.工程.code,
+            "作業内容コード": self.作業内容.code,
+            "社員コード": self.社員.Hなし社員コード,
+            "作業種別コード": self.作業種別.code
         ]
         if let series = self.作業系列 {
             record["作業系列コード"] = series.系列コード
@@ -92,7 +92,7 @@ public struct 進捗出力型 {
     }
     
     /// DB内に重複があればtrueを返す
-    public var isDBに重複あり : Bool {
+    public var isDBに重複あり: Bool {
         guard let list = (try? 進捗型.find(伝票番号: self.伝票番号, 工程: self.工程, 作業内容: self.作業内容))?.map({ 進捗出力型($0) }) else { return false }
         for progress in list {
             if progress.is内容重複(with: self) { return true }
@@ -102,7 +102,7 @@ public struct 進捗出力型 {
 }
 
 // MARK: -
-public struct 進捗出力内容型 : Hashable {
+public struct 進捗出力内容型: Hashable {
     public let 伝票番号: 伝票番号型
     public let 工程: 工程型
     public let 作業内容: 作業内容型
@@ -130,13 +130,13 @@ public struct 進捗出力内容型 : Hashable {
 // MARK: -
 extension Sequence where Element == 進捗出力型 {
     /// 生産管理に直接出力する
-    public func exportToDB(重複チェック:Bool = false) throws {
+    public func exportToDB(重複チェック: Bool = false) throws {
 //        FileMakerDB.logputAll()
-        #if os(iOS)
-        let db = FileMakerDB.pm_osakaname2
-        #else
+//        #if os(iOS)
+//        let db = FileMakerDB.pm_osakaname2
+//        #else
         let db = FileMakerDB.pm_osakaname
-        #endif
+//        #endif
         let uuid = UUID()
         var count = 0
         for progress in self {
@@ -198,7 +198,7 @@ extension Array where Element == 進捗出力型 {
     }
     
     /// CSVとして出力する
-    func writeToCSV(url:URL) throws {
+    func writeToCSV(url: URL) throws {
         let outputLines = self.map { $0.makeCSVLine() }.joined()
         guard let data = outputLines.data(using: .utf8, allowLossyConversion: true) else {
             throw ProgressDBError.cantConvert
@@ -209,7 +209,7 @@ extension Array where Element == 進捗出力型 {
 
 // MARK: -
 public extension URL {
-    func export進捗出力CSV(_ newlines:[進捗出力型], 重複チェック: Bool) throws {
+    func export進捗出力CSV(_ newlines: [進捗出力型], 重複チェック: Bool) throws {
         let lines = try [進捗出力型](csv: self).生産管理との重複削除()
         let newlines2 = !重複チェック ? newlines : newlines.重複登録削除(参照: lines)
         try (lines+newlines2).writeToCSV(url: self)
@@ -222,7 +222,7 @@ public extension URL {
 }
 
 // MARK: - エラーコード
-public enum ProgressDBError : LocalizedError {
+public enum ProgressDBError: LocalizedError {
     case invalidProcess
     case invalidWorker
     case invalidState

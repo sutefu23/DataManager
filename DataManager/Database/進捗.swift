@@ -8,28 +8,28 @@
 
 import Foundation
 
-public class 進捗型 : Equatable, Identifiable {
-    let record : FileMakerRecord
+public class 進捗型: Equatable, Identifiable {
+    let record: FileMakerRecord
 
-    public let 工程 : 工程型
-    public let 作業内容 : 作業内容型
-    public let 登録日時 : Date
-    public var 社員名称 : String
-    public var 登録日 : Day
-    public var 登録時間 : Time
+    public let 工程: 工程型
+    public let 作業内容: 作業内容型
+    public let 登録日時: Date
+    public var 社員名称: String
+    public var 登録日: Day
+    public var 登録時間: Time
 
     public var 伝票番号文字列: String {
         return self.record.string(forKey: "伝票番号")!
     }
     
-    public lazy var 伝票番号 : 伝票番号型 = {
+    public lazy var 伝票番号: 伝票番号型 = {
         guard let number = self.record.integer(forKey: "伝票番号") else {
             fatalError()
         }
         return 伝票番号型(validNumber: number)
     }()
 
-    init?(_ record:FileMakerRecord) {
+    init?(_ record: FileMakerRecord) {
         guard let state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
             if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
 //            return nil
@@ -48,7 +48,7 @@ public class 進捗型 : Equatable, Identifiable {
         self.登録日時 = Date(day, time)
     }
     
-    public static func ==(left:進捗型, right:進捗型) -> Bool {
+    public static func ==(left: 進捗型, right: 進捗型) -> Bool {
         return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.社員名称 == right.社員名称 && left.登録日時 == right.登録日時
     }
     
@@ -64,27 +64,27 @@ public class 進捗型 : Equatable, Identifiable {
 }
 
 public extension 進捗型 {
-    var 伝票種類 : 伝票種類型? {
+    var 伝票種類: 伝票種類型? {
         return record.伝票種類(forKey: "伝票種類")
     }
     
-    var 社員番号 : Int? {
+    var 社員番号: Int? {
         return record.integer(forKey: "社員番号")
     }
     
-    var 作業者 : 社員型 {
+    var 作業者: 社員型 {
         return 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称)
     }
     
-    var 製作納期 : Day? {
+    var 製作納期: Day? {
         return record.day(forKey: "製作納期")
     }
     
-    var 指示書 : 指示書型? {
+    var 指示書: 指示書型? {
         return (try? 指示書型.find(伝票番号: self.伝票番号))?.first
     }
     
-    var レーザー加工機 : レーザー加工機型? {
+    var レーザー加工機: レーザー加工機型? {
         switch self.作業系列 {
         case 作業系列型.gx:    return .gx
         case 作業系列型.ex:    return .ex
@@ -116,8 +116,8 @@ public extension Array where Element == 進捗型 {
         return self.filter { $0.作業種別 != .その他 }
     }
     
-    func 作業内容(工程:工程型, 日時:Day? = nil) -> 作業内容型? {
-        var state : 作業内容型? = nil
+    func 作業内容(工程: 工程型, 日時: Day? = nil) -> 作業内容型? {
+        var state: 作業内容型? = nil
         for progress in self where progress.工程 == 工程 {
             if let day = 日時, progress.登録日 >= day { continue }
             state = progress.作業内容
@@ -143,8 +143,8 @@ public extension Sequence where Element == 進捗型 {
 // MARK: - 検索
 public extension 進捗型 {
     static let dbName = "DataAPI_3"
-    static func find(伝票番号 num:伝票番号型, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) throws -> [進捗型] {
-        var query = [String:String]()
+    static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
+        var query = [String: String]()
         query["伝票番号"] = "\(num)"
         if let state = state {
             query["工程コード"] = "==\(state.code)"
@@ -157,8 +157,8 @@ public extension 進捗型 {
         return list.compactMap { 進捗型($0) }
     }
     
-    static func find(製作納期 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil, 工程 state:工程型? = nil, 作業内容 work:作業内容型? = nil) throws -> [進捗型] {
-        var query = [String:String]()
+    static func find(製作納期 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
+        var query = [String: String]()
         query["製作納期"] = makeQueryDayString(range)
         if let type = type {
             query["伝票種類"] = type.fmString
@@ -170,7 +170,7 @@ public extension 進捗型 {
             query["進捗コード"] = "\(work.code)"
         }
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+        let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         //        let list : [FileMakerRecord]? = db.find(layout: "指示書進捗テーブル一覧", query: [query])
         return list.compactMap { 進捗型($0) }
     }
@@ -201,7 +201,7 @@ public extension 進捗型 {
             numbers.insert(num)
         }
         
-        var result : [進捗型] = []
+        var result: [進捗型] = []
         for num in numbers {
             let tmp = try 進捗型.find(伝票番号: num)
             result.append(contentsOf: tmp)
@@ -210,14 +210,14 @@ public extension 進捗型 {
     }
     
     static func find(工程 state: 工程型?, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day) throws -> [進捗型] {
-        var query = [String:String]()
+        var query = [String: String]()
         query["登録日"] = day.fmString
         if let state = state {
             query["工程コード"] = "==\(state.code)"
         }
         query["伝票種類"] = type?.description
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+        let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
 }

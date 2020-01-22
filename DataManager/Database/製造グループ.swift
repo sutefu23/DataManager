@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 製造グループ型 : CaseIterable {
+public enum 製造グループ型: CaseIterable {
     case 管理グループ
     case 第1製造グループ
     case 第2製造グループ
@@ -51,8 +51,8 @@ public enum 製造グループ型 : CaseIterable {
     }
 }
 
-private let map: [工程型 : 製造グループ型] = {
-   var map = [工程型 : 製造グループ型]()
+private let map: [工程型: 製造グループ型] = {
+   var map = [工程型: 製造グループ型]()
     for group in 製造グループ型.allCases {
         for process in group.members {
             map[process] = group

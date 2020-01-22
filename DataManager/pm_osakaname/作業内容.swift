@@ -8,8 +8,8 @@
 
 import Foundation
 
-let statemap : [String : 作業内容型] = {
-    var map = [String : 作業内容型]()
+let statemap: [String: 作業内容型] = {
+    var map = [String: 作業内容型]()
     for state in 作業内容型.allCases {
         map[state.code] = state
         map[state.description] = state
@@ -17,18 +17,18 @@ let statemap : [String : 作業内容型] = {
     return map
 }()
 
-public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Comparable, Codable {
+public enum 作業内容型: Int, CaseIterable, CustomStringConvertible, Comparable, Codable {
     case 受取 = 0
     case 開始 = 1
     case 仕掛 = 2
     case 完了 = 3
     
-    public init?<S : StringProtocol>(_ code:S) {
+    public init?<S : StringProtocol>(_ code: S) {
         guard let state = statemap[code.uppercased()] else { return nil }
         self = state
     }
     
-    public var code : String {
+    public var code: String {
         switch self {
         case .受取: return "F500"
         case .開始: return "F1000"
@@ -46,13 +46,13 @@ public enum 作業内容型 : Int, CaseIterable, CustomStringConvertible, Compar
         }
     }
     
-    public static func < (left:作業内容型, right:作業内容型) -> Bool {
+    public static func < (left: 作業内容型, right: 作業内容型) -> Bool {
         return left.rawValue < right.rawValue
     }
 }
 
 extension FileMakerRecord {
-    func 作業内容(forKey key:String) -> 作業内容型? {
+    func 作業内容(forKey key: String) -> 作業内容型? {
         guard let code = string(forKey: key)?.applyingTransform(.fullwidthToHalfwidth, reverse: false) else { return nil }
         return 作業内容型(code)
     }

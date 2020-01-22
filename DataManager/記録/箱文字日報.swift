@@ -41,8 +41,8 @@ struct 箱文字日報Data型 {
         self.備考 = 備考
     }
     
-    var fieldData : [String : String] {
-        var data = [String : String]()
+    var fieldData: [String: String] {
+        var data = [String: String]()
         data["作業日"] = 作業日.fmString
         data["工程コード"] = 工程.code
         if let number = self.件数 { data["件数"] = "\(number)" } else { data["件数"] = "" }
@@ -114,11 +114,11 @@ public class 箱文字日報型 {
         var result: Result<箱文字日報型?, Error> = .success(nil)
         let operation = BlockOperation {
             let db = FileMakerDB.system
-            var query = [String:String]()
+            var query = [String: String]()
             query["工程コード"] = "==\(工程.code)"
             query["作業日"] = "\(作業日.fmString)"
             do {
-                let list : [FileMakerRecord] = try db.find(layout: 箱文字日報Data型.dbName, query: [query])
+                let list: [FileMakerRecord] = try db.find(layout: 箱文字日報Data型.dbName, query: [query])
                 if let record = list.first, let recordId = record.recordId {
                     if let data = 箱文字日報Data型(record) {
                         result = .success(箱文字日報型(data: data, recordId: recordId))

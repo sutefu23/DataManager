@@ -13,17 +13,17 @@ struct PortalDataCache {
 }
 
 class FileMakerRecord {
-    let fieldData: [String : Any]
-    let portalData: [String : [FileMakerRecord]]
+    let fieldData: [String: Any]
+    let portalData: [String: [FileMakerRecord]]
     let recordId: String?
     let name: String
     
     init?(json data: Any) {
-        guard let dic = data as? [String : Any] else { return nil }
+        guard let dic = data as? [String: Any] else { return nil }
         self.recordId = dic["recordId"] as? String
-        self.fieldData = dic["fieldData"] as? [String:Any] ?? [:]
-        if let data = dic["portalData"] as? [String : [[String : Any]]] {
-            var portalData = [String : [FileMakerRecord]]()
+        self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
+        if let data = dic["portalData"] as? [String: [[String: Any]]] {
+            var portalData = [String: [FileMakerRecord]]()
             for (key, array) in data {
                 let source = array.map { FileMakerRecord(portal: key, fieldData: $0) }
                 portalData[key] = source

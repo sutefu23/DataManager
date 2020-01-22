@@ -8,8 +8,8 @@
 
 import Foundation
 
-private let nameMap: [String : 作業種別型] = {
-    var map = [String : 作業種別型]()
+private let nameMap: [String: 作業種別型] = {
+    var map = [String: 作業種別型]()
     for type in 作業種別型.allCases {
         map[type.code] = type
         map[type.name] = type

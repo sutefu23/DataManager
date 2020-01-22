@@ -9,7 +9,7 @@
 import Foundation
 
 public class 進捗キャッシュ {
-    var cache : [伝票番号型 : [進捗型]] = [:]
+    var cache: [伝票番号型: [進捗型]] = [:]
     let 工程: 工程型
     
     public init(工程: 工程型) {

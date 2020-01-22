@@ -8,7 +8,7 @@
 
 import Foundation
 
-private var seriesCache: [String : 作業系列型] = [:]
+private var seriesCache: [String: 作業系列型] = [:]
 private let lock = NSLock()
 
 func flush作業系列Cache() {
@@ -17,7 +17,7 @@ func flush作業系列Cache() {
     lock.unlock()
 }
 
-public class 作業系列型 : Hashable {
+public class 作業系列型: Hashable {
     public static let null = 作業系列型(系列コード: "S000")!
     public static let gx = 作業系列型(系列コード: "S001")!
     public static let ex = 作業系列型(系列コード: "S002")!
@@ -25,7 +25,7 @@ public class 作業系列型 : Hashable {
     public static let water = 作業系列型(系列コード: "S004")!
 
     
-    let record : FileMakerRecord
+    let record: FileMakerRecord
 
     public convenience init?(系列コード: String) {
         let code = 系列コード.uppercased()
@@ -40,7 +40,7 @@ public class 作業系列型 : Hashable {
         self.init(series.record)
     }
     
-    init(_ record:FileMakerRecord) {
+    init(_ record: FileMakerRecord) {
         self.record = record
     }
     
@@ -68,10 +68,10 @@ extension 作業系列型 {
     static let dbName = "DataAPI_9"
     
     public static func find(系列コード: String) throws -> 作業系列型? {
-        var query = [String:String]()
+        var query = [String: String]()
         query["系列コード"] = 系列コード
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [query])
+        let list: [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [query])
         return list.compactMap { 作業系列型($0) }.first
 
     }

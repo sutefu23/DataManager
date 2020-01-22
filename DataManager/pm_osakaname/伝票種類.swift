@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 伝票種類型 :CustomStringConvertible {
+public enum 伝票種類型: CustomStringConvertible {
     case 箱文字
     case 切文字
     case エッチング
@@ -16,7 +16,7 @@ public enum 伝票種類型 :CustomStringConvertible {
     case 外注
     case 校正
     
-    init?<T>(_ name:T) where T : StringProtocol {
+    init?<T>(_ name: T) where T: StringProtocol {
         switch name {
         case "箱文字": self = .箱文字
         case "切文字": self = .切文字
@@ -29,22 +29,22 @@ public enum 伝票種類型 :CustomStringConvertible {
         }
     }
     
-    public var description : String { return fmString }
+    public var description: String { return fmString }
 
-    var fmString : String {
+    var fmString: String {
         switch self {
-        case .箱文字 : return "箱文字"
-        case .切文字 : return "切文字"
-        case .エッチング : return "エッチング"
-        case .加工 : return "加工"
-        case .外注 : return "外注"
-        case .校正 : return "校正"
+        case .箱文字: return "箱文字"
+        case .切文字: return "切文字"
+        case .エッチング: return "エッチング"
+        case .加工: return "加工"
+        case .外注: return "外注"
+        case .校正: return "校正"
         }
     }
 }
 
 extension FileMakerRecord {
-    func 伝票種類(forKey key:String) -> 伝票種類型? {
+    func 伝票種類(forKey key: String) -> 伝票種類型? {
         guard let name = string(forKey: key) else { return nil }
         return 伝票種類型(name)
     }

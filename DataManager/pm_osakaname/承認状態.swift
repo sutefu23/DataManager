@@ -12,7 +12,7 @@ public enum 承認状態型 {
     case 未承認
     case 承認済
     
-    init?(_ text:String) {
+    init?(_ text: String) {
         switch text {
         case "承認済":
             self = .承認済
@@ -23,7 +23,7 @@ public enum 承認状態型 {
         }
     }
     
-    public var text : String {
+    public var text: String {
         switch self {
         case .承認済: return "承認済"
         case .未承認: return "未承認"
@@ -32,7 +32,7 @@ public enum 承認状態型 {
 }
 
 extension FileMakerRecord {
-    func 承認状態(forKey key:String) -> 承認状態型? {
+    func 承認状態(forKey key: String) -> 承認状態型? {
         guard let name = string(forKey: key) else { return nil }
         return 承認状態型(name)
     }

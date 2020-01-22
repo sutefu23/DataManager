@@ -12,12 +12,12 @@ import Cocoa
 import UIKit
 #endif
 
-let 外注先会社コード : Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
+let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 
 public class 指示書型 {
     let record: FileMakerRecord
     
-    init?(_ record:FileMakerRecord) {
+    init?(_ record: FileMakerRecord) {
         self.record = record
     }
     
@@ -492,7 +492,7 @@ public extension 指示書型 {
     }
 
     static func find製作納期Active(伝票種類:伝票種類型? = nil) throws -> [指示書型] {
-        var query = [String:String]()
+        var query = [String: String]()
         let today = Date()
         query["製作納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
@@ -505,7 +505,7 @@ public extension 指示書型 {
     }
 
     static func findActive(伝票種類:伝票種類型? = nil) throws -> [指示書型] {
-        var query = [String:String]()
+        var query = [String: String]()
         let today = Date()
         query["出荷納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
@@ -518,7 +518,7 @@ public extension 指示書型 {
     }
     
     static func old_find2(作業範囲 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
-        var query = [String:String]()
+        var query = [String: String]()
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
@@ -528,7 +528,7 @@ public extension 指示書型 {
     }
     
     static func find(登録日 range:ClosedRange<Day>, 伝票種類 type:伝票種類型? = nil) throws -> [指示書型] {
-        var query = [String:String]()
+        var query = [String: String]()
         query ["登録日"] = makeQueryDayString(range)
         query["伝票種類"] = type?.fmString
         let db = FileMakerDB.pm_osakaname
@@ -537,7 +537,7 @@ public extension 指示書型 {
     }
 
     static func findDirect(伝票番号: 伝票番号型) throws -> 指示書型? {
-        var query = [String:String]()
+        var query = [String: String]()
         query["伝票番号"] = "\(伝票番号)"
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
@@ -549,7 +549,7 @@ public extension 指示書型 {
     }
     
     static func findDirect(uuid: String) throws -> 指示書型? {
-        var query = [String:String]()
+        var query = [String: String]()
         query["UUID"] = uuid
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])

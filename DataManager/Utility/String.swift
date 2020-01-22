@@ -11,17 +11,17 @@ import Foundation
 private let controlSet = CharacterSet.controlCharacters
 
 extension String {
-    var tabStripped : [Substring] {
+    var tabStripped: [Substring] {
         return self.split(separator: "\t", omittingEmptySubsequences: false).map { $0.controlStripped }
     }
     
-    var commaStripped : [Substring] {
+    var commaStripped: [Substring] {
         return self.split(separator: ",", omittingEmptySubsequences: false).map { $0.controlStripped }
     }
 }
 
 extension Substring {
-    var controlStripped : Substring {
+    var controlStripped: Substring {
         if let tail = self.last?.unicodeScalars.first {
             if controlSet.contains(tail) {
                 return self.dropLast().controlStripped
@@ -31,15 +31,15 @@ extension Substring {
     }
 }
 
-private var numberSet : CharacterSet = {
+private var numberSet: CharacterSet = {
     var set = CharacterSet()
     set.insert(charactersIn: "0123456789")
     return set
 }()
 
 extension StringProtocol {
-    var headNumber : String {
-        var string : String = ""
+    var headNumber: String {
+        var string: String = ""
         for ch in self {
             guard let sc = ch.unicodeScalars.first else { break }
             guard numberSet.contains(sc) else { break }
@@ -50,7 +50,7 @@ extension StringProtocol {
 }
 
 extension String {
-    func containsOne(of strings:String...) -> Bool {
+    func containsOne(of strings: String...) -> Bool {
         for str in strings {
             if self.contains(str) { return true }
         }
@@ -66,7 +66,7 @@ extension StringProtocol {
     }
 }
 
-func make2dig(_ value:Int) -> String {
+func make2dig(_ value: Int) -> String {
     let str = String(value)
     switch str.count {
     case 0:
@@ -78,7 +78,7 @@ func make2dig(_ value:Int) -> String {
     }
 }
 
-func make4dig(_ value:Int) -> String {
+func make4dig(_ value: Int) -> String {
     let str = String(value)
     switch str.count {
     case 0:

@@ -8,10 +8,10 @@
 
 import Foundation
 
-public struct Month : Hashable, Strideable {
-    public let year : Int
-    public let month : Int
-    public var shortYear : Int {
+public struct Month: Hashable, Strideable {
+    public let year: Int
+    public let month: Int
+    public var shortYear: Int {
         return year % 100
     }
     
@@ -21,11 +21,11 @@ public struct Month : Hashable, Strideable {
         self.month = date.monthNumber
     }
 
-    public init(year:Int, month:Int) {
+    public init(year: Int, month: Int) {
         self.init(year, month)
     }
     
-    public init?<S : StringProtocol>(fmDate: S) {
+    public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")
         if digs.count != 2 {
@@ -42,12 +42,12 @@ public struct Month : Hashable, Strideable {
         self.month = month
     }
     
-    init(_ year:Int, _ month:Int) {
+    init(_ year: Int, _ month: Int) {
         self.year = year
         self.month = month
     }
 
-    public var prevMonth : Month {
+    public var prevMonth: Month {
         var year = self.year
         var month = self.month-1
         if month < 1 {
@@ -57,7 +57,7 @@ public struct Month : Hashable, Strideable {
         return Month(year: year, month: month)
     }
     
-    public var nextMonth : Month {
+    public var nextMonth: Month {
         var year = self.year
         var month = self.month+1
         if month > 12 {
@@ -67,7 +67,7 @@ public struct Month : Hashable, Strideable {
         return Month(year, month)
     }
     
-    public var shortYearMonthString : String {
+    public var shortYearMonthString: String {
         var yearString = "\(shortYear)"
         var monthString = "\(month)"
         if yearString.count == 1 { yearString = "0" + yearString }
@@ -75,7 +75,7 @@ public struct Month : Hashable, Strideable {
         return yearString + monthString
     }
 
-    public var monthOrYearMonthString : String {
+    public var monthOrYearMonthString: String {
         var monthString = "\(month)"
         if Date().yearNumber == self.year {
             return monthString
@@ -85,20 +85,20 @@ public struct Month : Hashable, Strideable {
         }
     }
 
-    public var yearMonthJString : String {
+    public var yearMonthJString: String {
         return "\(year)年\(month)月"
     }
     
-    public var firstDay : Day {
+    public var firstDay: Day {
         return Day(self.year, self.month, 1)
     }
     
-    public var lastDay : Day {
+    public var lastDay: Day {
         return self.nextMonth.firstDay.prevDay
     }
     
-    public var weeks : [ClosedRange<Day>] {
-        var weeks : [ClosedRange<Day>] = []
+    public var weeks: [ClosedRange<Day>] {
+        var weeks: [ClosedRange<Day>] = []
         var current = Day(year: self.year, month: self.month, day: 1)
         while current.week != .日 { current = current.prevDay }
         repeat {
@@ -109,9 +109,9 @@ public struct Month : Hashable, Strideable {
         return weeks
     }
     
-    public var workWeeks : [ClosedRange<Day>] {
+    public var workWeeks: [ClosedRange<Day>] {
         return self.weeks.compactMap {
-            var firstDay : Day?
+            var firstDay: Day?
             var lastDay: Day?
             var day = $0.lowerBound
             while $0.contains(day) {
@@ -172,12 +172,12 @@ public extension ClosedRange where Bound == Month {
 }
 
 extension Date {
-    public var month : Month {
+    public var month: Month {
         let comp = cal.dateComponents([.year, .month], from: self)
         return Month(year: comp.year!, month: comp.month!)
     }
 
-    public init(_ month:Month) {
+    public init(_ month: Month) {
         var comp = DateComponents()
         comp.year = month.year
         comp.month = month.month

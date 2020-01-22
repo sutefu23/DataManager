@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 工程状態型 : CustomStringConvertible {
+public enum 工程状態型: CustomStringConvertible {
     case 通常
     case 保留
     case 校正中
@@ -22,17 +22,17 @@ public enum 工程状態型 : CustomStringConvertible {
         }
     }
 
-    public var description : String {
+    public var description: String {
         switch self {
-        case .通常 : return "通常"
-        case .保留 : return "保留"
-        case .校正中 : return "校正中"
+        case .通常: return "通常"
+        case .保留: return "保留"
+        case .校正中: return "校正中"
         }
     }
 }
 
 extension FileMakerRecord {
-    func 工程状態(forKey key:String) -> 工程状態型? {
+    func 工程状態(forKey key: String) -> 工程状態型? {
         guard let name = string(forKey: key) else { return nil }
         return 工程状態型(name)
     }

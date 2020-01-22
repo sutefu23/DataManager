@@ -8,17 +8,24 @@
 
 import Foundation
 
-public enum 分析エラー型 : Error {
+public enum 分析エラー型: LocalizedError {
     case 処理不能(進捗型)
+    
+    public var localizedDescription: String {
+        switch self {
+        case .処理不能(let type):
+            return "処理不能(\(type.工程):\(type.作業内容))"
+        }
+    }
 }
 
 public class 指示書工程分析器型 {
-    public let order : 指示書型
-    var lines : [工程ライン型]
+    public let order: 指示書型
+    var lines: [工程ライン型]
     
-    var errors : [分析エラー型] = []
+    var errors: [分析エラー型] = []
 
-    init(_ order:指示書型) throws {
+    init(_ order: 指示書型) throws {
         self.order = order
         self.lines = [工程ライン型(.メイン, 管理分析器型())]
         try prepareLines()
@@ -26,7 +33,7 @@ public class 指示書工程分析器型 {
     
     func prepareLines() throws {
         for progress in self.order.進捗一覧 {
-            var targetLine : (line:工程ライン型, state:工程ライン型.State)? = nil
+            var targetLine: (line: 工程ライン型, state: 工程ライン型.State)? = nil
             for line in lines {
                 if let state = line.processor.accept(progress: progress, line: line, context: self) {
                     if let target = targetLine {
@@ -54,7 +61,7 @@ public class 指示書工程分析器型 {
         }
     }
     
-    func prepareLine(target:工程ライン型.Target, analyzer:工程分析器型) {
+    func prepareLine(target: 工程ライン型.Target, analyzer: 工程分析器型) {
         for line in lines {
             if line.target == target {
                 line.processor = analyzer
@@ -69,7 +76,7 @@ public class 指示書工程分析器型 {
 public class 工程ライン型 {
     enum State {
         case 通常
-        case 差し戻し(from:工程型)
+        case 差し戻し(from: 工程型)
         
         var priority : Int {
             switch self {
@@ -89,28 +96,28 @@ public class 工程ライン型 {
         case 研磨
         case エッチング
     }
-    public var lines : [工程図工程型] = []
-    var state : State = .通常
-    var target : Target
-    var processor : 工程分析器型
+    public var lines: [工程図工程型] = []
+    var state: State = .通常
+    var target: Target
+    var processor: 工程分析器型
     
-    init(_ target:Target, _ processor:工程分析器型) {
+    init(_ target: Target, _ processor: 工程分析器型) {
         self.target = target
         self.processor = processor
     }
 }
 
 protocol 工程分析器型 {
-    func process(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) throws -> (next:工程分析器型, target:工程ライン型.Target)?
-    func accept(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) -> 工程ライン型.State?
+    func process(progress: 進捗型, line: 工程ライン型, context: 指示書工程分析器型) throws -> (next: 工程分析器型, target: 工程ライン型.Target)?
+    func accept(progress: 進捗型, line: 工程ライン型, context: 指示書工程分析器型) -> 工程ライン型.State?
 }
 
 // MARK: - 管理
 class 管理分析器型 : 工程分析器型 {
-    func process(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) throws -> (next:工程分析器型, target:工程ライン型.Target)? {
+    func process(progress: 進捗型, line: 工程ライン型, context: 指示書工程分析器型) throws -> (next: 工程分析器型, target: 工程ライン型.Target)? {
         return nil
     }
-    func accept(progress:進捗型, line:工程ライン型, context:指示書工程分析器型) -> 工程ライン型.State? {
+    func accept(progress: 進捗型, line: 工程ライン型, context: 指示書工程分析器型) -> 工程ライン型.State? {
         return nil
     }
 }

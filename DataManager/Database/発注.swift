@@ -9,9 +9,9 @@
 import Foundation
 
 public class 発注型 {
-    let record : FileMakerRecord
+    let record: FileMakerRecord
     
-    init?(_ record:FileMakerRecord) {
+    init?(_ record: FileMakerRecord) {
         self.record = record
     }
     
@@ -43,10 +43,10 @@ extension 発注型 {
     public static let dbName = "DataAPI_4"
     
     public static func find(伝票番号: 伝票番号型) throws -> [発注型] {
-        var query = [String:String]()
+        var query = [String: String]()
         query["伝票番号"] = "\(伝票番号.整数値)"
         let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
     }
 }

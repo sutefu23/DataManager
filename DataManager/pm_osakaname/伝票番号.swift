@@ -123,7 +123,7 @@ extension 伝票番号型 {
     static let dbName = "DataAPI_10"
     
     static func isExist(伝票番号: 伝票番号型) throws -> Bool {
-        var query = [String:String]()
+        var query = [String: String]()
         query["伝票番号"] = "\(伝票番号)"
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 伝票番号型.dbName, query: [query])

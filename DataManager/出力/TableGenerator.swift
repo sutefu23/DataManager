@@ -19,7 +19,7 @@ public enum ExportType {
         case .numbers, .excel, .filemaker:
             return ""
         case .html:
-            var line : String = ""
+            var line: String = ""
             line += "<!DOCTYPE html>"
             line += "<html>"
             line += "<head>"
@@ -60,7 +60,7 @@ public enum ExportType {
         }
     }
 
-    func makeLine(_ cols:[String]) -> String {
+    func makeLine(_ cols: [String]) -> String {
         switch self {
         case .filemaker:
             return cols.map { clamp($0) }.joined(separator: ",") + "\n"
@@ -93,7 +93,7 @@ class TableColumn<S> {
     let title: String
     let getter: (S) -> String?
     
-    init(title: String, getter:@escaping (S)->String?) {
+    init(title: String, getter: @escaping (S) -> String?) {
         self.title = title
         self.getter = getter
     }
@@ -109,11 +109,11 @@ public class TableGenerator<S> {
     public init() {
         self.columns = []
     }
-    init(_ columns:[TableColumn<S>]) {
+    init(_ columns: [TableColumn<S>]) {
         self.columns = columns
     }
     
-    public func makeText(_ source:[S], format: ExportType, title: String) throws -> String {
+    public func makeText(_ source: [S], format: ExportType, title: String) throws -> String {
         var text = format.header(title: title)
         switch format {
         case .excel, .html, .numbers:
@@ -130,13 +130,13 @@ public class TableGenerator<S> {
         return text
     }
     
-    public func makeData(_ source:[S], format: ExportType, title: String) throws -> Data {
+    public func makeData(_ source: [S], format: ExportType, title: String) throws -> Data {
         let text = try makeText(source, format: format, title: title)
         let data = format.encode(text: text)
         return data
     }
     
-    public func write(_ source:[S], format: ExportType, to url: URL) throws {
+    public func write(_ source: [S], format: ExportType, to url: URL) throws {
         let title = url.deletingPathExtension().lastPathComponent
         let data = try makeData(source, format: format, title: title)
         try data.write(to: url, options: .atomicWrite)
@@ -184,12 +184,12 @@ public extension TableGenerator {
         case minute1
     }
 
-    func col(_ title: String, _ getter: @escaping (S)->String?) -> TableGenerator<S> {
+    func col(_ title: String, _ getter: @escaping (S) -> String?) -> TableGenerator<S> {
         let col = TableColumn(title: title, getter: getter)
         return appending(col)
     }
 
-    func col(_ title: String, _ getter: @escaping (S)->Substring?) -> TableGenerator<S> {
+    func col(_ title: String, _ getter: @escaping (S) -> Substring?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let str = getter($0) else { return nil }
             return String(str)
@@ -198,7 +198,7 @@ public extension TableGenerator {
     }
     
 
-    func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S)->Int?) -> TableGenerator<S> {
+    func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S) -> Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
                 return String(value)
@@ -209,7 +209,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S)->Double?) -> TableGenerator<S> {
+    func col(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
@@ -224,7 +224,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: MonthFormat = .shortYearMonth, _ getter: @escaping (S)->Month?) -> TableGenerator<S> {
+    func col(_ title: String, _ format: MonthFormat = .shortYearMonth, _ getter: @escaping (S) -> Month?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let month = getter($0)
             switch format {
@@ -239,7 +239,7 @@ public extension TableGenerator {
         return appending(col)
     }
 
-    func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S)->Day?) -> TableGenerator<S> {
+    func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S) -> Day?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let day = getter($0)
             switch format {
@@ -256,7 +256,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S)->Time?) -> TableGenerator<S>
+    func col(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S) -> Time?) -> TableGenerator<S>
     {
         let col = TableColumn<S>(title: title) {
             guard let time = getter($0) else { return nil }
@@ -270,7 +270,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S)->TimeInterval?) -> TableGenerator<S> {
+    func col(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {

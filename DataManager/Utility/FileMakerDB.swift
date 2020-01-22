@@ -8,14 +8,14 @@
 
 import Foundation
 
-enum FileMakerSortType : String, Encodable {
+enum FileMakerSortType: String, Encodable {
     case 昇順 = "ascend"
     case 降順 = "descend"
 }
 
 private let serverCache = FileMakerServerCache()
 class FileMakerServerCache {
-    private var cache : [String : FileMakerServer] = [:]
+    private var cache: [String: FileMakerServer] = [:]
     private let lock = NSLock()
     
     func server(_ name: String) -> FileMakerServer {
@@ -35,17 +35,17 @@ class FileMakerServerCache {
     }
 }
 
-struct FileMakerSortItem : Encodable {
-    let fieldName : String
-    let sortOrder : FileMakerSortType
+struct FileMakerSortItem: Encodable {
+    let fieldName: String
+    let sortOrder: FileMakerSortType
 }
 
 let maxConnection = 3
 
-class FileMakerServer : Hashable {
-    private var pool : [FileMakerSession] = []
+class FileMakerServer: Hashable {
+    private var pool: [FileMakerSession] = []
     private let lock = NSLock()
-    private let sem : DispatchSemaphore
+    private let sem: DispatchSemaphore
 
     let serverURL: URL
     let name: String
@@ -66,7 +66,7 @@ class FileMakerServer : Hashable {
         hasher.combine(name)
     }
     
-    static func ==(left:FileMakerServer, right: FileMakerServer) -> Bool {
+    static func ==(left: FileMakerServer, right: FileMakerServer) -> Bool {
         return left.name == right.name
     }
     
@@ -106,56 +106,56 @@ class FileMakerServer : Hashable {
 }
 
 public final class FileMakerDB {
-    static let pm_osakaname2 : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
-    static let pm_osakaname : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
-    static let laser : FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
-    static let system : FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
+//    static let pm_osakaname2: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
+    static let pm_osakaname: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
+    static let laser: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
+    static let system: FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
 
-    let dbURL : URL
+    let dbURL: URL
     let server: FileMakerServer
-    let user : String
-    let password : String
+    let user: String
+    let password: String
 
-    init(server:String, filename:String, user:String, password:String) {
+    init(server: String, filename: String, user: String, password: String) {
         self.server = serverCache.server(server)
         self.dbURL = self.server.makeURL(with: filename)
         self.user = user
         self.password = password
     }
 
-    private func execute(_ work:(FileMakerSession) throws -> Void) rethrows {
+    private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
         defer { server.putSession(session) }
         try work(session)
     }
 
-    private func execute2<T>(_ work:(FileMakerSession) throws -> T) rethrows -> T {
+    private func execute2<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
          let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
          defer { server.putSession(session) }
          return try work(session)
      }
 
-    func executeScript(layout: String, script:String, param: String) throws {
+    func executeScript(layout: String, script: String, param: String) throws {
         try self.execute { try $0.execute(layout: layout, script: script, param: param) }
     }
 
-    func fetch(layout:String, sortItems:[(String, FileMakerSortType)] = [], portals:[FileMakerPortal] = []) throws -> [FileMakerRecord] {
+    func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
         return try self.execute2 { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
     }
     
-    func find(layout:String, recordId:Int) throws -> FileMakerRecord? {
+    func find(layout: String, recordId: Int) throws -> FileMakerRecord? {
         return try self.find(layout: layout, query: [["recordId" : "\(recordId)"]]).first
     }
     
-    func find(layout:String, query:[[String:String]], sortItems:[(String, FileMakerSortType)] = [], max:Int? = nil) throws -> [FileMakerRecord] {
+    func find(layout: String, query: [[String: String]], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
         return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
     }
     
-    func downloadObject(url:URL) throws -> Data? {
+    func downloadObject(url: URL) throws -> Data? {
         return try self.execute2 { try $0.download(url) }
     }
     
-    func update(layout:String, recordId:String, fields:[String:String]) throws {
+    func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
         return try self.execute { try $0.update(layout: layout, recordId: recordId,fields: fields) }
     }
     
@@ -163,7 +163,7 @@ public final class FileMakerDB {
         return try self.execute { try $0.delete(layout: layout, recordId: recordId) }
     }
     
-    @discardableResult func insert(layout:String, fields:[String:String]) throws -> String {
+    @discardableResult func insert(layout: String, fields: FileMakerQuery) throws -> String {
         return try self.execute2 { try $0.insert(layout: layout, fields: fields) }
     }
     

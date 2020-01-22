@@ -8,15 +8,15 @@
 
 import Foundation
 
-private let codeMap : [String : 略号型] = {
-    var map = [String : 略号型]()
+private let codeMap: [String: 略号型] = {
+    var map = [String: 略号型]()
     for item in 略号型.allCases {
         map[item.code] = item
     }
     return map
 }()
 
-func make略号(_ line:String) -> Set<略号型> {
+func make略号(_ line: String) -> Set<略号型> {
     var set = Set<略号型>()
     for ch in line {
         if let item = 略号型(String(ch)) {
@@ -27,7 +27,7 @@ func make略号(_ line:String) -> Set<略号型> {
 }
 
 extension Set where Element  == 略号型 {
-    public var code : String {
+    public var code: String {
         var code = ""
         for item in self {
             code += item.code
@@ -36,7 +36,7 @@ extension Set where Element  == 略号型 {
     }
 }
 
-public enum 略号型 : CaseIterable {
+public enum 略号型: CaseIterable {
     case 外注
     case 腐食
     case 印刷
@@ -55,12 +55,12 @@ public enum 略号型 : CaseIterable {
     case 塗装
     case 両面テープ
     
-    public init?(_ code:String) {
+    public init?(_ code: String) {
         guard let item = codeMap[code] else { return nil }
         self = item
     }
     
-    public var code : String {
+    public var code: String {
         switch self {
         case .外注: return "外"
         case .腐食: return "腐"

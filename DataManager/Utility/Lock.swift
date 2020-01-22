@@ -9,8 +9,8 @@
 import Foundation
 
 extension DispatchQueue {
-    func getValue<T>(_ getter:()->T) -> T {
-        var result : T? = nil
+    func getValue<T>(_ getter: () -> T) -> T {
+        var result: T? = nil
         self.sync { result = getter() }
         return result!
     }

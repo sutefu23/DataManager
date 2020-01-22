@@ -8,13 +8,13 @@
 
 import Foundation
 
-public enum 伝票状態型 : CustomStringConvertible {
+public enum 伝票状態型: CustomStringConvertible {
     case 未製作
     case 製作中
     case 発送済
     case キャンセル
     
-    init?<T>(_ code: T) where T : StringProtocol {
+    init?<T>(_ code: T) where T: StringProtocol {
         switch code {
         case "未製作": self = .未製作
         case "製作中": self = .製作中
@@ -24,7 +24,7 @@ public enum 伝票状態型 : CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case .未製作: return "未製作"
         case .製作中: return "製作中"
@@ -35,7 +35,7 @@ public enum 伝票状態型 : CustomStringConvertible {
 }
 
 extension FileMakerRecord {
-    func 伝票状態(forKey key:String) -> 伝票状態型? {
+    func 伝票状態(forKey key: String) -> 伝票状態型? {
         guard let name = string(forKey: key) else { return nil }
         return 伝票状態型(name)
     }
