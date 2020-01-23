@@ -47,7 +47,7 @@ public enum 作業種別型: Int, RawRepresentable, Codable, CaseIterable, Compa
         case .在庫: return "在庫"
         case .手直: return "手直"
         case .作直: return "作直"
-    case .その他:return "その他"
+        case .その他:return "その他"
         }
     }
     

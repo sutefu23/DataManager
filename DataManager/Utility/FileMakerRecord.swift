@@ -12,6 +12,10 @@ struct PortalDataCache {
     let cache: [FileMakerRecord]?
 }
 
+protocol FileMakerRecordOwner: class {
+    init?(record: FileMakerRecord)
+}
+
 class FileMakerRecord {
     let fieldData: [String: Any]
     let portalData: [String: [FileMakerRecord]]

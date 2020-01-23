@@ -14,6 +14,7 @@ public enum 変更履歴種類型: Hashable {
     case 校正終了
     case 保留開始
     case 保留解除
+    case キャンセル
     case その他
     
     init(_ text: String) {
@@ -29,7 +30,11 @@ public enum 変更履歴種類型: Hashable {
         case "保留解除":
             self = .保留解除
         default:
-            self = .その他
+            if text.contains("キャンセル") {
+                self = .キャンセル
+            } else {
+                self = .その他
+            }
         }
     }
 }

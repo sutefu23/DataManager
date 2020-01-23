@@ -19,6 +19,7 @@ public class インシデント型 {
         case 校正終了
         case 保留開始
         case 保留解除
+        case キャンセル
         case その他
         
         public init(_ type: 作業内容型) {
@@ -37,6 +38,7 @@ public class インシデント型 {
             case .校正終了: self = .校正終了
             case .保留開始: self = .保留開始
             case .保留解除: self = .保留解除
+            case .キャンセル: self = .キャンセル
             case .その他: self = .その他
             }
         }
@@ -52,6 +54,7 @@ public class インシデント型 {
             case .校正終了: return "校正終了"
             case .保留開始: return "保留開始"
             case .保留解除: return "保留解除"
+            case .キャンセル: return "キャンセル"
             case .その他: return "内容変更"
             }
         }
