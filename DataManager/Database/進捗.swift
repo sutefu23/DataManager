@@ -145,7 +145,7 @@ public extension 進捗型 {
     static let dbName = "DataAPI_3"
     static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
         var query = [String: String]()
-        query["伝票番号"] = "\(num)"
+        query["伝票番号"] = "==\(num)"
         if let state = state {
             query["工程コード"] = "==\(state.code)"
         }

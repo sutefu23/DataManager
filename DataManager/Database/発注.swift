@@ -44,7 +44,7 @@ extension 発注型 {
     
     public static func find(伝票番号: 伝票番号型) throws -> [発注型] {
         var query = [String: String]()
-        query["伝票番号"] = "\(伝票番号.整数値)"
+        query["伝票番号"] = "==\(伝票番号.整数値)"
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
