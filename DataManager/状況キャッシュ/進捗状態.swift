@@ -29,17 +29,18 @@ public class 進捗キャッシュ {
         }
     }
 
-    public func has受取(number: 伝票番号型) -> Bool {
-        return hasComplete(number: number, work: .受取)
+    public func has受取(number: 伝票番号型, member: 社員型?) -> Bool {
+        return hasComplete(number: number, work: .受取, member: member)
     }
 
-    public func has完了(number: 伝票番号型) -> Bool {
-        return hasComplete(number: number, work: .完了)
+    public func has完了(number: 伝票番号型, member: 社員型?) -> Bool {
+        return hasComplete(number: number, work: .完了, member: member)
     }
     
-    public func hasComplete(number: 伝票番号型, work: 作業内容型) -> Bool {
+    public func hasComplete(number: 伝票番号型, work: 作業内容型, member: 社員型? = nil) -> Bool {
         var hasHigh: Bool = false
         for progress in self[number].filter({ $0.工程 == 工程 }).reversed() {
+            if let member = member, progress.作業者 != member { continue }
             let current = progress.作業内容
             if current == work { return true }
             if current > work {
