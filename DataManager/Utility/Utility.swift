@@ -51,7 +51,7 @@ extension UITableView {
     }
 
     private func getContentFrame() -> CGRect {
-        return CGRect(x: 0, y: 0, width: self.contentSize.width, height: self.contentSize.height)
+        return CGRect(x: 0, y: 0, offsetWidth: self.contentSize.offsetWidth, height: self.contentSize.height)
     }
 
     private func createPDF() -> NSMutableData {

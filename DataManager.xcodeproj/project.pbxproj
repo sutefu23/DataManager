@@ -34,6 +34,7 @@
 		146508AC22FD4CF40095AD83 /* 発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146508AB22FD4CF40095AD83 /* 発注.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
+		146884DA23E113750062F454 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146884D923E113750062F454 /* Set.swift */; };
 		1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469D67223C406DE00A28A6D /* TableGenerator.swift */; };
 		146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146C1F34239F1F1200FE2918 /* 進捗状態.swift */; };
 		146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F1694239904DB003F88A1 /* Test進捗出力.swift */; };
@@ -116,6 +117,7 @@
 		146508AB22FD4CF40095AD83 /* 発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
+		146884D923E113750062F454 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		1469D67223C406DE00A28A6D /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
 		146C1F34239F1F1200FE2918 /* 進捗状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗状態.swift"; sourceTree = "<group>"; };
 		146F1694239904DB003F88A1 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				1412037A2201D8360054B56F /* Time.swift */,
 				149BCAFC2208216B004066DD /* String.swift */,
 				149BCAFE22082BF2004066DD /* Lock.swift */,
+				146884D923E113750062F454 /* Set.swift */,
 				14CEBDF1222DFDE40023D0DC /* URL.swift */,
 				14C066A923757D47001E73F2 /* Version.swift */,
 				1460F9B82399DC02006B31C0 /* Utility.swift */,
@@ -483,6 +486,7 @@
 				1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */,
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
 				145EE8FF2396422F008BC8B4 /* 作業系列.swift in Sources */,
+				146884DA23E113750062F454 /* Set.swift in Sources */,
 				14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */,
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
 				149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */,
