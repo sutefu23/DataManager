@@ -74,7 +74,7 @@ extension 指示書変更内容履歴型 {
     public static func find(日付: Day, 伝票種類: 伝票種類型) throws -> [指示書変更内容履歴型] {
         var query = [String: String]()
         query["日付"] = 日付.fmString
-        query["伝票種類"] = 伝票種類.fmString
+        query["エッチング指示書テーブル::伝票種類"] = 伝票種類.fmString
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 指示書変更内容履歴型.dbName, query: [query])
         return list.compactMap { 指示書変更内容履歴型($0) }

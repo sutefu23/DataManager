@@ -66,6 +66,7 @@
 		14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2167230CCDBE00CE4253 /* TestEtc.swift */; };
 		14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2169230D083F00CE4253 /* グループ階層.swift */; };
 		14C066AA23757D47001E73F2 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C066A923757D47001E73F2 /* Version.swift */; };
+		14CAB7BF23E819910038870F /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CAB7BE23E819910038870F /* Sequence.swift */; };
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
@@ -151,6 +152,7 @@
 		14BF2167230CCDBE00CE4253 /* TestEtc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEtc.swift; sourceTree = "<group>"; };
 		14BF2169230D083F00CE4253 /* グループ階層.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "グループ階層.swift"; sourceTree = "<group>"; };
 		14C066A923757D47001E73F2 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		14CAB7BE23E819910038870F /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				14C066A923757D47001E73F2 /* Version.swift */,
 				1460F9B82399DC02006B31C0 /* Utility.swift */,
 				146B4C4323E4F80B00FB392B /* Future.swift */,
+				14CAB7BE23E819910038870F /* Sequence.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -515,6 +518,7 @@
 				8ED7EEFF239948DC00A47C44 /* 箱文字日報.swift in Sources */,
 				14BEE9E42240928F00B2750B /* 資材.swift in Sources */,
 				145EE8FD23964220008BC8B4 /* 作業種別.swift in Sources */,
+				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
 				146508AC22FD4CF40095AD83 /* 発注.swift in Sources */,
 				8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */,

@@ -245,6 +245,9 @@ class FileMakerSession: NSObject, URLSessionDelegate {
                     let errorCode = Int(code) else { return }
                 isOk = (errorCode == 0 || errorCode == 401)
                 errorMessage = message
+                if message.contains("Field") {
+                    fatalError()
+                }
                 if let res = response["data"] {
                     newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
