@@ -311,4 +311,3 @@ public extension TableGenerator {
 }
 
 #endif
-

@@ -43,7 +43,7 @@ extension 発注型 {
     public static let dbName = "DataAPI_4"
     
     public static func find(伝票番号: 伝票番号型) throws -> [発注型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号.整数値)"
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])

@@ -14,6 +14,11 @@ public class 資材型 {
     init?(_ record: FileMakerRecord) {
         self.record = record
     }
+    
+    public convenience init?(図番: String ) {
+        guard let result = (try? 資材型.find(図番: 図番)) else { return nil }
+        self.init(result.record)
+    }
 }
 
 public extension 資材型 {
@@ -61,5 +66,13 @@ public extension 資材型 {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 資材型.dbName)
         return list.compactMap { 資材型($0) }
+    }
+    
+    static func find(図番: String) throws -> 資材型? {
+        let db = FileMakerDB.pm_osakaname
+        var query = FileMakerQuery()
+        query["f13"] = "==\(図番)"
+        let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
+        return list.compactMap { 資材型($0) }.first
     }
 }

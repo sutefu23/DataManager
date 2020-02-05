@@ -99,11 +99,11 @@ class TestOrder : XCTestCase {
         let list2 = order?.変更一覧
         XCTAssertNotNil(list2)
         
-        let list3 = order?.添付資料一覧
-        XCTAssertNotNil(list3)
-
-        let list4 = order?.集荷時間一覧
-        XCTAssertNotNil(list4)
+//        let list3 = order?.添付資料一覧
+//        XCTAssertNotNil(list3)
+//
+//        let list4 = order?.集荷時間一覧
+//        XCTAssertNotNil(list4)
 
         let list5 = order?.外注一覧
         XCTAssertNotNil(list5)

@@ -149,7 +149,7 @@ public extension Sequence where Element == 進捗型 {
 public extension 進捗型 {
     static let dbName = "DataAPI_3"
     static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         query["伝票番号"] = "==\(num)"
         if let state = state {
             query["工程コード"] = "==\(state.code)"
@@ -163,7 +163,7 @@ public extension 進捗型 {
     }
     
     static func find(製作納期 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         query["製作納期"] = makeQueryDayString(range)
         if let type = type {
             query["伝票種類"] = type.fmString
@@ -181,7 +181,7 @@ public extension 進捗型 {
     }
     
     static func find(登録期間 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
-        var query = [String:String]()
+        var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(range)
         if let type = type {
             query["伝票種類"] = type.fmString
@@ -215,7 +215,7 @@ public extension 進捗型 {
     }
     
     static func find(工程 state: 工程型?, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day) throws -> [進捗型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         query["登録日"] = day.fmString
         if let state = state {
             query["工程コード"] = "==\(state.code)"
