@@ -15,6 +15,14 @@ import Cocoa
 public typealias DMColor = NSColor
 public typealias DMView = NSView
 public typealias DMTextField = NSTextField
+public typealias DMPaperOrientation = NSPrintInfo.PaperOrientation
+public func DMGraphicsPushContext(_ context: CGContext) {
+    NSGraphicsContext.saveGraphicsState()
+    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
+}
+public func DMGraphicsPopContext() {
+    NSGraphicsContext.restoreGraphicsState()
+}
 
 public typealias DMFont = NSFont
 public typealias DMBezierPath = NSBezierPath

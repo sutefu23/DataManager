@@ -15,6 +15,14 @@ public typealias DMColor = UIColor
 public typealias DMView = UIView
 public typealias DMTextField = UITextField
 
+public typealias DMGraphicsContext = UIGraphicsPDFRendererContext
+public enum DMPaperOrientation {
+    case landscape
+    case portrait
+}
+public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(context) }
+public func DMGraphicsPopContext() { UIGraphicsPopContext() }
+
 public typealias DMFont = UIFont
 public typealias DMBezierPath = UIBezierPath
 public typealias DMScreen = UIScreen

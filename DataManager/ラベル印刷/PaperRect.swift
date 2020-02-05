@@ -36,9 +36,25 @@ public class PaperRect {
         let ph = convert(mm: height)
         self.rect = CGRect(x: px, y: py, width: pw, height: ph)
     }
+    
+    private(set) var objects: [PaperObject] = []
+    public func append(_ object: PaperObject) {
+        objects.append(object)
+    }
+    
+    func draw() {
+        let px = convert(mm: x)
+        let py = convert(mm: y)
+        let origin = CGPoint(x: px, y: py)
+        objects.forEach { $0.draw(at: origin) }
+    }
 }
 
-public class PaperPath {
+public protocol PaperObject {
+    func draw(at: CGPoint)
+}
+
+public class PaperPath: PaperObject {
     private var points: [CGPoint] = []
     private let lineWidth: CGFloat
     
@@ -53,14 +69,19 @@ public class PaperPath {
         points.append(CGPoint(x: x, y: y))
     }
     
-    func stroke() {
+    public func draw(at: CGPoint) {
+        var points: [CGPoint] = self.points.map {
+            let x = $0.x + at.x
+            let y = $0.y + at.y
+            return CGPoint(x: x, y: y)
+        }
         let path = DMBezierPath(polyline: &points)
         path.lineWidth = lineWidth
         path.stroke()
     }
 }
 
-public class PaperText {
+public class PaperText: PaperObject {
     let storage: NSTextStorage
     let container: NSTextContainer
     let manager: NSLayoutManager
@@ -88,8 +109,10 @@ public class PaperText {
         let bounds = manager.boundingRect(forGlyphRange: range, in: container)
         return bounds
     }
-    func draw(rect: CGRect) {
-        var origin = rect.origin
+    
+    public func draw(at: CGPoint) {
+        let rect = self.bounds
+        var origin = at
         origin.x -= (rect.height/2 - 2)
         origin.y -= (rect.height/2 + 1)
         guard let layoutManager = storage.layoutManagers.first else { return }

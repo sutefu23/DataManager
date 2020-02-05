@@ -38,6 +38,9 @@
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
 		146884DA23E113750062F454 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146884D923E113750062F454 /* Set.swift */; };
 		1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469D67223C406DE00A28A6D /* TableGenerator.swift */; };
+		146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03423EB818800126B0F /* LabelListPDFPage.swift */; };
+		146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03623EB828900126B0F /* PaperPDFPage.swift */; };
+		146AA03A23EB893E00126B0F /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
 		146B4C4423E4F80B00FB392B /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B4C4323E4F80B00FB392B /* Future.swift */; };
 		146B4C4623E4FE4200FB392B /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B4C4523E4FE4200FB392B /* NSAttributedString.swift */; };
 		146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146C1F34239F1F1200FE2918 /* 進捗状態.swift */; };
@@ -78,7 +81,6 @@
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
-		8E0CBADC23EB5D8200587F6B /* LabelPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */; };
 		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
@@ -136,6 +138,9 @@
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
 		146884D923E113750062F454 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		1469D67223C406DE00A28A6D /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
+		146AA03423EB818800126B0F /* LabelListPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelListPDFPage.swift; sourceTree = "<group>"; };
+		146AA03623EB828900126B0F /* PaperPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperPDFPage.swift; sourceTree = "<group>"; };
+		146AA03923EB893E00126B0F /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/PDFKit.framework; sourceTree = DEVELOPER_DIR; };
 		146B4C4323E4F80B00FB392B /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		146B4C4523E4FE4200FB392B /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
 		146C1F34239F1F1200FE2918 /* 進捗状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗状態.swift"; sourceTree = "<group>"; };
@@ -176,7 +181,6 @@
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
-		8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPDFPage.swift; sourceTree = "<group>"; };
 		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				146AA03A23EB893E00126B0F /* PDFKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +271,14 @@
 			path = "工程図";
 			sourceTree = "<group>";
 		};
+		146AA03823EB893E00126B0F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				146AA03923EB893E00126B0F /* PDFKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		146C1F33239F1EFA00FE2918 /* 状況キャッシュ */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,13 +287,14 @@
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
 		};
-		8E0CBADA23EB5D6600587F6B /* ラベル印刷 */ = {
+		8E0CBADA23EB5D6600587F6B /* PDF作成 */ = {
 			isa = PBXGroup;
 			children = (
-				8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */,
+				146AA03623EB828900126B0F /* PaperPDFPage.swift */,
+				146AA03423EB818800126B0F /* LabelListPDFPage.swift */,
 				8E0CBAE323EB62DB00587F6B /* PaperRect.swift */,
 			);
-			name = "ラベル印刷";
+			name = "PDF作成";
 			path = "ラベル印刷";
 			sourceTree = "<group>";
 		};
@@ -299,6 +313,7 @@
 				8E392ED221FD61D900CEDF18 /* DataManager */,
 				8E392EDD21FD61D900CEDF18 /* DataManagerTests */,
 				8E392ED121FD61D900CEDF18 /* Products */,
+				146AA03823EB893E00126B0F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -315,7 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				8E0CBAE723EB657D00587F6B /* 互換性 */,
-				8E0CBADA23EB5D6600587F6B /* ラベル印刷 */,
+				8E0CBADA23EB5D6600587F6B /* PDF作成 */,
 				146C1F33239F1EFA00FE2918 /* 状況キャッシュ */,
 				8ED7EEFD239948B600A47C44 /* 記録 */,
 				145EE90423966D5C008BC8B4 /* 出力 */,
@@ -532,6 +547,7 @@
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
+				146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
@@ -543,6 +559,7 @@
 				8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
+				146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */,
 				142D3BA7231CAD1900B95EEB /* 指示書分析.swift in Sources */,
@@ -562,7 +579,6 @@
 				8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */,
 				146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */,
 				14552F6622099B76000BDCB8 /* 指示書.swift in Sources */,
-				8E0CBADC23EB5D8200587F6B /* LabelPDFPage.swift in Sources */,
 				146D0B3323EA8DB9006FECA7 /* 部署.swift in Sources */,
 				14363C4E238F891A0094FF00 /* 伝票種別.swift in Sources */,
 				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,
