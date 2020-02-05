@@ -78,6 +78,10 @@
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
+		8E0CBADC23EB5D8200587F6B /* LabelPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */; };
+		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
+		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
+		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
 		8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2CDF892340D22A00E7F147 /* 伝票番号.swift */; };
 		8E392EDA21FD61D900CEDF18 /* DataManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E392ED021FD61D900CEDF18 /* DataManager.framework */; };
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
@@ -172,6 +176,10 @@
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
+		8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPDFPage.swift; sourceTree = "<group>"; };
+		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
+		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
+		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
 		8E2CDF892340D22A00E7F147 /* 伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票番号.swift"; sourceTree = "<group>"; };
 		8E392ED021FD61D900CEDF18 /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E392ED321FD61D900CEDF18 /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
@@ -266,6 +274,25 @@
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
 		};
+		8E0CBADA23EB5D6600587F6B /* ラベル印刷 */ = {
+			isa = PBXGroup;
+			children = (
+				8E0CBADB23EB5D8200587F6B /* LabelPDFPage.swift */,
+				8E0CBAE323EB62DB00587F6B /* PaperRect.swift */,
+			);
+			name = "ラベル印刷";
+			path = "ラベル印刷";
+			sourceTree = "<group>";
+		};
+		8E0CBAE723EB657D00587F6B /* 互換性 */ = {
+			isa = PBXGroup;
+			children = (
+				8E0CBAE823EB658E00587F6B /* UIKit.swift */,
+				8E0CBAEA23EB659800587F6B /* Cocoa.swift */,
+			);
+			path = "互換性";
+			sourceTree = "<group>";
+		};
 		8E392EC621FD61D900CEDF18 = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +314,8 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				8E0CBAE723EB657D00587F6B /* 互換性 */,
+				8E0CBADA23EB5D6600587F6B /* ラベル印刷 */,
 				146C1F33239F1EFA00FE2918 /* 状況キャッシュ */,
 				8ED7EEFD239948B600A47C44 /* 記録 */,
 				145EE90423966D5C008BC8B4 /* 出力 */,
@@ -511,6 +540,7 @@
 				8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */,
 				1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */,
 				1498531B230BCEE7007734E0 /* コンストレイン情報.swift in Sources */,
+				8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
@@ -529,8 +559,10 @@
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
+				8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */,
 				146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */,
 				14552F6622099B76000BDCB8 /* 指示書.swift in Sources */,
+				8E0CBADC23EB5D8200587F6B /* LabelPDFPage.swift in Sources */,
 				146D0B3323EA8DB9006FECA7 /* 部署.swift in Sources */,
 				14363C4E238F891A0094FF00 /* 伝票種別.swift in Sources */,
 				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,
@@ -547,6 +579,7 @@
 				145EE8FD23964220008BC8B4 /* 作業種別.swift in Sources */,
 				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
+				8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */,
 				146508AC22FD4CF40095AD83 /* 発注.swift in Sources */,
 				8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */,
 				1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */,

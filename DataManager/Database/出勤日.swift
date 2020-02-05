@@ -40,7 +40,6 @@ extension Date {
         return "\(monthNumber)/\(dayNumber) (\(week.description))"
     }
     
-
     public var dayWeekString: String {
         return day.dayWeekString
     }
