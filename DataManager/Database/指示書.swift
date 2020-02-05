@@ -364,7 +364,8 @@ public extension 指示書型 {
     internal static func find(_ query: FileMakerQuery) throws -> [指示書型] {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-        return list.compactMap { 指示書型($0) }
+        let orders = list.compactMap { 指示書型($0) }
+        return orders
     }
 
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {

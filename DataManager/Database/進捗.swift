@@ -9,9 +9,11 @@
 import Foundation
 
 public class 進捗型: Equatable, Identifiable {
+    public static var 立ち上り進捗統合 = false
+
     let record: FileMakerRecord
 
-    public let 工程: 工程型
+    public var 工程: 工程型
     public let 作業内容: 作業内容型
     public let 登録日時: Date
     public var 社員名称: String
@@ -30,10 +32,13 @@ public class 進捗型: Equatable, Identifiable {
     }()
 
     init?(_ record: FileMakerRecord) {
-        guard let state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
+        guard var state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
             if record.string(forKey: "工程名称")?.isEmpty == true { return nil }
 //            return nil
             fatalError()
+        }
+        if 進捗型.立ち上り進捗統合 && state == .立ち上がり_溶接 {
+            state = .立ち上がり
         }
         self.record = record
         guard let type = record.作業内容(forKey: "進捗コード") else { return nil }
