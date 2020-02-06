@@ -16,6 +16,9 @@ import AppKit
 func convert(mm: Double) -> CGFloat {
     return CGFloat(mm * 72.0 / 25.4)
 }
+func convert(point: CGFloat) -> Double {
+    return Double(point * 25.4 / 72.0)
+}
 
 public class PaperRect {
     public let x: Double
