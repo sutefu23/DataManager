@@ -13,9 +13,11 @@ import UIKit
 import AppKit
 #endif
 
+/// mm → ポイント 変換
 func convert(mm: Double) -> CGFloat {
     return CGFloat(mm * 72.0 / 25.4)
 }
+/// ポイント → mm 変換
 func convert(point: CGFloat) -> Double {
     return Double(point * 25.4 / 72.0)
 }
