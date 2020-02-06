@@ -35,11 +35,14 @@ public class PaperPDFPage: PDFPage {
         return bounds.insetBy(dx: margin, dy: margin)
     }
 
-    
     public override func draw(with box: PDFDisplayBox, to context: CGContext) {
         DMGraphicsPushContext(context)
-        rects.forEach { $0.draw() }
+        rects.forEach { $0.draw(at: CGPoint.zero) }
         DMGraphicsPopContext()
+    }
+    
+    public func append(_ rect: PaperRect) {
+        rects.append(rect)
     }
 
 }

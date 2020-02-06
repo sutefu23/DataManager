@@ -27,6 +27,7 @@ public func DMGraphicsPopContext() {
 public typealias DMFont = NSFont
 public typealias DMBezierPath = NSBezierPath
 public typealias DMScreen = NSScreen
+public typealias DMImage = NSImage
 
 public typealias DMEvent = NSEvent
 
