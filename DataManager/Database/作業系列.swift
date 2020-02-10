@@ -23,7 +23,8 @@ public class 作業系列型: Hashable {
     public static let ex = 作業系列型(系列コード: "S002")!
     public static let hp = 作業系列型(系列コード: "S003")!
     public static let water = 作業系列型(系列コード: "S004")!
-
+    public static let ボルト1 = 作業系列型(系列コード: "S011")!
+    public static let ボルト2 = 作業系列型(系列コード: "S012")!
     
     let record: FileMakerRecord
 

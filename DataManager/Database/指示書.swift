@@ -356,6 +356,31 @@ public class 指示書型 {
         }
         return set
     }()
+    
+    public lazy var 立ち上がりランク: 立ち上がりランク型 = {
+        if let comp = self.進捗一覧.findFirst(工程: .照合検査, 作業内容: .完了) { // 照合完了済み
+            if let progress = self.進捗一覧.first(where: { $0.工程 == .立ち上がり }) { // 立ち上がり作業あり
+                if comp.登録日時 >= progress.登録日時 { // 立ち上がり作業が先
+                    return .立ち上がり先行受取済み_青
+                }
+            }
+        } else { // 照合未完了
+            if self.進捗一覧.contains(where: { $0.工程 == .立ち上がり }) { // 立ち上がり作業あり
+                return .立ち上がり先行受取待ち_赤
+            }
+        }
+        return .通常_黒
+    }()
+}
+
+public enum 立ち上がりランク型: Int, Comparable, Hashable {
+    case 立ち上がり先行受取済み_青 = 1
+    case 立ち上がり先行受取待ち_赤 = 2
+    case 通常_黒 = 3
+    
+    public static func < (left: 立ち上がりランク型, right: 立ち上がりランク型) -> Bool {
+        return left.rawValue < right.rawValue
+    }
 }
 
 // MARK: - 検索パターン

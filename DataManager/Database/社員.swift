@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 private func calc社員番号<S: StringProtocol>(_ code: S) -> Int? {
     var code = code.uppercased()
     guard let firstCode = code.first else { return nil }
@@ -83,6 +82,11 @@ public struct 社員型: Hashable, Codable {
     }
 }
 
+public extension 社員型 {
+    static let 室中哲郎: 社員型 = 社員番号マップ[019]!
+    static let 森藤年栄: 社員型 = 社員番号マップ[717]!
+}
+
 extension 社員型 {
     static let dbName = "DataAPI_8"
     
@@ -92,3 +96,4 @@ extension 社員型 {
         return list.compactMap { 社員型($0) }
     }
 }
+

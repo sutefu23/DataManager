@@ -19,17 +19,7 @@ public class DataManagerController {
 
 public let dataManager = DataManagerController()
 
-#if os(macOS)
-import Cocoa
-
-extension Error {
-    public func showModal() {
-        let alert = NSAlert(error: self)
-        alert.runModal()
-    }
-}
-
-#elseif os(iOS)
+#if os(iOS)
 import UIKit
 
 extension Error {
@@ -37,6 +27,27 @@ extension Error {
         let alert = UIAlertController(title: self.localizedDescription, message: "", preferredStyle: .alert)
         let vc = UIApplication.shared.windows.first?.rootViewController
         vc?.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension UIViewController {
+    public func showMessageDialog(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "ok", style: .default, handler: nil)
+        alert.addAction(action1)
+        self.present(alert, animated: true)
+        return
+    }
+    
+    public func showSelectDialog(title: String, message: String, ok: String, cancel: String) -> Bool {
+        var isOk: Bool = true
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: ok, style: .default, handler: { _ in isOk = true })
+        let action2 = UIAlertAction(title: cancel, style: .default, handler: { _ in isOk = false })
+        alert.addAction(action1)
+        alert.addAction(action2)
+        self.present(alert, animated: true)
+        return isOk
     }
 }
 
@@ -79,5 +90,16 @@ extension UITableView {
         return distanceFromBottom < frame.size.height
     }
 }
+
+#elseif os(macOS)
+import Cocoa
+
+extension Error {
+    public func showModal() {
+        let alert = NSAlert(error: self)
+        alert.runModal()
+    }
+}
+
 
 #endif
