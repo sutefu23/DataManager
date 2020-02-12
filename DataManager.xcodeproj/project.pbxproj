@@ -71,6 +71,7 @@
 		149BCB05220854F6004066DD /* 伝票状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB04220854F6004066DD /* 伝票状態.swift */; };
 		149BCB07220854FE004066DD /* 工程状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB06220854FE004066DD /* 工程状態.swift */; };
 		149BCB09220858FE004066DD /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB08220858FE004066DD /* 伝票種類.swift */; };
+		14A251A223F38DBF00547371 /* 指示書キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */; };
 		14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544B238D2EF70080925F /* 指示書文字数.swift */; };
 		14BA544E238D43010080925F /* Test指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544D238D43010080925F /* Test指示書文字数.swift */; };
 		14BEE9E42240928F00B2750B /* 資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E32240928F00B2750B /* 資材.swift */; };
@@ -172,6 +173,7 @@
 		149BCB04220854F6004066DD /* 伝票状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票状態.swift"; sourceTree = "<group>"; };
 		149BCB06220854FE004066DD /* 工程状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程状態.swift"; sourceTree = "<group>"; };
 		149BCB08220858FE004066DD /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
+		14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書キャッシュ.swift"; sourceTree = "<group>"; };
 		14BA544B238D2EF70080925F /* 指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書文字数.swift"; sourceTree = "<group>"; };
 		14BA544D238D43010080925F /* Test指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書文字数.swift"; sourceTree = "<group>"; };
 		14BEE9E32240928F00B2750B /* 資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材.swift"; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				146C1F34239F1F1200FE2918 /* 進捗状態.swift */,
+				14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 				1425D99D230778B700A2D6AB /* Month.swift in Sources */,
 				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
 				14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */,
+				14A251A223F38DBF00547371 /* 指示書キャッシュ.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
 				14681F122212B3AE00C41D15 /* 工程図.swift in Sources */,
 				1426FBB8231DED92004D3EAC /* 部署作業者分析.swift in Sources */,
