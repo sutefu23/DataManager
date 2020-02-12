@@ -9,6 +9,7 @@
 import Foundation
 
 public enum FileMakerError: LocalizedError {
+    case dbIsDisabled
     case tokenCreate(message: String)
     case fetch(message: String)
     case find(message: String)
@@ -21,6 +22,7 @@ public enum FileMakerError: LocalizedError {
     
     public var errorDescription: String? {
         switch self {
+        case .dbIsDisabled: return "サーバー接続停止中"
         case .tokenCreate(message: _): return "データベースに接続できませんでした"
         case .fetch(message: _): return "データベースからの読み取りができなかった"
         case .find(message: _): return "データベースの検索ができなかった"
@@ -35,6 +37,8 @@ public enum FileMakerError: LocalizedError {
     
     public var failureReason: String? {
         switch self {
+        case .dbIsDisabled:
+            return "サーバー利用停止フラグがonになっている"
         case .tokenCreate(message: let mes), .fetch(message: let mes), .find(message: let mes), .delete(message: let mes), .update(message: let mes), .insert(message: let mes), .execute(message: let mes), .download(message: let mes), .response(message: let mes):
             return "サーバーエラー: \(mes)"
         }

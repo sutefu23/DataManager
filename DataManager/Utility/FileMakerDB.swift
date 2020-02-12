@@ -8,6 +8,13 @@
 
 import Foundation
 
+public extension UserDefaults {
+    var filemakerIsDisabled: Bool {
+        get { return bool(forKey: "filemakerIsDisabled") }
+        set { self.set(newValue, forKey: "filemakerIsDisabled") }
+    }
+}
+
 enum FileMakerSortType: String, Encodable {
     case 昇順 = "ascend"
     case 降順 = "descend"
@@ -112,6 +119,8 @@ public final class FileMakerDB {
     static let laser: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
     static let system: FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
 
+    public static var isEnabled = true
+    
     let dbURL: URL
     let server: FileMakerServer
     let user: String
@@ -136,40 +145,53 @@ public final class FileMakerDB {
          return try work(session)
      }
 
+    private func checkStop() throws {
+        if !FileMakerDB.isEnabled || UserDefaults.standard.filemakerIsDisabled { throw FileMakerError.dbIsDisabled }
+    }
+    
     func executeScript(layout: String, script: String, param: String) throws {
+        try checkStop()
         try self.execute { try $0.execute(layout: layout, script: script, param: param) }
     }
 
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
+        try checkStop()
         return try self.execute2 { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
     }
     
     func find(layout: String, recordId: Int) throws -> FileMakerRecord? {
+        try checkStop()
         return try self.find(layout: layout, query: [["recordId" : "\(recordId)"]]).first
     }
     
     func find(layout: String, query: [[String: String]], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
+        try checkStop()
         return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
     }
     
     func downloadObject(url: URL) throws -> Data? {
+        try checkStop()
         return try self.execute2 { try $0.download(url) }
     }
     
     func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
+        try checkStop()
         return try self.execute { try $0.update(layout: layout, recordId: recordId,fields: fields) }
     }
     
     func delete(layout: String, recordId: String) throws {
+        try checkStop()
         return try self.execute { try $0.delete(layout: layout, recordId: recordId) }
     }
     
     @discardableResult func insert(layout: String, fields: FileMakerQuery) throws -> String {
+        try checkStop()
         return try self.execute2 { try $0.insert(layout: layout, fields: fields) }
     }
     
     /// DBにアクセス可能か調べる
     public static func testDBAccess() -> Bool {
+        if UserDefaults.standard.filemakerIsDisabled { return false }
         return pm_osakaname.execute2 { $0.checkDBAccess() }
     }
     
