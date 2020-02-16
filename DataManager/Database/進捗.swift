@@ -54,7 +54,7 @@ public class 進捗型: Equatable, Identifiable {
     }
     
     public static func ==(left: 進捗型, right: 進捗型) -> Bool {
-        return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.社員名称 == right.社員名称 && left.登録日時 == right.登録日時
+        return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.作業者 == right.作業者 && left.登録日時 == right.登録日時 && left.作業種別 == right.作業種別 && left.作業系列 == right.作業系列
     }
     
     public lazy var 作業種別: 作業種別型 = {
@@ -113,7 +113,7 @@ public extension 進捗型 {
         default:
             return nil
         }
-    }
+    }    
 }
 
 public extension Array where Element == 進捗型 {
@@ -225,5 +225,15 @@ public extension 進捗型 {
         let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
+    
+    static func find(指示書進捗入力UUID: UUID) throws -> [進捗型] {
+        var query = FileMakerQuery()
+        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
+        let db = FileMakerDB.pm_osakaname
+        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+        return list.compactMap { 進捗型($0) }
+    }
+    
+
 }
 

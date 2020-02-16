@@ -10,30 +10,26 @@ import Foundation
 
 public class 資材型 {
     let record: FileMakerRecord
-    
+    let 図番: String
+    var 製品名称: String
+    var 規格: String
+
     init?(_ record: FileMakerRecord) {
         self.record = record
+        guard let 図番 = record.string(forKey: "f13") else { return nil }
+        guard let 製品名称 = record.string(forKey: "f3") else { return nil }
+        guard let 規格 = record.string(forKey: "f15") else { return nil }
+        self.図番 = 図番
+        self.製品名称 = 製品名称
+        self.規格 = 規格
     }
-    
     public convenience init?(図番: String ) {
-        guard let result = (try? 資材型.find(図番: 図番)) else { return nil }
-        self.init(result.record)
+        guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
+        self.init(record)
     }
 }
 
 public extension 資材型 {
-    var 製品名称: String {
-        return record.string(forKey: "f3") ?? ""
-    }
-    
-    var 規格: String {
-        return record.string(forKey: "f15") ?? ""
-    }
-    
-    var 図番: String {
-        return record.string(forKey: "f13") ?? ""
-    }
-    
     var 版数: String {
         return record.string(forKey: "f14") ?? ""
     }
@@ -58,7 +54,10 @@ public extension 資材型 {
         return record.string(forKey: "種類") ?? ""
     }
 }
+// MARK: - 保存
 
+
+// MARK: - 検索
 public extension 資材型 {
     static let dbName = "DataAPI_5"
     

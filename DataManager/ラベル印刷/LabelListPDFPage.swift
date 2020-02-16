@@ -7,6 +7,8 @@
 //
 
 import Foundation
+#if os(tvOS)
+#else
 import PDFKit
 
 public class LabelListPDFPage: PaperPDFPage {
@@ -30,3 +32,4 @@ public class LabelListPDFPage: PaperPDFPage {
         self.append(margin: 0, rect: rect)
     }
 }
+#endif

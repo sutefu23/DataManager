@@ -216,6 +216,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var offset = 1
         let limit = 100
         var result : [FileMakerRecord] = []
+        var resultError: Error? = nil
         
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
         let config = URLSessionConfiguration.default
@@ -246,13 +247,15 @@ class FileMakerSession: NSObject, URLSessionDelegate {
                 isOk = (errorCode == 0 || errorCode == 401)
                 errorMessage = message
                 if message.contains("Field") {
-                    fatalError()
+                    resultError = FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)")
+                    return
                 }
                 if let res = response["data"] {
                     newResult = (res as? [Any])?.compactMap { FileMakerRecord(json:$0) } ?? []
                 }
             }.resume()
             sem.wait()
+            if let error = resultError { throw error }
             if isOk == false { throw FileMakerError.find(message: errorMessage) }
             let count = newResult.count
             result.append(contentsOf: newResult)

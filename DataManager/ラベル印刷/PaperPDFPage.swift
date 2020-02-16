@@ -7,6 +7,9 @@
 //
 
 import Foundation
+
+#if os(tvOS)
+#else
 import PDFKit
 
 public class PaperPDFPage: PDFPage {
@@ -46,3 +49,4 @@ public class PaperPDFPage: PDFPage {
     }
 
 }
+#endif

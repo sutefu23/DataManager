@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 進捗出力型 {
+public struct 進捗出力型: Hashable {
     public let 登録日: Day
     public let 登録時間: Time
 
@@ -19,6 +19,8 @@ public struct 進捗出力型 {
 
     public let 社員: 社員型
     public let 作業系列: 作業系列型?
+
+    public var 登録日時: Date { return Date(self.登録日, self.登録時間) }
     
     public init(伝票番号: 伝票番号型, 工程: 工程型, 作業内容: 作業内容型, 社員: 社員型, 登録日時: Date, 作業種別: 作業種別型, 作業系列: 作業系列型?) {
         self.伝票番号 = 伝票番号
@@ -43,14 +45,15 @@ public struct 進捗出力型 {
     }
     
     public init?(csvLine line: String) throws {
+        if line.isEmpty { return nil } // 空行スキップ
         let cols = line.split(separator: ",")
-        if cols.count < 6 { return nil }
-        guard let day = Day(fmDate: cols[0]) else { return nil }
-        guard let time = Time(fmTime: cols[1]) else { return nil }
-        guard let number = try 伝票番号型(invalidString: cols[2]) else { return nil }
-        guard let process = 工程型(cols[3]) else { return nil }
-        guard let state = 作業内容型(cols[4]) else { return nil }
-        guard let worker = 社員型(社員コード: cols[5]) else { return nil }
+        if cols.count < 6 { throw ProgressDBError.invalidCSV(line) }
+        guard let day = Day(fmDate: cols[0]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let time = Time(fmTime: cols[1]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let number = try 伝票番号型(invalidString: cols[2]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let process = 工程型(cols[3]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let state = 作業内容型(cols[4]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let worker = 社員型(社員コード: cols[5]) else { throw ProgressDBError.invalidCSV(line) }
         let type : 作業種別型 = (cols.count >= 7) ? 作業種別型(String(cols[6])) : .通常
         let series: 作業系列型? = (cols.count >= 8) ? 作業系列型(系列コード: String(cols[7])) : nil
         let dayTime = Date(day, time)
@@ -132,17 +135,29 @@ extension Sequence where Element == 進捗出力型 {
     /// 生産管理に直接出力する
     public func exportToDB(重複チェック: Bool = false) throws {
         let db = FileMakerDB.pm_osakaname
-        let uuid = UUID()
-        var count = 0
-        for progress in self {
-            if !重複チェック || progress.isDBに重複あり == false {
+        var target = self.filter { !重複チェック || $0.isDBに重複あり == false }
+        if target.isEmpty { return }
+        var loopCount = 0
+        repeat {
+            let uuid = UUID()
+            for progress in target {
                 try db.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
-                count += 1
             }
-        }
-        if count > 0 {
             try db.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-        }
+//            if 進捗CheckMode == false { return }
+            let checked = try 進捗型.find(指示書進捗入力UUID: uuid)
+            if checked.count == target.count { return }
+            target = target.filter {
+                for progress in checked {
+                    if $0.伝票番号 == progress.伝票番号 && $0.工程 == progress.工程 && $0.作業内容 == progress.作業内容 && $0.作業種別 == progress.作業種別 && $0.作業系列 == progress.作業系列 && $0.社員 == progress.作業者 && $0.登録日 == progress.登録日 && $0.登録時間 == progress.登録時間 { return false }
+                }
+                return true
+            }
+            loopCount += 1
+            if (loopCount % 3) == 0 { FileMakerDB.logputAll() }
+
+        } while !target.isEmpty || loopCount > 10
+        throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")
     }
     
     /// 参照リストとの重複を削除する
@@ -166,19 +181,16 @@ extension Sequence where Element == 進捗出力型 {
     }
 }
     
-extension Array where Element == 進捗出力型 {
-    func 生産管理との重複削除() -> [進捗出力型] {
-        return self.filter { !$0.isDBに重複あり }
-    }
-    
 // MARK: - CSV関連
-    init(csv url: URL)  throws {
+extension Array where Element == 進捗出力型 {
+    public init(csv url: URL)  throws {
         var targets: [進捗出力型] = []
         if url.isExists {
             let source = try String(contentsOf: url, encoding: .utf8)
             var convertError: Error? = nil
             source.enumerateLines { (line, stop) in
                 do {
+//                    NSLog(line)
                     if let pl = try 進捗出力型(csvLine: line), !pl.isDBに重複あり {
                         targets.append(pl)
                     }
@@ -191,9 +203,15 @@ extension Array where Element == 進捗出力型 {
         }
         self.init(targets)
     }
+}
+
+extension Sequence where Element == 進捗出力型 {
+    func 生産管理との重複削除() -> [進捗出力型] {
+        return self.filter { !$0.isDBに重複あり }
+    }
     
     /// CSVとして出力する
-    func writeToCSV(url: URL) throws {
+    public func writeToCSV(url: URL) throws {
         let outputLines = self.map { $0.makeCSVLine() }.joined()
         guard let data = outputLines.data(using: .utf8, allowLossyConversion: true) else {
             throw ProgressDBError.cantConvert
@@ -225,6 +243,7 @@ public enum ProgressDBError: LocalizedError {
     case noOrder(Int)
     case cantConvert
     case invalidURL
+    case invalidCSV(String)
     
     public var errorDescription: String? {
         switch self {
@@ -235,6 +254,7 @@ public enum ProgressDBError: LocalizedError {
         case .noOrder(let order): return "存在しない伝票番号:\(order)"
         case .cantConvert : return "不正な文字列"
         case .invalidURL: return "不正なURL"
+        case .invalidCSV(let line): return "不正なCSV:\(line)"
         }
     }
 }

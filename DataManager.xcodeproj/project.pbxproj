@@ -40,7 +40,7 @@
 		1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469D67223C406DE00A28A6D /* TableGenerator.swift */; };
 		146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03423EB818800126B0F /* LabelListPDFPage.swift */; };
 		146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03623EB828900126B0F /* PaperPDFPage.swift */; };
-		146AA03A23EB893E00126B0F /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
+		146AF0E923F5013A00F4DCFE /* Test発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AF0E823F5013A00F4DCFE /* Test発注.swift */; };
 		146B4C4423E4F80B00FB392B /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B4C4323E4F80B00FB392B /* Future.swift */; };
 		146B4C4623E4FE4200FB392B /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B4C4523E4FE4200FB392B /* NSAttributedString.swift */; };
 		146C1F35239F1F1200FE2918 /* 進捗状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146C1F34239F1F1200FE2918 /* 進捗状態.swift */; };
@@ -53,6 +53,9 @@
 		146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F1694239904DB003F88A1 /* Test進捗出力.swift */; };
 		14709DDC23F10CDA0014008C /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14709DDB23F10CDA0014008C /* BarCode.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
+		14713C4123F607B40093F22D /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4023F607B40093F22D /* OrderedSet.swift */; };
+		14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaults.swift */; };
+		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */; };
@@ -143,6 +146,7 @@
 		146AA03423EB818800126B0F /* LabelListPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelListPDFPage.swift; sourceTree = "<group>"; };
 		146AA03623EB828900126B0F /* PaperPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperPDFPage.swift; sourceTree = "<group>"; };
 		146AA03923EB893E00126B0F /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/PDFKit.framework; sourceTree = DEVELOPER_DIR; };
+		146AF0E823F5013A00F4DCFE /* Test発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test発注.swift"; sourceTree = "<group>"; };
 		146B4C4323E4F80B00FB392B /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		146B4C4523E4FE4200FB392B /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
 		146C1F34239F1F1200FE2918 /* 進捗状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗状態.swift"; sourceTree = "<group>"; };
@@ -155,6 +159,8 @@
 		146F1694239904DB003F88A1 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
 		14709DDB23F10CDA0014008C /* BarCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
+		14713C4023F607B40093F22D /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		14713C4223F60F8A0093F22D /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
 		149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書変更内容履歴.swift"; sourceTree = "<group>"; };
@@ -208,7 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				146AA03A23EB893E00126B0F /* PDFKit.framework in Frameworks */,
+				14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +236,7 @@
 				1404E905220D905100841373 /* FileMakerSession.swift */,
 				14552F6722099D32000BDCB8 /* FileMakerRecord.swift */,
 				8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */,
+				14713C4223F60F8A0093F22D /* UserDefaults.swift */,
 				141203702201C3EA0054B56F /* Date.swift */,
 				1425D99C230778B700A2D6AB /* Month.swift */,
 				141203782201D82F0054B56F /* Day.swift */,
@@ -243,6 +250,7 @@
 				1460F9B82399DC02006B31C0 /* Utility.swift */,
 				146B4C4323E4F80B00FB392B /* Future.swift */,
 				14CAB7BE23E819910038870F /* Sequence.swift */,
+				14713C4023F607B40093F22D /* OrderedSet.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -365,6 +373,7 @@
 				8E8D3BD623D09D0A0000103D /* TestDay.swift */,
 				14BF2167230CCDBE00CE4253 /* TestEtc.swift */,
 				14399D5823EAA28C00BAFD48 /* Test社員.swift */,
+				146AF0E823F5013A00F4DCFE /* Test発注.swift */,
 				14BA544D238D43010080925F /* Test指示書文字数.swift */,
 				146F1694239904DB003F88A1 /* Test進捗出力.swift */,
 				146D0B2A23EA765F006FECA7 /* Test資材要求出力.swift */,
@@ -566,6 +575,7 @@
 				8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
+				14713C4123F607B40093F22D /* OrderedSet.swift in Sources */,
 				146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */,
@@ -601,6 +611,7 @@
 				14BEE9E42240928F00B2750B /* 資材.swift in Sources */,
 				145998D623E8E18F00E8AC2D /* 資材要求出力.swift in Sources */,
 				145EE8FD23964220008BC8B4 /* 作業種別.swift in Sources */,
+				14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */,
 				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
 				8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */,
@@ -635,6 +646,7 @@
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,
 				146D0B3523EA9513006FECA7 /* Test部署.swift in Sources */,
 				1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */,
+				146AF0E923F5013A00F4DCFE /* Test発注.swift in Sources */,
 				146D0B2D23EA882F006FECA7 /* Test資材入出庫.swift in Sources */,
 				8E8D3BD723D09D0A0000103D /* TestDay.swift in Sources */,
 				1436782922643B3A00335943 /* TestDate.swift in Sources */,
@@ -710,7 +722,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -770,7 +782,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -806,6 +818,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -835,6 +848,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

@@ -31,7 +31,7 @@ public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, Ex
     }
 
     public init?<S: StringProtocol>(invalidString: S) throws {
-        guard let number = Int(invalidString) else { return nil }
+        guard let number = Int(invalidString) ?? Int(String(invalidString.filter{ $0.isNumber })) else { return nil }
         try self.init(invalidNumber:number)
     }
 

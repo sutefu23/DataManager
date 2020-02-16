@@ -19,6 +19,9 @@ public enum FileMakerError: LocalizedError {
     case execute(message: String)
     case download(message: String)
     case response(message: String)
+    case upload進捗入力(message: String)
+    case upload発注(message: String)
+    case upload資材入出庫(message: String)
     
     public var errorDescription: String? {
         switch self {
@@ -32,6 +35,9 @@ public enum FileMakerError: LocalizedError {
         case .execute(message: _): return "データベースのスクリプトが実行できなかった"
         case .download(message: _): return "データベースからのダウンロードができなかった"
         case .response(message: _): return "正常な情報処理がされていません"
+        case .upload進捗入力(message: _): return "進捗入力登録失敗"
+        case .upload発注(message: _): return "発注登録失敗"
+        case .upload資材入出庫(message: _): return "資材入出庫登録失敗"
         }
     }
     
@@ -41,6 +47,8 @@ public enum FileMakerError: LocalizedError {
             return "サーバー利用停止フラグがonになっている"
         case .tokenCreate(message: let mes), .fetch(message: let mes), .find(message: let mes), .delete(message: let mes), .update(message: let mes), .insert(message: let mes), .execute(message: let mes), .download(message: let mes), .response(message: let mes):
             return "サーバーエラー: \(mes)"
+        case .upload進捗入力(message: let mes), .upload資材入出庫(message: let mes), .upload発注(message: let mes):
+            return "\(mes)\nこの画面から触らずに四熊まで連絡してください"
         }
     }
 }

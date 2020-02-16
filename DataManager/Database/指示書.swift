@@ -128,8 +128,8 @@ public class 指示書型 {
     public lazy var 図: UIImage? = {
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
-        guard let data = (try? db.downloadObject(url: url)) else { return nil }
-        let image = UIImage(data: data)
+        guard let list = (try? db.downloadObject(url: url)) else { return nil }
+        let image = UIImage(list: list)
         return image
     }()
     #else
@@ -139,6 +139,7 @@ public class 指示書型 {
         let list = (try? 進捗型.find(伝票番号: self.伝票番号))?.sorted{ $0.登録日時 < $1.登録日時 } ?? []
         return list
     }()
+    public lazy var 工程別進捗一覧: [工程型: [進捗型]] = { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }()
     public lazy var 作業進捗一覧: [進捗型] = {
         return self.進捗一覧.filter { $0.作業種別 != .その他 }
     }()
@@ -373,6 +374,11 @@ public class 指示書型 {
     }()
 }
 
+extension 指示書型 {
+    public func contains(工程: 工程型) -> Bool { return self.工程別進捗一覧[工程]?.isEmpty == false }
+    public func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool { return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 }) == true }
+}
+
 public enum 立ち上がりランク型: Int, Comparable, Hashable {
     case 立ち上がり先行受取済み_青 = 1
     case 立ち上がり先行受取待ち_赤 = 2
@@ -477,9 +483,13 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
         return try find(query)
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
+    }
+    
+    static func find(最小製作納期 day: Day, 伝票種類 type: 伝票種類型?) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["製作納期"] = ">=\(day.fmString)"
+        query["伝票種類"] = type?.fmString
+        return try find(query)
     }
     
     static func find(進捗入力日 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程: 工程型? = nil, 作業内容: 作業内容型? = nil) throws -> [指示書型] {

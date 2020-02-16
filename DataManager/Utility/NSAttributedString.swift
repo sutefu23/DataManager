@@ -7,8 +7,12 @@
 //
 
 import Foundation
+#if os(tvOS)
+import UIKit
+public typealias FMColor = UIColor
+public typealias FMFont = UIFont
 
-#if os(macOS)
+#elseif os(macOS)
 import AppKit
 public typealias FMColor = NSColor
 public typealias FMFont = NSFont

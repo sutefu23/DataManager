@@ -24,9 +24,7 @@ public struct Time: Hashable, Comparable, CustomStringConvertible {
     }
 
     public init(_ hour: Int, _ minute: Int, _ second: Int = 0) {
-        self.hour = hour
-        self.minute = minute
-        self.second = second
+        self.init(hour:hour, minute:minute, second:second)
     }
 
     public init?<S: StringProtocol>(fmTime: S) {
@@ -36,13 +34,13 @@ public struct Time: Hashable, Comparable, CustomStringConvertible {
     init?<T>(fmJSONTime: T?) where T: StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
-            guard let hour = Int(parts[0]) else { return nil }
-            guard let minute = Int(parts[1]) else { return nil }
-            guard let second = Int(parts[2]) else { return nil }
+            guard let hour = Int(parts[0]), (0...23).contains(hour) else { return nil }
+            guard let minute = Int(parts[1]), (0...59).contains(minute) else { return nil }
+            guard let second = Int(parts[2]), (0...60).contains(second) else { return nil }
             self.init(hour:hour, minute:minute, second:second)
         } else if parts.count == 2 {
-            guard let hour = Int(parts[0]) else { return nil }
-            guard let minute = Int(parts[1]) else { return nil }
+            guard let hour = Int(parts[0]), (0...23).contains(hour) else { return nil }
+            guard let minute = Int(parts[1]), (0...59).contains(minute) else { return nil }
             self.init(hour:hour, minute:minute, second:0)
         } else {
             return nil
