@@ -6,10 +6,10 @@
 //  Copyright © 2019 四熊泰之. All rights reserved.
 //
 
-#if os(macOS)
-import Cocoa
-#else
+#if os(iOS) || os(tvOS)
 import UIKit
+#elseif os(macOS)
+import Cocoa
 #endif
 
 let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
@@ -129,7 +129,7 @@ public class 指示書型 {
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
         guard let list = (try? db.downloadObject(url: url)) else { return nil }
-        let image = UIImage(list: list)
+        let image = UIImage(data: list)
         return image
     }()
     #else
