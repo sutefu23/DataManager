@@ -148,14 +148,17 @@ public extension Sequence where Element == 進捗型 {
 // MARK: - 検索
 public extension 進捗型 {
     static let dbName = "DataAPI_3"
-    static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
+    static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil, 作業種別 type: 作業種別型? = nil) throws -> [進捗型] {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(num)"
         if let state = state {
             query["工程コード"] = "==\(state.code)"
         }
         if let work = work {
-            query["進捗コード"] = "\(work.code)"
+            query["進捗コード"] = "==\(work.code)"
+        }
+        if let type = type {
+            query["作業種別コード"] = "==\(type.code)"
         }
         let db = FileMakerDB.pm_osakaname
         let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])

@@ -117,6 +117,24 @@ public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, Ex
         
         #endif
     }
+    
+    public init?(validStructured url: URL?) {
+        guard var url = url else { return nil }
+        if url.isFileURL { url = url.deletingPathExtension() }
+        guard let low = Int(url.lastPathComponent), 0 < low && low <= 99999  else { return nil }
+        url = url.deletingLastPathComponent()
+        guard let middle = Int(url.lastPathComponent), 1 <= middle && middle <= 31 else { return nil }
+        url = url.deletingLastPathComponent()
+        guard var high = Int(url.lastPathComponent), 2000 <= high && high <= 9999 else { return nil }
+        high = (high-2000) * 100 + middle
+        let number: Int
+        if low < 10000 {
+            number = high * 10000 + low
+        } else {
+            number = high * 10_0000 + low
+        }
+        self.init(validNumber: number)
+    }
 }
 
 extension 伝票番号型 {

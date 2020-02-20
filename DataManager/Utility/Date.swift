@@ -131,6 +131,10 @@ extension Date {
         return self.day.monthDayString
     }
     
+    public var yearMonthDayJString: String {
+        return self.day.yearMonthDayJString
+    }
+    
     public var monthDayJString: String {
         return self.day.monthDayJString
     }
