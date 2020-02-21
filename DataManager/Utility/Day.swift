@@ -108,6 +108,10 @@ public struct Day: Hashable, Strideable {
         return "\(make2dig(month))月\(make2dig(day))日"
     }
 
+    public var monthDayWeekJString: String {
+        return "\(make2dig(month))月\(make2dig(day))日(\(self.week))"
+    }
+
     public var yearMonthDayJString: String {
         return "\(year)年\(make2dig(month))月\(make2dig(day))日"
     }

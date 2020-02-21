@@ -68,23 +68,23 @@ extension Sequence where Element == 資材要求出力型 {
             for progress in targets {
                 try db.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
-            try db.executeScript(layout: "DataAPI_MaterialRequirementsInput", script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
+            try db.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
             let result = try 発注型.find(API識別キー: uuid) // 結果読み込み
-            if result.count == targets.count {
+            if result.count == targets.count { // 登録成功
                 NSLog("success")
                 return
-            } // 登録成功
+            }
             if result.count > 0 { // 部分的に登録成功
                 let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
                 try rest.exportToDB(loopCount: loopCount+1)
                 return
             }
             
-            if newScript == false {
+            if newScript == true {
                 try targets.exportToDB(loopCount: loopCount+1)
             } else {
                 for counter in loopCount ..< 10 {
-                    try db.executeScript(layout: layout, script: "DataAPI_MaterialRequ_RecordSet2", param: uuid.uuidString)
+                    try db.executeScript(layout: layout, script: "DataAPI_MaterialRequ_Error", param: uuid.uuidString)
                     let result = try 発注型.find(API識別キー: uuid)
                     if result.count == targets.count {// 登録成功
                         NSLog("second script success")
