@@ -65,6 +65,8 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var isOk = false
         var errorMessage = ""
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
+        let lock = NSLock()
+        lock.lock()
         request.httpMethod = "POST"
         request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -72,7 +74,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         session.dataTask(with: request) { data, _, error in
-            defer { self.sem.signal() }
+            defer { lock.unlock() }
             guard   let data      = data, error == nil,
                 let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                 let response  = json["response"] as? [String: Any],
@@ -88,7 +90,8 @@ class FileMakerSession: NSObject, URLSessionDelegate {
             }
             result = token
         }.resume()
-        sem.wait()
+        lock.lock()
+        lock.unlock()
         guard isOk, let token = result else { throw FileMakerError.tokenCreate(message: errorMessage) }
         self.ticket = (token:token, expire:expire)
         return token
@@ -407,18 +410,6 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         if isOk == false { throw FileMakerError.execute(message: errorMessage) }
     }
 }
-
-//func makeQueryDayString(_ range:ClosedRange<Date>?) -> String? {
-//    guard let range = range else { return nil }
-//    let from = range.lowerBound
-//    let to = range.upperBound
-//    if from == to {
-//        return "\(from.day.fmString)"
-//    } else {
-//        return "\(from.day.fmString)...\(to.day.fmString)"
-//    }
-//
-//}
 
 func makeQueryDayString(_ range: ClosedRange<Day>?) -> String? {
     guard let range = range else { return nil }

@@ -34,13 +34,14 @@ public let 伝票番号キャッシュ = 伝票番号キャッシュ型()
 public class 伝票番号キャッシュ型 {
     let lock = NSLock()
     
-    var cache: [String: 伝票番号型] = [:]
+    var cache: [Int: 伝票番号型] = [:]
 
     public func find(_ number: String) throws -> 伝票番号型? {
+        guard let number = Int(number), 伝票番号型.isValidNumber(number) else { return nil }
         lock.lock()
         defer { lock.unlock() }
         if let cache = self.cache[number] { return cache }
-        let orderNumber = try 伝票番号型(invalidString: number)
+        let orderNumber = try 伝票番号型(invalidNumber: number)
         cache[number] = orderNumber
         return orderNumber
     }

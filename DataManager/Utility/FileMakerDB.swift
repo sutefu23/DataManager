@@ -47,7 +47,7 @@ struct FileMakerSortItem: Encodable {
     let sortOrder: FileMakerSortType
 }
 
-let maxConnection = 3
+let maxConnection = 4
 
 class FileMakerServer: Hashable {
     private var pool: [FileMakerSession] = []

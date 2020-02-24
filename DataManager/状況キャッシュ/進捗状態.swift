@@ -9,6 +9,8 @@
 import Foundation
 
 public class 進捗キャッシュ {
+    let lock = NSLock()
+    
     var cache: [伝票番号型: [進捗型]] = [:]
     let 工程: 工程型
     
@@ -18,17 +20,31 @@ public class 進捗キャッシュ {
     
     subscript(_ number: 伝票番号型) -> [進捗型] {
         do {
-            if let list = cache[number] { return list }
+            lock.lock()
+            if let list = cache[number] {
+                lock.unlock()
+                return list
+            }
+            lock.unlock()
             guard let order = try 指示書型.findDirect(伝票番号: number) else { return [] }
             let list = order.進捗一覧
             if list.isEmpty { return [] }
+            lock.lock()
             cache[number] = list
+            lock.unlock()
             return list
         } catch {
             return []
         }
     }
 
+    public func append(_ order: 指示書型) {
+        let list = order.進捗一覧
+        lock.lock()
+        cache[order.伝票番号] = list
+        lock.unlock()
+    }
+    
     public func has受取(number: 伝票番号型, member: 社員型?) -> Bool {
         return hasComplete(number: number, work: .受取, member: member)
     }
