@@ -37,6 +37,7 @@
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
 		146884DA23E113750062F454 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146884D923E113750062F454 /* Set.swift */; };
+		1469576B2405088100A29C4C /* DMScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469576A2405088100A29C4C /* DMScanner.swift */; };
 		1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469D67223C406DE00A28A6D /* TableGenerator.swift */; };
 		146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03423EB818800126B0F /* LabelListPDFPage.swift */; };
 		146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146AA03623EB828900126B0F /* PaperPDFPage.swift */; };
@@ -55,7 +56,7 @@
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		14713C4123F607B40093F22D /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4023F607B40093F22D /* OrderedSet.swift */; };
 		14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaults.swift */; };
-		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
+		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; platformFilter = ios; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */; };
@@ -142,6 +143,7 @@
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
 		146884D923E113750062F454 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
+		1469576A2405088100A29C4C /* DMScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMScanner.swift; sourceTree = "<group>"; };
 		1469D67223C406DE00A28A6D /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
 		146AA03423EB818800126B0F /* LabelListPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelListPDFPage.swift; sourceTree = "<group>"; };
 		146AA03623EB828900126B0F /* PaperPDFPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperPDFPage.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				146B4C4323E4F80B00FB392B /* Future.swift */,
 				14CAB7BE23E819910038870F /* Sequence.swift */,
 				14713C4023F607B40093F22D /* OrderedSet.swift */,
+				1469576A2405088100A29C4C /* DMScanner.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
 				8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */,
+				1469576B2405088100A29C4C /* DMScanner.swift in Sources */,
 				146508AC22FD4CF40095AD83 /* 発注.swift in Sources */,
 				8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */,
 				1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */,

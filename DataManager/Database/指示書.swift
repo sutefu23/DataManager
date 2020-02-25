@@ -50,6 +50,8 @@ public class 指示書型 {
     
     public var 品名: String { record.string(forKey: "品名")! }
     public var 仕様: String { record.string(forKey: "仕様")! }
+    public var 寸法: String { record.string(forKey: "寸法")! }
+    public lazy var 寸法サイズ: [Double] = { calc寸法サイズ(self.寸法) }()
     public var 社名: String { record.string(forKey: "社名")! }
     public var 文字数: String { record.string(forKey: "文字数")! }
     public var セット数: String { record.string(forKey: "セット数")! }
@@ -60,6 +62,13 @@ public class 指示書型 {
     public var 材質2: String { record.string(forKey: "材質2")! }
     public var 表面仕上1: String { record.string(forKey: "表面仕上1")! }
     public var 表面仕上2: String { record.string(forKey: "表面仕上2")! }
+    public var 側面仕上1: String { record.string(forKey: "側面仕上1")! }
+    public var 側面仕上2: String { record.string(forKey: "側面仕上2")! }
+    public lazy var 側面の高さ1: String = { self.record.string(forKey: "側面の高さ1")! }()
+    public lazy var 側面の高さ2: String = { self.record.string(forKey: "側面の高さ2")! }()
+    public lazy var 箱文字側面高さ: [Double] = { calc箱文字側面高さ(self.側面の高さ1) + calc箱文字側面高さ(self.側面の高さ2) }()
+    public lazy var 箱文字以外側面高さ: [Double] = { calc箱文字以外側面高さ(self.側面の高さ1) + calc箱文字以外側面高さ(self.側面の高さ2) }()
+
     public var 板厚1: String { record.string(forKey: "板厚1")! }
     public var 板厚2: String { record.string(forKey: "板厚2")! }
 

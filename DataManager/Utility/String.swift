@@ -94,3 +94,48 @@ func make4dig(_ value: Int) -> String {
     }
 }
 
+func calc箱文字側面高さ(_ line: String) -> [Double] {
+    var result = [Double]()
+    var scanner = DMScanner(line, upperCased: true)
+    while !scanner.isAtEnd {
+        scanner.skip数字以外()
+        if let value = scanner.scanDouble() {
+            if !scanner.scanCharacter("T") {
+                result.append(value)
+            }
+        }
+    }
+    return result
+}
+
+func calc箱文字以外側面高さ(_ line: String) -> [Double] {
+    var result = [Double]()
+    var scanner = DMScanner(line, upperCased: true)
+    while !scanner.isAtEnd {
+        scanner.skip数字以外()
+        if let value = scanner.scanDouble() {
+            if scanner.scanCharacter("T") {
+                result.append(value)
+            }
+        }
+    }
+    return result
+}
+
+func calc寸法サイズ(_ line: String) -> [Double] {
+    var result = [Double]()
+    var scanner = DMScanner(line, upperCased: true, skipSpaces: true)
+    var header: Character? = nil
+    while !scanner.isAtEnd {
+        while scanner.first数字以外() {
+            guard let ch = scanner.scan1Character() else { return result }
+            header = ch
+        }
+        if let value = scanner.scanDouble() {
+            if header == nil || header == "H" || header == "W" {
+                result.append(value)
+            }
+        }
+    }
+    return result
+}
