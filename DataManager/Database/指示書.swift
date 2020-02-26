@@ -125,20 +125,20 @@ public class 指示書型 {
     }()
     
     var 図URL: URL? { record.url(forKey: "図") }
-    #if os(macOS)
-    public lazy var 図: NSImage? = {
-        guard let url = self.図URL else { return nil }
-        let db = FileMakerDB.pm_osakaname
-        guard let data = (try? db.downloadObject(url: url)) else { return nil }
-        let image = NSImage(data: data)
-        return image
-    }()
-    #elseif os(iOS)
+    #if os(iOS) || os(tvOS)
     public lazy var 図: UIImage? = {
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
         guard let list = (try? db.downloadObject(url: url)) else { return nil }
         let image = UIImage(data: list)
+        return image
+    }()
+    #elseif os(macOS)
+    public lazy var 図: NSImage? = {
+        guard let url = self.図URL else { return nil }
+        let db = FileMakerDB.pm_osakaname
+        guard let data = (try? db.downloadObject(url: url)) else { return nil }
+        let image = NSImage(data: data)
         return image
     }()
     #else

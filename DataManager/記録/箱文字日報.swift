@@ -92,6 +92,7 @@ public class 箱文字日報型 {
             guard let recordId = self.recordId else { return }
             let db = FileMakerDB.system
             try? db.delete(layout: 箱文字日報Data型.dbName, recordId: recordId)
+            self.recordId = nil
         }
     }
     

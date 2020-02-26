@@ -56,3 +56,4 @@ public class 伝票番号キャッシュ型 {
         lock.unlock()
     }
 }
+
