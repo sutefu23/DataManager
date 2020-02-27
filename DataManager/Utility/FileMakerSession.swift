@@ -233,7 +233,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
             guard let data = try? encoder.encode(json) else { throw FileMakerError.find(message: "sortItem encoding") }
             let rawData = String(data: data, encoding: .utf8)
             var newResult: [FileMakerRecord] = []
-            var request = URLRequest(url: url)
+            var request = URLRequest(url: url,timeoutInterval: 30)
             request.httpMethod = "POST"
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -88,7 +88,7 @@ extension 指示書型 {
         case .自動判定:
             break
         }
-        if targets.isEmpty {
+        if !targets.isEmpty {
             switch self.優先設定(for: []) {
                 case .優先あり: return true
                 case .優先なし: return false
@@ -114,15 +114,15 @@ extension 指示書型 {
     public func 白表示(for targets: [工程型]) -> Bool? {
         switch self.表示設定(for: targets) {
         case .白: return true
-        case .黒: return true
+        case .黒: return false
         case nil: return nil
         case .自動判定:
             break
         }
-        if targets.isEmpty {
+        if !targets.isEmpty {
             switch self.表示設定(for: []) {
             case .白: return true
-            case .黒: return true
+            case .黒: return false
             case nil: return nil
             case .自動判定:
                 break
