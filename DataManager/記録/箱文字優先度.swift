@@ -14,6 +14,7 @@ struct 箱文字優先度Data型: Equatable {
     var 伝票番号: 伝票番号型? = nil
     var 優先設定: 優先設定型 = .自動判定
     var 表示設定: 表示設定型 = .自動判定
+    var 工程: 工程型? = nil
     
     init?(_ record: FileMakerRecord) {
         if let number = record.integer(forKey: "伝票番号") {
@@ -24,6 +25,9 @@ struct 箱文字優先度Data型: Equatable {
         }
         if let code = record.string(forKey: "表示設定") {
             self.表示設定 = 表示設定型(code)
+        }
+        if let code = record.string(forKey: "工程コード") {
+            self.工程 = 工程型(code: code)
         }
     }
     
@@ -38,6 +42,7 @@ struct 箱文字優先度Data型: Equatable {
         if let num = self.伝票番号 { data["伝票番号"] = String(num.整数値) }
         data["優先設定"] = 優先設定.code
         data["表示設定"] = 表示設定.code
+        data["工程コード"] = 工程?.code
         return data
     }
 }
@@ -58,6 +63,10 @@ public class 箱文字優先度型 {
     public var 表示設定: 表示設定型 {
         get { return data.表示設定 }
         set { data.表示設定 = newValue }
+    }
+    public var 工程: 工程型? {
+        get { return data.工程 }
+        set { data.工程 = newValue }
     }
     
     init(data: 箱文字優先度Data型, recordID: String) {
@@ -98,17 +107,39 @@ public class 箱文字優先度型 {
         }
     }
     
-    public static func findDirect(伝票番号: 伝票番号型) throws -> 箱文字優先度型? {
+    public static func allRegistered(for 伝票番号: 伝票番号型) throws -> [箱文字優先度型] {
         let db = FileMakerDB.system
         var query = [String: String]()
         query["伝票番号"] = "==\(伝票番号.整数値)"
         let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
-        if let record = list.first, let recordId = record.recordId {
-            if let data = 箱文字優先度Data型(record) {
-                return 箱文字優先度型(data: data, recordID: recordId)
-            }
+        let orders: [箱文字優先度型] = list.compactMap {
+            guard let recordID = $0.recordId, let data = 箱文字優先度Data型($0) else { return nil }
+            return 箱文字優先度型(data: data, recordID: recordID)
         }
-        return nil
+        return orders
+    }
+    
+    public static func findDirect(伝票番号: 伝票番号型, 工程: 工程型?) throws -> 箱文字優先度型? {
+        let db = FileMakerDB.system
+        var query = [String: String]()
+        query["伝票番号"] = "==\(伝票番号.整数値)"
+        if let process = 工程 {
+            query["工程コード"] = process.code
+        } else {
+            query["工程コード"] = "="
+        }
+        do {
+            let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
+            if let record = list.first, let recordId = record.recordId {
+                if let data = 箱文字優先度Data型(record) {
+                    return 箱文字優先度型(data: data, recordID: recordId)
+                }
+            }
+            return nil
+        } catch {
+//            NSLog(error.localizedDescription)
+            return nil
+        }
     }
 }
 
