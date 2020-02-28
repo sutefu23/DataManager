@@ -11,9 +11,15 @@ import Foundation
 public let 箱文字優先度キャッシュ = 箱文字優先度キャッシュ型()
 
 public class 箱文字優先度キャッシュ型 {
+    public var キャッシュ寿命: TimeInterval = 60 * 10 // デフォルトは10分間
+    
     struct CacheKey: Hashable {
         var number: 伝票番号型
         var process: 工程型?
+    }
+    struct Data {
+        let time: Date
+        let data: 箱文字優先度型
     }
     
     let lock = NSLock()
