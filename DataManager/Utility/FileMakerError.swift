@@ -26,18 +26,18 @@ public enum FileMakerError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .dbIsDisabled: return "サーバー接続停止中"
-        case .tokenCreate(message: _): return "データベースに接続できませんでした"
-        case .fetch(message: _): return "データベースからの読み取りができなかった"
-        case .find(message: _): return "データベースの検索ができなかった"
-        case .delete(message: _): return "データベースから削除できなかった"
-        case .update(message: _): return "データベースの更新ができなかった"
-        case .insert(message: _): return "データベースへの登録ができなかった"
-        case .execute(message: _): return "データベースのスクリプトが実行できなかった"
-        case .download(message: _): return "データベースからのダウンロードができなかった"
-        case .response(message: _): return "正常な情報処理がされていません"
-        case .upload進捗入力(message: _): return "進捗入力登録失敗"
-        case .upload発注(message: _): return "発注登録失敗"
-        case .upload資材入出庫(message: _): return "資材入出庫登録失敗"
+        case .tokenCreate(message: let mes): return "データベースに接続できませんでした(\(mes))"
+        case .fetch(message: let mes): return "データベースからの読み取りができなかった(\(mes))"
+        case .find(message: let mes): return "データベースの検索ができなかった(\(mes))"
+        case .delete(message: let mes): return "データベースから削除できなかった(\(mes))"
+        case .update(message: let mes): return "データベースの更新ができなかった(\(mes))"
+        case .insert(message: let mes): return "データベースへの登録ができなかった(\(mes))"
+        case .execute(message: let mes): return "データベースのスクリプトが実行できなかった(\(mes))"
+        case .download(message: let mes): return "データベースからのダウンロードができなかった(\(mes))"
+        case .response(message: let mes): return "正常な情報処理がされていません(\(mes))"
+        case .upload進捗入力(message: let mes): return "進捗入力登録失敗(\(mes))"
+        case .upload発注(message: let mes): return "発注登録失敗(\(mes))"
+        case .upload資材入出庫(message: let mes): return "資材入出庫登録失敗(\(mes))"
         }
     }
     

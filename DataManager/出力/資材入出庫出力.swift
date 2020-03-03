@@ -53,7 +53,7 @@ public struct 資材入出庫出力型 {
 
 extension Sequence where Element == 資材入出庫出力型 {
     public func exportToDB() throws {
-        let db = FileMakerDB.pm_osakaname2
+        let db = FileMakerDB.pm_osakaname
         let uuid = UUID()
         var count = 0
         do {

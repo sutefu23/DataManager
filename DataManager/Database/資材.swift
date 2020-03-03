@@ -54,8 +54,14 @@ public extension 資材型 {
         return record.string(forKey: "種類") ?? ""
     }
 }
-// MARK: - 保存
 
+// MARK: - 保存
+extension FileMakerRecord {
+    func 資材(forKey key: String) -> 資材型? {
+        guard let number = self.string(forKey: key) else { return nil }
+        return 資材型(図番: number)
+    }
+}
 
 // MARK: - 検索
 public extension 資材型 {

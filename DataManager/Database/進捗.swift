@@ -236,7 +236,5 @@ public extension 進捗型 {
         let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
         return list.compactMap { 進捗型($0) }
     }
-    
-
 }
 
