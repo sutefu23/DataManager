@@ -52,7 +52,13 @@ public struct 資材入出庫出力型 {
 }
 
 extension Sequence where Element == 資材入出庫出力型 {
-    public func exportToDB() throws {
+    public func exportToDB(loopCount: Int = 0) throws {
+        if loopCount >= 10 {
+            let targets = Array(self)
+            NSLog("retry count:\(loopCount) orders:\(targets.count)")
+            return
+        }
+        
         let db = FileMakerDB.pm_osakaname
         let uuid = UUID()
         var count = 0
@@ -63,6 +69,14 @@ extension Sequence where Element == 資材入出庫出力型 {
             }
             if count > 0 {
                 try db.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
+            }
+            var errorResult: [資材入出庫出力型] = []
+            for progress in self {
+                let result = try 資材入出庫型.find(登録日: progress.登録日, 登録時間: progress.登録時間, 社員: progress.社員, 入力区分: progress.入力区分, 資材: progress.資材, 入庫数: progress.入庫数, 出庫数: progress.出庫数)
+                if result.isEmpty { errorResult.append(progress) }
+            }
+            if !errorResult.isEmpty {
+                try errorResult.exportToDB(loopCount: loopCount + 1)
             }
         } catch {
             NSLog(error.localizedDescription)
