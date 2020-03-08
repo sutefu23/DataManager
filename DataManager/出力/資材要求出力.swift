@@ -8,22 +8,28 @@
 
 import Foundation
 
+public struct 資材発注ベース型: Codable {
+    public let 資材: 資材型
+    public let 数量: Int?
+    public let 備考: String
+}
+
 public struct 資材要求出力型 {
     public let 登録日: Day
     public let 登録時間: Time
     public let 注文番号: String
     public let 社員: 社員型
-    public let 資材番号: String
+    public let 資材: 資材型
     public let 数量: Int
     public let 希望納期: Day?
     public let 備考: String
     
-    public init(登録日: Day = Day(), 登録時間: Time = Time(), 注文番号: String, 社員: 社員型, 資材番号: String, 数量: Int, 希望納期: Day?, 備考: String) {
+    public init(登録日: Day = Day(), 登録時間: Time = Time(), 注文番号: String, 社員: 社員型, 資材: 資材型, 数量: Int, 希望納期: Day?, 備考: String) {
         self.登録日 = 登録日
         self.登録時間 = 登録時間
         self.注文番号 = 注文番号
         self.社員 = 社員
-        self.資材番号 = 資材番号
+        self.資材 = 資材
         self.数量 = 数量
         self.希望納期 = 希望納期
         self.備考 = 備考
@@ -36,7 +42,7 @@ public struct 資材要求出力型 {
             "登録時間": self.登録時間.fmImportString,
             "注文番号": self.注文番号,
             "社員番号": self.社員.Hなし社員コード,
-            "資材番号": self.資材番号,
+            "資材番号": self.資材.図番,
             "数量": "\(self.数量)",
             "備考": self.備考
         ]
@@ -47,7 +53,7 @@ public struct 資材要求出力型 {
     }
     
     func isEqual(to order: 発注型) -> Bool {
-        return self.登録日 == order.登録日 && self.注文番号 == order.注文番号 && self.社員 == order.依頼社員 && self.資材番号 == order.図番 && self.数量 == order.発注数量 && self.備考 == order.備考
+        return self.登録日 == order.登録日 && self.注文番号 == order.注文番号 && self.社員 == order.依頼社員 && self.資材 == order.資材 && self.数量 == order.発注数量 && self.備考 == order.備考
     }
 }
 
@@ -60,7 +66,7 @@ extension Sequence where Element == 資材要求出力型 {
         if loopCount > 0 {
             NSLog("retry count:\(loopCount) orders:\(targets.count)")
         }
-        if loopCount >= 10 { throw FileMakerError.upload発注(message: "\(targets.first!.資材番号)など\(targets.count)件")}
+        if loopCount >= 10 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
 
         let uuid = UUID()
         do {

@@ -18,6 +18,16 @@ func flush作業系列Cache() {
 }
 
 public class 作業系列型: Hashable {
+    public static func 登録チェック() {
+        let _ = 作業系列型.null
+        let _ = 作業系列型.gx
+        let _ = 作業系列型.ex
+        let _ = 作業系列型.hp
+        let _ = 作業系列型.water
+        let _ = 作業系列型.ボルト1
+        let _ = 作業系列型.ボルト2
+    }
+
     public static let null = 作業系列型(系列コード: "S000")!
     public static let gx = 作業系列型(系列コード: "S001")!
     public static let ex = 作業系列型(系列コード: "S002")!
@@ -29,6 +39,7 @@ public class 作業系列型: Hashable {
     let record: FileMakerRecord
 
     public convenience init?(系列コード: String) {
+        if 系列コード.isEmpty { return nil }
         let code = 系列コード.uppercased()
         lock.lock()
         defer { lock.unlock() }
@@ -36,7 +47,9 @@ public class 作業系列型: Hashable {
             self.init(cache.record)
             return
         }
-        guard let series = (try? 作業系列型.find(系列コード: code)) else { return nil }
+        guard let series = (try? 作業系列型.find(系列コード: code)) else {
+            return nil
+        }
         seriesCache[code] = series
         self.init(series.record)
     }

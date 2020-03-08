@@ -25,8 +25,8 @@ public class 資材入出庫型 {
         guard let worker = record.社員(forKey: "社員番号") else { return nil }
         guard let type = record.入力区分(forKey: "入力区分") else { return nil }
         guard let item = record.資材(forKey: "資材番号") else { return nil }
-        guard let input = record.integer(forKey: "入庫数") else { return nil }
-        guard let output = record.integer(forKey: "出庫数") else { return nil }
+        let input = record.integer(forKey: "入庫数") ?? 0
+        let output = record.integer(forKey: "出庫数") ?? 0
         self.登録日 = day
         self.登録時間 = time
         self.社員 = worker
@@ -48,10 +48,10 @@ extension 資材入出庫型 {
         query["社員番号"] = 社員?.Hなし社員コード
         query["入力区分"] = 入力区分?.name
         query["資材番号"] = 資材?.図番
-        if let num = 入庫数 {
+        if let num = 入庫数, num > 0 {
             query["入庫数"] = String(num)
         }
-        if let num = 出庫数 {
+        if let num = 出庫数, num > 0 {
             query["出庫数"] = String(num)
         }
         if query.isEmpty {

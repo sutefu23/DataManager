@@ -8,9 +8,8 @@
 
 import Foundation
 
-public let 箱文字優先度キャッシュ = 箱文字優先度キャッシュ型()
-
 public class 箱文字優先度キャッシュ型 {
+    public static let shared = 箱文字優先度キャッシュ型()
     public var キャッシュ寿命: TimeInterval = 60 * 10 // デフォルトは10分間
     
     struct CacheKey: Hashable {
@@ -139,22 +138,22 @@ extension 指示書型 {
     }
     
     public func 箱文字優先設定(for target: 工程型?) -> 優先設定型 {
-        let data = (try? 箱文字優先度キャッシュ.find(self.伝票番号, target))
+        let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target))
         return data?.優先設定 ?? .自動判定
     }
     
     public func set箱文字優先設定(for target: 工程型?, 設定: 優先設定型) {
-        guard let data = (try? 箱文字優先度キャッシュ.find(self.伝票番号, target)) else { return }
+        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)) else { return }
         data.優先設定 = 設定
         data.synchronize()
     }
     
     public func 箱文字表示設定(for target: 工程型?) -> 表示設定型 {
-        let data = (try? 箱文字優先度キャッシュ.find(self.伝票番号, target))
+        let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target))
         return data?.表示設定 ?? .自動判定
     }
     public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) {
-        guard let data = (try? 箱文字優先度キャッシュ.find(self.伝票番号, target)) else { return }
+        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)) else { return }
         data.表示設定 = 設定
         data.synchronize()
     }
@@ -193,7 +192,7 @@ extension 指示書型 {
     
     public func set箱文字優先設定(for targets: [工程型], 設定: 優先設定型) throws {
         if targets.isEmpty {
-            let list = try 箱文字優先度キャッシュ.allRegistered(for: self.伝票番号)
+            let list = try 箱文字優先度キャッシュ型.shared.allRegistered(for: self.伝票番号)
             list.forEach {
                 $0.優先設定 = 設定
                 $0.synchronize()
@@ -206,7 +205,7 @@ extension 指示書型 {
     
     public func set箱文字表示設定(for targets: [工程型], 設定: 表示設定型) throws {
         if targets.isEmpty {
-            let list = try 箱文字優先度キャッシュ.allRegistered(for: self.伝票番号)
+            let list = try 箱文字優先度キャッシュ型.shared.allRegistered(for: self.伝票番号)
             list.forEach {
                 $0.表示設定 = 設定
                 $0.synchronize()

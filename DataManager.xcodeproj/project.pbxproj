@@ -98,6 +98,7 @@
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
+		8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */; };
 		8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */; };
 		8E8D3BD723D09D0A0000103D /* TestDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8D3BD623D09D0A0000103D /* TestDay.swift */; };
 		8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8E0792235E0BD500D7832C /* レーザー加工機.swift */; };
@@ -210,6 +211,7 @@
 		8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerTests.swift; sourceTree = "<group>"; };
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
+		8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材キャッシュ.swift"; sourceTree = "<group>"; };
 		8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerError.swift; sourceTree = "<group>"; };
 		8E8D3BD623D09D0A0000103D /* TestDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDay.swift; sourceTree = "<group>"; };
 		8E8E0792235E0BD500D7832C /* レーザー加工機.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "レーザー加工機.swift"; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				146C1F34239F1F1200FE2918 /* 進捗状態.swift */,
 				14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */,
 				146AA59E2406108D00ED395D /* 箱文字優先度キャッシュ.swift */,
+				8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */,
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
 				149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */,
+				8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */,
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,

@@ -8,24 +8,76 @@
 
 import Foundation
 
-public class 資材型 {
+public class 資材型: Codable, Comparable {
     let record: FileMakerRecord
-    let 図番: String
-    var 製品名称: String
-    var 規格: String
+    public let 図番: String
+    public var 製品名称: String
+    public var 規格: String
 
-    init?(_ record: FileMakerRecord) {
+    init(_ record: FileMakerRecord) throws {
         self.record = record
-        guard let 図番 = record.string(forKey: "f13") else { return nil }
-        guard let 製品名称 = record.string(forKey: "f3") else { return nil }
-        guard let 規格 = record.string(forKey: "f15") else { return nil }
+        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13") }
+        guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3") }
+        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f13") }
         self.図番 = 図番
         self.製品名称 = 製品名称
         self.規格 = 規格
     }
     public convenience init?(図番: String ) {
         guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
-        self.init(record)
+        try? self.init(record)
+    }
+    
+    // MARK: - Coable
+    enum CodingKeys: String, CodingKey {
+        case 図番
+    }
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let num = try values.decode(String.self, forKey: .図番)
+        guard let record = try 資材型.find(図番: num)?.record else {
+            throw FileMakerError.notFound(message: "図番:\(num)")
+        }
+        try self.init(record)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.図番, forKey: .図番)
+    }
+    
+    public var 図番数: Int {
+        if let num = 図番_数 { return num }
+        self.analyze図番()
+        return 図番_数!
+    }
+
+    public var 図番追記文字: String {
+        if let str = 図番_文字 { return str }
+        self.analyze図番()
+        return 図番_文字!
+    }
+
+    private var 図番_数: Int? = nil
+    private var 図番_文字: String? = nil
+    
+    func analyze図番() {
+        var scanner = DMScanner(self.図番)
+        self.図番_数 = scanner.scanInteger() ?? Int.max
+        self.図番_文字 = scanner.string
+    }
+    
+    // MARK: - <Comparable>
+    public static func == (left: 資材型, right: 資材型) -> Bool {
+        return left.図番 == right.図番
+    }
+    public static func < (left: 資材型, right: 資材型) -> Bool {
+        if left.図番数 != right.図番数 {
+            return left.図番数 < right.図番数
+        } else {
+            return left.図番追記文字 < right.図番追記文字
+        }
     }
 }
 
@@ -67,10 +119,11 @@ extension FileMakerRecord {
 public extension 資材型 {
     static let dbName = "DataAPI_5"
     
+    /// 全資材の読み込み
     static func fetch() throws -> [資材型] {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 資材型.dbName)
-        return list.compactMap { 資材型($0) }
+        return try list.compactMap { try 資材型($0) }.sorted()
     }
     
     static func find(図番: String) throws -> 資材型? {
@@ -78,6 +131,6 @@ public extension 資材型 {
         var query = FileMakerQuery()
         query["f13"] = "==\(図番)"
         let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
-        return list.compactMap { 資材型($0) }.first
+        return try list.compactMap { try 資材型($0) }.first
     }
 }

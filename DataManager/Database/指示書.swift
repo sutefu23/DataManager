@@ -386,6 +386,11 @@ public class 指示書型 {
 extension 指示書型 {
     public func contains(工程: 工程型) -> Bool { return self.工程別進捗一覧[工程]?.isEmpty == false }
     public func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool { return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 }) == true }
+    
+    public var is箱文字アクリのみ: Bool {
+        if self.伝票種類 != .箱文字 { return false }
+        return self.管理用メモ.contains("アクリのみ")
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {

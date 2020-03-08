@@ -10,9 +10,12 @@ import Foundation
 
 public class 発注型 {
     let record: FileMakerRecord
+    let 資材: 資材型
     
     init?(_ record: FileMakerRecord) {
         self.record = record
+        guard let item = record.資材(forKey: "図番") else { return nil }
+        self.資材 = item
     }
     
     var 状態: String { return record.string(forKey: "状態")! }

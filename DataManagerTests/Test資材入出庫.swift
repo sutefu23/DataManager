@@ -14,7 +14,7 @@ class TestInOutObjects: XCTestCase {
 
     func testInput() {
         if self.execDBTest == false { return }
-        let list = [makeTest1(), makeTest2()]
+        let list = [makeTest1()]
         XCTAssertNoThrow(try list.exportToDB())
     }
 }

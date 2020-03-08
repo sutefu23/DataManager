@@ -32,3 +32,52 @@ public class Future<T> {
         return resultValue
     }
 }
+
+private class MapObject<E,T> {
+    let source: E
+    var result: T? = nil
+    init(_ source: E) { self.source = source }
+}
+
+extension Array {
+    public func concurrentForEach(_ operation: (Element)->Void) {
+        DispatchQueue.concurrentPerform(iterations: self.count) {
+            let object = self[$0]
+            operation(object)
+        }
+    }
+
+    public func concurrentCompactMap<T>(converter: (_ item:Element)->T?) -> [T] {
+        if self.count <= 1 {
+            if self.isEmpty { return [] }
+            if let result = converter(self[0]) { return [result] } else { return [] }
+        }
+        let source = self.map { MapObject<Element, T>($0) }
+        DispatchQueue.concurrentPerform(iterations: self.count) {
+            index in
+            let object = source[index]
+            let result = converter(object.source)
+            object.result = result
+        }
+        return source.compactMap { $0.result }
+    }
+    
+    public func concurrentMap<T>(converter: (_ item:Element) throws ->T) rethrows -> [T] {
+        if self.count <= 1 {
+            return try self.map { try converter($0) }
+        }
+        let source = self.map { MapObject<Element, Result<T, Error>>($0) }
+        DispatchQueue.concurrentPerform(iterations: self.count) {
+            index in
+            let object = source[index]
+            do {
+                let result = try converter(object.source)
+                object.result = .success(result)
+            } catch {
+                object.result = .failure(error)
+            }
+        }
+        return try source.map { return try $0.result!.get() }
+    }
+}
+
