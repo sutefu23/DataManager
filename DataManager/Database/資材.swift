@@ -8,20 +8,23 @@
 
 import Foundation
 
-public class 資材型: Codable, Comparable {
+public class 資材型: Codable, Comparable, Hashable {
     let record: FileMakerRecord
     public let 図番: String
-    public var 製品名称: String
-    public var 規格: String
+    public let 製品名称: String
+    public let 規格: String
+    public let 単価: Double
 
     init(_ record: FileMakerRecord) throws {
         self.record = record
         guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13") }
         guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3") }
         guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f13") }
+        guard let 単価 = record.double(forKey: "f88") else { throw FileMakerError.invalidData(message: "単価:f88") }
         self.図番 = 図番
         self.製品名称 = 製品名称
         self.規格 = 規格
+        self.単価 = 単価
     }
     public convenience init?(図番: String ) {
         guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
@@ -79,6 +82,10 @@ public class 資材型: Codable, Comparable {
             return left.図番追記文字 < right.図番追記文字
         }
     }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.図番)
+    }
 }
 
 public extension 資材型 {
@@ -111,7 +118,7 @@ public extension 資材型 {
 extension FileMakerRecord {
     func 資材(forKey key: String) -> 資材型? {
         guard let number = self.string(forKey: key) else { return nil }
-        return 資材型(図番: number)
+        return 資材キャッシュ型.shared[number]
     }
 }
 

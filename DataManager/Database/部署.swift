@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 部署型: Comparable {
+public class 部署型: Comparable, Hashable {
     let record: FileMakerRecord
 
     public var 部署記号: String { return "\(self.部署番号)" }
@@ -34,6 +34,10 @@ public class 部署型: Comparable {
     }
     public static func <(left: 部署型, right: 部署型) -> Bool {
         return left.部署番号 < right.部署番号
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.部署記号)
     }
 }
 
@@ -92,6 +96,14 @@ extension 部署型 {
             return true
         }
     }()
+}
+
+// MARK: - 保存
+extension FileMakerRecord {
+    func 部署(forKey key: String) -> 部署型? {
+        guard let number = self.integer(forKey: key) else { return nil }
+        return 部署型(number)
+    }
 }
 
 // MARK: - 検索

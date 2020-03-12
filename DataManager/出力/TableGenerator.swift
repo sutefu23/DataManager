@@ -170,6 +170,7 @@ public extension TableGenerator {
         case yearMonthJ
     }
     enum DayFormat {
+        case yearMonthDay
         case monthDay
         case monthDayWeek
         case yearMonth
@@ -243,6 +244,8 @@ public extension TableGenerator {
         let col = TableColumn<S>(title: title) {
             let day = getter($0)
             switch format {
+            case .yearMonthDay:
+                return day?.yearMonthDayString
             case .monthDay:
                 return day?.monthDayString
             case .yearMonth:
