@@ -229,6 +229,15 @@ public extension 進捗型 {
         return list.compactMap { 進捗型($0) }
     }
     
+    static func find(登録日 day: Day, 作業内容: 作業内容型) throws -> [進捗型] {
+        var query = FileMakerQuery()
+        query["登録日"] = day.fmString
+        query["進捗コード"] = 作業内容.code
+        let db = FileMakerDB.pm_osakaname
+        let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+        return list.compactMap { 進捗型($0) }
+    }
+    
     static func find(指示書進捗入力UUID: UUID) throws -> [進捗型] {
         var query = FileMakerQuery()
         query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
