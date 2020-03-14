@@ -13,7 +13,7 @@ public struct DMScanner: RandomAccessCollection {
     /// スキャン対象(調整済み)
     private let source: String
     /// スキャン対象(元データ)
-    private let originalSource: String
+//    private let originalSource: String
     /// スキャン開始時にスペースを除外するならtrue
     public var skipSpaces: Bool {
         didSet { needsSpaceCheck = skipSpaces }
@@ -46,15 +46,15 @@ public struct DMScanner: RandomAccessCollection {
     var substring: Substring { return source[startIndex..<endIndex] }
 
     /// スキャン待ちの現在の文字(元データ)
-    public var originalString: String { return String(originalSubstring)}
+//    public var originalString: String { return String(originalSubstring)}
     /// スキャン待ちの現在の文字(元データ)
-    var originalSubstring: Substring { return originalSource[startIndex..<endIndex] }
+//    var originalSubstring: Substring { return originalSource[startIndex..<endIndex] }
 
     public init(_ string: String, upperCased:Bool = false, skipSpaces: Bool = false) {
         self.source = upperCased ? string.uppercased() : string
-        self.originalSource = string
-        self.startIndex = string.startIndex
-        self.endIndex = string.endIndex
+//        self.originalSource = string
+        self.startIndex = source.startIndex
+        self.endIndex = source.endIndex
         self.skipSpaces = skipSpaces
         self.needsSpaceCheck = skipSpaces
     }
@@ -369,11 +369,11 @@ public struct DMScanner: RandomAccessCollection {
     }
     
     /// 残りを全て取り出す（uppercased無し）
-    public mutating func scanOriginalAll() -> String {
-        let result = self.originalString
-        removeAll()
-        return result
-    }
+//    public mutating func scanOriginalAll() -> String {
+//        let result = self.originalString
+//        removeAll()
+//        return result
+//    }
 }
 
 // isNumberだと漢数字なども含まれてしまうため

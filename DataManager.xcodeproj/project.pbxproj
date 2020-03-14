@@ -79,6 +79,7 @@
 		149BCB07220854FE004066DD /* 工程状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB06220854FE004066DD /* 工程状態.swift */; };
 		149BCB09220858FE004066DD /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB08220858FE004066DD /* 伝票種類.swift */; };
 		14A251A223F38DBF00547371 /* 指示書キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */; };
+		14AE0025241C5282009C9558 /* 最終発注単価キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AE0024241C5282009C9558 /* 最終発注単価キャッシュ.swift */; };
 		14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544B238D2EF70080925F /* 指示書文字数.swift */; };
 		14BA544E238D43010080925F /* Test指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BA544D238D43010080925F /* Test指示書文字数.swift */; };
 		14BEE9E42240928F00B2750B /* 資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BEE9E32240928F00B2750B /* 資材.swift */; };
@@ -189,6 +190,7 @@
 		149BCB06220854FE004066DD /* 工程状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程状態.swift"; sourceTree = "<group>"; };
 		149BCB08220858FE004066DD /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
 		14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書キャッシュ.swift"; sourceTree = "<group>"; };
+		14AE0024241C5282009C9558 /* 最終発注単価キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "最終発注単価キャッシュ.swift"; sourceTree = "<group>"; };
 		14BA544B238D2EF70080925F /* 指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書文字数.swift"; sourceTree = "<group>"; };
 		14BA544D238D43010080925F /* Test指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書文字数.swift"; sourceTree = "<group>"; };
 		14BEE9E32240928F00B2750B /* 資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材.swift"; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				14A251A123F38DBF00547371 /* 指示書キャッシュ.swift */,
 				146AA59E2406108D00ED395D /* 箱文字優先度キャッシュ.swift */,
 				8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */,
+				14AE0024241C5282009C9558 /* 最終発注単価キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				14681F122212B3AE00C41D15 /* 工程図.swift in Sources */,
 				1426FBB8231DED92004D3EAC /* 部署作業者分析.swift in Sources */,
 				8EBB920D235C9A6400BA3394 /* 承認状態.swift in Sources */,
+				14AE0025241C5282009C9558 /* 最終発注単価キャッシュ.swift in Sources */,
 				8ED7EEFF239948DC00A47C44 /* 箱文字日報.swift in Sources */,
 				14BEE9E42240928F00B2750B /* 資材.swift in Sources */,
 				145998D623E8E18F00E8AC2D /* 資材要求出力.swift in Sources */,
@@ -833,7 +837,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -865,7 +869,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

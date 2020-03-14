@@ -16,13 +16,18 @@ public class 箱文字優先度キャッシュ型 {
         var number: 伝票番号型
         var process: 工程型?
     }
-    struct Data {
+    struct TimeData {
         let time: Date
         let data: 箱文字優先度型
+        
+        init(_ data: 箱文字優先度型) {
+            self.data = data
+            self.time = Date()
+        }
     }
     
     let lock = NSLock()
-    var cache: [CacheKey: 箱文字優先度型] = [:]
+    var cache: [CacheKey: TimeData] = [:]
     
     public func allRegistered(for number: 伝票番号型) throws -> [箱文字優先度型] {
         let all = try 箱文字優先度型.allRegistered(for: number)
@@ -30,7 +35,7 @@ public class 箱文字優先度キャッシュ型 {
         all.forEach {
             guard let number = $0.伝票番号 else { return }
             let key = CacheKey(number: number, process: $0.工程)
-            cache[key] = $0
+            cache[key] = TimeData($0)
         }
         lock.unlock()
         return all
@@ -40,7 +45,11 @@ public class 箱文字優先度キャッシュ型 {
         let key = CacheKey(number: number, process: process)
         lock.lock()
         defer { lock.unlock() }
-        return cache[key] != nil
+        guard let cache = self.cache[key] else { return false }
+        let time = Date(timeInterval: -キャッシュ寿命, since: Date())
+        if cache.time >= time { return true }
+        self.cache[key] = nil
+        return false
     }
     
     public func find(_ number: 伝票番号型, _ process: 工程型?) throws -> 箱文字優先度型 {
@@ -48,18 +57,22 @@ public class 箱文字優先度キャッシュ型 {
         lock.lock()
         if let cache = self.cache[key] {
             lock.unlock()
-            return cache
+            let time = Date(timeInterval: -キャッシュ寿命, since: Date())
+            if cache.time >= time {
+                return cache.data
+            }
+        } else {
+            lock.unlock()
         }
-        lock.unlock()
         let result: 箱文字優先度型
         do {
-            result = try 箱文字優先度型.findDirect(伝票番号: number, 工程: process) ?? 箱文字優先度型(number)
+            result = try 箱文字優先度型.findDirect(伝票番号: number, 工程: process) ?? 箱文字優先度型(number, 工程: process)
         } catch {
             NSLog(error.localizedDescription)
-            result = 箱文字優先度型(number)
+            result = 箱文字優先度型(number, 工程: process)
         }
         lock.lock()
-        cache[key] = result
+        cache[key] = TimeData(result)
         lock.unlock()
         return result
     }
@@ -140,7 +153,12 @@ extension 指示書型 {
                 break
             }
         }
-        let limit = Day().nextWorkDay.nextWorkDay.nextWorkDay // 3営業日後
+        var limit = Day().nextWorkDay.nextWorkDay.nextWorkDay // 3営業日後
+        if targets.contains(.原稿) || targets.contains(.入力) || targets.contains(.出力) {
+            limit = limit.nextWorkDay // 4営業日後
+        } else if targets.contains(.営業) || targets.contains(.管理) {
+            limit = limit.nextWorkDay.nextWorkDay // 5営業日後
+        }
         return self.製作納期 <= limit
     }
     
@@ -187,7 +205,7 @@ extension 指示書型 {
         return settings
     }
     
-    public func 表示設定(for targets: [工程型], cacheOnly: Bool) -> 表示設定型? {
+    public func 表示設定(for targets: [工程型], cacheOnly: Bool = false) -> 表示設定型? {
         if targets.isEmpty {
             return self.箱文字表示設定(for: nil, cacheOnly: cacheOnly)
         }

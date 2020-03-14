@@ -38,7 +38,10 @@ public class 資材入出庫型 {
         self.出庫数 = output
         self.部署 = sec
     }
-
+    
+    public var 出庫金額: Double{
+        return 資材.単価 * Double(出庫数)
+    }
 }
 
 extension 資材入出庫型 {

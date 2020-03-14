@@ -33,8 +33,9 @@ struct 箱文字優先度Data型: Equatable {
     
     init() {}
 
-    init(_ number: 伝票番号型) {
+    init(_ number: 伝票番号型, 工程: 工程型?) {
         self.伝票番号 = number
+        self.工程 = 工程
     }
     
     var fieldData: [String: String] {
@@ -75,8 +76,8 @@ public class 箱文字優先度型 {
         self.recordID = recordID
     }
     
-    init(_ number: 伝票番号型) {
-        let data = 箱文字優先度Data型(number)
+    init(_ number: 伝票番号型, 工程: 工程型?) {
+        let data = 箱文字優先度Data型(number, 工程: 工程)
         self.original = data
         self.data = data
         self.recordID = nil

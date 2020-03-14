@@ -98,11 +98,11 @@ func calc箱文字側面高さ(_ line: String) -> [Double] {
     var result = [Double]()
     var scanner = DMScanner(line, upperCased: true)
     while !scanner.isAtEnd {
+        if scanner.scanParen("(", ")") != nil || scanner.scanParen("（", "）") != nil { continue }
         scanner.skip数字以外()
         if let value = scanner.scanDouble() {
-            if !scanner.scanCharacter("T") {
-                result.append(value)
-            }
+            if scanner.scanCharacter("T") || scanner.scanCharacter("t") || scanner.scanCharacter("Ｔ") { continue }
+            result.append(value)
         }
     }
     return result
@@ -132,7 +132,7 @@ func calc寸法サイズ(_ line: String) -> [Double] {
             header = ch
         }
         if let value = scanner.scanDouble() {
-            if header == nil || header == "H" || header == "W" {
+            if header == nil || header == "H" || header == "Ｈ" {
                 result.append(value)
             }
         }

@@ -86,6 +86,13 @@ public class 資材型: Codable, Comparable, Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.図番)
     }
+    
+    public lazy var 箱入り数: Double = {
+        guard let num = self.record.double(forKey: "f43") else { return 1 }
+        return num > 0 ? num : 1
+    }()
+    
+
 }
 
 public extension 資材型 {
@@ -111,6 +118,10 @@ public extension 資材型 {
     
     var 種類: String {
         return record.string(forKey: "種類") ?? ""
+    }
+    
+    var 単位: String {
+        return record.string(forKey: "dbo.SYS_T2:f4") ?? ""
     }
 }
 
