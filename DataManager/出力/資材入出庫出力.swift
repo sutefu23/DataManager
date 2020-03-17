@@ -52,23 +52,29 @@ public struct 資材入出庫出力型 {
 }
 
 extension Sequence where Element == 資材入出庫出力型 {
-    public func exportToDB(loopCount: Int = 0) throws {
+    public func exportToDB() throws {
+        let db = FileMakerDB.pm_osakaname
+        let session = db.retainSession()
+        defer { db.releaseSession(session) }
+        return try self.exportToDB(loopCount: 0, session: session)
+    }
+    
+    func exportToDB(loopCount: Int, session: FileMakerSession) throws {
         if loopCount >= 10 {
             let targets = Array(self)
             NSLog("retry count:\(loopCount) orders:\(targets.count)")
             return
         }
         
-        let db = FileMakerDB.pm_osakaname
         let uuid = UUID()
         var count = 0
         do {
             for progress in self {
-                try db.insert(layout: "DataAPI_MaterialEntry", fields: progress.makeRecord(識別キー: uuid))
+                try session.insert(layout: "DataAPI_MaterialEntry", fields: progress.makeRecord(識別キー: uuid))
                 count += 1
             }
             if count > 0 {
-                try db.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
+                try session.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
             }
             var errorResult: [資材入出庫出力型] = []
             for progress in self {
@@ -76,7 +82,7 @@ extension Sequence where Element == 資材入出庫出力型 {
                 if result.isEmpty { errorResult.append(progress) }
             }
             if !errorResult.isEmpty {
-                try errorResult.exportToDB(loopCount: loopCount + 1)
+                try errorResult.exportToDB(loopCount: loopCount + 1, session: session)
             }
         } catch {
             NSLog(error.localizedDescription)

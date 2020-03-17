@@ -71,9 +71,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{}".data(using: .utf8)!
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-        session.dataTask(with: request) { data, _, error in
+        self.session.dataTask(with: request) { data, _, error in
             defer { lock.unlock() }
             guard   let data      = data, error == nil,
                 let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -222,8 +220,6 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var resultError: Error? = nil
         
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         let sort: [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         let encoder = JSONEncoder()
         repeat {
@@ -238,7 +234,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
-            session.dataTask(with: request) { data, _, error in
+            self.session.dataTask(with: request) { data, _, error in
                 defer { self.sem.signal() }
                 guard   let data      = data, error == nil,
                     let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -272,15 +268,13 @@ class FileMakerSession: NSObject, URLSessionDelegate {
     func delete(layout: String, recordId: String) throws {
         let token = try self.prepareToken()
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         var isOk = false
         var errorMessage = ""
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        session.dataTask(with: request) { data, _, error in
+        self.session.dataTask(with: request) { data, _, error in
             defer { self.sem.signal() }
             guard   let data      = data, error == nil,
                 let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -297,8 +291,6 @@ class FileMakerSession: NSObject, URLSessionDelegate {
     func update(layout: String, recordId: String , fields: FileMakerQuery) throws {
         let token = try self.prepareToken()
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         let encoder = JSONEncoder()
         var isOk = false
         var errorMessage = ""
@@ -310,7 +302,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
-        session.dataTask(with: request) { data, _, error in
+        self.session.dataTask(with: request) { data, _, error in
             defer { self.sem.signal() }
             guard   let data      = data, error == nil,
                     let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -324,11 +316,9 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         if isOk == false { throw FileMakerError.update(message: errorMessage) }
     }
     
-    func insert(layout: String, fields: FileMakerQuery) throws -> String {
+    @discardableResult func insert(layout: String, fields: FileMakerQuery) throws -> String {
         let token = try self.prepareToken()
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         let encoder = JSONEncoder()
         var isOk = false
         var errorMessage = ""
@@ -341,7 +331,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
-        session.dataTask(with: request) { data, _, error in
+        self.session.dataTask(with: request) { data, _, error in
             defer { self.sem.signal() }
             guard   let data      = data, error == nil,
                 let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -378,7 +368,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         return result
     }
     
-    func execute(layout: String, script: String, param: String) throws {
+    func executeScript(layout: String, script: String, param: String) throws {
         let token = try self.prepareToken()
         var url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components") }
@@ -387,16 +377,14 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         URLQueryItem(name: "script.param", value: param)
         ]
         url = components.url!
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         var isOk = false
         var errorMessage = ""
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        //        request.httpBody = data
-        session.dataTask(with: request) { data, _, error in
+
+        self.session.dataTask(with: request) { data, _, error in
             defer { self.sem.signal() }
             guard   let data      = data, error == nil,
                 let json      = try? JSONSerialization.jsonObject(with: data) as? [String: Any],

@@ -134,18 +134,20 @@ public struct 進捗出力内容型: Hashable {
 extension Sequence where Element == 進捗出力型 {
     /// 生産管理に直接出力する
     public func exportToDB(重複チェック: Bool = false) throws {
-        let db = FileMakerDB.pm_osakaname
+        let db2 = FileMakerDB.pm_osakaname
+        let session = db2.retainSession()
+        defer { db2.releaseSession(session) }
         var target = self.filter { !重複チェック || $0.isDBに重複あり == false }
         if target.isEmpty { return }
         var loopCount = 0
         repeat {
             let uuid = UUID()
             for progress in target {
-                try db.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
+                try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
             }
-            try db.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
+            try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
 //            if 進捗CheckMode == false { return }
-            let checked = try 進捗型.find(指示書進捗入力UUID: uuid)
+            let checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             if checked.count == target.count { return }
             target = target.filter {
                 for progress in checked {

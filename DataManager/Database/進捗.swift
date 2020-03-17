@@ -238,12 +238,21 @@ public extension 進捗型 {
         return list.compactMap { 進捗型($0) }
     }
     
-    static func find(指示書進捗入力UUID: UUID) throws -> [進捗型] {
-        var query = FileMakerQuery()
-        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
-        let db = FileMakerDB.pm_osakaname
-        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
-        return list.compactMap { 進捗型($0) }
-    }
+//    static func find(指示書進捗入力UUID: UUID) throws -> [進捗型] {
+//        var query = FileMakerQuery()
+//        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
+//        let db = FileMakerDB.pm_osakaname
+//        let list : [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+//        return list.compactMap { 進捗型($0) }
+//    }
 }
 
+extension 進捗型 {
+    static func find(指示書進捗入力UUID: UUID, session: FileMakerSession) throws -> [進捗型] {
+        var query = FileMakerQuery()
+        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
+        let list : [FileMakerRecord] = try session.find(layout: 進捗型.dbName, query: [query])
+        return list.compactMap { 進捗型($0) }
+    }
+
+}

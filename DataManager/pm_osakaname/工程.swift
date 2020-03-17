@@ -141,6 +141,7 @@ public extension 工程型 {
     static let 設計 = 工程型(code: "P003B")!
     static let 原稿 = 工程型(code: "P004")!
     static let 出力 = 工程型(code: "P004B")!
+    static let フィルム = 工程型(code: "P004C")!
     static let 入力 = 工程型(code: "P005")!
     static let レーザー = 工程型(code: "P006")!
     static let レーザー（アクリル） = 工程型(code: "P006A")!

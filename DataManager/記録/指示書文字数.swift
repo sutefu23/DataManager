@@ -8,6 +8,19 @@
 
 import Foundation
 
+private var sessionCache: FileMakerSession? = nil
+private var session: FileMakerSession {
+    if let cache = sessionCache { return cache }
+    let session = FileMakerDB.system.retainSession()
+    sessionCache = session
+    return session
+}
+private func releaseSession() {
+    if let session = sessionCache {
+        sessionCache = nil
+        FileMakerDB.system.releaseSession(session)
+    }
+}
 private let serialQueue: OperationQueue = {
    let queue = OperationQueue()
     queue.maxConcurrentOperationCount = 1
@@ -123,8 +136,7 @@ public class 指示書文字数型 {
         if self.recordId != nil { return }
         let data = self.fieldData
         let operation = BlockOperation {
-            let db = FileMakerDB.system
-            if let recordId = (try? db.insert(layout: 指示書文字数型.dbName, fields: data)) {
+            if let recordId = (try? session.insert(layout: 指示書文字数型.dbName, fields: data)) {
                 self.recordId = recordId
             }
         }
@@ -136,16 +148,14 @@ public class 指示書文字数型 {
         guard let recordId = self.recordId else { return }
         let data = self.fieldData
         serialQueue.addOperation {
-            let db = FileMakerDB.system
-            try? db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+            try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
         }
     }
     
     func delete() {
         guard let recordId = self.recordId else { return }
         serialQueue.addOperation {
-            let db = FileMakerDB.system
-            try? db.delete(layout: 指示書文字数型.dbName, recordId: recordId)
+            try? session.delete(layout: 指示書文字数型.dbName, recordId: recordId)
         }
     }
     
@@ -158,8 +168,7 @@ public class 指示書文字数型 {
         if let recordId = self.recordId {
             let data = self.fieldData
             serialQueue.addOperation {
-                let db = FileMakerDB.system
-                try? db.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+                try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
             }
         } else {
             self.insert()
@@ -171,11 +180,10 @@ extension 箱文字文字数型 {
     static func find(指示書 order: 指示書型) throws -> (recordId: String, 箱文字文字数: 箱文字文字数型)? {
         var result: Result<(recordId: String, 箱文字文字数: 箱文字文字数型)?, Error> = .success(nil)
         let operation = BlockOperation {
-            let db = FileMakerDB.system
             var query = [String: String]()
             query["伝票番号"] = "\(order.伝票番号)"
             do {
-                let list: [FileMakerRecord] = try db.find(layout: 指示書文字数型.dbName, query: [query])
+                let list: [FileMakerRecord] = try session.find(layout: 指示書文字数型.dbName, query: [query])
                 if let record = list.first, let recordId = record.recordId {
                     let data = 箱文字文字数型(record)
                     result = .success((recordId, data))

@@ -23,7 +23,7 @@ public class 発注型 {
 }
 
 public extension 発注型 {
-    var 注文番号: String { return record.string(forKey: "注文番号")! }
+    var 注文番号: 注文番号型 { return record.注文番号(forKey: "注文番号")! }
     var 会社名: String { return record.string(forKey: "会社名")! }
     var 会社コード: String { return record.string(forKey: "会社コード")! }
     var 金額: String { return record.string(forKey: "金額")! }
@@ -54,14 +54,22 @@ extension 発注型 {
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
     }
-    public static func find(API識別キー: UUID) throws -> [発注型] {
+//    public static func find(API識別キー: UUID) throws -> [発注型] {
+//        var query = FileMakerQuery()
+//        query["API識別キー"] = "==\(API識別キー.uuidString)"
+//        let db = FileMakerDB.pm_osakaname
+//        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+//        return list.compactMap { 発注型($0) }
+//    }
+
+    static func find(API識別キー: UUID, session: FileMakerSession) throws -> [発注型] {
         var query = FileMakerQuery()
         query["API識別キー"] = "==\(API識別キー.uuidString)"
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        let list: [FileMakerRecord] = try session.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
     }
     
+
     public static func find(登録日: Day? = nil, 注文番号: String? = nil, 社員: 社員型? = nil, 資材番号: String? = nil, 数量: Int? = nil) throws -> [発注型]{
         var query = FileMakerQuery()
         query["登録日"] = 登録日?.fmString

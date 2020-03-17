@@ -81,7 +81,7 @@ class FileMakerServer: Hashable {
         sem.wait()
         lock.lock()
         defer { lock.unlock() }
-        for (index, session) in pool.enumerated() {
+        for (index, session) in pool.enumerated().reversed() {
             if session.dbURL == url {
                 pool.remove(at: index)
                 return session
@@ -133,6 +133,14 @@ public final class FileMakerDB {
         self.password = password
     }
 
+    func retainSession() -> FileMakerSession {
+        return server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+    }
+    
+    func releaseSession(_ session: FileMakerSession) {
+        server.putSession(session)
+    }
+    
     private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
         defer { server.putSession(session) }
@@ -151,7 +159,7 @@ public final class FileMakerDB {
     
     func executeScript(layout: String, script: String, param: String) throws {
         try checkStop()
-        try self.execute { try $0.execute(layout: layout, script: script, param: param) }
+        try self.execute { try $0.executeScript(layout: layout, script: script, param: param) }
     }
 
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {

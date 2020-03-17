@@ -37,7 +37,11 @@ public class 伝票番号キャッシュ型 {
     var cache: [Int: 伝票番号型] = [:]
 
     public func find(_ number: String) throws -> 伝票番号型? {
-        guard let number = Int(number), 伝票番号型.isValidNumber(number) else { return nil }
+        return try self.find(Int(number))
+    }
+    
+    public func find(_ number: Int?) throws -> 伝票番号型? {
+        guard let number = number, 伝票番号型.isValidNumber(number) else { return nil }
         lock.lock()
         defer { lock.unlock() }
         if let cache = self.cache[number] { return cache }
@@ -49,7 +53,11 @@ public class 伝票番号キャッシュ型 {
     public func isExists(_ number: String) throws -> Bool {
         return try self.find(number) != nil
     }
-    
+
+    public func isExists(_ number: Int?) throws -> Bool {
+        return try self.find(number) != nil
+    }
+
     public func clearAll() {
         lock.lock()
         cache.removeAll()
