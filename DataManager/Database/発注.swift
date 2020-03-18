@@ -19,7 +19,7 @@ public class 発注型 {
     }
     
     var 状態: String { return record.string(forKey: "状態")! }
-    var 種類: String { return record.string(forKey: "種類")! }
+    var 発注種類: 発注種類型 { return record.発注種類(forKey: "発注種類")! }
 }
 
 public extension 発注型 {
@@ -42,6 +42,34 @@ public extension 発注型 {
     var 品名3: String { return self.規格2 }
     var 発注数量: Int? { return record.integer(forKey: "発注数量") }
     var 発注数量文字列: String { return record.string(forKey: "発注数量")! }
+}
+
+public enum 発注種類型: CustomStringConvertible {
+    case 資材
+    case 外注
+    
+    init?(data: String) {
+        switch data {
+        case "資材": self = .資材
+        case "外注": self = .外注
+        default:
+            return nil
+        }
+    }
+    
+    public var description: String {
+        switch self {
+        case .資材: return "資材"
+        case .外注: return "外注"
+        }
+    }
+}
+
+extension FileMakerRecord {
+    func 発注種類(forKey key: String) -> 発注種類型? {
+        guard let data = self.string(forKey: key) else { return nil }
+        return 発注種類型(data: data)
+    }
 }
 
 extension 発注型 {
@@ -70,10 +98,11 @@ extension 発注型 {
     }
     
 
-    public static func find(登録日: Day? = nil, 注文番号: String? = nil, 社員: 社員型? = nil, 資材番号: String? = nil, 数量: Int? = nil) throws -> [発注型]{
+    public static func find(登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: String? = nil, 数量: Int? = nil) throws -> [発注型]{
         var query = FileMakerQuery()
         query["登録日"] = 登録日?.fmString
-        query["注文番号"] = 注文番号
+        query["注文番号"] = 注文番号?.記号
+        query["発注種類"] = 発注種類?.description
         query["依頼社員番号"] = 社員?.Hなし社員コード
         query["資材番号"] = 資材番号
         if let num = 数量 {

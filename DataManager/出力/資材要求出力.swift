@@ -58,20 +58,20 @@ public struct 資材要求出力型 {
 }
 
 extension Sequence where Element == 資材要求出力型 {
-    public func exportToDB(newScript: Bool = false) throws {
+    public func exportToDB() throws {
         let db = FileMakerDB.pm_osakaname
         let session = db.retainSession()
         defer { db.releaseSession(session) }
-        return try self.exportToDB(loopCount: 0, newScript: newScript, session: session)
+        return try self.exportToDB(loopCount: 0, session: session)
     }
     
-    private func exportToDB(loopCount: Int, newScript: Bool, session: FileMakerSession) throws {
+    private func exportToDB(loopCount: Int, session: FileMakerSession) throws {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_MaterialRequirementsInput"
-        if loopCount > 0 {
-            NSLog("retry count:\(loopCount) orders:\(targets.count)")
-        }
+//        if loopCount > 0 {
+//            debugPrint("retry count:\(loopCount) orders:\(targets.count)")
+//        }
         if loopCount >= 10 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
 
         let uuid = UUID()
@@ -83,36 +83,16 @@ extension Sequence where Element == 資材要求出力型 {
             try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
             let result = try 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
-                NSLog("success")
+//                NSLog("success")
                 return
             }
             if result.count > 0 { // 部分的に登録成功
                 let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
-                try rest.exportToDB(loopCount: loopCount+1, newScript: newScript, session: session)
+                try rest.exportToDB(loopCount: loopCount+1, session: session)
                 return
+            } else { // 完全に登録失敗
+                try targets.exportToDB(loopCount: loopCount+1, session: session)
             }
-            
-            if newScript == true {
-                try targets.exportToDB(loopCount: loopCount+1, newScript: newScript, session: session)
-            } else {
-                for counter in loopCount ..< 10 {
-                    try session.executeScript(layout: layout, script: "DataAPI_MaterialRequ_Error", param: uuid.uuidString)
-                    let result = try 発注型.find(API識別キー: uuid, session: session)
-                    if result.count == targets.count {// 登録成功
-                        NSLog("second script success")
-                        return
-                    }
-                    if result.count > 0 { // 部分的に登録成功
-                        let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
-                        try rest.exportToDB(loopCount: counter+1, newScript: newScript, session: session)
-                        return
-                    } else {
-                        // 完全失敗ならループ
-                        NSLog("all retry counter: \(counter)")
-                    }
-                }
-            }
-            
         } catch {
             throw error
         }

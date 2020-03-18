@@ -11,19 +11,12 @@ import XCTest
 
 class TestExportOrder: XCTestCase {
     let execDBTest = false
-    /// リトライ時完全に最初からやり直すようにする
-    var newScript = false
     
     func testOutput() {
         if self.execDBTest == false { return }
         
-        if newScript {
-            let list = [makeOrder5()]
-            XCTAssertNoThrow(try list.exportToDB(newScript: newScript))
-        } else {
-            let list = [makeOrder3()]
-            XCTAssertNoThrow(try list.exportToDB(newScript: newScript))
-        }
+        let list = [makeOrder5()]
+        XCTAssertNoThrow(try list.exportToDB())
     }
 }
 

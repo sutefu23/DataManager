@@ -23,6 +23,12 @@ public class 注文番号キャッシュ型 {
     }
     
     public subscript(記号: String) -> 注文番号型? { map[記号] }
+    public var 全注文番号: [注文番号型] {
+        return self.map.values.sorted { $0.記号 < $1.記号 }
+    }
+    public var 営業以外全注文番号: [注文番号型] {
+        return self.map.values.filter { !$0.記号.hasPrefix("A") }.sorted { $0.記号 < $1.記号 }
+    }
 }
 
 public class 注文番号型: Hashable, Codable {
@@ -52,12 +58,12 @@ public class 注文番号型: Hashable, Codable {
     public static let 品質管理 = 注文番号キャッシュ型.shared["Y"]!
     public static let 予備 = 注文番号キャッシュ型.shared["Z"]!
 
-    let 記号: String
-    let 名称: String
+    public let 記号: String
+    public let 名称: String
     
     init(_ record: FileMakerRecord) throws {
         guard let mark = record.string(forKey: "記号"), !mark.isEmpty else { throw FileMakerError.notFound(message: "注文番号型:記号") }
-        guard let name = record.string(forKey: "名称"), !name.isEmpty else { throw FileMakerError.notFound(message: "注文番号型:名称") }
+        guard let name = record.string(forKey: "名称") else { throw FileMakerError.notFound(message: "注文番号型:名称") }
         self.記号 = mark
         self.名称 = name
     }

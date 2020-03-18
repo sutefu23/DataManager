@@ -92,7 +92,9 @@ public class 資材型: Codable, Comparable, Hashable {
         return num > 0 ? num : 1
     }()
     
-
+    var レコード在庫数: Int {
+        return record.integer(forKey: "f32") ?? 0
+    }
 }
 
 public extension 資材型 {
