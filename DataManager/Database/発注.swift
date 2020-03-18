@@ -34,7 +34,7 @@ public extension 発注型 {
     var 製品名称: String { return record.string(forKey: "製品名称")! }
     var 規格: String { return record.string(forKey: "規格")! }
     var 規格2: String { return record.string(forKey: "規格2")! }
-    var 納品日: Day { return record.day(forKey: "納品日")! }
+    var 納品日: Day? { return record.day(forKey: "納品日") }
     var 備考: String { return record.string(forKey: "備考")! }
     var 依頼社員: 社員型 { return record.社員(forKey: "依頼社員番号")! }
     var 品名1: String { return self.製品名称 }
