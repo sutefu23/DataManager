@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 進捗キャッシュ {
+public class 進捗キャッシュ型 {
     let lock = NSLock()
     
     var cache: [伝票番号型: [進捗型]] = [:]
@@ -69,7 +69,9 @@ public class 進捗キャッシュ {
     }
     
     public func flushCache() {
+        lock.lock()
         cache.removeAll()
+        lock.unlock()
     }
     
     public func removeCache(number: 伝票番号型) {

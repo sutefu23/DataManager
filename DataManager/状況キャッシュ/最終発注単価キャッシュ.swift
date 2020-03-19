@@ -42,6 +42,12 @@ class 最終発注単価キャッシュ型 {
             return nil
         }
     }
+    
+    func flushCache() {
+        lock.lock()
+        map.removeAll()
+        lock.unlock()
+    }
 }
 
 extension 資材型 {

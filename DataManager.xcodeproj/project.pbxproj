@@ -93,6 +93,7 @@
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
+		14DFA38D24232FF2008BA120 /* 発注状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DFA38C24232FF2008BA120 /* 発注状態.swift */; };
 		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
@@ -207,6 +208,7 @@
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
+		14DFA38C24232FF2008BA120 /* 発注状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注状態.swift"; sourceTree = "<group>"; };
 		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 				8E8E0792235E0BD500D7832C /* レーザー加工機.swift */,
 				14363C4D238F891A0094FF00 /* 伝票種別.swift */,
 				1440531624203DC700C4E48C /* 注文番号.swift */,
+				14DFA38C24232FF2008BA120 /* 発注状態.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				146AA59F2406108D00ED395D /* 箱文字優先度キャッシュ.swift in Sources */,
+				14DFA38D24232FF2008BA120 /* 発注状態.swift in Sources */,
 				1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */,
 				142D3BA7231CAD1900B95EEB /* 指示書分析.swift in Sources */,
 				146746652373E8C90027B5C1 /* インシデント.swift in Sources */,

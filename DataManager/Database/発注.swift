@@ -18,8 +18,8 @@ public class 発注型 {
         self.資材 = item
     }
     
-    var 状態: String { return record.string(forKey: "状態")! }
-    var 発注種類: 発注種類型 { return record.発注種類(forKey: "発注種類")! }
+    public var 状態: 発注状態型 { return record.発注状態(forKey: "状態")! }
+    public var 発注種類: 発注種類型 { return record.発注種類(forKey: "発注種類")! }
 }
 
 public extension 発注型 {
@@ -36,7 +36,7 @@ public extension 発注型 {
     var 規格2: String { return record.string(forKey: "規格2")! }
     var 納品日: Day? { return record.day(forKey: "納品日") }
     var 備考: String { return record.string(forKey: "備考")! }
-    var 依頼社員: 社員型 { return record.社員(forKey: "依頼社員番号")! }
+    var 依頼社員: 社員型? { return record.社員(forKey: "依頼社員番号") }
     var 品名1: String { return self.製品名称 }
     var 品名2: String { return self.規格 }
     var 品名3: String { return self.規格2 }

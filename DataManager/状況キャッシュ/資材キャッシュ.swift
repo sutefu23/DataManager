@@ -29,4 +29,10 @@ public class 資材キャッシュ型 {
         cache[key] = CacheValue(result: result)
         return result
     }
+    
+    func flushCache() {
+        lock.lock()
+        cache.removeAll()
+        lock.unlock()
+    }
 }

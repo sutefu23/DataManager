@@ -32,5 +32,11 @@ class 在庫数キャッシュ型 {
         lock.unlock()
         return try 現在在庫(of: item)
     }
+    
+    func flushAllCache() {
+        lock.lock()
+        cache.removeAll()
+        lock.unlock()
+    }
 }
 
