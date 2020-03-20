@@ -132,8 +132,8 @@ public class 指示書型 {
         defer { lock.unlock() }
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
-        guard let list = (try? db.downloadObject(url: url)) else { return nil }
-        let image = UIImage(data: list)
+        guard let 一覧 = (try? db.downloadObject(url: url)) else { return nil }
+        let image = UIImage(data: 一覧)
         return image
     }()
     #elseif os(macOS)

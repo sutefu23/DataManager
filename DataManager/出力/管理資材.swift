@@ -8,24 +8,85 @@
 
 import Foundation
 
-public struct 管理資材一覧型: Codable {
-    public var 一覧: [管理資材型]
+public class 管理資材一覧型: Codable, BidirectionalCollection {
+    private var 一覧: [管理資材型]
+    public var タイトル: String
 
     public init() {
         self.一覧 = []
+        self.タイトル = ""
     }
+    // MARK: - Collection
+    public var isEmpty: Bool { return 一覧.isEmpty }
+    public var startIndex: Int { return 一覧.startIndex }
+    public var endIndex: Int { return 一覧.endIndex }
+    public subscript(position: Int) -> 管理資材型 {
+        get { return 一覧[position] }
+        set { 一覧[position] = newValue }
+    }
+    public func index(before i: Int) -> Int { return 一覧.index(before: i) }
+    public func index(after i: Int) -> Int { return 一覧.index(after: i) }
+    public func makeIterator() -> IndexingIterator<[管理資材型]> { return 一覧.makeIterator() }
+
     // MARK: - <Codable>
     enum CodingKeys: String, CodingKey {
         case 一覧
+        case タイトル
     }
-    public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.一覧 = try values.decode([管理資材型].self , forKey: .一覧)
+        self.一覧 = try values.decodeIfPresent([管理資材型].self , forKey: .一覧) ?? []
+        self.タイトル = try values.decodeIfPresent(String.self, forKey: .タイトル) ?? ""
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.一覧, forKey: .一覧)
+        try container.encode(self.タイトル, forKey: .タイトル)
+    }
+    
+    public func append(_ item: 管理資材型) {
+        remove(item)
+        一覧.append(item)
+    }
+    
+    public func remove(_ item: 管理資材型) {
+        guard let index = 一覧.firstIndex(where: { $0.資材.図番 == item.資材.図番 }) else { return }
+        一覧.remove(at: index)
+    }
+    
+    public func remove(at index: Int) {
+        if 一覧.indices.contains(index) {
+            一覧.remove(at: index)
+        }
+    }
+    
+    public func moveUp(at index: Int) {
+        guard self.一覧.indices.contains(index) else { return }
+        let prevIndex = index-1
+        if 一覧.indices.contains(prevIndex) {
+            一覧.swapAt(prevIndex, index)
+        }
+    }
+    
+    public func moveUp(_ item: 管理資材型) {
+        if let index = self.一覧.firstIndex(where: { $0.資材.図番 == item.資材.図番 }) {
+            moveUp(at: index)
+        }
+    }
+    
+    public func moveDown(at index: Int) {
+        guard self.一覧.indices.contains(index) else { return }
+        let nextIndex = index-1
+        if 一覧.indices.contains(nextIndex) {
+            一覧.swapAt(index, nextIndex)
+        }
+    }
+    
+    public func moveDown(_ item: 管理資材型) {
+        if let index = 一覧.firstIndex(where: { $0.資材.図番 == item.資材.図番 }) {
+            moveDown(at: index)
+        }
     }
 }
 
