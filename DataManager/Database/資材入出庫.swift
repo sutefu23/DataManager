@@ -39,8 +39,9 @@ public class 資材入出庫型 {
         self.部署 = sec
     }
     
-    public var 出庫金額: Double{
-        return 資材.単価 * Double(出庫数)
+    public var 出庫金額: Double? {
+        guard let num = 資材.単価 else { return nil }
+        return num * Double(出庫数)
     }
 }
 

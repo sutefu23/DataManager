@@ -288,9 +288,10 @@ public extension TableGenerator {
 }
 
 #if targetEnvironment(macCatalyst)
+import UIKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, title: String) throws {
+    func share(_ source: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
         let url = 生産管理集計URL.appendingPathComponent(title)
         try self.write(source, format: format, to: url)
     }
@@ -300,7 +301,7 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, title: String) throws {
+    func share(_ source: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title)
         try self.write(source, format: format, to: url)
 
@@ -308,7 +309,9 @@ public extension TableGenerator {
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         controller.excludedActivityTypes = [.airDrop, .mail]
         controller.popoverPresentationController?.sourceView = source.view
-        //        controller.popoverPresentationController?.sourceRect = self.shareButton.frame
+        if let button = button {
+                controller.popoverPresentationController?.sourceRect = shareButton.frame
+        }
         source.present(controller, animated: true, completion: nil)
     }
 }

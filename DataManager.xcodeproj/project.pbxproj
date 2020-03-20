@@ -61,10 +61,11 @@
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		14713C4123F607B40093F22D /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4023F607B40093F22D /* OrderedSet.swift */; };
 		14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaults.swift */; };
-		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
+		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; platformFilter = ios; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */; };
+		1495F80A242460D500944E46 /* 箱文字工程優先度.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1495F809242460D500944E46 /* 箱文字工程優先度.swift */; };
 		14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985310230BCE91007734E0 /* 資源マスタ情報.swift */; };
 		14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985312230BCEA7007734E0 /* 供給資源情報.swift */; };
 		14985315230BCEB4007734E0 /* カレンダ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985314230BCEB4007734E0 /* カレンダ情報.swift */; };
@@ -180,6 +181,7 @@
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
 		149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書変更内容履歴.swift"; sourceTree = "<group>"; };
+		1495F809242460D500944E46 /* 箱文字工程優先度.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "箱文字工程優先度.swift"; sourceTree = "<group>"; };
 		14985310230BCE91007734E0 /* 資源マスタ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源マスタ情報.swift"; sourceTree = "<group>"; };
 		14985312230BCEA7007734E0 /* 供給資源情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "供給資源情報.swift"; sourceTree = "<group>"; };
 		14985314230BCEB4007734E0 /* カレンダ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダ情報.swift"; sourceTree = "<group>"; };
@@ -326,6 +328,14 @@
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
 		};
+		1495F8082424608800944E46 /* 工程分析 */ = {
+			isa = PBXGroup;
+			children = (
+				1495F809242460D500944E46 /* 箱文字工程優先度.swift */,
+			);
+			path = "工程分析";
+			sourceTree = "<group>";
+		};
 		8E0CBADA23EB5D6600587F6B /* ラベル印刷 */ = {
 			isa = PBXGroup;
 			children = (
@@ -369,6 +379,7 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				1495F8082424608800944E46 /* 工程分析 */,
 				8E0CBAE723EB657D00587F6B /* 互換性 */,
 				8E0CBADA23EB5D6600587F6B /* ラベル印刷 */,
 				146C1F33239F1EFA00FE2918 /* 状況キャッシュ */,
@@ -605,6 +616,7 @@
 				1498531B230BCEE7007734E0 /* コンストレイン情報.swift in Sources */,
 				8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */,
 				146651B0240DC696008F50D0 /* 資材入出庫.swift in Sources */,
+				1495F80A242460D500944E46 /* 箱文字工程優先度.swift in Sources */,
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1440531724203DC700C4E48C /* 注文番号.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
@@ -838,7 +850,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -871,7 +883,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				DYLIB_COMPATIBILITY_VERSION = 1;

@@ -13,18 +13,17 @@ public class 資材型: Codable, Comparable, Hashable {
     public let 図番: String
     public let 製品名称: String
     public let 規格: String
-    public let 単価: Double
+    public let 単価: Double?
 
     init(_ record: FileMakerRecord) throws {
         self.record = record
-        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13") }
-        guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3") }
-        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f13") }
-        guard let 単価 = record.double(forKey: "f88") else { throw FileMakerError.invalidData(message: "単価:f88") }
+        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordId ?? "")") }
+        guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3 of 図番 \(図番)") }
+        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f13 of 図番 \(図番)") }
         self.図番 = 図番
         self.製品名称 = 製品名称
         self.規格 = 規格
-        self.単価 = 単価
+        self.単価 = record.double(forKey: "f88")
     }
     public convenience init?(図番: String ) {
         guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
@@ -94,6 +93,13 @@ public class 資材型: Codable, Comparable, Hashable {
     
     var レコード在庫数: Int {
         return record.integer(forKey: "f32") ?? 0
+    }
+    
+    public var 表示用単価: String {
+        guard let num = self.単価 else { return "" }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: NSNumber(value: num)) ?? ""
     }
 }
 

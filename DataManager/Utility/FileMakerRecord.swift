@@ -82,7 +82,7 @@ class FileMakerRecord {
             return nil
         }
     }
-    
+
     func double(forKey key: String) -> Double? {
         if let value = self[key] as? Double { return value }
         guard let str = string(forKey: key) else { return nil }
