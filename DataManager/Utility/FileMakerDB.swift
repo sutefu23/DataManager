@@ -144,13 +144,32 @@ public final class FileMakerDB {
     private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
         defer { server.putSession(session) }
-        try work(session)
+        do {
+            try work(session)
+        } catch {
+            if let error = error as? FileMakerError, error.canRetry {
+                session.logout()
+                try work(session)
+            } else {
+                throw error
+            }
+        }
     }
 
     private func execute2<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
          let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
          defer { server.putSession(session) }
-         return try work(session)
+        do {
+            return try work(session)
+        } catch {
+            if let error = error as? FileMakerError, error.canRetry {
+                session.logout()
+                return try work(session)
+            } else {
+                throw error
+            }
+        }
+        
      }
 
     private func checkStop() throws {

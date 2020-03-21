@@ -43,11 +43,11 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         guard let ticket = self.ticket else { return nil }
         let now = Date()
         if now < ticket.expire {
-            let expire: Date = Date(timeIntervalSinceNow: expireSeconds) // 寿命更新
-            self.ticket?.expire = expire
+//            let expire: Date = Date(timeIntervalSinceNow: expireSeconds) // 寿命更新
+//            self.ticket?.expire = expire
             return ticket.token
         }
-        self.logout(with: ticket.token)
+//        self.logout(with: ticket.token) だいたい無効だろうし、解放処理はしない
         return nil
     }
     
@@ -57,7 +57,10 @@ class FileMakerSession: NSObject, URLSessionDelegate {
     
     func prepareToken(reuse: Bool = true) throws -> String {
         if reuse == true, let token = self.activeToken { return token }
-        
+        return try makeNewToken()
+    }
+    
+    func makeNewToken() throws -> String {
         var result: String? = nil
         let url = self.dbURL.appendingPathComponent("sessions")
         let auth = "\(user):\(password)".data(using: .utf8)!.base64EncodedString()

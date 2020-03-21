@@ -26,6 +26,26 @@ public enum FileMakerError: LocalizedError {
     case invalidData(message: String)
     case notFound(message: String)
     
+    var message: String {
+        switch self {
+        case .dbIsDisabled: return ""
+        case .tokenCreate(message: let mes): return mes
+        case .fetch(message: let mes): return mes
+        case .find(message: let mes): return mes
+        case .delete(message: let mes): return mes
+        case .update(message: let mes): return mes
+        case .insert(message: let mes): return mes
+        case .execute(message: let mes): return mes
+        case .download(message: let mes): return mes
+        case .response(message: let mes): return mes
+        case .upload進捗入力(message: let mes): return mes
+        case .upload発注(message: let mes): return mes
+        case .upload資材入出庫(message: let mes): return mes
+        case .invalidData(message: let mes): return mes
+        case .notFound(message: let mes): return mes
+        }
+    }
+    
     public var errorDescription: String? {
         switch self {
         case .dbIsDisabled: return "サーバー接続停止中"
@@ -44,5 +64,10 @@ public enum FileMakerError: LocalizedError {
         case .invalidData(message: let mes): return "読み込みフィールド形式不正(\(mes))"
         case .notFound(message: let mes): return "必要なレコードが見つからなかった(\(mes))"
         }
+    }
+    
+    var canRetry: Bool {
+        let mes = self.message
+        return mes.contains("Invalid FileMaker Data API token")
     }
 }
