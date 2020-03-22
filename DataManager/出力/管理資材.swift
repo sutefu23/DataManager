@@ -8,13 +8,16 @@
 
 import Foundation
 
-public typealias 管理資材一覧一覧型 = 管理対象一覧型<管理資材一覧型>
-public typealias 管理資材一覧型 = 管理対象一覧型<管理資材型>
+public typealias 管理資材一覧一覧型 = 管理対象一覧型<管理資材一覧型> // 資材一覧の一覧
+public typealias 管理資材一覧型 = 管理対象一覧型<管理資材型> // 資材一覧
 
-public typealias 管理板材一覧一覧型 = 管理対象一覧型<管理板材一覧型>
-public typealias 管理板材一覧型 = 管理対象一覧型<管理板材型>
+public typealias 管理板材一覧一覧型 = 管理対象一覧型<管理板材一覧型> // 板材一覧の一覧
+public typealias 管理板材一覧型 = 管理対象一覧型<管理板材型> // 板材一覧
 
-
+/// 管理対象
+public protocol 管理対象型: class, Codable {
+    func isIdential(to: Self) -> Bool // 対象が同じものかどうか調べる。同じ物はリストに乗れない
+}
 
 // MARK: - 一般資材
 public class 管理対象一覧型<T: 管理対象型>: 管理対象型, BidirectionalCollection, ExpressibleByArrayLiteral {
@@ -58,8 +61,8 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.一覧, forKey: .一覧)
-        try container.encode(self.タイトル, forKey: .タイトル)
+        if !self.一覧.isEmpty { try container.encode(self.一覧, forKey: .一覧) }
+        if !self.タイトル.isEmpty {  try container.encode(self.タイトル, forKey: .タイトル) }
     }
 
     // MARK: 通常操作
@@ -144,7 +147,7 @@ public class 管理資材型: 管理対象型 {
         case 管理者メモ
     }
     
-    public init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
         self.資材 = 資材
         self.基本発注数 = 基本発注数
         self.安全在庫数 = 安全在庫数
@@ -170,29 +173,51 @@ public class 管理資材型: 管理対象型 {
         if !self.管理者メモ.isEmpty { try container.encode(self.管理者メモ, forKey: .管理者メモ) }
     }
     
+    // MARK: <管理対象型>
     public func isIdential(to: 管理資材型) -> Bool {
         return self.資材.図番 == to.資材.図番
-    }
-}
-
-public protocol 管理対象型: class, Codable {
-    func isIdential(to: Self) -> Bool
+    }    
 }
 
 // MARK: - 板
 public class 管理板材型: 管理資材型 {
-    public var 材質: String
-    public var 種類: String
-    public var 板厚: String
-    public var 高さ: String
-    public var 幅: String
+    public var 材質: String // SUS304 BSP SUS316 SUS430 AL52S AL1100 STEEL
+    public var 種類: String // HL DS 白 黒マット ボンデ
+    public var 板厚: String // 5.0 13
+    public var サイズ: String
 
-    public init(材質: String, 種類: String, 板厚: String, 高さ: String, 幅: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+        let names = 資材.製品名称.split{ $0.isWhitespace }
+        let stds = 資材.規格.split{ $0.isWhitespace }
+
+        if names[0].hasSuffix("板") {
+            self.材質 = String(names[0].dropLast())
+        } else {
+            self.材質 = String(names[0])
+        }
+        if names.count >= 2 {
+            self.種類 = String(names[1])
+        } else {
+            self.種類 = ""
+        }
+        if stds[0].hasSuffix("t") || stds[0].hasSuffix("ｔ") {
+            self.板厚 = String(stds[0].dropLast())
+        } else {
+            self.板厚 = String(stds[0])
+        }
+        if stds.count >= 2 {
+            self.サイズ = String(stds[1])
+        } else {
+            self.サイズ = ""
+        }
+        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
+    }
+    
+    public init(材質: String, 種類: String, 板厚: String, サイズ: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
         self.材質 = 材質
         self.種類 = 種類
         self.板厚 = 板厚
-        self.高さ = 高さ
-        self.幅 = 幅
+        self.サイズ = サイズ
         super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
     }
     
@@ -201,16 +226,15 @@ public class 管理板材型: 管理資材型 {
         case 材質
         case 種類
         case 板厚
-        case 高さ
-        case 幅
+        case サイズ
     }
+    
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: SheetCodingKeys.self)
         self.材質 = try values.decode(String.self, forKey: .材質)
         self.種類 = try values.decode(String.self, forKey: .種類)
         self.板厚 = try values.decode(String.self, forKey: .板厚)
-        self.高さ = try values.decode(String.self, forKey: .高さ)
-        self.幅 = try values.decode(String.self, forKey: .幅)
+        self.サイズ = try values.decode(String.self, forKey: .サイズ)
         try super.init(from: try values.superDecoder())
     }
     
@@ -219,9 +243,7 @@ public class 管理板材型: 管理資材型 {
         try container.encode(self.材質, forKey: .材質)
         try container.encode(self.種類, forKey: .種類)
         try container.encode(self.板厚, forKey: .板厚)
-        try container.encode(self.高さ, forKey: .高さ)
-        try container.encode(self.幅, forKey: .幅)
+        try container.encode(self.サイズ, forKey: .サイズ)
         try super.encode(to: container.superEncoder())
     }
-
 }

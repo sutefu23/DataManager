@@ -8,7 +8,7 @@
 
 import Foundation
 
-let 立ち上がり工程: Set<工程型> = [.立ち上がり, .立ち上がり_溶接]
+let 立ち上がり工程: [工程型] = [.立ち上がり, .立ち上がり_溶接]
 
 public enum 箱文字前工程優先度型: Int, Comparable {
     case 照合検査完了 = 0
@@ -43,24 +43,25 @@ public enum 箱文字前工程優先度型: Int, Comparable {
 let 箱文字前工程一覧: [工程型] = [.営業, .管理, .原稿, .入力, .出力, .レーザー, .照合検査, .立ち上がり, .立ち上がり_溶接]
 
 extension 指示書型 {
-    public func 箱文字前工程_立ち上がり以外_最終工程() -> 進捗型? {
-        for progress in self.進捗一覧.reversed() {
-            if 立ち上がり工程.contains(progress.工程) { continue }
-            if 箱文字前工程一覧.contains(progress.工程) { return progress }
-        }
-        return nil
-    }
+//    public func 箱文字前工程_立ち上がり以外_最終工程() -> 進捗型? {
+//        for progress in self.進捗一覧.reversed() {
+//            if 箱文字前工程一覧.contains(progress.工程) { return progress }
+//        }
+//        return nil
+//    }
 
-    public func 箱文字前工程_最終工程() -> 進捗型? {
+    public func 箱文字前工程_最終工程(of target: 工程型) -> 進捗型? {
+        let skip立ち上がり = 立ち上がり工程.contains(target)
         for progress in self.進捗一覧.reversed() {
+            if skip立ち上がり && 立ち上がり工程.contains(progress.工程) { continue }
             if 箱文字前工程一覧.contains(progress.工程) { return progress }
         }
         return nil
     }
     
-    public func 箱文字前工程_進捗表示() -> String {
+    public func 箱文字前工程_進捗表示(of target: 工程型) -> String {
         var str = ""
-        if let progress = 箱文字前工程_立ち上がり以外_最終工程() {
+        if let progress = 箱文字前工程_最終工程(of: target) {
             str += progress.工程.description.prefix(2)
             str += "\(progress.作業内容.description)/\(progress.作業者.社員姓)".prefix(6)
         }

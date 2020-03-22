@@ -90,16 +90,23 @@ public class 資材型: Codable, Comparable, Hashable {
         guard let num = self.record.double(forKey: "f43") else { return 1 }
         return num > 0 ? num : 1
     }()
-    
-    var レコード在庫数: Int {
-        return record.integer(forKey: "f32") ?? 0
-    }
-    
-    public var 表示用単価: String {
+
+    public lazy var 表示用単価: String = {
         guard let num = self.単価 else { return "" }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter.string(from: NSNumber(value: num)) ?? ""
+    }()
+
+    // MARK: 在庫処理
+    var レコード在庫数: Int { // 在庫キャッシュ経由でアクセスするとキャッシュされる
+        return record.integer(forKey: "f32") ?? 0
+    }
+    public func 現在在庫数() throws -> Int {
+        return  try 在庫数キャッシュ型.shared.現在在庫(of: self)
+    }
+    public func キャッシュ在庫() throws -> Int {
+        return  try 在庫数キャッシュ型.shared.キャッシュ在庫数(of: self)
     }
 }
 
@@ -130,6 +137,40 @@ public extension 資材型 {
     
     var 単位: String {
         return record.string(forKey: "dbo.SYS_T2:f4") ?? ""
+    }
+    
+    // MARK: - 入出庫処理
+    func 入庫(部署: 部署型, 入庫者: 社員型, 入庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
+        if 入庫数 == 0 { return }
+        guard 入庫数 > 0 else {
+            try self.出庫(部署: 部署, 出庫者: 入庫者, 出庫数: -入庫数, 入力区分: 入力区分)
+            return
+        }
+        guard let action = 資材入出庫出力型(資材: self, 部署: 部署, 入庫数: 入庫数, 出庫数: 0, 社員: 入庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材入庫: 図番:\(self.図番) 部署:\(部署.部署名) 入庫者:\(入庫者.社員名称) 入庫数:\(入庫数)") }
+        try [action].exportToDB()
+    }
+    
+    func 出庫(部署: 部署型, 出庫者: 社員型, 出庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
+        if 出庫数 == 0 { return }
+        guard 出庫数 > 0 else {
+            try self.入庫(部署: 部署, 入庫者: 出庫者, 入庫数: -出庫数, 入力区分: 入力区分)
+            return
+        }
+        guard let action = 資材入出庫出力型(資材: self, 部署: 部署, 入庫数: 0, 出庫数: 出庫数, 社員: 出庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材出庫: 図番:\(self.図番) 部署:\(部署.部署名) 出庫者:\(出庫者.社員名称) 出庫数:\(出庫数)") }
+        try [action].exportToDB()
+    }
+
+    @discardableResult func 数量調整(部署: 部署型, 調整者: 社員型, 現在数: Int) throws -> Bool {
+        let data = try self.現在在庫数()
+        let diff = 現在数 - data
+        if diff == 0 { return false }
+        if diff > 0 { // 現在数がデータより多い==追加の入庫が必要
+            try self.入庫(部署: 部署, 入庫者: 調整者, 入庫数: diff, 入力区分: .数量調整)
+        } else { // 現在数がデータより少ない==追加の出庫が必要
+            assert(diff < 0)
+            try self.出庫(部署: 部署, 出庫者: 調整者, 出庫数: -diff, 入力区分: .数量調整)
+        }
+        return true
     }
 }
 
