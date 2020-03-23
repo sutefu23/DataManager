@@ -13,10 +13,11 @@ public enum ExportType {
     case excel
     case html
     case filemaker
+    case libreoffice
     
     func header(title: String) -> String {
         switch self {
-        case .numbers, .excel, .filemaker:
+        case .numbers, .excel, .filemaker, .libreoffice:
             return ""
         case .html:
             var line: String = ""
@@ -33,7 +34,7 @@ public enum ExportType {
     
     func footer() -> String {
         switch self {
-        case .numbers, .excel, .filemaker:
+        case .numbers, .excel, .filemaker, .libreoffice:
             return ""
         case .html:
             var line : String = ""
@@ -64,7 +65,7 @@ public enum ExportType {
         switch self {
         case .filemaker:
             return cols.map { clamp($0) }.joined(separator: ",") + "\n"
-        case .excel:
+        case .excel, .libreoffice:
             return cols.map { "\"\(clamp($0))\"" }.joined(separator: ",") + "\n"
         case .numbers:
             return cols.map { clamp($0) }.joined(separator: "\t") + "\n"
@@ -81,7 +82,7 @@ public enum ExportType {
     
     func encode(text: String) -> Data {
         switch self {
-        case .numbers, .html:
+        case .numbers, .html, .libreoffice:
             return text.data(using: .utf8, allowLossyConversion: true) ?? Data()
         case .excel, .filemaker:
             return text.data(using: .shiftJIS, allowLossyConversion: true) ?? Data()
@@ -116,7 +117,7 @@ public class TableGenerator<S> {
     public func makeText(_ source: [S], format: ExportType, title: String) throws -> String {
         var text = format.header(title: title)
         switch format {
-        case .excel, .html, .numbers:
+        case .excel, .html, .numbers, .libreoffice:
             let titles = columns.map  { $0.title }
             text += format.makeLine(titles)
         case .filemaker:

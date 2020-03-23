@@ -95,6 +95,7 @@
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
 		14DFA38D24232FF2008BA120 /* 発注状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DFA38C24232FF2008BA120 /* 発注状態.swift */; };
+		14F1FF1B24283DCF00FAA2C8 /* 入出庫キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */; };
 		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
@@ -211,6 +212,7 @@
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
 		14DFA38C24232FF2008BA120 /* 発注状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注状態.swift"; sourceTree = "<group>"; };
+		14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入出庫キャッシュ.swift"; sourceTree = "<group>"; };
 		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */,
 				14AE0024241C5282009C9558 /* 最終発注単価キャッシュ.swift */,
 				144C75532421A68800934282 /* 在庫キャッシュ.swift */,
+				14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -673,6 +676,7 @@
 				145EE90623967BBB008BC8B4 /* 進捗出力.swift in Sources */,
 				14DA57192209B0C600831625 /* 進捗.swift in Sources */,
 				141203712201C3EA0054B56F /* Date.swift in Sources */,
+				14F1FF1B24283DCF00FAA2C8 /* 入出庫キャッシュ.swift in Sources */,
 				14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */,
 				14985315230BCEB4007734E0 /* カレンダ情報.swift in Sources */,
 				141203732201C5890054B56F /* 出勤日.swift in Sources */,

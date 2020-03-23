@@ -8,6 +8,34 @@
 
 import Foundation
 
+private let 注文番号部署記号対応表: [String: 部署型] = [
+    "A": 部署型.営業,
+    "B": 部署型.経理,
+    "C": 部署型.管理,
+    "D": 部署型.外注,
+    "E": 部署型.原稿・入力,
+    "F": 部署型.腐蝕・印刷・水処理,
+    "G": 部署型.付属品準備,
+    "H": 部署型.フォーミング,
+    "I": 部署型.ルーター,
+    "J": 部署型.加工,
+    "K": 部署型.研磨,
+    "L": 部署型.オブジェ,
+    "M": 部署型.腐蝕・印刷・水処理,
+    "N": 部署型.レーザー・ウォーター・照合・検査,
+    "O": 部署型.組立・検品,
+    "P": 部署型.箱文字溶接,
+    "Q": 部署型.箱文字半田,
+    "R": 部署型.レーザー・ウォーター・照合・検査,
+    "S": 部署型.切文字,
+    "T": 部署型.腐蝕・印刷・水処理,
+    "U": 部署型.表面仕上,
+    "V": 部署型.塗装,
+    "W": 部署型.発送,
+    "X": 部署型.資材,
+    "Y": 部署型.品質管理,
+]
+
 public class 注文番号キャッシュ型 {
     public static let shared = 注文番号キャッシュ型()
     
@@ -66,6 +94,12 @@ public class 注文番号型: Hashable, Codable {
         guard let name = record.string(forKey: "名称") else { throw FileMakerError.notFound(message: "注文番号型:名称") }
         self.記号 = mark
         self.名称 = name
+    }
+    
+    public var 対応部署: 部署型? {
+        if let sec = 注文番号部署記号対応表[self.記号] { return sec }
+        if self.記号.hasPrefix("A") { return .営業 }
+        return nil
     }
     
     // MARK: - <Hashable>

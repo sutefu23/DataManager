@@ -108,6 +108,19 @@ public class 資材型: Codable, Comparable, Hashable {
     public func キャッシュ在庫() throws -> Int {
         return  try 在庫数キャッシュ型.shared.キャッシュ在庫数(of: self)
     }
+    
+    // MARK: - 入出庫
+    func レコード資材入出庫() throws -> [資材入出庫型] {
+        return try 資材入出庫型.find(資材: self)
+    }
+    
+    public func 現在入出庫() throws -> [資材入出庫型] {
+        return try 入出庫キャッシュ型.shared.現在入出庫(of: self)
+    }
+    
+    public func キャッシュ入出庫() throws -> [資材入出庫型] {
+        return try 入出庫キャッシュ型.shared.キャッシュ入出庫(of: self)
+    }
 }
 
 public extension 資材型 {

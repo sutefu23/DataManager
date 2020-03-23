@@ -12,6 +12,7 @@ public class 資材入出庫型 {
     let record: FileMakerRecord
     public let 登録日: Day
     public let 登録時間: Time
+    public lazy var 登録日時: Date = Date(self.登録日, self.登録時間)
     public let 社員: 社員型
     public let 入力区分: 入力区分型
     public let 資材: 資材型
@@ -42,7 +43,7 @@ public class 資材入出庫型 {
     public var 出庫金額: Double? {
         guard let num = 資材.単価 else { return nil }
         return num * Double(出庫数)
-    }
+    }    
 }
 
 extension 資材入出庫型 {
@@ -89,9 +90,12 @@ extension 資材入出庫型 {
         return list.compactMap { 資材入出庫型($0) }
     }
 
-    public static func find(期間: ClosedRange<Day>, 入力区分: 入力区分型? = nil) throws -> [資材入出庫型] {
+    public static func find(期間: ClosedRange<Day>, 入力区分: 入力区分型? = nil, 部署: 部署型? = nil) throws -> [資材入出庫型] {
         var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(期間)
+        if let num = 部署?.部署番号 {
+            query["部署記号"] = "==\(num)"
+        }
         query["入力区分"] = 入力区分?.name
         if query.isEmpty {
             return []

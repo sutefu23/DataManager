@@ -137,6 +137,7 @@ public class 管理資材型: 管理対象型 {
     public var 安全在庫数: Int?
     public var 発注備考: String
     public var 管理者メモ: String
+    public var 在庫管理あり: Bool
 
     // MARK: <Codable>
     enum CodingKeys: String, CodingKey {
@@ -145,14 +146,16 @@ public class 管理資材型: 管理対象型 {
         case 安全在庫数
         case 発注備考
         case 管理者メモ
+        case 在庫管理あり
     }
     
-    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = false) {
         self.資材 = 資材
         self.基本発注数 = 基本発注数
         self.安全在庫数 = 安全在庫数
         self.発注備考 = 発注備考
         self.管理者メモ = 管理者メモ
+        self.在庫管理あり = 在庫管理あり
     }
     
     public required init(from decoder: Decoder) throws {
@@ -162,6 +165,7 @@ public class 管理資材型: 管理対象型 {
         self.安全在庫数 = try values.decodeIfPresent(Int.self, forKey: .安全在庫数)
         self.発注備考 = try values.decodeIfPresent(String.self, forKey: .発注備考) ?? ""
         self.管理者メモ = try values.decodeIfPresent(String.self, forKey: .管理者メモ) ?? ""
+        self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? false
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -171,6 +175,7 @@ public class 管理資材型: 管理対象型 {
         if let num = self.安全在庫数 { try container.encode(num, forKey: .安全在庫数) }
         if !self.発注備考.isEmpty { try container.encode(self.発注備考, forKey: .発注備考) }
         if !self.管理者メモ.isEmpty { try container.encode(self.管理者メモ, forKey: .管理者メモ) }
+        try container.encode(self.在庫管理あり, forKey: .在庫管理あり)
     }
     
     // MARK: <管理対象型>
@@ -181,12 +186,12 @@ public class 管理資材型: 管理対象型 {
 
 // MARK: - 板
 public class 管理板材型: 管理資材型 {
-    public var 材質: String // SUS304 BSP SUS316 SUS430 AL52S AL1100 STEEL
-    public var 種類: String // HL DS 白 黒マット ボンデ
-    public var 板厚: String // 5.0 13
-    public var サイズ: String
+    public var 材質: String = "" // SUS304 BSP SUS316 SUS430 AL52S AL1100 STEEL
+    public var 種類: String = "" // HL DS 白 黒マット ボンデ
+    public var 板厚: String = "" // 5.0 13
+    public var サイズ: String = ""
 
-    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+    func updateSheetParameters() {
         let names = 資材.製品名称.split{ $0.isWhitespace }
         let stds = 資材.規格.split{ $0.isWhitespace }
 
@@ -210,10 +215,14 @@ public class 管理板材型: 管理資材型 {
         } else {
             self.サイズ = ""
         }
-        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
     }
     
-    public init(材質: String, 種類: String, 板厚: String, サイズ: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "") {
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true) {
+        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
+        updateSheetParameters()
+    }
+    
+    public init(材質: String, 種類: String, 板厚: String, サイズ: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true) {
         self.材質 = 材質
         self.種類 = 種類
         self.板厚 = 板厚
@@ -227,15 +236,21 @@ public class 管理板材型: 管理資材型 {
         case 種類
         case 板厚
         case サイズ
+        case 在庫管理あり
     }
     
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: SheetCodingKeys.self)
-        self.材質 = try values.decode(String.self, forKey: .材質)
-        self.種類 = try values.decode(String.self, forKey: .種類)
-        self.板厚 = try values.decode(String.self, forKey: .板厚)
-        self.サイズ = try values.decode(String.self, forKey: .サイズ)
-        try super.init(from: try values.superDecoder())
+        try super.init(from: decoder)
+        if let material = try values.decodeIfPresent(String.self, forKey: .材質), let type = try values.decodeIfPresent(String.self, forKey: .種類), let thin = try values.decodeIfPresent(String.self, forKey: .板厚), let square = try values.decodeIfPresent(String.self, forKey: .サイズ) {
+            self.材質 = material
+            self.種類 = type
+            self.板厚 = thin
+            self.サイズ = square
+        } else {
+            updateSheetParameters()
+        }
+        self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? true
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -244,6 +259,6 @@ public class 管理板材型: 管理資材型 {
         try container.encode(self.種類, forKey: .種類)
         try container.encode(self.板厚, forKey: .板厚)
         try container.encode(self.サイズ, forKey: .サイズ)
-        try super.encode(to: container.superEncoder())
+        try super.encode(to: encoder)
     }
 }
