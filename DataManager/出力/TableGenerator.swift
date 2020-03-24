@@ -153,12 +153,14 @@ public class TableGenerator<S> {
 public extension TableGenerator {
     enum IntFormat {
         case native
+        case currency
     }
     
     enum DoubleFormat {
         case native
         case round0
         case round1
+        case currency
     }
     
     enum DateFormat {
@@ -203,7 +205,14 @@ public extension TableGenerator {
     func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S) -> Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
-                return String(value)
+                switch format {
+                case .native:
+                    return String(value)
+                case .currency:
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .currency
+                    return formatter.string(from: NSNumber(value: value)) ?? ""
+                }
             } else {
                 return ""
             }
@@ -221,6 +230,10 @@ public extension TableGenerator {
                 return String(format: "%.0f", value)
             case .round1:
                 return String(format: "%.1f", value)
+            case .currency:
+                let formatter = NumberFormatter()
+                formatter.numberStyle = .currency
+                return formatter.string(from: NSNumber(value: value)) ?? ""
             }
         }
         return appending(col)

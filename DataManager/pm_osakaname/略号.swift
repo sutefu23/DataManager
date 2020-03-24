@@ -36,17 +36,14 @@ extension Set where Element  == 略号型 {
     }
 }
 
-public enum 略号型: CaseIterable {
-    case 外注
+public enum 略号型: Int, CaseIterable, Comparable {
+    case 外注 = 0
     case 腐食
     case 印刷
     case 看板
     case 組込
     case 工程写真
     case 先出し
-    case 色未定
-    case 送り先未定
-    case その他未定
     case 溶接
     case 半田
     case レーザー
@@ -54,11 +51,15 @@ public enum 略号型: CaseIterable {
     case 研磨
     case 塗装
     case 両面テープ
-    
+    case 色未定
+    case 送り先未定
+    case その他未定
+
     public init?(_ code: String) {
         guard let item = codeMap[code] else { return nil }
         self = item
     }
+    public static func < (lhs: 略号型, rhs: 略号型) -> Bool { lhs.rawValue < rhs.rawValue }
     
     public var code: String {
         switch self {
@@ -81,7 +82,14 @@ public enum 略号型: CaseIterable {
         case .両面テープ: return "両"
         }
     }
-    
+ 
+    public var 表示色: DMColor {
+        switch self {
+        case .外注,. 腐食, .印刷, .看板, .組込, .工程写真, .先出し: return .black
+        case .色未定, .送り先未定, .その他未定: return .red
+        case .溶接, .半田, .レーザー, .フォーミング, .研磨, .塗装, .両面テープ: return .blue
+        }
+    }
 }
 
 public extension Sequence where Element == 略号型 {

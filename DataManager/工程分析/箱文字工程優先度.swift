@@ -69,23 +69,7 @@ extension 指示書型 {
     }
     
     public var 箱文字前工程状態表示: String {
-        var state: String
-        // 状態
-        switch self.伝票状態 {
-        case .キャンセル:
-            state = "キャ"
-        case .発送済:
-            state = "発送"
-        case .未製作, .製作中:
-            switch self.工程状態 {
-            case .通常:
-                state = "　　"
-            case .保留:
-                state = "保留"
-            case .校正中:
-                state = "校正"
-            }
-        }
+        var state: String = self.状態表示（２文字）
         // 立ち上がり進度
         for target in 立ち上がり工程 {
             if let progress = self.工程別進捗一覧[target]?.last {
@@ -101,7 +85,6 @@ extension 指示書型 {
         }
         return state
     }
-    
 
     public func 箱文字前工程必要チェック(for target: 工程型, buddyCheck: Bool = true) -> Bool {
         if self.is箱文字アクリのみ { return false }

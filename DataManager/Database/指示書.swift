@@ -386,9 +386,41 @@ public class 指示書型 {
         }
         return .通常_黒
     }()
+    
+    public lazy var 状態表示（２文字）: String = {
+        switch self.伝票状態 {
+        case .キャンセル:
+            return "キャ"
+        case .発送済:
+            switch self.経理状態 {
+            case .未登録, .受注処理済:
+                return "発送"
+            case .売上処理済:
+                return "売上"
+            }
+        case .未製作, .製作中:
+            switch 工程状態 {
+            case .校正中:
+                return "校正"
+            case .保留:
+                return "保留"
+            case .通常:
+                return "通常"
+            }
+        }
+    }()
 }
 
 extension 指示書型 {
+    public func 色付き略号(fontSize: CGFloat = 12, colorMapper:(略号型) -> DMColor = { $0.表示色 } ) -> NSMutableAttributedString {
+        let result = NSMutableAttributedString()
+        for mark in self.略号.sorted() {
+            let color: DMColor = colorMapper(mark) 
+            result.append(mark.code.makeAttributedString(color: color, size: fontSize, fontName: nil))
+        }
+        return result
+    }
+    
     public func contains(工程: 工程型) -> Bool { return self.工程別進捗一覧[工程]?.isEmpty == false }
     public func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool { return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 }) == true }
     

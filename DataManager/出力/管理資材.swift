@@ -196,13 +196,11 @@ public class 管理板材型: 管理資材型 {
         didSet { self.板厚数値 = Double(self.板厚) }
     }
     public var サイズ: String = ""
-
-    public var 板厚数値: Double? = nil
+    public private(set) var 板厚数値: Double? = nil
 
     func updateSheetParameters() {
+        // 材質・種類
         let names = 資材.製品名称.split{ $0.isWhitespace }
-        let stds = 資材.規格.split{ $0.isWhitespace }
-
         if names[0].hasPrefix("カナセライト") || names[0].hasPrefix("スミペックス") || names[0].contains("アクリ") || names[0].contains("グラス") || names[0].hasPrefix("ファンタレックス") || names[0].hasPrefix("コモミラー") || names[0].hasPrefix("クラレックス") {
             self.材質 = "アクリル"
         } else if names[0].hasSuffix("板") {
@@ -215,13 +213,15 @@ public class 管理板材型: 管理資材型 {
         } else {
             self.種類 = ""
         }
+        // 板厚・サイズ
+        let stds = 資材.規格.split{ $0.isWhitespace }
         if stds[0].hasSuffix("t") || stds[0].hasSuffix("ｔ") {
             self.板厚 = String(stds[0].dropLast())
         } else {
             self.板厚 = String(stds[0])
         }
         if stds.count >= 2 {
-            var scanner = DMScanner(String(stds[1]))
+            var scanner = DMScanner(stds[1])
             self.サイズ = scanner.scanUpTo("(", "（") ?? scanner.string
         } else {
             self.サイズ = ""

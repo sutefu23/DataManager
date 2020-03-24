@@ -52,7 +52,14 @@ public struct DMScanner: RandomAccessCollection {
 
     public init(_ string: String, upperCased:Bool = false, skipSpaces: Bool = false) {
         self.source = upperCased ? string.uppercased() : string
-//        self.originalSource = string
+        self.startIndex = source.startIndex
+        self.endIndex = source.endIndex
+        self.skipSpaces = skipSpaces
+        self.needsSpaceCheck = skipSpaces
+    }
+
+    public init<S: StringProtocol>(_ string: S, upperCased:Bool = false, skipSpaces: Bool = false) {
+        self.source = upperCased ? string.uppercased() : String(string)
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
         self.skipSpaces = skipSpaces
