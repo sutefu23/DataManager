@@ -98,7 +98,7 @@ extension 発注型 {
     }
     
 
-    public static func find(登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: String? = nil, 数量: Int? = nil) throws -> [発注型]{
+    public static func find(登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: 図番型? = nil, 数量: Int? = nil) throws -> [発注型]{
         var query = FileMakerQuery()
         query["登録日"] = 登録日?.fmString
         query["注文番号"] = 注文番号?.記号
@@ -111,5 +111,19 @@ extension 発注型 {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
+    }
+}
+
+// MARK:
+extension Sequence where Element == 発注型 {
+    public var 未納発注個数: Int {
+        return self.reduce(0) {
+            switch $1.状態 {
+            case .未処理, .処理済み, .発注待ち:
+                return $0 + ($1.発注数量 ?? 0)
+            case .発注済み, .納品書待ち, .納品済み:
+                return $0
+            }
+        }
     }
 }

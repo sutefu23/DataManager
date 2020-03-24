@@ -8,9 +8,11 @@
 
 import Foundation
 
+public typealias 図番型 = String
+
 public class 資材型: Codable, Comparable, Hashable {
     let record: FileMakerRecord
-    public let 図番: String
+    public let 図番: 図番型
     public let 製品名称: String
     public let 規格: String
     public let 単価: Double?
@@ -25,7 +27,7 @@ public class 資材型: Codable, Comparable, Hashable {
         self.規格 = 規格
         self.単価 = record.double(forKey: "f88")
     }
-    public convenience init?(図番: String ) {
+    public convenience init?(図番: 図番型 ) {
         guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
         try? self.init(record)
     }
@@ -121,6 +123,21 @@ public class 資材型: Codable, Comparable, Hashable {
     public func キャッシュ入出庫() throws -> [資材入出庫型] {
         return try 入出庫キャッシュ型.shared.キャッシュ入出庫(of: self)
     }
+    
+    // MARK: - 発注キャッシュ
+    public func 現在発注一覧()throws -> [発注型] {
+        return try 資材発注キャッシュ型.shared.現在発注一覧(図番: self.図番)
+    }
+    
+    public func キャッシュ発注一覧()throws -> [発注型] {
+        return try 資材発注キャッシュ型.shared.キャッシュ発注一覧(図番: self.図番)
+    }
+    
+    public func prepareキャッシュ() throws {
+        let _ = try self.キャッシュ入出庫()
+        let _ = try self.キャッシュ在庫()
+        let _ = try self.キャッシュ発注一覧()
+    }
 }
 
 public extension 資材型 {
@@ -206,7 +223,7 @@ public extension 資材型 {
         return try list.compactMap { try 資材型($0) }.sorted()
     }
     
-    static func find(図番: String) throws -> 資材型? {
+    static func find(図番: 図番型) throws -> 資材型? {
         let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
         query["f13"] = "==\(図番)"

@@ -39,6 +39,7 @@
 		146651B0240DC696008F50D0 /* 資材入出庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146651AF240DC696008F50D0 /* 資材入出庫.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
+		1468395824297930001E5656 /* 資材発注キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1468395724297930001E5656 /* 資材発注キャッシュ.swift */; };
 		146884DA23E113750062F454 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146884D923E113750062F454 /* Set.swift */; };
 		1469576B2405088100A29C4C /* DMScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469576A2405088100A29C4C /* DMScanner.swift */; };
 		1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469D67223C406DE00A28A6D /* TableGenerator.swift */; };
@@ -156,6 +157,7 @@
 		146651AF240DC696008F50D0 /* 資材入出庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材入出庫.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
+		1468395724297930001E5656 /* 資材発注キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材発注キャッシュ.swift"; sourceTree = "<group>"; };
 		146884D923E113750062F454 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		1469576A2405088100A29C4C /* DMScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMScanner.swift; sourceTree = "<group>"; };
 		1469D67223C406DE00A28A6D /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				14AE0024241C5282009C9558 /* 最終発注単価キャッシュ.swift */,
 				144C75532421A68800934282 /* 在庫キャッシュ.swift */,
 				14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */,
+				1468395724297930001E5656 /* 資材発注キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				146AA59F2406108D00ED395D /* 箱文字優先度キャッシュ.swift in Sources */,
 				14DFA38D24232FF2008BA120 /* 発注状態.swift in Sources */,
+				1468395824297930001E5656 /* 資材発注キャッシュ.swift in Sources */,
 				1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */,
 				142D3BA7231CAD1900B95EEB /* 指示書分析.swift in Sources */,
 				146746652373E8C90027B5C1 /* インシデント.swift in Sources */,

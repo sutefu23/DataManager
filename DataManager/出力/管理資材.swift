@@ -129,6 +129,10 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
             return nil
         }
     }
+    
+    public func sort(_ cmp:(T, T) -> Bool) {
+        self.一覧.sort(by: cmp)
+    }
 }
 
 public class 管理資材型: 管理対象型 {
@@ -181,21 +185,27 @@ public class 管理資材型: 管理対象型 {
     // MARK: <管理対象型>
     public func isIdential(to: 管理資材型) -> Bool {
         return self.資材.図番 == to.資材.図番
-    }    
+    }
 }
 
 // MARK: - 板
 public class 管理板材型: 管理資材型 {
     public var 材質: String = "" // SUS304 BSP SUS316 SUS430 AL52S AL1100 STEEL
     public var 種類: String = "" // HL DS 白 黒マット ボンデ
-    public var 板厚: String = "" // 5.0 13
+    public var 板厚: String = "" { // 5.0 13
+        didSet { self.板厚数値 = Double(self.板厚) }
+    }
     public var サイズ: String = ""
+
+    public var 板厚数値: Double? = nil
 
     func updateSheetParameters() {
         let names = 資材.製品名称.split{ $0.isWhitespace }
         let stds = 資材.規格.split{ $0.isWhitespace }
 
-        if names[0].hasSuffix("板") {
+        if names[0].hasPrefix("カナセライト") || names[0].hasPrefix("スミペックス") || names[0].contains("アクリ") || names[0].contains("グラス") || names[0].hasPrefix("ファンタレックス") || names[0].hasPrefix("コモミラー") || names[0].hasPrefix("クラレックス") {
+            self.材質 = "アクリル"
+        } else if names[0].hasSuffix("板") {
             self.材質 = String(names[0].dropLast())
         } else {
             self.材質 = String(names[0])
@@ -211,7 +221,8 @@ public class 管理板材型: 管理資材型 {
             self.板厚 = String(stds[0])
         }
         if stds.count >= 2 {
-            self.サイズ = String(stds[1])
+            var scanner = DMScanner(String(stds[1]))
+            self.サイズ = scanner.scanUpTo("(", "（") ?? scanner.string
         } else {
             self.サイズ = ""
         }
@@ -226,6 +237,7 @@ public class 管理板材型: 管理資材型 {
         self.材質 = 材質
         self.種類 = 種類
         self.板厚 = 板厚
+        self.板厚数値 = Double(板厚)
         self.サイズ = サイズ
         super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
     }
@@ -246,6 +258,7 @@ public class 管理板材型: 管理資材型 {
             self.材質 = material
             self.種類 = type
             self.板厚 = thin
+            self.板厚数値 = Double(thin)
             self.サイズ = square
         } else {
             updateSheetParameters()

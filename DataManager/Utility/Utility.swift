@@ -14,10 +14,12 @@ public class DataManagerController {
         flush工程名称DB()
         出勤日DB型.shared.flushCache()
         flush作業系列Cache()
-        在庫数キャッシュ型.shared.flushAllCache()
         最終発注単価キャッシュ型.shared.flushCache()
         資材キャッシュ型.shared.flushCache()
         箱文字優先度キャッシュ型.shared.removeAll()
+        在庫数キャッシュ型.shared.flushAllCache()
+        入出庫キャッシュ型.shared.flushAllCache()
+        資材発注キャッシュ型.shared.flushAllCache()
     }
 }
 
