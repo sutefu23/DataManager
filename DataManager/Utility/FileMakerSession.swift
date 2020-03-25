@@ -165,7 +165,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
                 if let limit = portal.limit {
                     names.append(portal.name)
                     let name = "_limit.\(portal.name)"
-                    let item = URLQueryItem(name: "_limit.\(portal.name)", value: "\(limit)")
+                    let item = URLQueryItem(name: name, value: "\(limit)")
                     queryItems.append(item)
                 }
             }
@@ -230,7 +230,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
             var errorMessage = ""
             let json = SearchRequest(query: query, sort:sort , offset: offset, limit: limit)
             guard let data = try? encoder.encode(json) else { throw FileMakerError.find(message: "sortItem encoding") }
-            let rawData = String(data: data, encoding: .utf8)
+//            let rawData = String(data: data, encoding: .utf8)
             var newResult: [FileMakerRecord] = []
             var request = URLRequest(url: url,timeoutInterval: 30)
             request.httpMethod = "POST"
@@ -299,7 +299,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var errorMessage = ""
         let json = ["fieldData" : fields]
         guard let data = try? encoder.encode(json) else { throw FileMakerError.update(message: "sortItem encoding") }
-        let rawData = String(data: data, encoding: .utf8)
+//        let rawData = String(data: data, encoding: .utf8)
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -327,7 +327,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var errorMessage = ""
         let json = ["fieldData": fields]
         guard let data = try? encoder.encode(json) else { throw FileMakerError.insert(message: "sortItem encoding") }
-        let rawData = String(data: data, encoding: .utf8)
+//        let rawData = String(data: data, encoding: .utf8)
         var result = ""
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

@@ -26,6 +26,12 @@ public enum FileMakerError: LocalizedError {
     case invalidData(message: String)
     case notFound(message: String)
     
+    init(invalidData keys: String..., record: FileMakerRecord) {
+        let list: [String] = keys.map { "\($0): \(record.string(forKey: $0) ?? "")" }
+        let mes = list.joined(separator: " ")
+        self = .invalidData(message: mes)
+    }
+    
     var message: String {
         switch self {
         case .dbIsDisabled: return ""

@@ -15,7 +15,7 @@ class TestHattyuu: XCTestCase {
     func testFind2() {
         if execDBTest == false { return }
         let day = Day(2020, 2,12)
-        let type = "N"
+        let type = 注文番号キャッシュ型.shared["N"]
         let member = 社員型(社員番号: 023)
         let order = "5904"
         let volume = 2

@@ -21,6 +21,14 @@ class TestProgress: XCTestCase {
         }
     }
 
+    func testNotFound() {
+        do {
+            let list = try 進捗型.find(登録期間: Day(1999, 7,1)...Day(1999, 7, 31))
+            XCTAssert(list.isEmpty)
+        } catch {
+            fatalError()
+        }
+    }
 //    func testFind2() {
 //        let day0331 = Day(2019, 3, 1)
 //

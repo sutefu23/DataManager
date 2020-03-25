@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Time: Hashable, Comparable, CustomStringConvertible {
+public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
     public let hour: Int
     public let minute: Int
     public let second: Int
@@ -46,7 +46,29 @@ public struct Time: Hashable, Comparable, CustomStringConvertible {
             return nil
         }
     }
-    
+    // MARK: - <Codable>
+    enum CodingKeys: String, CodingKey {
+        case hour = "Hour"
+        case minute = "Minute"
+        case second = "Second"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.hour = try values.decodeIfPresent(Int.self, forKey: .hour) ?? 0
+        self.minute = try values.decodeIfPresent(Int.self, forKey: .minute) ?? 0
+        self.second = try values.decodeIfPresent(Int.self, forKey: .second) ?? 0
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        if self.hour != 0 { try container.encode(self.hour, forKey: .hour) }
+        if self.minute != 0 { try container.encode(self.minute, forKey: .minute) }
+        if self.second != 0 { try container.encode(self.second, forKey: .second) }
+    }
+
+
+    // MARK: -
     public static func <(left: Time, right: Time) -> Bool {
         if left.hour != right.hour { return left.hour < right.hour }
         if left.minute != right.minute { return left.minute < right.minute }

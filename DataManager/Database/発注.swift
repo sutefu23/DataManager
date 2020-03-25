@@ -10,12 +10,15 @@ import Foundation
 
 public class 発注型 {
     let record: FileMakerRecord
-    let 資材: 資材型
+    public let 資材: 資材型
+    let 指定注文番号: 指定注文番号型
     
     init?(_ record: FileMakerRecord) {
         self.record = record
         guard let item = record.資材(forKey: "図番") else { return nil }
         self.資材 = item
+        guard let number = record.指定注文番号(forKey: "指定注文番号") else { return nil }
+        self.指定注文番号 = number
     }
     
     public var 状態: 発注状態型 { return record.発注状態(forKey: "状態")! }
@@ -25,11 +28,13 @@ public class 発注型 {
 public extension 発注型 {
     var 注文番号: 注文番号型 { return record.注文番号(forKey: "注文番号")! }
     var 会社名: String { return record.string(forKey: "会社名")! }
-    var 会社コード: String { return record.string(forKey: "会社コード")! }
+    var 会社コード: 会社コード型 { return record.string(forKey: "会社コード")! }
+    var 会社: 取引先型? { return try? 取引先キャッシュ型.shared.キャッシュ取引先(会社コード: self.会社コード) }
     var 金額: String { return record.string(forKey: "金額")! }
     var 発注日: Day { return record.day(forKey: "発注日")! }
     var 登録日: Day { return record.day(forKey: "登録日")! }
-    var 図番: String { return record.string(forKey: "図番")! }
+    var 図番: String { return 資材.図番 }
+    var 単位: String { return 資材.単位 }
     var 版数: String { return record.string(forKey: "版数")! }
     var 製品名称: String { return record.string(forKey: "製品名称")! }
     var 規格: String { return record.string(forKey: "規格")! }
@@ -82,13 +87,6 @@ extension 発注型 {
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
     }
-//    public static func find(API識別キー: UUID) throws -> [発注型] {
-//        var query = FileMakerQuery()
-//        query["API識別キー"] = "==\(API識別キー.uuidString)"
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
-//        return list.compactMap { 発注型($0) }
-//    }
 
     static func find(API識別キー: UUID, session: FileMakerSession) throws -> [発注型] {
         var query = FileMakerQuery()
@@ -119,9 +117,9 @@ extension Sequence where Element == 発注型 {
     public var 未納発注個数: Int {
         return self.reduce(0) {
             switch $1.状態 {
-            case .未処理, .処理済み, .発注待ち:
+            case .未処理, .発注待ち:
                 return $0 + ($1.発注数量 ?? 0)
-            case .発注済み, .納品書待ち, .納品済み:
+            case .発注済み, .納品書待ち, .納品済み, .処理済み:
                 return $0
             }
         }

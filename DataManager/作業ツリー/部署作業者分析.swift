@@ -62,7 +62,7 @@ public class 部署作業者分析型 {
     }
     
     func setupLines() {
-        var groups = Dictionary(grouping: lines) { $0.0 }
+        let groups = Dictionary(grouping: lines) { $0.0 }
         for line in lines {
             func firstDate(_ val: [(GroupSet, 工程図工程型)]) -> Date {
                 var minDate : Date = val.first!.1.開始日時
@@ -90,7 +90,6 @@ public class 部署作業者分析型 {
         let fromDay = range.lowerBound.前出勤日()
         let toDay = range.lowerBound.翌出勤日()
         guard let orders = (try? 指示書型.find(作業範囲: (fromDay.day)...(toDay.day))) else { return }
-        var text = ""
         for order in orders {
             var currentLines: [(工程社員型, 作業型)] = []
             // 範囲内の有効な作業の追加
@@ -119,6 +118,7 @@ public class 部署作業者分析型 {
             if line1.0 != line2.0 { return line1.0 < line2.0 }
             return line1.1.開始日時 < line2.1.開始日時
         }
+        let text = lines.map { "\($0.0.工程.code) \($0.0.社員.社員名称) \($0.1.開始日時) \($0.1.完了日時)"}.joined(separator: "\n")
         let url = URL(fileURLWithPath: "/Users/manager/Downloads/test.csv")
         try! text.write(to: url, atomically: true, encoding: .utf8)
         var order = 1.0

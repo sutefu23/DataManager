@@ -142,6 +142,8 @@ public class 管理資材型: 管理対象型 {
     public var 発注備考: String
     public var 管理者メモ: String
     public var 在庫管理あり: Bool
+    /// 発注状態が発注済で入庫したものの一覧
+    public var 入庫済発注: Set<指定注文番号型> = []
 
     // MARK: <Codable>
     enum CodingKeys: String, CodingKey {

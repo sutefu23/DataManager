@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Month: Hashable, Strideable {
+public struct Month: Hashable, Strideable, Codable {
     public let year: Int
     public let month: Int
     public var shortYear: Int {
@@ -46,7 +46,25 @@ public struct Month: Hashable, Strideable {
         self.year = year
         self.month = month
     }
+    // MARK: - <Codable>
+    enum CodingKeys: String, CodingKey {
+        case year = "Year"
+        case month = "Month"
+    }
 
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.year = try values.decode(Int.self, forKey: .year)
+        self.month = try values.decodeIfPresent(Int.self, forKey: .month) ?? 1
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.year, forKey: .year)
+        if self.month != 1 { try container.encode(self.month, forKey: .month) }
+    }
+
+    // MARK: -
     public var prevMonth: Month {
         var year = self.year
         var month = self.month-1

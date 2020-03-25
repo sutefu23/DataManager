@@ -150,7 +150,7 @@ public class 指示書型 {
     #endif
 
     public lazy var 進捗一覧: [進捗型] = {
-        let list = (try? 進捗型.find(伝票番号: self.伝票番号))?.sorted{ $0.登録日時 < $1.登録日時 } ?? []
+        let list = (try? 進捗型.find2(伝票番号: self.伝票番号))?.sorted{ $0.登録日時 < $1.登録日時 } ?? []
         return list
     }()
     public lazy var 工程別進捗一覧: [工程型: [進捗型]] = { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }()

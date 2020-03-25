@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Day: Hashable, Strideable {
+public struct Day: Hashable, Strideable, Codable {
     public let year: Int
     public let month: Int
     public let day: Int
@@ -23,6 +23,7 @@ public struct Day: Hashable, Strideable {
     public init(year: Int, month: Int, day: Int) {
         self.init(year, month, day)
     }
+    
     public init(_ year: Int, _ month: Int, _ day: Int) {
         self.year = year
         self.month = month
@@ -65,7 +66,28 @@ public struct Day: Hashable, Strideable {
         self.month = month
         self.day = day
     }
-    
+    // MARK: - <Codable>
+    enum CodingKeys: String, CodingKey {
+        case year = "Year"
+        case month = "Month"
+        case day = "Day"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.year = try values.decode(Int.self, forKey: .year)
+        self.month = try values.decodeIfPresent(Int.self, forKey: .month) ?? 1
+        self.day = try values.decodeIfPresent(Int.self, forKey: .day) ?? 1
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.year, forKey: .year)
+        if self.month != 1 { try container.encode(self.month, forKey: .month) }
+        if self.day != 1 { try container.encode(self.day, forKey: .day) }
+    }
+
+    // MARK: -
     public var isToday: Bool {
         return Day() == self
     }

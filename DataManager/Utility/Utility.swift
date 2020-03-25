@@ -20,6 +20,7 @@ public class DataManagerController {
         在庫数キャッシュ型.shared.flushAllCache()
         入出庫キャッシュ型.shared.flushAllCache()
         資材発注キャッシュ型.shared.flushAllCache()
+        取引先キャッシュ型.shared.flushAllCache()
     }
 }
 

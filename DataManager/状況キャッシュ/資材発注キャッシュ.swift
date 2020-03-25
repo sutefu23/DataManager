@@ -39,3 +39,7 @@ class 資材発注キャッシュ型 {
         lock.unlock()
     }
 }
+
+extension 資材発注キャッシュ型 {
+    
+}

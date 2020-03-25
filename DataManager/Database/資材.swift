@@ -153,8 +153,12 @@ public extension 資材型 {
         return record.string(forKey: "dbo.ZB_T1:f6") ?? ""
     }
     
-    var 会社コード: String {
+    var 会社コード: 会社コード型 {
         return record.string(forKey: "会社コード") ?? ""
+    }
+    
+    var 発注先: 取引先型? {
+        return try? 取引先キャッシュ型.shared.キャッシュ取引先(会社コード: self.会社コード)
     }
     
     var 規格2: String {
@@ -208,7 +212,7 @@ public extension 資材型 {
 extension FileMakerRecord {
     func 資材(forKey key: String) -> 資材型? {
         guard let number = self.string(forKey: key) else { return nil }
-        return 資材キャッシュ型.shared[number]
+        return 資材キャッシュ型.shared.キャッシュ資材(図番: number)
     }
 }
 
