@@ -189,7 +189,7 @@ public class PaperText: PaperObject {
         #if targetEnvironment(macCatalyst)
         let dy = CGFloat(-y)
         #else
-        let dy = CGFloat(y)
+        let dy = CGFloat(-y)
         #endif
         origin.x -= (rect.height/2 - 2) + CGFloat(x)
         origin.y -= (rect.height/2 + 1) + dy

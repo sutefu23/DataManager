@@ -48,6 +48,10 @@ public class PaperPDFPage: PDFPage {
         let rect = self.bounds(for: box)
         let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: rect.height)
         context.concatenate(flipVertical)
+        #elseif os(iOS)
+        let rect = self.bounds(for: box)
+        let flipVertical = CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: rect.width, ty: 0)
+        context.concatenate(flipVertical)
         #endif
         rects.forEach { $0.draw(at: CGPoint.zero) }
         DMGraphicsPopContext()

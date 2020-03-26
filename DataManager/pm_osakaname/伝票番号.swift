@@ -23,7 +23,7 @@ func clear伝票番号Cache() {
     lock.unlock()
 }
 
-public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
     public let 整数値: Int
     
     public init(validNumber: Int) {
@@ -56,6 +56,20 @@ public struct 伝票番号型: Hashable, Comparable, CustomStringConvertible, Ex
         } else {
             return false
         }
+    }
+    
+    // MARK: <Codable>
+    enum CodingKeys: String, CodingKey {
+        case number
+    }
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.整数値 = try values.decode(Int.self, forKey: .number)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.整数値, forKey: .number)
     }
     
     // MARK: -
