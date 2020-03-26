@@ -149,17 +149,12 @@ public class 指示書型 {
     #else
     #endif
 
-    public lazy var 進捗一覧: [進捗型] = {
-        let list = (try? 進捗型.find2(伝票番号: self.伝票番号))?.sorted{ $0.登録日時 < $1.登録日時 } ?? []
-        return list
-    }()
-    public lazy var 工程別進捗一覧: [工程型: [進捗型]] = { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }()
-    public lazy var 作業進捗一覧: [進捗型] = {
-        return self.進捗一覧.filter { $0.作業種別 != .その他 }
-    }()
-    public lazy var uuid: String = {
-        return self.record.string(forKey: "UUID")!
-    }()
+    public var 進捗一覧: [進捗型] {
+        return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)) ?? []
+    }
+    public var 工程別進捗一覧: [工程型: [進捗型]] { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }
+    public var 作業進捗一覧: [進捗型] { self.進捗一覧.filter { $0.作業種別 != .その他 } }
+    public lazy var uuid: String = { self.record.string(forKey: "UUID")! }()
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {
         let list = (try? 指示書変更内容履歴型.find(指示書uuid: self.uuid))?.sorted { $0.日時 < $1.日時 } ?? []

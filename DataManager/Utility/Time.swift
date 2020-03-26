@@ -9,9 +9,9 @@
 import Foundation
 
 public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
-    public let hour: Int
-    public let minute: Int
-    public let second: Int
+    public var hour: Int
+    public var minute: Int
+    public var second: Int
     
     public init() {
         self = Date().time

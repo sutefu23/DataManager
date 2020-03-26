@@ -9,9 +9,9 @@
 import Foundation
 
 public struct Day: Hashable, Strideable, Codable {
-    public let year: Int
-    public let month: Int
-    public let day: Int
+    public var year: Int
+    public var month: Int
+    public var day: Int
     
     public init() {
         let date = Date()

@@ -27,19 +27,28 @@ public class PaperPDFPage: PDFPage {
     public override func bounds(for box: PDFDisplayBox) -> CGRect {
         if orientaion == .landscape {
             return CGRect(x: 0, y: 0, width: 842, height: 595)
+        } else if orientaion == .portrait {
+            return CGRect(x: 0, y: 0, width: 595, height: 842)
+        } else {
+            fatalError()
         }
-        if orientaion == .portrait {
-            return CGRect(x: 0, y: 0, width: 592, height: 842)
-        }
-        fatalError()
     }
+
     public func contents(for box: PDFDisplayBox) -> CGRect {
         let bounds = self.bounds(for: box)
         return bounds.insetBy(dx: margin, dy: margin)
     }
 
+    public var isEmpty: Bool { return rects.isEmpty }
+    
     public override func draw(with box: PDFDisplayBox, to context: CGContext) {
+
         DMGraphicsPushContext(context)
+        #if targetEnvironment(macCatalyst)
+        let rect = self.bounds(for: box)
+        let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: rect.height)
+        context.concatenate(flipVertical)
+        #endif
         rects.forEach { $0.draw(at: CGPoint.zero) }
         DMGraphicsPopContext()
     }
@@ -47,6 +56,5 @@ public class PaperPDFPage: PDFPage {
     public func append(_ rect: PaperRect) {
         rects.append(rect)
     }
-
 }
 #endif

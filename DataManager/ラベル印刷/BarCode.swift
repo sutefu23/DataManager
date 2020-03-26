@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 /// 二次元バーコード
 public struct DMBarCode {
@@ -58,17 +59,17 @@ struct BarCodeCharacter {
     }
     
     let code: Int
-    let pattern: [Int]
-    let digits: Int
+    let pattern: [CGFloat]
+    let digits: CGFloat
     var character: Character? = nil
 
-    init(code: Int, patternArray: [Int]) {
+    init(code: Int, patternArray: [CGFloat]) {
         self.code = code
         self.pattern = patternArray
         self.digits = pattern.reduce(0) { $0 + $1 }
     }
 
-    init(code: Int, pattern: Int...) {
+    init(code: Int, pattern: CGFloat...) {
         self.init(code: code, patternArray: pattern)
     }
 }
@@ -80,7 +81,7 @@ struct Code128 {
     var codeB: Code128Character
     var codeC: Code128Character
     
-    init(code: Int, pattern: Int... , codeA: Code128Character, codeB: Code128Character?, codeC: Code128Character?) {
+    init(code: Int, pattern: CGFloat... , codeA: Code128Character, codeB: Code128Character?, codeC: Code128Character?) {
         self.character = BarCodeCharacter(code: code, patternArray: pattern)
         self.codeA = codeA
         self.codeB = codeB ?? codeA
@@ -289,7 +290,7 @@ struct Code39 {
     let barcode: BarCodeCharacter
     let character: Character
     
-    init(_ code: Int, pattern: Int..., character: Character) {
+    init(_ code: Int, pattern: CGFloat..., character: Character) {
         self.barcode = BarCodeCharacter(code: code, patternArray: pattern)
         self.character = character
     }
@@ -303,106 +304,61 @@ struct Code39 {
         }
         return map
     }()
+    static let w: CGFloat = 2.25
     static let codeTable: [Code39] = [
-          Code39( 0, pattern: 1,1,1,2,2,1,2,1,1,1, character: "0"),
-          Code39( 1, pattern: 2,1,1,2,1,1,1,1,2,1, character: "1"),
-          Code39( 2, pattern: 1,1,2,2,1,1,1,1,2,1, character: "2"),
-          Code39( 3, pattern: 2,1,2,2,1,1,1,1,1,1, character: "3"),
-          Code39( 4, pattern: 1,1,1,2,2,1,1,1,2,1, character: "4"),
-          Code39( 5, pattern: 2,1,1,2,2,1,1,1,1,1, character: "5"),
-          Code39( 6, pattern: 1,1,2,2,2,1,1,1,1,1, character: "6"),
-          Code39( 7, pattern: 1,1,1,2,1,1,2,1,2,1, character: "7"),
-          Code39( 8, pattern: 2,1,1,2,1,1,2,1,1,1, character: "8"),
-          Code39( 9, pattern: 1,1,2,2,1,1,2,1,1,1, character: "9"),
-          Code39(10, pattern: 2,1,1,1,1,2,1,1,2,1, character: "A"),
-          Code39(11, pattern: 1,1,2,1,1,2,1,1,2,1, character: "B"),
-          Code39(12, pattern: 2,1,2,1,1,2,1,1,1,1, character: "C"),
-          Code39(13, pattern: 1,1,1,1,2,2,1,1,2,1, character: "D"),
-          Code39(14, pattern: 2,1,1,1,2,2,1,1,1,1, character: "E"),
-          Code39(15, pattern: 1,1,2,1,2,2,1,1,1,1, character: "F"),
-          Code39(16, pattern: 1,1,1,1,1,2,2,1,2,1, character: "G"),
-          Code39(17, pattern: 2,1,1,1,1,2,2,1,1,1, character: "H"),
-          Code39(18, pattern: 1,1,2,1,1,2,2,1,1,1, character: "I"),
-          Code39(19, pattern: 1,1,1,1,2,2,2,1,1,1, character: "J"),
-          Code39(20, pattern: 2,1,1,1,1,1,1,2,2,1, character: "K"),
-          Code39(21, pattern: 1,1,2,1,1,1,1,2,2,1, character: "L"),
-          Code39(22, pattern: 2,1,2,1,1,1,1,2,1,1, character: "M"),
-          Code39(23, pattern: 1,1,1,1,2,1,1,2,2,1, character: "N"),
-          Code39(24, pattern: 2,1,1,1,2,1,1,2,1,1, character: "O"),
-          Code39(25, pattern: 1,1,2,1,2,1,1,2,1,1, character: "P"),
-          Code39(26, pattern: 1,1,1,1,1,1,2,2,2,1, character: "Q"),
-          Code39(27, pattern: 2,1,1,1,1,1,2,2,1,1, character: "R"),
-          Code39(28, pattern: 1,1,2,1,1,1,2,2,1,1, character: "S"),
-          Code39(29, pattern: 1,1,1,1,2,1,2,2,1,1, character: "T"),
-          Code39(30, pattern: 2,2,1,1,1,1,1,1,2,1, character: "U"),
-          Code39(31, pattern: 1,2,2,1,1,1,1,1,2,1, character: "V"),
-          Code39(32, pattern: 2,2,2,1,1,1,1,1,1,1, character: "W"),
-          Code39(33, pattern: 1,2,1,1,2,1,1,1,2,1, character: "X"),
-          Code39(34, pattern: 2,2,1,1,2,1,1,1,1,1, character: "Y"),
-          Code39(35, pattern: 1,2,2,1,2,1,1,1,1,1, character: "Z"),
-          Code39(36, pattern: 1,2,1,1,1,1,2,1,2,1, character: "-"),
-          Code39(37, pattern: 2,2,1,1,1,1,2,1,1,1, character: "."),
-          Code39(38, pattern: 1,2,2,1,1,1,2,1,1,1, character: " "),
-          Code39(39, pattern: 1,2,1,1,2,1,2,1,1,1, character: "*"),
-          Code39(40, pattern: 1,2,1,2,1,2,1,1,1,1, character: "$"),
-          Code39(41, pattern: 1,2,1,2,1,1,1,2,1,1, character: "/"),
-          Code39(42, pattern: 1,2,1,1,1,2,1,2,1,1, character: "+"),
-          Code39(43, pattern: 1,1,1,2,1,2,1,2,1,1, character: "%"),
+          Code39( 0, pattern: 1,1,1,w,w,1,w,1,1,1, character: "0"),
+          Code39( 1, pattern: w,1,1,w,1,1,1,1,w,1, character: "1"),
+          Code39( 2, pattern: 1,1,w,w,1,1,1,1,w,1, character: "2"),
+          Code39( 3, pattern: w,1,w,w,1,1,1,1,1,1, character: "3"),
+          Code39( 4, pattern: 1,1,1,w,w,1,1,1,w,1, character: "4"),
+          Code39( 5, pattern: w,1,1,w,w,1,1,1,1,1, character: "5"),
+          Code39( 6, pattern: 1,1,w,w,w,1,1,1,1,1, character: "6"),
+          Code39( 7, pattern: 1,1,1,w,1,1,w,1,w,1, character: "7"),
+          Code39( 8, pattern: w,1,1,w,1,1,w,1,1,1, character: "8"),
+          Code39( 9, pattern: 1,1,w,w,1,1,w,1,1,1, character: "9"),
+          Code39(10, pattern: w,1,1,1,1,w,1,1,w,1, character: "A"),
+          Code39(11, pattern: 1,1,w,1,1,w,1,1,w,1, character: "B"),
+          Code39(12, pattern: w,1,w,1,1,w,1,1,1,1, character: "C"),
+          Code39(13, pattern: 1,1,1,1,w,w,1,1,w,1, character: "D"),
+          Code39(14, pattern: w,1,1,1,w,w,1,1,1,1, character: "E"),
+          Code39(15, pattern: 1,1,w,1,w,w,1,1,1,1, character: "F"),
+          Code39(16, pattern: 1,1,1,1,1,w,w,1,w,1, character: "G"),
+          Code39(17, pattern: w,1,1,1,1,w,w,1,1,1, character: "H"),
+          Code39(18, pattern: 1,1,w,1,1,w,w,1,1,1, character: "I"),
+          Code39(19, pattern: 1,1,1,1,w,w,w,1,1,1, character: "J"),
+          Code39(20, pattern: w,1,1,1,1,1,1,w,w,1, character: "K"),
+          Code39(21, pattern: 1,1,w,1,1,1,1,w,w,1, character: "L"),
+          Code39(22, pattern: w,1,w,1,1,1,1,w,1,1, character: "M"),
+          Code39(23, pattern: 1,1,1,1,w,1,1,w,w,1, character: "N"),
+          Code39(24, pattern: w,1,1,1,w,1,1,w,1,1, character: "O"),
+          Code39(25, pattern: 1,1,w,1,w,1,1,w,1,1, character: "P"),
+          Code39(26, pattern: 1,1,1,1,1,1,w,w,w,1, character: "Q"),
+          Code39(27, pattern: w,1,1,1,1,1,w,w,1,1, character: "R"),
+          Code39(28, pattern: 1,1,w,1,1,1,w,w,1,1, character: "S"),
+          Code39(29, pattern: 1,1,1,1,w,1,w,w,1,1, character: "T"),
+          Code39(30, pattern: w,w,1,1,1,1,1,1,w,1, character: "U"),
+          Code39(31, pattern: 1,w,w,1,1,1,1,1,w,1, character: "V"),
+          Code39(32, pattern: w,w,w,1,1,1,1,1,1,1, character: "W"),
+          Code39(33, pattern: 1,w,1,1,w,1,1,1,w,1, character: "X"),
+          Code39(34, pattern: w,w,1,1,w,1,1,1,1,1, character: "Y"),
+          Code39(35, pattern: 1,w,w,1,w,1,1,1,1,1, character: "Z"),
+          Code39(36, pattern: 1,w,1,1,1,1,w,1,w,1, character: "-"),
+          Code39(37, pattern: w,w,1,1,1,1,w,1,1,1, character: "."),
+          Code39(38, pattern: 1,w,w,1,1,1,w,1,1,1, character: " "),
+          Code39(39, pattern: 1,w,1,1,w,1,w,1,1,1, character: "*"),
+          Code39(40, pattern: 1,w,1,w,1,w,1,1,1,1, character: "$"),
+          Code39(41, pattern: 1,w,1,w,1,1,1,w,1,1, character: "/"),
+          Code39(42, pattern: 1,w,1,1,1,w,1,w,1,1, character: "+"),
+          Code39(43, pattern: 1,1,1,w,1,w,1,w,1,1, character: "%"),
     ]
 }
 
 // MARK: - 描画・印刷
 #if os(iOS)
+import UIKit
+
 #elseif os(macOS)
 import Cocoa
-
-public extension DMBarCode {
-    func draw(inRect rect: CGRect) {
-        let minFontSize: CGFloat = 6
-        let barcode = self.characters
-        let totalDigits = barcode.reduce(0) { $0 + $1.digits }
-        let bold = rect.width / CGFloat(totalDigits)
-        let codeWidth = rect.width / CGFloat(barcode.count)
-        var offset = 0
-        let minX = rect.minX
-        let minY = rect.minY
-        let maxY = rect.maxY
-        let fontSize = floor(codeWidth/2)
-        let font = DMFont.userFont(ofSize: fontSize) ?? DMFont.systemFont(ofSize: fontSize)
-        let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: DMColor.black]
-        for code in barcode {
-            if fontSize >= minFontSize, let ch = code.character {
-                let x = minX + bold * CGFloat(offset)
-                let y = minY - fontSize * 2
-                let text = String(ch)
-                let origin = CGPoint(x: x, y: y)
-                let storage = NSTextStorage(string: text, attributes: attributes)
-                let container = NSTextContainer()
-                let manager = NSLayoutManager()
-                manager.addTextContainer(container)
-                storage.addLayoutManager(manager)
-                let range = manager.glyphRange(for: container)
-                manager.drawGlyphs(forGlyphRange: range, at: origin)
-            }
-            DMColor.black.set()
-            var isOn = true
-            for width in code.pattern {
-                assert(width > 0)
-                if isOn {
-                    let lineWidth = bold * CGFloat(width)
-                    let x = minX + bold * CGFloat(offset) + lineWidth/2
-                    let path = DMBezierPath()
-                    path.lineWidth = lineWidth
-                    path.move(to: CGPoint(x: x, y: minY))
-                    path.line(to: CGPoint(x: x, y: maxY))
-                    path.stroke()
-                }
-                offset += width
-                isOn = !isOn
-            }
-        }
-    }
-}
 
 public extension DMBarCode {
     func print(size:CGFloat) {
@@ -444,5 +400,58 @@ public class DMBarCodePrintView: NSView {
     }
 }
 
+#endif
+
+#if os(tvOS)
+
+#else
+public extension DMBarCode {
+    func draw(inRect rect: CGRect) {
+        let minFontSize: CGFloat = 6
+        let barcode = self.characters
+        if barcode.isEmpty { return }
+        let totalDigits = barcode.reduce(0) { $0 + $1.digits }
+        let bold = rect.width / totalDigits
+        let codeWidth = rect.width / CGFloat(barcode.count)
+        var offset: CGFloat = 0
+        let minX = rect.minX
+        let minY = rect.minY
+        let maxY = rect.maxY
+        let fontSize = floor(codeWidth/2)
+        let font = DMFont.userFont(ofSize: fontSize) ?? DMFont.systemFont(ofSize: fontSize)
+        let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: DMColor.black]
+        for code in barcode {
+            if fontSize >= minFontSize, let ch = code.character {
+                let x = minX + bold * offset
+                let y = minY - fontSize * 2
+                let text = String(ch)
+                let origin = CGPoint(x: x, y: y)
+                let storage = NSTextStorage(string: text, attributes: attributes)
+                let container = NSTextContainer()
+                let manager = NSLayoutManager()
+                manager.addTextContainer(container)
+                storage.addLayoutManager(manager)
+                let range = manager.glyphRange(for: container)
+                manager.drawGlyphs(forGlyphRange: range, at: origin)
+            }
+            DMColor.black.set()
+            var isOn = true
+            for width in code.pattern {
+                assert(width > 0)
+                if isOn {
+                    let lineWidth = bold * width
+                    let x = minX + bold * offset + lineWidth/2
+                    let path = DMBezierPath()
+                    path.lineWidth = lineWidth
+                    path.move(to: CGPoint(x: x, y: minY))
+                    path.line(to: CGPoint(x: x, y: maxY))
+                    path.stroke()
+                }
+                offset += width
+                isOn = !isOn
+            }
+        }
+    }
+}
 #endif
 

@@ -9,8 +9,8 @@
 import Foundation
 
 public struct Month: Hashable, Strideable, Codable {
-    public let year: Int
-    public let month: Int
+    public var year: Int
+    public var month: Int
     public var shortYear: Int {
         return year % 100
     }

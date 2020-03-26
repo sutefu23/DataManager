@@ -74,6 +74,13 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
     public func append<S: Sequence>(contentsOf list: S) where S.Element == T {
         list.forEach { _ = self.append($0) }
     }
+    public func insert<S: Sequence>(contentsOf list: S, at: Index) where S.Element == T {
+        var index = at
+        for item in list {
+            一覧.insert(item, at: index)
+            index = 一覧.index(after: index)
+        }
+    }
  
     public func remove(_ item: T) -> Int? {
         guard let index = 一覧.firstIndex(where: { $0.isIdential(to: item) }) else { return nil }

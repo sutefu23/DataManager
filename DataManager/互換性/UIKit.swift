@@ -24,6 +24,12 @@ public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(
 public func DMGraphicsPopContext() { UIGraphicsPopContext() }
 
 public typealias DMFont = UIFont
+public extension DMFont {
+    static func userFont(ofSize size: CGFloat) -> DMFont? {
+        DMFont.systemFont(ofSize: size)
+    }
+}
+
 public typealias DMBezierPath = UIBezierPath
 public typealias DMScreen = UIScreen
 public typealias DMImage = UIImage
@@ -49,6 +55,10 @@ extension UIBezierPath {
             self.addLine(to: nextPoint)
         }
     }
+    
+    func line(to: CGPoint) {
+        self.addLine(to: to)
+    }
 }
 
 extension UITextField {
@@ -56,6 +66,57 @@ extension UITextField {
         get { return self.text ?? "" }
         set { self.text = newValue }
     }
+}
+
+public extension UIView {
+    private func search(_ name: String) -> UIView? {
+        if self.accessibilityIdentifier == name { return self }
+        for view in subviews {
+            if let result = view.search(name) { return result }
+        }
+        return nil
+    }
+    
+    func searchLabel(_ name: String) -> UILabel? {
+        return self.search(name) as? UILabel
+    }
+    
+    private func searchImage(_ name: String) -> UIImageView? {
+        return self.search(name) as? UIImageView
+    }
+    
+    #if os(tvOS)
+    #else
+    private func searchSwitch(_ name: String) -> UISwitch? {
+        return self.search(name) as? UISwitch
+    }
+    @discardableResult func updateSwitch(_ name: String, _ flg: Bool, tag: Int? = nil) -> UISwitch? {
+        guard let view = searchSwitch(name) else { return nil }
+        view.isOn = flg
+        if let tag = tag { view.tag = tag }
+        return view
+    }
+
+    #endif
+
+    @discardableResult func updateLabel(_ name: String, text: String?, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+        guard let view = searchLabel(name) else { return nil }
+        view.text = text?.isEmpty == false ? text : " "
+        if let target = target, let action = action {
+            let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+            self.isUserInteractionEnabled = true
+            self.addGestureRecognizer(myTap)
+        }
+        if let tag = tag { view.tag = tag }
+        return view
+    }
+    
+    @discardableResult func updateImage(_ name: String, image: UIImage) -> UIImageView? {
+        guard let view = searchImage(name) else { return nil }
+        view.image = image
+        return view
+    }
+    
 }
 
 #endif

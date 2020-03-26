@@ -54,7 +54,10 @@ extension 指示書型 {
         let skip立ち上がり = 立ち上がり工程.contains(target)
         for progress in self.進捗一覧.reversed() {
             if skip立ち上がり && 立ち上がり工程.contains(progress.工程) { continue }
-            if 箱文字前工程一覧.contains(progress.工程) { return progress }
+            if 箱文字前工程一覧.contains(progress.工程) {
+                if target == .レーザー && progress.工程 == .出力 { continue }
+                return progress
+            }
         }
         return nil
     }

@@ -153,13 +153,31 @@ extension 指示書型 {
                 break
             }
         }
-        var limit = Day().nextWorkDay.nextWorkDay.nextWorkDay // 3営業日後
-        if targets.contains(.原稿) || targets.contains(.入力) || targets.contains(.出力) {
-            limit = limit.nextWorkDay // 4営業日後
-        } else if targets.contains(.営業) || targets.contains(.管理) {
-            limit = limit.nextWorkDay.nextWorkDay // 5営業日後
+        func check(_ process: 工程型) -> Bool {
+            let start: 作業内容型 = (process == .管理 || process == .フォーミング) ? .受取 : .開始
+            let list = self.進捗一覧
+            return list.contains(工程: process, 作業内容: start) || list.contains(工程: process, 作業内容: .完了)
         }
-        return self.製作納期 <= limit
+        return targets.contains {
+            var limit = Day().nextWorkDay.nextWorkDay.nextWorkDay // 3営業日後
+            switch $0 {
+            case .原稿, .入力, .出力, .フィルム:
+                limit = limit.nextWorkDay // 4営業日後
+            case .営業, .管理:
+                limit = limit.nextWorkDay.nextWorkDay // 5営業日後
+            default:
+                break
+            }
+            if self.製作納期 <= limit { return true }
+            if check($0) { return true }
+            switch $0 {
+//            case .レーザー: return check(.入力)
+            case .照合検査: return check(.レーザー) && check(.出力)
+            case .立ち上がり, .立ち上がり_溶接: return check(.照合検査)
+            default:
+                return true
+            }
+        }
     }
     
     public func 箱文字優先設定(for target: 工程型?, cacheOnly: Bool = false) -> 優先設定型 {

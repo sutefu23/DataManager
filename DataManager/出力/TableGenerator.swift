@@ -323,8 +323,8 @@ public extension TableGenerator {
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         controller.excludedActivityTypes = [.airDrop, .mail]
         controller.popoverPresentationController?.sourceView = source.view
-        if let button = button {
-                controller.popoverPresentationController?.sourceRect = shareButton.frame
+        if let button = shareButton {
+                controller.popoverPresentationController?.sourceRect = button.frame
         }
         source.present(controller, animated: true, completion: nil)
     }

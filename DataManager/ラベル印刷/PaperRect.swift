@@ -24,37 +24,57 @@ func convert(point: CGFloat) -> Double {
 }
 
 public class PaperRect: PaperObject {
-    public var x: Double
-    public var y: Double
-    public let width: Double
-    public let height: Double
-    public var maxY: Double { return y + height }
+    public var px: CGFloat
+    public var py: CGFloat
+    public var pwidth: CGFloat
+    public var pheight: CGFloat
+    public var pmaxX: CGFloat { return px + pwidth }
+    public var pmaxY: CGFloat { return py + pheight }
     
     var rect: CGRect {
-        let px = convert(mm: x)
-        let py = convert(mm: y)
-        let pw = convert(mm: width)
-        let ph = convert(mm: height)
-        return CGRect(x: px, y: py, width: pw, height: ph)
+        return CGRect(x: px, y: py, width: pwidth, height: pheight)
     }
 
     public init(x: Double, y:Double, width: Double, height: Double) {
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        self.px = convert(mm: x)
+        self.py = convert(mm: y)
+        self.pwidth = convert(mm: width)
+        self.pheight = convert(mm: height)
     }
-    
+
+    public init(px: CGFloat, py:CGFloat, pwidth: CGFloat, pheight: CGFloat) {
+        self.px = px
+        self.py = py
+        self.pwidth = pwidth
+        self.pheight = pheight
+    }
+
+    public func moveTo(x: Double, y: Double) {
+        self.px = convert(mm: x)
+        self.py = convert(mm: y)
+    }
     private(set) var objects: [PaperObject] = []
     public func append(_ object: PaperObject) {
         objects.append(object)
     }
     
     public func draw(at: CGPoint) {
-        let px = convert(mm: x) + at.x
-        let py = convert(mm: y) + at.y
+        let px = self.px + at.x
+        let py = self.py + at.y
         let origin = CGPoint(x: px, y: py)
         objects.forEach { $0.draw(at: origin) }
+    }
+    
+    public func append(_ rect: PaperRect) {
+        let px = min(self.px, rect.px)
+        let py = min(self.py, rect.py)
+        let maxx = max(self.pmaxX, rect.pmaxX)
+        let maxy = max(self.pmaxY, rect.pmaxY)
+        self.px = px
+        self.py = py
+        self.pwidth = maxx - px
+        self.pheight = maxy - py
+        self.objects.append(contentsOf: rect.objects)
     }
 }
 
@@ -88,6 +108,26 @@ public class PaperPath: PaperObject {
         path.stroke()
     }
 }
+
+#if os(tvOS)
+#else
+public class PaperBarCode: PaperObject {
+    var barCode: DMBarCode
+    var rect: CGRect
+    
+    public init(barCode: DMBarCode, rect: CGRect) {
+        self.barCode = barCode
+        self.rect = rect
+    }
+    
+    public func draw(at: CGPoint) {
+        var rect = self.rect
+        rect.origin.x += at.x
+        rect.origin.y += at.y
+        barCode.draw(inRect: rect)
+    }
+}
+#endif
 
 public class PaperImage: PaperObject {
     let x: Double
@@ -146,8 +186,13 @@ public class PaperText: PaperObject {
     public func draw(at: CGPoint) {
         let rect = self.bounds
         var origin = at
-        origin.x -= (rect.height/2 - 2)
-        origin.y -= (rect.height/2 + 1)
+        #if targetEnvironment(macCatalyst)
+        let dy = CGFloat(-y)
+        #else
+        let dy = CGFloat(y)
+        #endif
+        origin.x -= (rect.height/2 - 2) + CGFloat(x)
+        origin.y -= (rect.height/2 + 1) + dy
         guard let layoutManager = storage.layoutManagers.first else { return }
         guard let textContainer = layoutManager.textContainers.first else { return }
         let range = layoutManager.glyphRange(for: textContainer)

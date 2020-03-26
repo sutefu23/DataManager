@@ -12,19 +12,21 @@ import Foundation
 import PDFKit
 
 public class LabelListPDFPage: PaperPDFPage {
-    var top: Double { convert(point: self.contents(for: .mediaBox).minY) }
-    var bottom: Double { convert(point: self.contents(for: .mediaBox).maxY) }
+    var top: CGFloat { self.contents(for: .mediaBox).minY }
+    var bottom: CGFloat { self.contents(for: .mediaBox).maxY }
     
-    var frontLine: Double { self.rects.map { $0.maxY }.max() ?? self.top }
-
+    var frontLine: CGFloat { self.rects.map { $0.pmaxY }.max() ?? self.top }
+    public internal(set) var count: Int = 0
+    
     @discardableResult
-    public func append(margin: Double, rect: PaperRect) -> Bool {
-        var front  = self.frontLine
+    public func append(margin: CGFloat, rect: PaperRect) -> Bool {
+        let front  = self.frontLine
         let bottom = self.bottom
-        if (bottom - front) < (margin + rect.height) { return false }
-        front += bottom
-        rect.y = front
+        let height = margin + rect.pheight
+        if (bottom - front) < height { return false }
+        rect.py = front
         super.append(rect)
+        self.count += 1
         return true
     }
     
