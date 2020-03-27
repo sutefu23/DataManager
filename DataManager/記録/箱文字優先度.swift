@@ -188,9 +188,13 @@ public class 箱文字優先度型 {
             let old = Day().prevWorkDay.prevWorkDay.prevWorkDay // ３営業日前
             let list = try 箱文字優先度Data型.findOld(date: Date(old))
             for data in list {
-                guard let num = data.伝票番号, let order = try 指示書型.findDirect(伝票番号: num), order.出荷納期 < old else { continue }
+                guard let num = data.伝票番号, let order = try 指示書型.findDirect(伝票番号: num), order.出荷納期 <= old else { continue }
                 if try data.delete() {
-                    let mes = "\(num.表示用文字列) \(order.伝票種類.description.prefix(1)):\(order.品名.prefix(10)) 工程:\(data.工程?.description ?? "") 優先:\(data.優先設定.code) 表示:\(data.表示設定.code) を削除した"
+                    var mes = "\(num.表示用文字列) \(order.伝票種類.description.prefix(1)):\(order.品名.prefix(10))"
+                    if let process = data.工程 { mes += " 工程:\(process.description)" }
+                    if !data.優先設定.code.isEmpty { mes += " 優先:\(data.優先設定.code)" }
+                    if !data.表示設定.code.isEmpty { mes += " 表示:\(data.表示設定.code)" }
+                    mes += "を削除した"
                     log.append(mes)
                 }
             }
