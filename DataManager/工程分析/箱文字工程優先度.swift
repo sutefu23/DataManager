@@ -43,12 +43,6 @@ public enum 箱文字前工程優先度型: Int, Comparable {
 let 箱文字前工程一覧: [工程型] = [.営業, .管理, .原稿, .入力, .出力, .レーザー, .照合検査, .立ち上がり, .立ち上がり_溶接]
 
 extension 指示書型 {
-//    public func 箱文字前工程_立ち上がり以外_最終工程() -> 進捗型? {
-//        for progress in self.進捗一覧.reversed() {
-//            if 箱文字前工程一覧.contains(progress.工程) { return progress }
-//        }
-//        return nil
-//    }
 
     public func 箱文字前工程_最終工程(of target: 工程型) -> 進捗型? {
         let skip立ち上がり = 立ち上がり工程.contains(target)

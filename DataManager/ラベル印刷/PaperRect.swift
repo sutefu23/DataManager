@@ -162,10 +162,10 @@ public class PaperText: PaperObject {
     let x: Double
     let y: Double
     
-    public init(x: Double, y: Double, text: String, fontSize: CGFloat, color: DMColor) {
+    public init(x: Double, y: Double, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
         self.x = x
         self.y = y
-        let font = DMFont.systemFont(ofSize: fontSize)
+        let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
         let storage = NSTextStorage(string: text, attributes: attributes)
         let container = NSTextContainer()
@@ -187,11 +187,13 @@ public class PaperText: PaperObject {
         let rect = self.bounds
         var origin = at
         #if targetEnvironment(macCatalyst)
+        let dx = CGFloat(-x)
         let dy = CGFloat(-y)
         #else
+        let dx = CGFloat(-x)
         let dy = CGFloat(-y)
         #endif
-        origin.x -= (rect.height/2 - 2) + CGFloat(x)
+        origin.x -= (rect.height/2 - 2) + dx
         origin.y -= (rect.height/2 + 1) + dy
         guard let layoutManager = storage.layoutManagers.first else { return }
         guard let textContainer = layoutManager.textContainers.first else { return }

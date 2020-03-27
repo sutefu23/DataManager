@@ -155,7 +155,10 @@ extension 指示書型 {
         }
         func check(_ process: 工程型) -> Bool {
             let start: 作業内容型 = (process == .管理 || process == .フォーミング) ? .受取 : .開始
-            let list = self.進捗一覧
+            let list = self.進捗一覧.filter {
+                if $0.登録日.isToday && 箱文字優先度型.自動有効期限 <= $0.登録時間 { return false }
+                return true
+            }
             return list.contains(工程: process, 作業内容: start) || list.contains(工程: process, 作業内容: .完了)
         }
         return targets.contains {
@@ -195,11 +198,11 @@ extension 指示書型 {
     }
     
     public func 箱文字表示設定(for target: 工程型?, cacheOnly: Bool = false) -> 表示設定型 {
-        if cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target) {
+        if Time() <= 箱文字優先度型.自動有効期限 || (cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target)) {
             return .自動判定
         }
-        let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target))
-        return data?.表示設定 ?? .自動判定
+        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)), data.表示設定日.isToday else { return .自動判定 }
+        return data.表示設定
     }
     public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) {
         guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)) else { return }

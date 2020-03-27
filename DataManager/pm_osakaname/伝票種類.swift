@@ -41,6 +41,22 @@ public enum 伝票種類型: CustomStringConvertible {
         case .校正: return "校正"
         }
     }
+    
+    public var color: DMColor {
+        switch self{
+        case .箱文字:
+            return DMColor.green.dark(brightnessRatio: 0.5)
+        case .切文字:
+            return .blue
+        case .加工:
+            return DMColor.orange.dark(brightnessRatio: 0.5)
+        case .エッチング:
+            return DMColor.magenta.dark(brightnessRatio: 0.75)
+        case .外注, .校正:
+            return DMColor.black
+        }
+
+    }
 }
 
 extension FileMakerRecord {

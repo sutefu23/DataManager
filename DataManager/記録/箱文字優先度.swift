@@ -14,7 +14,11 @@ struct 箱文字優先度Data型: Equatable {
     var 伝票番号: 伝票番号型? = nil
     var 優先設定: 優先設定型 = .自動判定
     var 表示設定: 表示設定型 = .自動判定
+    var 表示設定日: Day? = nil
     var 工程: 工程型? = nil
+    
+    var 修正情報タイムスタンプ: Date? = nil // 保存情報でない
+    private var recordId: String?
     
     init?(_ record: FileMakerRecord) {
         if let number = record.integer(forKey: "伝票番号") {
@@ -29,6 +33,9 @@ struct 箱文字優先度Data型: Equatable {
         if let code = record.string(forKey: "工程コード") {
             self.工程 = 工程型(code: code)
         }
+        self.表示設定日 = record.day(forKey: "表示設定日")
+        self.修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ")
+        self.recordId = record.recordId
     }
     
     init() {}
@@ -38,17 +45,40 @@ struct 箱文字優先度Data型: Equatable {
         self.工程 = 工程
     }
     
+    static func == (left: 箱文字優先度Data型, right: 箱文字優先度Data型) -> Bool {
+        return left.伝票番号 == right.伝票番号 && left.優先設定 == right.優先設定 && left.表示設定 == right.表示設定 && left.表示設定日 == right.表示設定日 && left.工程 == right.工程
+    }
+    
     var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         if let num = self.伝票番号 { data["伝票番号"] = String(num.整数値) }
         data["優先設定"] = 優先設定.code
         data["表示設定"] = 表示設定.code
         data["工程コード"] = 工程?.code
+        data["表示設定日"] = 表示設定日?.fmString
         return data
     }
+    
+    func delete() throws -> Bool {
+        guard let recordId = self.recordId else { return false }
+        let db = FileMakerDB.system
+        try db.delete(layout: 箱文字優先度Data型.dbName, recordId: recordId)
+        return true
+    }
+
+    static func findOld(date: Date) throws -> [箱文字優先度Data型] {
+        let db = FileMakerDB.system
+        var query = [String: String]()
+        query["修正情報タイムスタンプ"] = "<\(date.fmDayTime)"
+        let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
+        return list.compactMap { 箱文字優先度Data型($0) }
+    }
+    
 }
 
 public class 箱文字優先度型 {
+    public static let 自動有効期限: Time = Time(15, 00)
+    
     var original: 箱文字優先度Data型 = 箱文字優先度Data型()
     var data: 箱文字優先度Data型
     var recordID: String?
@@ -62,8 +92,22 @@ public class 箱文字優先度型 {
         set { data.優先設定 = newValue }
     }
     public var 表示設定: 表示設定型 {
-        get { data.表示設定 }
-        set { data.表示設定 = newValue }
+        get {
+//            guard let day = data.表示設定日, day.isToday else { return .自動判定 }
+            return data.表示設定
+        }
+        set {
+            data.表示設定 = newValue
+            if newValue == .自動判定 {
+                data.表示設定日 = nil
+            } else {
+                data.表示設定日 = Day()
+            }
+        }
+    }
+    public var 表示設定日: Day {
+        get { data.表示設定日 ?? data.修正情報タイムスタンプ?.day ?? Day() }
+        set { data.表示設定日 = newValue }
     }
     public var 工程: 工程型? {
         get { data.工程 }
@@ -137,6 +181,24 @@ public class 箱文字優先度型 {
         }
         return nil
     }
+    
+    public static func deleteOldData() -> [String] {
+        var log: [String] = []
+        do {
+            let old = Day().prevWorkDay.prevWorkDay.prevWorkDay // ３営業日前
+            let list = try 箱文字優先度Data型.findOld(date: Date(old))
+            for data in list {
+                guard let num = data.伝票番号, let order = try 指示書型.findDirect(伝票番号: num), order.出荷納期 < old else { continue }
+                if try data.delete() {
+                    let mes = "\(num.表示用文字列) \(order.伝票種類.description.prefix(1)):\(order.品名.prefix(10)) 工程:\(data.工程?.description ?? "") 優先:\(data.優先設定.code) 表示:\(data.表示設定.code) を削除した"
+                    log.append(mes)
+                }
+            }
+        } catch {
+            log = [error.localizedDescription]
+        }
+        return log
+    }
 }
 
 public enum 優先設定型 {
@@ -173,6 +235,7 @@ public enum 優先設定型 {
 }
 
 public enum 表示設定型 {
+   
     case 白
     case 黒
     case 自動判定

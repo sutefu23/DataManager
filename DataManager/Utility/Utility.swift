@@ -31,7 +31,7 @@ public let dataManager = DataManagerController()
 import UIKit
 
 extension Error {
-    public func showModal() {
+    public func showAlert() {
         let alert = UIAlertController(title: self.localizedDescription, message: "", preferredStyle: .alert)
         let vc = UIApplication.shared.windows.first?.rootViewController
         vc?.present(alert, animated: true, completion: nil)
@@ -103,7 +103,7 @@ extension UITableView {
 import Cocoa
 
 extension Error {
-    public func showModal() {
+    public func showAlert() {
         let alert = NSAlert(error: self)
         alert.runModal()
     }

@@ -153,7 +153,11 @@ extension Date {
     
     public var fmImportTime: String {
         return self.time.fmImportString
-    }    
+    }
+    
+    public var fmDayTime: String {
+        return "\(day.fmString) \(time.fmImportString)"
+    }
 }
 
 public extension TimeInterval {
