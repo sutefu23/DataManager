@@ -144,15 +144,15 @@ extension 指示書型 {
         case .自動判定:
             break
         }
-        if !targets.isEmpty {
-            switch self.表示設定(for: [], cacheOnly: cacheOnly) {
-            case .白: return true
-            case .黒: return false
-            case nil: return nil
-            case .自動判定:
-                break
-            }
-        }
+//        if !targets.isEmpty {
+//            switch self.表示設定(for: [], cacheOnly: cacheOnly) {
+//            case .白: return true
+//            case .黒: return false
+//            case nil: return nil
+//            case .自動判定:
+//                break
+//            }
+//        }
         func check(_ process: 工程型) -> Bool {
             let start: 作業内容型 = (process == .管理 || process == .フォーミング) ? .受取 : .開始
             let list = self.進捗一覧.filter {
@@ -174,11 +174,10 @@ extension 指示書型 {
             if self.製作納期 <= limit { return true }
             if check($0) { return true }
             switch $0 {
-//            case .レーザー: return check(.入力)
             case .照合検査: return check(.レーザー) && check(.出力)
-            case .立ち上がり, .立ち上がり_溶接: return check(.照合検査)
+            case .立ち上がり, .立ち上がり_溶接: return check(.照合検査) || check(.レーザー)
             default:
-                return true
+                return false
             }
         }
     }

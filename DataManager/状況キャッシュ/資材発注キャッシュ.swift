@@ -10,7 +10,7 @@ import Foundation
 
 class 資材発注キャッシュ型 {
     static let shared = 資材発注キャッシュ型()
-    var expireTime: TimeInterval = 1*60*60
+    var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()
     private var cache: [図番型: (有効期限: Date, 一覧: [発注型])] = [:]
     

@@ -108,4 +108,29 @@ public class 指示書進捗キャッシュ型 {
         cache.removeAll()
         lock.unlock()
     }
+    
+    // MARK: -
+    public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
+        return try hasComplete(number: number, process: process, work: .受取, member: member)
+    }
+    
+    public func has完了(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
+        return try hasComplete(number: number, process: process, work: .完了, member: member)
+    }
+    
+    public func hasComplete(number: 伝票番号型, process: 工程型, work: 作業内容型, member: 社員型? = nil) throws -> Bool {
+        var hasHigh: Bool = false
+        let list = try self.キャッシュ一覧(number)
+        for progress in list.reversed() {
+            if let member = member, progress.作業者 != member { continue }
+            let current = progress.作業内容
+            if current == work { return true }
+            if current > work {
+                hasHigh = true
+            } else {
+                if hasHigh { return true }
+            }
+        }
+        return false
+    }
 }

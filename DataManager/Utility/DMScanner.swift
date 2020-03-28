@@ -41,16 +41,28 @@ public struct DMScanner: RandomAccessCollection {
     public func index(after i: String.Index) -> String.Index { return source.index(after: i) }
 
     /// スキャン待ちの現在の文字(調整済み)
-    public var string: String { return String(substring) }
+    public var string: String {
+        mutating get { String(substring) }
+    }
     /// スキャン待ちの現在の文字(調整済み)
-    var substring: Substring { return source[startIndex..<endIndex] }
+    var substring: Substring {
+        mutating get {
+        if needsSpaceCheck { dropHeadSpaces() }
+        return source[startIndex..<endIndex]
+        }
+    }
 
+    func leftString(from: String.Index) -> String {
+        return String(source[from..<startIndex])
+    }
+    
     /// スキャン待ちの現在の文字(元データ)
 //    public var originalString: String { return String(originalSubstring)}
     /// スキャン待ちの現在の文字(元データ)
 //    var originalSubstring: Substring { return originalSource[startIndex..<endIndex] }
 
-    public init(_ string: String, upperCased:Bool = false, skipSpaces: Bool = false) {
+    public init(_ string: String, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+        let string = newlineToSpace ? string.newlineToSpace : String(string)
         self.source = upperCased ? string.uppercased() : string
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
@@ -58,8 +70,9 @@ public struct DMScanner: RandomAccessCollection {
         self.needsSpaceCheck = skipSpaces
     }
 
-    public init<S: StringProtocol>(_ string: S, upperCased:Bool = false, skipSpaces: Bool = false) {
-        self.source = upperCased ? string.uppercased() : String(string)
+    public init<S: StringProtocol>(_ string: S, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+        let string = newlineToSpace ? string.newlineToSpace : String(string)
+        self.source = upperCased ? string.uppercased() : string
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
         self.skipSpaces = skipSpaces
@@ -67,7 +80,7 @@ public struct DMScanner: RandomAccessCollection {
     }
 
     /// 末尾に指定文字列を含むとtrue
-    public func hasSuffix(_ suffix: String, upperCased: Bool = false) -> Bool {
+    public mutating func hasSuffix(_ suffix: String, upperCased: Bool = false) -> Bool {
         if upperCased {
             return substring.uppercased().hasSuffix(suffix)
         } else {
@@ -76,7 +89,7 @@ public struct DMScanner: RandomAccessCollection {
     }
 
     /// 先頭に指定文字列を含むとtrue
-    public func hasPrefix(_ prefix: String, upperCased: Bool = false) -> Bool {
+    public mutating func hasPrefix(_ prefix: String, upperCased: Bool = false) -> Bool {
         if upperCased {
             return substring.uppercased().hasPrefix(prefix)
         } else {
@@ -217,6 +230,24 @@ public struct DMScanner: RandomAccessCollection {
         return nil
     }
     
+    public mutating func scanUpToSpace() -> String? {
+        dropHeadSpacesIfNeeds()
+        var index = startIndex
+        var result: String = ""
+        while index < endIndex {
+            let ch = source[index]
+            let resultIndex = index
+            index = source.index(after: index)
+            if ch.isWhitespace {
+                self.startIndex = resultIndex
+                return result
+            }
+            result.append(ch)
+        }
+        return nil
+    }
+
+    
     /// 整数値を取り出す
     public mutating func scanInteger() -> Int? {
         dropHeadSpacesIfNeeds()
@@ -297,9 +328,32 @@ public struct DMScanner: RandomAccessCollection {
         guard let str = self.scanDecimalString() else { return nil }
         return Double(str)
     }
-        
+    
+    public mutating func scanStringDouble() -> (String, Double)? {
+        let initialIndex = self.startIndex
+        var index = self.startIndex
+        while index < self.endIndex {
+            self.startIndex = index
+            if let value = self.scanDouble() {
+                if self.isAtEnd { return (String(source[initialIndex..<index]), value) }
+            }
+            index = source.index(after: index)
+        }
+        self.startIndex = initialIndex
+        return nil
+    }
+
+    public mutating func scanDoubleAndDouble() -> (left: Double, splitter: String, right: Double)? {
+        let initialIndex = self.startIndex
+        guard let left = scanDouble(), let (splitter, right) = scanStringDouble() else {
+            self.startIndex = initialIndex
+            return nil
+        }
+        return (left, splitter, right)
+    }
+
     /// 左括弧と右カッコを指定し、その左側と中の文字を取り出す
-    public mutating func scanParen(_ left: Character, _ right: Character) -> (left: String, contents: String)? {
+    public mutating func scanParen(_ left: Character, _ right: Character, stopSpaces: Bool = false) -> (left: String, contents: String)? {
         dropHeadSpacesIfNeeds()
         var index = startIndex
         var noLeft = true
@@ -311,6 +365,7 @@ public struct DMScanner: RandomAccessCollection {
             let ch = source[index]
             index = source.index(after: index)
             if noLeft && ch != left {
+                if stopSpaces && ch.isWhitespace { return nil }
                 if ch == right { return nil }
                 leftContents.append(ch)
                 continue
@@ -338,7 +393,50 @@ public struct DMScanner: RandomAccessCollection {
         startIndex = index
         return (leftContents, contents)
     }
+
+    /// 左括弧と右カッコを指定し、その左側と中の文字を取り出す
+    public mutating func scanParens(_ left: [Character], _ right: [Character], stopSpaces: Bool = false) -> (left: String, contents: String)? {
+        dropHeadSpacesIfNeeds()
+        var index = startIndex
+        var noLeft = true
+        var leftCount = 0
+        var rightCount = 0
+        var leftContents = ""
+        var contents = ""
+        while index < endIndex {
+            let ch = source[index]
+            index = source.index(after: index)
+            if noLeft && !left.contains(ch) {
+                if stopSpaces && ch.isWhitespace { return nil }
+                if right.contains(ch) { return nil }
+                leftContents.append(ch)
+                continue
+            }
+            if left.contains(ch) {
+                noLeft = false
+                if leftCount > 0 { contents.append(ch) }
+                leftCount += 1
+            } else if right.contains(ch) {
+                rightCount += 1
+                if rightCount >= leftCount { break }
+                contents.append(ch)
+            } else if leftCount > 0 {
+                contents.append(ch)
+            }
+        }
+        if leftCount == 0 || rightCount == 0 || leftCount != rightCount {
+            return nil
+        }
+        if skipSpaces && leftContents.last?.isWhitespace == true {
+            var scanner = DMScanner(leftContents)
+            scanner.dropTailSpaces()
+            leftContents = String(scanner.substring)
+        }
+        startIndex = index
+        return (leftContents, contents)
+    }
     
+
     /// 指定文字分スキップする
     public mutating func scanString(_ pattern: String) -> Bool {
         dropHeadSpacesIfNeeds()
@@ -375,12 +473,6 @@ public struct DMScanner: RandomAccessCollection {
         return result
     }
     
-    /// 残りを全て取り出す（uppercased無し）
-//    public mutating func scanOriginalAll() -> String {
-//        let result = self.originalString
-//        removeAll()
-//        return result
-//    }
 }
 
 // isNumberだと漢数字なども含まれてしまうため

@@ -38,6 +38,10 @@ private var numberSet: CharacterSet = {
 }()
 
 extension StringProtocol {
+    var newlineToSpace: String {
+        return String(self.map { $0.isNewline ? " " : $0 })
+    }
+    
     var headNumber: String {
         var string: String = ""
         for ch in self {

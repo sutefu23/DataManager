@@ -13,11 +13,11 @@ class 入出庫キャッシュ型 {
     static let shared = 入出庫キャッシュ型()
     
     private let lock = NSLock()
-    private var cache: [String: (有効期限: Date, 入出庫: [資材入出庫型])] = [:]
+    private var cache: [図番型: (有効期限: Date, 入出庫: [資材入出庫型])] = [:]
     
     func 現在入出庫(of item: 資材型) throws -> [資材入出庫型] {
         let limit = Date(timeIntervalSinceNow: 在庫寿命)
-        let num = try item.レコード資材入出庫()
+        let num = try 資材入出庫型.find(資材: item)
         lock.lock()
         self.cache[item.図番] = (limit, num)
         lock.unlock()
@@ -32,6 +32,12 @@ class 入出庫キャッシュ型 {
         }
         lock.unlock()
         return try 現在入出庫(of: item)
+    }
+    
+    func flushCache(_ item: 図番型) {
+        lock.lock()
+        cache[item] = nil
+        lock.unlock()
     }
     
     func flushAllCache() {

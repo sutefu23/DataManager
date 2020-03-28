@@ -99,9 +99,13 @@ public extension UIView {
 
     #endif
 
-    @discardableResult func updateLabel(_ name: String, text: String?, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+    @discardableResult func updateLabel(_ name: String, text: String?, color: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(name) else { return nil }
-        view.text = text?.isEmpty == false ? text : " "
+        if let color = color {
+            view.attributedText = text?.makeAttributedString(color: color, font: view.font)
+        } else {
+            view.text = text?.isEmpty == false ? text : " "
+        }
         if let target = target, let action = action {
             let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
             self.isUserInteractionEnabled = true
@@ -111,6 +115,12 @@ public extension UIView {
         return view
     }
     
+        @discardableResult func updateLabel(_ name: String, text: NSAttributedString?, noEmpty: Bool = false) -> UILabel? {
+            guard let view = searchLabel(name) else { return nil }
+            view.attributedText = text ?? NSAttributedString()
+            return view
+        }
+
     @discardableResult func updateImage(_ name: String, image: UIImage) -> UIImageView? {
         guard let view = searchImage(name) else { return nil }
         view.image = image

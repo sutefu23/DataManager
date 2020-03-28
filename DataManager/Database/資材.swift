@@ -21,7 +21,7 @@ public class 資材型: Codable, Comparable, Hashable {
         self.record = record
         guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordId ?? "")") }
         guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3 of 図番 \(図番)") }
-        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f13 of 図番 \(図番)") }
+        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f15 of 図番 \(図番)") }
         self.図番 = 図番
         self.製品名称 = 製品名称
         self.規格 = 規格
@@ -40,7 +40,7 @@ public class 資材型: Codable, Comparable, Hashable {
     public required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let num = try values.decode(String.self, forKey: .図番)
-        guard let record = try 資材型.find(図番: num)?.record else {
+        guard let record = try 資材キャッシュ型.shared.キャッシュ資材(図番: num)?.record else {
             throw FileMakerError.notFound(message: "図番:\(num)")
         }
         try self.init(record)
@@ -109,11 +109,6 @@ public class 資材型: Codable, Comparable, Hashable {
     }
     public func キャッシュ在庫() throws -> Int {
         return  try 在庫数キャッシュ型.shared.キャッシュ在庫数(of: self)
-    }
-    
-    // MARK: - 入出庫
-    func レコード資材入出庫() throws -> [資材入出庫型] {
-        return try 資材入出庫型.find(資材: self)
     }
     
     public func 現在入出庫() throws -> [資材入出庫型] {
@@ -207,12 +202,12 @@ public extension 資材型 {
         return true
     }
 }
-
+    
 // MARK: - 保存
 extension FileMakerRecord {
     func 資材(forKey key: String) -> 資材型? {
         guard let number = self.string(forKey: key) else { return nil }
-        return 資材キャッシュ型.shared.キャッシュ資材(図番: number)
+        return try? 資材キャッシュ型.shared.キャッシュ資材(図番: number)
     }
 }
 
@@ -235,3 +230,5 @@ public extension 資材型 {
         return try list.compactMap { try 資材型($0) }.first
     }
 }
+
+

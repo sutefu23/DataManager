@@ -13,7 +13,7 @@ class 在庫数キャッシュ型 {
     static let shared = 在庫数キャッシュ型()
     
     private let lock = NSLock()
-    private var cache: [String: (有効期限: Date, 在庫数: Int)] = [:]
+    private var cache: [図番型: (有効期限: Date, 在庫数: Int)] = [:]
     
     func 現在在庫(of item: 資材型) throws -> Int {
         let limit = Date(timeIntervalSinceNow: 在庫寿命)
@@ -32,6 +32,12 @@ class 在庫数キャッシュ型 {
         }
         lock.unlock()
         return try 現在在庫(of: item)
+    }
+    
+    func flushCache(_ item: 図番型) {
+        lock.lock()
+        cache[item] = nil
+        lock.unlock()
     }
     
     func flushAllCache() {

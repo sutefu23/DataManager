@@ -206,35 +206,19 @@ public class 管理板材型: 管理資材型 {
     }
     public var サイズ: String = ""
     public private(set) var 板厚数値: Double? = nil
+    
+    public var 横幅: Double?
+    public var 高さ: Double?
 
     func updateSheetParameters() {
-        // 材質・種類
-        let names = 資材.製品名称.split{ $0.isWhitespace }
-        if names[0].hasPrefix("カナセライト") || names[0].hasPrefix("スミペックス") || names[0].contains("アクリ") || names[0].contains("グラス") || names[0].hasPrefix("ファンタレックス") || names[0].hasPrefix("コモミラー") || names[0].hasPrefix("クラレックス") {
-            self.材質 = "アクリル"
-        } else if names[0].hasSuffix("板") {
-            self.材質 = String(names[0].dropLast())
-        } else {
-            self.材質 = String(names[0])
-        }
-        if names.count >= 2 {
-            self.種類 = String(names[1])
-        } else {
-            self.種類 = ""
-        }
-        // 板厚・サイズ
-        let stds = 資材.規格.split{ $0.isWhitespace }
-        if stds[0].hasSuffix("t") || stds[0].hasSuffix("ｔ") {
-            self.板厚 = String(stds[0].dropLast())
-        } else {
-            self.板厚 = String(stds[0])
-        }
-        if stds.count >= 2 {
-            var scanner = DMScanner(stds[1])
-            self.サイズ = scanner.scanUpTo("(", "（") ?? scanner.string
-        } else {
-            self.サイズ = ""
-        }
+        let param = 資材板情報型(self.資材)
+        self.材質 = param.材質
+        self.種類 = param.種類
+        self.板厚 = param.板厚
+        self.サイズ = param.サイズ
+        self.高さ = param.高さ
+        self.横幅 = param.横幅
+        self.管理者メモ = param.備考
     }
     
     public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true) {
@@ -258,20 +242,21 @@ public class 管理板材型: 管理資材型 {
         case 板厚
         case サイズ
         case 在庫管理あり
+        case 高さ
+        case 横幅
     }
     
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: SheetCodingKeys.self)
         try super.init(from: decoder)
-        if let material = try values.decodeIfPresent(String.self, forKey: .材質), let type = try values.decodeIfPresent(String.self, forKey: .種類), let thin = try values.decodeIfPresent(String.self, forKey: .板厚), let square = try values.decodeIfPresent(String.self, forKey: .サイズ) {
-            self.材質 = material
-            self.種類 = type
-            self.板厚 = thin
-            self.板厚数値 = Double(thin)
-            self.サイズ = square
-        } else {
-            updateSheetParameters()
-        }
+        let param = 資材板情報型(self.資材)
+        self.材質 = try values.decodeIfPresent(String.self, forKey: .材質) ?? param.材質
+        self.種類 = try values.decodeIfPresent(String.self, forKey: .種類) ?? param.種類
+        self.板厚 = try values.decodeIfPresent(String.self, forKey: .板厚) ?? param.板厚
+        self.板厚数値 = Double(self.板厚)
+        self.サイズ = try values.decodeIfPresent(String.self, forKey: .サイズ) ?? param.サイズ
+        self.高さ = try values.decodeIfPresent(Double.self, forKey: .高さ) ?? param.高さ
+        self.横幅 = try values.decodeIfPresent(Double.self, forKey: .横幅) ?? param.横幅
         self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? true
     }
     
@@ -281,6 +266,19 @@ public class 管理板材型: 管理資材型 {
         try container.encode(self.種類, forKey: .種類)
         try container.encode(self.板厚, forKey: .板厚)
         try container.encode(self.サイズ, forKey: .サイズ)
+        try container.encode(self.高さ, forKey: .高さ)
+        try container.encode(self.横幅, forKey: .横幅)
         try super.encode(to: encoder)
     }
+    // MARK: -
+    public var サイズ表示: String {
+        if 板厚.isEmpty {
+            return self.サイズ
+        } else if self.サイズ.isEmpty {
+            return "\(self.板厚)t"
+        } else {
+            return "\(self.板厚)tX\(self.サイズ)"
+        }
+    }
 }
+

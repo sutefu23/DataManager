@@ -10,7 +10,7 @@ import Foundation
 
 class 取引先キャッシュ型 {
     static let shared = 取引先キャッシュ型()
-    var expireTime: TimeInterval = 1*60*60
+    var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()
     private var cache: [会社コード型: (有効期限: Date, 取引先: 取引先型?)] = [:]
 

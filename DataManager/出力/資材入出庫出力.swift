@@ -53,6 +53,10 @@ public struct 資材入出庫出力型 {
 
 extension Sequence where Element == 資材入出庫出力型 {
     public func exportToDB() throws {
+        forEach {
+            在庫数キャッシュ型.shared.flushCache($0.資材.図番)
+            入出庫キャッシュ型.shared.flushCache($0.資材.図番)
+        }
         let db = FileMakerDB.pm_osakaname
         let session = db.retainSession()
         defer { db.releaseSession(session) }

@@ -33,6 +33,10 @@ extension String {
         } else {
             font = FMFont.systemFont(ofSize: size)
         }
+        return self.makeAttributedString(color: color, font: font)
+    }
+
+    public func makeAttributedString(color: FMColor = FMColor.black, font: DMFont) -> NSAttributedString {
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
         return NSAttributedString(string: self, attributes: attributes)
     }
