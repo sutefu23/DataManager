@@ -54,13 +54,20 @@ struct 資材板情報型 {
                 let index = first.index(first.startIndex, offsetBy: 4)
                 type = String(first[index..<first.endIndex])
             }
+        } else if 製品名称.containsOne(of: "ｶﾗｰｽﾃﾝﾚｽ", "カラーステンレス", "チタンゴールド", "ﾁﾀﾝｺﾞｰﾙﾄﾞ") { // カラーステンレス専用処理
+            material = "SUS304"
+            if scanner.scanString("ｶﾗｰｽﾃﾝﾚｽ") || scanner.scanString("カラーステンレス") {
+                scanner.dropHeadSpaces()
+            }
+        } else if 製品名称.containsOne(of: "チタン", "ﾁﾀﾝ", "TP340") { // チタン専用処理
+            material = "チタン"
         } else if first.hasSuffix("板") {
             material = String(first.dropLast())
         } else {
             material = String(first)
         }
         // type, memo
-        let second: String
+        var second: String
         index = scanner.startIndex
         if let _ = scanner.scanParens(["(", "（"], [")", "）"], stopSpaces:true) {
             let _ = scanner.scanUpToSpace()
@@ -73,8 +80,14 @@ struct 資材板情報型 {
         }
         scanner.dropHeadSpaces()
         scanner.dropTailSpaces()
-        let third = scanner.string
-        if second == "SPV" {
+        var third = scanner.string
+        if material == "チタン" { // チタン専用処理
+            if second.contains("340") {
+                second = third
+                third = ""
+            }
+        }
+        if second.contains("SPV") {
             memo = second
             if !third.isEmpty { memo += " \(third)" }
         } else {

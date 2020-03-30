@@ -35,7 +35,7 @@ class TestSizaiSheetInfo: XCTestCase {
         XCTAssertEqual(info.備考, "310GH5")
         
         info = 資材板情報型(製品名称: "ｶﾗｰｽﾃﾝﾚｽ HLチタンゴールド　SPV", 規格: "1.5t　4×8(1219×2438)")
-        XCTAssertEqual(info.材質, "ｶﾗｰｽﾃﾝﾚｽ")
+        XCTAssertEqual(info.材質, "SUS304")
         XCTAssertEqual(info.種類, "HLチタンゴールド")
         XCTAssertEqual(info.板厚, "1.5")
         XCTAssertEqual(info.サイズ, "4×8")
@@ -44,7 +44,7 @@ class TestSizaiSheetInfo: XCTestCase {
         XCTAssertEqual(info.備考, "SPV")
 
         info = 資材板情報型(製品名称: "ｶﾗｰｽﾃﾝﾚｽ板 ﾌﾞﾛﾝｽﾞHL(SP-17/L-1)　SPV", 規格: "1.5t　4×8(1219×2438)")
-        XCTAssertEqual(info.材質, "ｶﾗｰｽﾃﾝﾚｽ")
+        XCTAssertEqual(info.材質, "SUS304")
         XCTAssertEqual(info.種類, "ﾌﾞﾛﾝｽﾞHL(SP-17/L-1)")
         XCTAssertEqual(info.板厚, "1.5")
         XCTAssertEqual(info.サイズ, "4×8")
@@ -60,6 +60,24 @@ class TestSizaiSheetInfo: XCTestCase {
         XCTAssertEqual(info.高さ, 1000)
         XCTAssertEqual(info.横幅, 1000)
         XCTAssertEqual(info.備考, "SPV")
+        
+        info = 資材板情報型(製品名称: "SUS304板 ｶﾗｰｽﾃﾝﾚｽ ﾌﾞﾗｯｸHL SR-15", 規格: "0.8t　1219x2000")
+        XCTAssertEqual(info.材質, "SUS304")
+        XCTAssertEqual(info.種類, "ﾌﾞﾗｯｸHL")
+        XCTAssertEqual(info.板厚, "0.8")
+        XCTAssertEqual(info.サイズ, "1219x2000")
+        XCTAssertEqual(info.高さ, 1219)
+        XCTAssertEqual(info.横幅, 2000)
+        XCTAssertEqual(info.備考, "SR-15")
+        
+        info = 資材板情報型(製品名称: "ｶﾗｰｽﾃﾝﾚｽ HLﾌﾞﾗｯｸ　SR-15(Z-1)　SPV", 規格: "0.8t　1×2(1000×2000)")
+        XCTAssertEqual(info.材質, "SUS304")
+        XCTAssertEqual(info.種類, "HLﾌﾞﾗｯｸ")
+        XCTAssertEqual(info.板厚, "0.8")
+        XCTAssertEqual(info.サイズ, "1×2")
+        XCTAssertEqual(info.高さ, 1000)
+        XCTAssertEqual(info.横幅, 2000)
+        XCTAssertEqual(info.備考, "SR-15(Z-1)　SPV")
     }
 
     // MARK: - スチール
@@ -203,4 +221,51 @@ class TestSizaiSheetInfo: XCTestCase {
         XCTAssertEqual(info.備考, "")
     }
     
+    // MARK: - アクリル
+    func testチタン() {
+        info = 資材板情報型(製品名称: "TP340Hチタン", 規格: "10.0t300×300")
+        XCTAssertEqual(info.材質, "チタン")
+        XCTAssertEqual(info.種類, "")
+        XCTAssertEqual(info.板厚, "10.0")
+        XCTAssertEqual(info.サイズ, "300×300")
+        XCTAssertEqual(info.高さ, 300)
+        XCTAssertEqual(info.横幅, 300)
+        XCTAssertEqual(info.備考, "")
+        
+        info = 資材板情報型(製品名称: "チタンTP340H", 規格: "1.5t　500×500")
+        XCTAssertEqual(info.材質, "チタン")
+        XCTAssertEqual(info.種類, "")
+        XCTAssertEqual(info.板厚, "1.5")
+        XCTAssertEqual(info.サイズ, "500×500")
+        XCTAssertEqual(info.高さ, 500)
+        XCTAssertEqual(info.横幅, 500)
+        XCTAssertEqual(info.備考, "")
+        
+        info = 資材板情報型(製品名称: "チタン　TP-340", 規格: "5.0t　500×500")
+        XCTAssertEqual(info.材質, "チタン")
+        XCTAssertEqual(info.種類, "")
+        XCTAssertEqual(info.板厚, "5.0")
+        XCTAssertEqual(info.サイズ, "500×500")
+        XCTAssertEqual(info.高さ, 500)
+        XCTAssertEqual(info.横幅, 500)
+        XCTAssertEqual(info.備考, "")
+
+        info = 資材板情報型(製品名称: "チタン材 TP340C　HL", 規格: "3.0t　1x1(1000x1000)")
+        XCTAssertEqual(info.材質, "チタン")
+        XCTAssertEqual(info.種類, "HL")
+        XCTAssertEqual(info.板厚, "3.0")
+        XCTAssertEqual(info.サイズ, "1x1")
+        XCTAssertEqual(info.高さ, 1000)
+        XCTAssertEqual(info.横幅, 1000)
+        XCTAssertEqual(info.備考, "")
+        
+        info = 資材板情報型(製品名称: "ﾁﾀﾝTP340板 パイブレーション　SPV", 規格: "5.0t　1x1(1000x1000)")
+        XCTAssertEqual(info.材質, "チタン")
+        XCTAssertEqual(info.種類, "パイブレーション")
+        XCTAssertEqual(info.板厚, "5.0")
+        XCTAssertEqual(info.サイズ, "1x1")
+        XCTAssertEqual(info.高さ, 1000)
+        XCTAssertEqual(info.横幅, 1000)
+        XCTAssertEqual(info.備考, "SPV")
+    }
 }
