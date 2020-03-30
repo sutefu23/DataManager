@@ -277,7 +277,7 @@ public class 管理板材型: 管理資材型 {
         } else if self.サイズ.isEmpty {
             return "\(self.板厚)t"
         } else {
-            return "\(self.板厚)tX\(self.サイズ)"
+            return "\(self.板厚)tx\(self.サイズ)"
         }
     }
 }

@@ -115,11 +115,13 @@ extension 発注型 {
 // MARK:
 extension Sequence where Element == 発注型 {
     public var 未納発注個数: Int {
+        let limit = Day(2019, 12, 31)
         return self.reduce(0) {
             switch $1.状態 {
-            case .未処理, .発注待ち:
+            case .未処理, .発注待ち, .発注済み:
+                if $1.登録日 < limit { return $0 }
                 return $0 + ($1.発注数量 ?? 0)
-            case .発注済み, .納品書待ち, .納品済み, .処理済み:
+            case .納品書待ち, .納品済み, .処理済み:
                 return $0
             }
         }

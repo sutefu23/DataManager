@@ -8,16 +8,19 @@
 
 import Foundation
 
-class 在庫数キャッシュ型 {
+public class 在庫数キャッシュ型 {
     var 在庫寿命: TimeInterval = 10 * 60 // 10分間
-    static let shared = 在庫数キャッシュ型()
+    public static let shared = 在庫数キャッシュ型()
     
     private let lock = NSLock()
     private var cache: [図番型: (有効期限: Date, 在庫数: Int)] = [:]
     
     func 現在在庫(of item: 資材型) throws -> Int {
+        guard let item2 = try 資材型.find(図番: item.図番) else {
+            throw FileMakerError.notFound(message: " 資材 図番:\(item.図番)")
+        }
+        let num = item2.レコード在庫数
         let limit = Date(timeIntervalSinceNow: 在庫寿命)
-        let num = item.レコード在庫数
         lock.lock()
         self.cache[item.図番] = (limit, num)
         lock.unlock()
@@ -34,9 +37,14 @@ class 在庫数キャッシュ型 {
         return try 現在在庫(of: item)
     }
     
-    func flushCache(_ item: 図番型) {
+    public func flushCache(_ item: 図番型, 暫定個数: Int? = nil) {
         lock.lock()
-        cache[item] = nil
+        if let num = 暫定個数 {
+            let limit = Date(timeIntervalSinceNow: 在庫寿命)
+            cache[item] = (limit, num)
+        } else {
+            cache[item] = nil
+        }
         lock.unlock()
     }
     
