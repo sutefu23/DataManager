@@ -59,7 +59,7 @@ extension Array {
             let result = converter(object.source)
             object.result = result
         }
-        return source.compactMap { $0.result }
+        return source.compactMap(\.result)
     }
     
     public func concurrentMap<T>(converter: (_ item:Element) throws ->T) rethrows -> [T] {
@@ -77,7 +77,7 @@ extension Array {
                 object.result = .failure(error)
             }
         }
-        return try source.map { return try $0.result!.get() }
+        return try source.map { try $0.result!.get() }
     }
 }
 

@@ -904,7 +904,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.28;
+				MARKETING_VERSION = 1.30;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -937,7 +937,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.28;
+				MARKETING_VERSION = 1.30;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

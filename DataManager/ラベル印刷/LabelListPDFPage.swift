@@ -15,7 +15,7 @@ public class LabelListPDFPage: PaperPDFPage {
     var top: CGFloat { self.contents(for: .mediaBox).minY }
     var bottom: CGFloat { self.contents(for: .mediaBox).maxY }
     
-    var frontLine: CGFloat { self.rects.map { $0.pmaxY }.max() ?? self.top }
+    var frontLine: CGFloat { self.rects.map(\.pmaxY).max() ?? self.top }
     public internal(set) var count: Int = 0
     
     @discardableResult

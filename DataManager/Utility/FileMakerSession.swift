@@ -133,7 +133,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
     }
     
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
-        let sortItems = sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
+        let sortItems = sortItems.map { FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         let token = try self.prepareToken()
         var result: [FileMakerRecord] = []
         
@@ -170,7 +170,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
                 }
             }
             if names.isEmpty == false {
-                let value = "[" + names.map { return "\"" + $0 + "\"" }.joined(separator: ",") + "]"
+                let value = "[" + names.map { "\"" + $0 + "\"" }.joined(separator: ",") + "]"
                 queryItems.append(URLQueryItem(name: "portal", value: value))
             }
             comp.queryItems = queryItems
@@ -223,7 +223,7 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         var resultError: Error? = nil
         
         let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("_find")
-        let sort: [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { return FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
+        let sort: [FileMakerSortItem]? = sortItems.isEmpty ? nil : sortItems.map { FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
         let encoder = JSONEncoder()
         repeat {
             var isOk = false

@@ -12,11 +12,11 @@ private let controlSet = CharacterSet.controlCharacters
 
 extension String {
     var tabStripped: [Substring] {
-        return self.split(separator: "\t", omittingEmptySubsequences: false).map { $0.controlStripped }
+        return self.split(separator: "\t", omittingEmptySubsequences: false).map(\.controlStripped)
     }
     
     var commaStripped: [Substring] {
-        return self.split(separator: ",", omittingEmptySubsequences: false).map { $0.controlStripped }
+        return self.split(separator: ",", omittingEmptySubsequences: false).map(\.controlStripped)
     }
 }
 
