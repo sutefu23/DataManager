@@ -9,7 +9,7 @@
 import Foundation
 
 public struct 指定注文番号型: Codable, Hashable {
-    let text: String
+    private let text: String
     public var テキスト: String { return text }
     public var 注文番号: 注文番号型? {
         guard let code = text.first?.uppercased() else { return nil }

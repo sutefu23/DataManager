@@ -33,6 +33,12 @@ class 資材発注キャッシュ型 {
         return try self.現在発注一覧(図番: 図番)
     }
     
+    func flushCache(図番: 図番型) {
+        lock.lock()
+        self.cache[図番] = nil
+        lock.unlock()
+    }
+    
     func flushAllCache() {
         lock.lock()
         self.cache.removeAll()
@@ -40,6 +46,3 @@ class 資材発注キャッシュ型 {
     }
 }
 
-extension 資材発注キャッシュ型 {
-    
-}

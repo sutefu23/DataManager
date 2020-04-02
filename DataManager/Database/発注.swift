@@ -11,7 +11,7 @@ import Foundation
 public class 発注型 {
     let record: FileMakerRecord
     public let 資材: 資材型
-    let 指定注文番号: 指定注文番号型
+    public let 指定注文番号: 指定注文番号型
     
     init?(_ record: FileMakerRecord) {
         self.record = record
@@ -47,6 +47,19 @@ public extension 発注型 {
     var 品名3: String { return self.規格2 }
     var 発注数量: Int? { return record.integer(forKey: "発注数量") }
     var 発注数量文字列: String { return record.string(forKey: "発注数量")! }
+    
+    var 補正済状態: 発注状態型 {
+        guard let state = (try? 資材入庫状況キャッシュ型.shared.キャッシュ資材入庫状況(指定注文番号: self.指定注文番号)) else { return self.状態 }
+        switch state.資材入庫状況状態 {
+        case .入庫済:
+            switch self.状態 {
+            case .未処理, .発注済み, .発注待ち:
+                return .納品書待ち
+            case .処理済み, .納品書待ち, .納品済み:
+                return self.状態
+            }
+        }
+    }
 }
 
 public enum 発注種類型: CustomStringConvertible {
@@ -96,8 +109,9 @@ extension 発注型 {
     }
     
 
-    public static func find(登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: 図番型? = nil, 数量: Int? = nil) throws -> [発注型]{
+    public static func find(指定注文番号: 指定注文番号型? = nil, 登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: 図番型? = nil, 数量: Int? = nil) throws -> [発注型]{
         var query = FileMakerQuery()
+        query["指定注文番号"] = 指定注文番号?.テキスト
         query["登録日"] = 登録日?.fmString
         query["注文番号"] = 注文番号?.記号
         query["発注種類"] = 発注種類?.description
@@ -117,7 +131,7 @@ extension Sequence where Element == 発注型 {
     public var 未納発注個数: Int {
         let limit = Day(2019, 12, 31)
         return self.reduce(0) {
-            switch $1.状態 {
+            switch $1.補正済状態 {
             case .未処理, .発注待ち, .発注済み:
                 if $1.登録日 < limit { return $0 }
                 return $0 + ($1.発注数量 ?? 0)
