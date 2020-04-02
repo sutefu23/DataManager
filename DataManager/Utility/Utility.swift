@@ -60,13 +60,13 @@ extension UIViewController {
 }
 
 extension UITableView {
-    public func convertToPDF() -> Data? {
+    public func convertToPDF() -> ProgressTVData? {
         let priorBounds = self.bounds
         setBoundsForAllItems()
         self.layoutIfNeeded()
         let pdfData = createPDF()
         self.bounds = priorBounds
-        return pdfData.copy() as? Data
+        return pdfData.copy() as? ProgressTVData
     }
 
     private func getContentFrame() -> CGRect {

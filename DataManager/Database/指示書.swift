@@ -119,6 +119,9 @@ public class 指示書型 {
     public var ボルト本数14: String { record.string(forKey: "ボルト本数14")! }
     public var ボルト本数15: String { record.string(forKey: "ボルト本数15")! }
 
+    public var その他1: String { record.string(forKey: "その他1")! }
+    public var その他2: String { record.string(forKey: "その他2")! }
+
     public var 合計金額: Int { record.integer(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }

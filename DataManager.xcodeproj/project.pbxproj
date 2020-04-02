@@ -39,6 +39,7 @@
 		146508AC22FD4CF40095AD83 /* 発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146508AB22FD4CF40095AD83 /* 発注.swift */; };
 		146651B0240DC696008F50D0 /* 資材入出庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146651AF240DC696008F50D0 /* 資材入出庫.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
+		1467C77F243484F100813CB1 /* ProgressTVData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1467C77E243484F100813CB1 /* ProgressTVData.swift */; };
 		1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1467CF62242DCDF3003F15DF /* Test管理資材型.swift */; };
 		14681F122212B3AE00C41D15 /* 工程図.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14681F112212B3AE00C41D15 /* 工程図.swift */; };
 		1468395824297930001E5656 /* 資材発注キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1468395724297930001E5656 /* 資材発注キャッシュ.swift */; };
@@ -165,6 +166,7 @@
 		146508AB22FD4CF40095AD83 /* 発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注.swift"; sourceTree = "<group>"; };
 		146651AF240DC696008F50D0 /* 資材入出庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材入出庫.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
+		1467C77E243484F100813CB1 /* ProgressTVData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTVData.swift; sourceTree = "<group>"; };
 		1467CF62242DCDF3003F15DF /* Test管理資材型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test管理資材型.swift"; sourceTree = "<group>"; };
 		14681F112212B3AE00C41D15 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
 		1468395724297930001E5656 /* 資材発注キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材発注キャッシュ.swift"; sourceTree = "<group>"; };
@@ -310,6 +312,15 @@
 			path = "出力";
 			sourceTree = "<group>";
 		};
+		1467C77B243484AA00813CB1 /* 共通ロジック */ = {
+			isa = PBXGroup;
+			children = (
+				1467C77E243484F100813CB1 /* ProgressTVData.swift */,
+			);
+			name = "共通ロジック";
+			path = "共通ロジック";
+			sourceTree = "<group>";
+		};
 		14681F102212B37200C41D15 /* 工程図 */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,6 +413,7 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				1467C77B243484AA00813CB1 /* 共通ロジック */,
 				1495F8082424608800944E46 /* 工程分析 */,
 				8E0CBAE723EB657D00587F6B /* 互換性 */,
 				8E0CBADA23EB5D6600587F6B /* ラベル印刷 */,
@@ -661,6 +673,7 @@
 				142D3BA7231CAD1900B95EEB /* 指示書分析.swift in Sources */,
 				146746652373E8C90027B5C1 /* インシデント.swift in Sources */,
 				1468395E2429E7CE001E5656 /* 取引先キャッシュ.swift in Sources */,
+				1467C77F243484F100813CB1 /* ProgressTVData.swift in Sources */,
 				1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */,
 				146B4C4623E4FE4200FB392B /* NSAttributedString.swift in Sources */,
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
