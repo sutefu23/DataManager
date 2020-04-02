@@ -103,7 +103,7 @@ public class 資材入庫状況型 {
         let db = FileMakerDB.system
         try db.delete(layout: 資材入庫状況Data型.dbName, recordId: recordId)
         self.recordID = nil
-        資材入庫状況キャッシュ型.shared.flushCache(指定注文番号: self.指定注文番号)
+        資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: nil)
     }
     
     public func synchronize() {
@@ -119,7 +119,7 @@ public class 資材入庫状況型 {
                 self.recordID = recordID
             }
             self.original = self.data
-            資材入庫状況キャッシュ型.shared.flushCache(指定注文番号: self.指定注文番号)
+            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: self)
         } catch {
             NSLog(error.localizedDescription)
         }
@@ -173,10 +173,7 @@ public class 資材入庫状況キャッシュ型 {
             lock.unlock()
             return nil
         }
-        let date = Date(timeIntervalSinceNow: self.expireTime)
-        lock.lock()
-        map[指定注文番号] = (date, result)
-        lock.unlock()
+        registCache(指定注文番号: 指定注文番号, 資材入庫状況型: result)
         return result
     }
     
@@ -195,6 +192,13 @@ public class 資材入庫状況キャッシュ型 {
     func flushCache(指定注文番号: 指定注文番号型) {
         lock.lock()
         self.map[指定注文番号] = nil
+        lock.unlock()
+    }
+    
+    func registCache(指定注文番号: 指定注文番号型, 資材入庫状況型: 資材入庫状況型?) {
+        let date = Date(timeIntervalSinceNow: self.expireTime)
+        lock.lock()
+        map[指定注文番号] = (date, 資材入庫状況型)
         lock.unlock()
     }
     

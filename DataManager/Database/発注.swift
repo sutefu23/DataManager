@@ -56,6 +56,7 @@ public extension 発注型 {
             case .未処理, .発注済み, .発注待ち:
                 return .納品書待ち
             case .処理済み, .納品書待ち, .納品済み:
+                try? state.delete()
                 return self.状態
             }
         }
