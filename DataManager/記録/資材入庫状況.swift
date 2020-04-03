@@ -130,7 +130,7 @@ public class 資材入庫状況型 {
         var query = FileMakerQuery()
         query["指定注文番号"] = "==\(指定注文番号.テキスト)"
         let list: [FileMakerRecord] = try db.find(layout: 資材入庫状況Data型.dbName, query: [query])
-        if let record = list.first, let recordId = record.recordId {
+        if let record = list.first, let recordId = record.recordID {
             if let data = 資材入庫状況Data型(record) {
                 return 資材入庫状況型(data: data, recordID: recordId)
             }
@@ -142,7 +142,7 @@ public class 資材入庫状況型 {
     static func removeOld() throws {
         let db = FileMakerDB.system
         let list: [資材入庫状況型] = try db.fetch(layout: 資材入庫状況Data型.dbName).compactMap {
-            guard let recordId = $0.recordId, let data = 資材入庫状況Data型($0) else { return nil }
+            guard let recordId = $0.recordID, let data = 資材入庫状況Data型($0) else { return nil }
             return 資材入庫状況型(data: data, recordID: recordId)
         }
         for data in list {

@@ -152,11 +152,9 @@ public class 指示書型 {
     #else
     #endif
 
-    public var 進捗一覧: [進捗型] {
-        return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)) ?? []
-    }
-    public var 工程別進捗一覧: [工程型: [進捗型]] { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }
-    public var 作業進捗一覧: [進捗型] { self.進捗一覧.filter { $0.作業種別 != .その他 } }
+    public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧) ?? [] }
+    public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧) ?? [:] }
+    public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).作業進捗一覧) ?? [] }
     public lazy var uuid: String = { self.record.string(forKey: "UUID")! }()
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {

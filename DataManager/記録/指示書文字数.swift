@@ -148,14 +148,14 @@ public class 指示書文字数型 {
         guard let recordId = self.recordId else { return }
         let data = self.fieldData
         serialQueue.addOperation {
-            try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+            try? session.update(layout: 指示書文字数型.dbName, recordID: recordId, fields: data)
         }
     }
     
     func delete() {
         guard let recordId = self.recordId else { return }
         serialQueue.addOperation {
-            try? session.delete(layout: 指示書文字数型.dbName, recordId: recordId)
+            try? session.delete(layout: 指示書文字数型.dbName, recordID: recordId)
         }
     }
     
@@ -168,7 +168,7 @@ public class 指示書文字数型 {
         if let recordId = self.recordId {
             let data = self.fieldData
             serialQueue.addOperation {
-                try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
+                try? session.update(layout: 指示書文字数型.dbName, recordID: recordId, fields: data)
             }
         } else {
             self.insert()
@@ -184,7 +184,7 @@ extension 箱文字文字数型 {
             query["伝票番号"] = "\(order.伝票番号)"
             do {
                 let list: [FileMakerRecord] = try session.find(layout: 指示書文字数型.dbName, query: [query])
-                if let record = list.first, let recordId = record.recordId {
+                if let record = list.first, let recordId = record.recordID {
                     let data = 箱文字文字数型(record)
                     result = .success((recordId, data))
                 }

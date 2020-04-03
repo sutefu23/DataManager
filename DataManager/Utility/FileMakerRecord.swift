@@ -19,12 +19,12 @@ protocol FileMakerRecordOwner: class {
 class FileMakerRecord {
     let fieldData: [String: Any]
     let portalData: [String: [FileMakerRecord]]
-    let recordId: String?
+    let recordID: String?
     let name: String
     
     init?(json data: Any) {
         guard let dic = data as? [String: Any] else { return nil }
-        self.recordId = dic["recordId"] as? String
+        self.recordID = dic["recordId"] as? String
         self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
         if let data = dic["portalData"] as? [String: [[String: Any]]] {
             var portalData = [String: [FileMakerRecord]]()
@@ -43,7 +43,7 @@ class FileMakerRecord {
         self.name = name
         self.fieldData = fieldData
         self.portalData = [:]
-        self.recordId = nil
+        self.recordID = nil
     }
     
     func output(_ key: String) {

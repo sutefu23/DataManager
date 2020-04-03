@@ -12,6 +12,8 @@ public class 進捗型: Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
 
     let record: FileMakerRecord
+    let recordID: String
+    public var id: String { recordID }
 
     public var 工程: 工程型
     public let 作業内容: 作業内容型
@@ -25,6 +27,8 @@ public class 進捗型: Equatable, Identifiable {
 
     init(_ record: FileMakerRecord) throws {
         self.record = record
+        guard let recordID = record.recordID else { throw FileMakerError(invalidData: "伝票番号", "登録日", "登録時間", record: record) }
+        self.recordID = recordID
         guard var state = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else {
             throw FileMakerError(invalidData: "伝票番号", "工程コード", "工程名称", record: record)
         }

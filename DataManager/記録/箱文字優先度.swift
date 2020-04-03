@@ -35,7 +35,7 @@ struct 箱文字優先度Data型: Equatable {
         }
         self.表示設定日 = record.day(forKey: "表示設定日")
         self.修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ")
-        self.recordId = record.recordId
+        self.recordId = record.recordID
     }
     
     init() {}
@@ -158,7 +158,7 @@ public class 箱文字優先度型 {
         query["伝票番号"] = "==\(伝票番号.整数値)"
         let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
         let orders: [箱文字優先度型] = list.compactMap {
-            guard let recordID = $0.recordId, let data = 箱文字優先度Data型($0) else { return nil }
+            guard let recordID = $0.recordID, let data = 箱文字優先度Data型($0) else { return nil }
             return 箱文字優先度型(data: data, recordID: recordID)
         }
         return orders
@@ -174,7 +174,7 @@ public class 箱文字優先度型 {
             query["工程コード"] = "="
         }
         let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
-        if let record = list.first, let recordId = record.recordId {
+        if let record = list.first, let recordId = record.recordID {
             if let data = 箱文字優先度Data型(record) {
                 return 箱文字優先度型(data: data, recordID: recordId)
             }

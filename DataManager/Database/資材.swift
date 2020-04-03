@@ -19,7 +19,7 @@ public class 資材型: Codable, Comparable, Hashable {
 
     init(_ record: FileMakerRecord) throws {
         self.record = record
-        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordId ?? "")") }
+        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordID ?? "")") }
         guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3 of 図番 \(図番)") }
         guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f15 of 図番 \(図番)") }
         self.図番 = 図番

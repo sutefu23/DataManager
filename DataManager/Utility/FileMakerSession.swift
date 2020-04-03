@@ -211,8 +211,8 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         let limit: Int
     }
     
-    func find(layout: String, recordId: String) throws -> FileMakerRecord? {
-        return try self.find(layout: layout, query: [["recordId": recordId]]).first
+    func find(layout: String, recordID: String) throws -> FileMakerRecord? {
+        return try self.find(layout: layout, query: [["recordId": recordID]]).first
     }
     
     func find(layout: String, query: [FileMakerQuery], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
@@ -268,9 +268,9 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         return result
     }
     
-    func delete(layout: String, recordId: String) throws {
+    func delete(layout: String, recordID: String) throws {
         let token = try self.prepareToken()
-        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
+        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
         var isOk = false
         var errorMessage = ""
         var request = URLRequest(url: url)
@@ -291,9 +291,9 @@ class FileMakerSession: NSObject, URLSessionDelegate {
         if isOk == false { throw FileMakerError.delete(message: errorMessage) }
     }
     
-    func update(layout: String, recordId: String , fields: FileMakerQuery) throws {
+    func update(layout: String, recordID: String , fields: FileMakerQuery) throws {
         let token = try self.prepareToken()
-        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordId)
+        let url = self.dbURL.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
         let encoder = JSONEncoder()
         var isOk = false
         var errorMessage = ""

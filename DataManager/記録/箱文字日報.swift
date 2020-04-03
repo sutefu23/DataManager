@@ -120,7 +120,7 @@ public class 箱文字日報型 {
             query["作業日"] = "\(作業日.fmString)"
             do {
                 let list: [FileMakerRecord] = try db.find(layout: 箱文字日報Data型.dbName, query: [query])
-                if let record = list.first, let recordId = record.recordId {
+                if let record = list.first, let recordId = record.recordID {
                     if let data = 箱文字日報Data型(record) {
                         result = .success(箱文字日報型(data: data, recordId: recordId))
                     } else {

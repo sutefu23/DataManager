@@ -203,12 +203,12 @@ public final class FileMakerDB {
     
     func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
         try checkStop()
-        return try self.execute { try $0.update(layout: layout, recordId: recordId,fields: fields) }
+        return try self.execute { try $0.update(layout: layout, recordID: recordId,fields: fields) }
     }
     
     func delete(layout: String, recordId: String) throws {
         try checkStop()
-        return try self.execute { try $0.delete(layout: layout, recordId: recordId) }
+        return try self.execute { try $0.delete(layout: layout, recordID: recordId) }
     }
     
     @discardableResult func insert(layout: String, fields: FileMakerQuery) throws -> String {
