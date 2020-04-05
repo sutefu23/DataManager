@@ -18,9 +18,9 @@ class 進捗一覧Data型 {
     }
 }
 
-class 指示書進捗キャッシュ型 {
-    var expire: TimeInterval = 10*60
-    static let shared = 指示書進捗キャッシュ型()
+public class 指示書進捗キャッシュ型 {
+    public var expire: TimeInterval = 10*60
+    public static let shared = 指示書進捗キャッシュ型()
     
     private let lock = NSLock()
     private var cache: [伝票番号型: (expire: Date, data: 進捗一覧Data型)] = [:]
@@ -43,22 +43,27 @@ class 指示書進捗キャッシュ型 {
         return try 現在一覧(伝票番号)
     }
     
-    func flushAllCache() {
+    public func flushAllCache() {
         lock.lock()
         cache.removeAll()
         lock.unlock()
     }
+    public func flushCache(伝票番号: 伝票番号型) {
+        lock.lock()
+        cache[伝票番号] = nil
+        lock.unlock()
+    }
     
     // MARK: -
-    func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
+    public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .受取, member: member)
     }
     
-    func has完了(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
+    public func has完了(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .完了, member: member)
     }
     
-    func hasComplete(number: 伝票番号型, process: 工程型, work: 作業内容型, member: 社員型? = nil) throws -> Bool {
+    public func hasComplete(number: 伝票番号型, process: 工程型, work: 作業内容型, member: 社員型? = nil) throws -> Bool {
         var hasHigh: Bool = false
         let list = try self.キャッシュ一覧(number).進捗一覧
         for progress in list.reversed() {

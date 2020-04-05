@@ -14,12 +14,12 @@ import AppKit
 #endif
 
 /// mm → ポイント 変換
-func convert(mm: Double) -> CGFloat {
+public func convertPoint(mm: Double) -> CGFloat {
     return CGFloat(mm * 72.0 / 25.4)
 }
 
 /// ポイント → mm 変換
-func convert(point: CGFloat) -> Double {
+public func convertMM(point: CGFloat) -> Double {
     return Double(point * 25.4 / 72.0)
 }
 
@@ -36,10 +36,10 @@ public class PaperRect: PaperObject {
     }
 
     public init(x: Double, y:Double, width: Double, height: Double) {
-        self.px = convert(mm: x)
-        self.py = convert(mm: y)
-        self.pwidth = convert(mm: width)
-        self.pheight = convert(mm: height)
+        self.px = convertPoint(mm: x)
+        self.py = convertPoint(mm: y)
+        self.pwidth = convertPoint(mm: width)
+        self.pheight = convertPoint(mm: height)
     }
 
     public init(px: CGFloat, py:CGFloat, pwidth: CGFloat, pheight: CGFloat) {
@@ -50,8 +50,8 @@ public class PaperRect: PaperObject {
     }
 
     public func moveTo(x: Double, y: Double) {
-        self.px = convert(mm: x)
-        self.py = convert(mm: y)
+        self.px = convertPoint(mm: x)
+        self.py = convertPoint(mm: y)
     }
     private(set) var objects: [PaperObject] = []
     public func append(_ object: PaperObject) {
@@ -83,6 +83,23 @@ public protocol PaperObject {
 }
 
 public class PaperPath: PaperObject {
+    public static func makeLine(from: (x: Double, y: Double), to: (x: Double, y: Double), lineWidth: CGFloat = 1.0) -> PaperPath {
+        let path = PaperPath(lineWidth: lineWidth)
+        path.append(x: from.x, y: from.y)
+        path.append(x: to.x, y: to.y)
+        return path
+    }
+    
+    public static func makeBox(origin: (x: Double, y: Double), size: (width: Double, height: Double), lineWidth: CGFloat = 1.0) -> PaperPath {
+        let path = PaperPath(lineWidth: lineWidth)
+        path.append(x: origin.x, y: origin.y)
+        path.append(x: origin.x + size.width, y: origin.y)
+        path.append(x: origin.x + size.width, y: origin.y + size.height)
+        path.append(x: origin.x, y: origin.y + size.height)
+        path.append(x: origin.x, y: origin.y)
+        return path
+    }
+    
     private var points: [CGPoint] = []
     private let lineWidth: CGFloat
     
@@ -91,8 +108,8 @@ public class PaperPath: PaperObject {
     }
     
     public func append(x: Double, y: Double) {
-        let x = convert(mm: x)
-        let y = convert(mm: y)
+        let x = convertPoint(mm: x)
+        let y = convertPoint(mm: y)
         
         points.append(CGPoint(x: x, y: y))
     }
@@ -145,10 +162,10 @@ public class PaperImage: PaperObject {
     }
     
     public func draw(at: CGPoint) {
-        let x = convert(mm: self.x) + at.x
-        let y = convert(mm: self.y) + at.y
-        let width = convert(mm: self.width)
-        let height = convert(mm: self.height)
+        let x = convertPoint(mm: self.x) + at.x
+        let y = convertPoint(mm: self.y) + at.y
+        let width = convertPoint(mm: self.width)
+        let height = convertPoint(mm: self.height)
         let rect = CGRect(x: x, y: y, width: width, height: height)
         image.draw(in: rect)
     }
