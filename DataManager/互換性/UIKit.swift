@@ -81,6 +81,14 @@ public extension UIView {
         return self.search(name) as? UILabel
     }
     
+    func searchButton(_ name: String) -> UIButton? {
+        return self.search(name) as? UIButton
+    }
+
+    func searchTextField(_ name: String) -> UITextField? {
+        return self.search(name) as? UITextField
+    }
+
     private func searchImage(_ name: String) -> UIImageView? {
         return self.search(name) as? UIImageView
     }

@@ -449,7 +449,7 @@ public extension 指示書型 {
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {
         var query = FileMakerQuery()
         if let num = 伝票番号 {
-            query["伝票番号"] = "\(num)"
+            query["伝票番号"] = "==\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
@@ -462,7 +462,7 @@ public extension 指示書型 {
     static func find2(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {
         var query = FileMakerQuery()
         if let num = 伝票番号 {
-            query["伝票番号"] = "\(num)"
+            query["伝票番号"] = "==\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
@@ -476,7 +476,7 @@ public extension 指示書型 {
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 受注日 range0: ClosedRange<Day>? = nil, 製作納期 range: ClosedRange<Day>? = nil,  出荷納期 range2: ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil) throws -> [指示書型] {
         var query = FileMakerQuery()
         if let num = 伝票番号 {
-            query["伝票番号"] = "\(num)"
+            query["伝票番号"] = "==\(num)"
         }
         query["伝票種類"] = 伝票種類?.fmString
         if let range0 = range0 {
@@ -621,7 +621,7 @@ public extension 指示書型 {
 
     static func findDirect(伝票番号: 伝票番号型) throws -> 指示書型? {
         var query = FileMakerQuery()
-        query["伝票番号"] = "\(伝票番号)"
+        query["伝票番号"] = "==\(伝票番号)"
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
         if list.count == 1, let record = list.first, let order = 指示書型(record) {

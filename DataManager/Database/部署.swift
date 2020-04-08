@@ -13,7 +13,7 @@ public class 部署型: Comparable, Hashable {
 
     public var 部署記号: String { return "\(self.部署番号)" }
     public var 部署名: String
-    let 部署番号: Int
+    public let 部署番号: Int
     
     public convenience init?(_ 部署番号: Int) {
         guard let sec = 部署型.部署番号マップ[部署番号] else { return nil }
