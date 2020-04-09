@@ -24,7 +24,7 @@ public class 進捗型: Equatable, Identifiable {
 
     public var 伝票番号文字列: String { self.record.string(forKey: "伝票番号")! }
     public var 伝票番号: 伝票番号型
-
+    
     init(_ record: FileMakerRecord) throws {
         self.record = record
         guard let recordID = record.recordID else { throw FileMakerError(invalidData: "伝票番号", "登録日", "登録時間", record: record) }
