@@ -35,9 +35,9 @@ public func showDialog(message: String, ok: (title: String, action: ()->()), ng:
     alert.addButton(withTitle: ok.title)
     alert.addButton(withTitle: ng.title)
     if alert.runModal() == .alertFirstButtonReturn {
-        ok.action
+        ok.action()
     } else {
-        ng.action
+        ng.action()
     }
     #elseif os(iOS) || os(tvOS)
     let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
