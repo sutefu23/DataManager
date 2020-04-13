@@ -210,6 +210,8 @@ public class 管理板材型: 管理資材型 {
     public var 横幅: Double?
     public var 高さ: Double?
 
+    public var 半切資材: 資材型?
+
     func updateSheetParameters() {
         let param = 資材板情報型(self.資材)
         self.材質 = param.材質
@@ -237,6 +239,7 @@ public class 管理板材型: 管理資材型 {
     
     // MARK: <Codable>
     enum SheetCodingKeys: String, CodingKey {
+        case 半切資材
         case 材質
         case 種類
         case 板厚
@@ -258,6 +261,7 @@ public class 管理板材型: 管理資材型 {
         self.高さ = try values.decodeIfPresent(Double.self, forKey: .高さ) ?? param.高さ
         self.横幅 = try values.decodeIfPresent(Double.self, forKey: .横幅) ?? param.横幅
         self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? true
+        self.半切資材 = try values.decodeIfPresent(資材型.self, forKey: .半切資材)
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -268,6 +272,7 @@ public class 管理板材型: 管理資材型 {
         try container.encode(self.サイズ, forKey: .サイズ)
         try container.encode(self.高さ, forKey: .高さ)
         try container.encode(self.横幅, forKey: .横幅)
+        try container.encode(self.半切資材, forKey: .半切資材)
         try super.encode(to: encoder)
     }
     // MARK: -
@@ -282,3 +287,22 @@ public class 管理板材型: 管理資材型 {
     }
 }
 
+public extension 管理板材一覧一覧型 {
+    func find(図番: 図番型) -> 管理板材型? {
+        for list in self {
+            if let item = list.find(図番: 図番) { return item }
+        }
+        return nil
+    }
+}
+
+public extension 管理板材一覧型 {
+    func find(図番: 図番型) -> 管理板材型? {
+        for item in self {
+            if item.資材.図番 == 図番 {
+                return item
+            }
+        }
+        return nil
+    }
+}

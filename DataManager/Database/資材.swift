@@ -223,6 +223,7 @@ public extension 資材型 {
     }
     
     static func find(図番: 図番型) throws -> 資材型? {
+        if 図番.isEmpty { return nil }
         let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
         query["f13"] = "==\(図番)"
