@@ -27,7 +27,7 @@ public class 資材型: Codable, Comparable, Hashable {
         self.規格 = 規格
         self.単価 = record.double(forKey: "f88")
     }
-    public convenience init?(図番: 図番型 ) {
+    public convenience init?(図番: 図番型) {
         guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
         try? self.init(record)
     }

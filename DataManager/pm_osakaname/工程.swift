@@ -30,7 +30,8 @@ public struct 工程型: Hashable, Comparable, Codable {
 
     init(_ number: Int) { self.number = number }
     
-    init?(code: String) {
+    public init?(code: String?) {
+        guard let code = code else { return nil }
         var main: Int = 0
         var sub: Int = 0
         for (index, ch) in code.uppercased().enumerated() {

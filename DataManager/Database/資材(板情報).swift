@@ -8,22 +8,27 @@
 
 import Foundation
 
-struct 資材板情報型 {
-    var 材質: String
-    var 種類: String
-    var 板厚: String
-    var サイズ: String
-    var 高さ: Double?
-    var 横幅: Double?
-    var 備考: String
+public struct 資材板情報型 {
+    public private(set) var 材質: String
+    public private(set) var 種類: String
+    public private(set) var 板厚: String
+    public private(set) var サイズ: String
+    public private(set) var 高さ: Double?
+    public private(set) var 横幅: Double?
+    public private(set) var 備考: String
     
     var アクリル種類: アクリル種類型?
     
-    init(_ item: 資材型) {
+    public var 面積: Double? {
+        guard let height = self.高さ, let width = self.横幅 else { return nil }
+        return width * height
+    }
+    
+    public init(_ item: 資材型) {
         self.init(製品名称: item.製品名称, 規格: item.規格)
     }
     
-    init(製品名称: String, 規格: String) {
+    public init(製品名称: String, 規格: String) {
         var material: String = ""
         var type: String = ""
         var thin: String = ""

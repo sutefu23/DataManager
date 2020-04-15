@@ -53,6 +53,15 @@ extension StringProtocol {
     }
 }
 
+extension Double {
+    public var 金額テキスト: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        let str = formatter.string(from: NSNumber(value: self))
+        return str ?? ""
+    }
+}
+
 extension String {
     func containsOne(of strings: String...) -> Bool {
         for str in strings {

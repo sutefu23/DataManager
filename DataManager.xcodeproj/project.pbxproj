@@ -24,6 +24,7 @@
 		1431E187220C2BC900E68ED7 /* 略号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1431E186220C2BC900E68ED7 /* 略号.swift */; };
 		14363C4E238F891A0094FF00 /* 伝票種別.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14363C4D238F891A0094FF00 /* 伝票種別.swift */; };
 		1436782922643B3A00335943 /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1436782822643B3A00335943 /* TestDate.swift */; };
+		14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */; };
 		14399D5923EAA28C00BAFD48 /* Test社員.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14399D5823EAA28C00BAFD48 /* Test社員.swift */; };
 		143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143FA9DC224F5EA9000F2029 /* 社員.swift */; };
 		1440531724203DC700C4E48C /* 注文番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1440531624203DC700C4E48C /* 注文番号.swift */; };
@@ -154,6 +155,7 @@
 		1431E186220C2BC900E68ED7 /* 略号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "略号.swift"; sourceTree = "<group>"; };
 		14363C4D238F891A0094FF00 /* 伝票種別.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種別.swift"; sourceTree = "<group>"; };
 		1436782822643B3A00335943 /* TestDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDate.swift; sourceTree = "<group>"; };
+		14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(コイル情報).swift"; sourceTree = "<group>"; };
 		14399D5823EAA28C00BAFD48 /* Test社員.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test社員.swift"; sourceTree = "<group>"; };
 		143FA9DC224F5EA9000F2029 /* 社員.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "社員.swift"; sourceTree = "<group>"; };
 		1440531624203DC700C4E48C /* 注文番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "注文番号.swift"; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				141203742201D6000054B56F /* スケジュール.swift */,
 				14BEE9E32240928F00B2750B /* 資材.swift */,
 				147B8806242F0508008FB8F4 /* 資材(板情報).swift */,
+				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,
 				146651AF240DC696008F50D0 /* 資材入出庫.swift */,
@@ -656,6 +659,7 @@
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
 				1468395A2429DC25001E5656 /* 指定注文番号型.swift in Sources */,
 				146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */,
+				14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
