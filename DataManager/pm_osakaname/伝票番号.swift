@@ -151,6 +151,13 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     }
 }
 
+extension FileMakerRecord {
+    func 伝票番号(forKey key: String) -> 伝票番号型? {
+        guard let number = self.integer(forKey: key) else { return nil }
+        return 伝票番号型(validNumber: number)
+    }
+}
+
 extension 伝票番号型 {
     static let dbName = "DataAPI_10"
     

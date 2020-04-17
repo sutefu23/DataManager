@@ -79,6 +79,7 @@
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		148AA6C12436ED1400BE8A1F /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148AA6C02436ED1400BE8A1F /* Int.swift */; };
 		149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */; };
+		1493E54F24484B03001467F2 /* 資材使用記録.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1493E54E24484B03001467F2 /* 資材使用記録.swift */; };
 		1495F80A242460D500944E46 /* 箱文字工程優先度.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1495F809242460D500944E46 /* 箱文字工程優先度.swift */; };
 		14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985310230BCE91007734E0 /* 資源マスタ情報.swift */; };
 		14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985312230BCEA7007734E0 /* 供給資源情報.swift */; };
@@ -210,6 +211,7 @@
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
 		148AA6C02436ED1400BE8A1F /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書変更内容履歴.swift"; sourceTree = "<group>"; };
+		1493E54E24484B03001467F2 /* 資材使用記録.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材使用記録.swift"; sourceTree = "<group>"; };
 		1495F809242460D500944E46 /* 箱文字工程優先度.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "箱文字工程優先度.swift"; sourceTree = "<group>"; };
 		14985310230BCE91007734E0 /* 資源マスタ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源マスタ情報.swift"; sourceTree = "<group>"; };
 		14985312230BCEA7007734E0 /* 供給資源情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "供給資源情報.swift"; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				8ED7EEFE239948DC00A47C44 /* 箱文字日報.swift */,
 				146AA59C2406067100ED395D /* 箱文字優先度.swift */,
 				1468395F2429EDA2001E5656 /* 資材入庫状況.swift */,
+				1493E54E24484B03001467F2 /* 資材使用記録.swift */,
 			);
 			path = "記録";
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				1468395C2429E703001E5656 /* 取引先.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
 				146D0B3123EA8C8B006FECA7 /* 入力区分.swift in Sources */,
+				1493E54F24484B03001467F2 /* 資材使用記録.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
