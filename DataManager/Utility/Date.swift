@@ -37,6 +37,12 @@ extension Date {
         let date = Day(year: year, month: month, day: day)
         self = Date(date)
     }
+    
+    public init?(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int = 0) {
+        let day = Day(year: year, month: month, day: day)
+        let time = Time(hour, minute, second)
+        self = Date(day, time)
+    }
     /// FileMakerDataAPIの日付と時間
     init?<T>(fmJSONDay: T?, fmJSONTime: T? = nil) where T : StringProtocol{
         guard let fmJSONDay = fmJSONDay else { return nil }

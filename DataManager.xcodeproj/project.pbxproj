@@ -38,6 +38,7 @@
 		145EE8FF2396422F008BC8B4 /* 作業系列.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145EE8FE2396422F008BC8B4 /* 作業系列.swift */; };
 		145EE90623967BBB008BC8B4 /* 進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145EE90523967BBB008BC8B4 /* 進捗出力.swift */; };
 		1460F9B92399DC02006B31C0 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1460F9B82399DC02006B31C0 /* Utility.swift */; };
+		14644225244950940070FE89 /* Test資材使用記録.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14644224244950940070FE89 /* Test資材使用記録.swift */; };
 		146508AC22FD4CF40095AD83 /* 発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146508AB22FD4CF40095AD83 /* 発注.swift */; };
 		146651B0240DC696008F50D0 /* 資材入出庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146651AF240DC696008F50D0 /* 資材入出庫.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
@@ -170,6 +171,7 @@
 		145EE8FE2396422F008BC8B4 /* 作業系列.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業系列.swift"; sourceTree = "<group>"; };
 		145EE90523967BBB008BC8B4 /* 進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗出力.swift"; sourceTree = "<group>"; };
 		1460F9B82399DC02006B31C0 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		14644224244950940070FE89 /* Test資材使用記録.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材使用記録.swift"; sourceTree = "<group>"; };
 		146508AB22FD4CF40095AD83 /* 発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注.swift"; sourceTree = "<group>"; };
 		146651AF240DC696008F50D0 /* 資材入出庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材入出庫.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				146D0B3423EA9513006FECA7 /* Test部署.swift */,
 				1467CF62242DCDF3003F15DF /* Test管理資材型.swift */,
 				147B8808242F06BF008FB8F4 /* Test資材板情報.swift */,
+				14644224244950940070FE89 /* Test資材使用記録.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
@@ -767,6 +770,7 @@
 				1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */,
 				14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */,
 				149BCB032208419E004066DD /* Test指示書.swift in Sources */,
+				14644225244950940070FE89 /* Test資材使用記録.swift in Sources */,
 				14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */,
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,
 				146D0B3523EA9513006FECA7 /* Test部署.swift in Sources */,
