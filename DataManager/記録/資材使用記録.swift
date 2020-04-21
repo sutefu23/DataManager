@@ -154,6 +154,14 @@ public class 資材使用記録型 {
         operation.waitUntilFinished()
         if let error = result { throw error }
     }
+
+    public func upload() {
+        let data = self.data.fieldData
+        serialQueue.addOperation {
+            let db = FileMakerDB.system
+            let _ = try? db.insert(layout: 資材使用記録Data型.dbName, fields: data)
+        }
+    }
     
     public func synchronize() throws {
         if !isChanged { return }

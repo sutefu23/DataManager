@@ -232,4 +232,8 @@ public extension 資材型 {
     }
 }
 
-
+extension 資材型 {
+    public var 面積単価: Double? {
+        return nil
+    }
+}
