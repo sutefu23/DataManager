@@ -43,7 +43,7 @@ public class LabelPDFDocument {
         self.skipCount = 0
     }
     
-    public func makePDF(labels: [LabelMaker]) -> PDFDocument? {
+    public func makePDF<C: Collection>(labels: C) -> PDFDocument? where C.Element: LabelMaker {
         if labels.isEmpty { return nil }
         let pdf = PDFDocument()
         var page = PaperPDFPage()
