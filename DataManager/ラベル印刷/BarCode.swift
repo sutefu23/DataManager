@@ -385,7 +385,7 @@ public class DMBarCodePrintView: NSView {
             let minX = dirtyRect.midX - width/2
             let minY = dirtyRect.midY - height/2
             let rect = CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: width, height: height))
-            barcode.draw(inRect: rect)
+            barcode.draw(inRect: rect, isFlipped: true)
         }
     }
     /// 1ページで印刷する
@@ -406,7 +406,7 @@ public class DMBarCodePrintView: NSView {
 
 #else
 public extension DMBarCode {
-    func draw(inRect rect: CGRect) {
+    func draw(inRect rect: CGRect, isFlipped: Bool, fontSize: CGFloat? = nil) {
         let minFontSize: CGFloat = 6
         let barcode = self.characters
         if barcode.isEmpty { return }
@@ -417,21 +417,33 @@ public extension DMBarCode {
         let minX = rect.minX
         let minY = rect.minY
         let maxY = rect.maxY
-        let fontSize = floor(codeWidth/2)
+        var fontSize = fontSize ?? floor(codeWidth/1.5)
+        fontSize = (fontSize >= minFontSize) ? minFontSize : 0
+        if fontSize < minFontSize { fontSize = 0 }
         let font = DMFont.userFont(ofSize: fontSize) ?? DMFont.systemFont(ofSize: fontSize)
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: DMColor.black]
+        let from, to: CGFloat
+        if isFlipped {
+            from = maxY
+            to = minY + fontSize + 2
+        } else {
+            from = minY
+            to = maxY - fontSize - 2
+        }
         for code in barcode {
             if fontSize >= minFontSize, let ch = code.character {
                 let x = minX + bold * offset
-                let y = minY - fontSize * 2
+                let y = isFlipped ? minY : maxY
                 let text = String(ch)
-                let origin = CGPoint(x: x, y: y)
+                var origin = CGPoint(x: x, y: y)
                 let storage = NSTextStorage(string: text, attributes: attributes)
                 let container = NSTextContainer()
                 let manager = NSLayoutManager()
                 manager.addTextContainer(container)
                 storage.addLayoutManager(manager)
                 let range = manager.glyphRange(for: container)
+                let bounds = manager.boundingRect(forGlyphRange: range, in: container)
+                origin.y += (isFlipped ? -bounds.height/2 : bounds.height/2)
                 manager.drawGlyphs(forGlyphRange: range, at: origin)
             }
             DMColor.black.set()
@@ -443,8 +455,8 @@ public extension DMBarCode {
                     let x = minX + bold * offset + lineWidth/2
                     let path = DMBezierPath()
                     path.lineWidth = lineWidth
-                    path.move(to: CGPoint(x: x, y: minY))
-                    path.line(to: CGPoint(x: x, y: maxY))
+                    path.move(to: CGPoint(x: x, y: from))
+                    path.line(to: CGPoint(x: x, y: to))
                     path.stroke()
                 }
                 offset += width

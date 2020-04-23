@@ -150,3 +150,15 @@ public extension DMColor {
         return DMColor(hue: hue, saturation: saturation, brightness: brightness * brightnessRatio, alpha: alpha)
     }
 }
+
+
+#if os(iOS)
+extension UIResponder {
+    public func makeFirstResponder2() {
+        #if targetEnvironment(macCatalyst)
+        #elseif os(iOS)
+        self.becomeFirstResponder()
+        #endif
+    }
+}
+#endif

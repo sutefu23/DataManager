@@ -44,16 +44,22 @@ public class PaperPDFPage: PDFPage {
     public override func draw(with box: PDFDisplayBox, to context: CGContext) {
 
         DMGraphicsPushContext(context)
-        #if targetEnvironment(macCatalyst)
         let rect = self.bounds(for: box)
+        #if targetEnvironment(macCatalyst)
         let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: rect.height)
         context.concatenate(flipVertical)
+        rects.forEach { $0.draw(at: CGPoint.zero, isFlipped: false) }
+
         #elseif os(iOS)
-        let rect = self.bounds(for: box)
         let flipVertical = CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: rect.width, ty: 0)
         context.concatenate(flipVertical)
+        rects.forEach { $0.draw(at: CGPoint.zero, isFlipped: false) }
+
+        #elseif os(macOS)
+        let pos = CGPoint(x: 0, y: rect.height)
+        rects.forEach { $0.draw(at: pos, isFlipped: true) }
+
         #endif
-        rects.forEach { $0.draw(at: CGPoint.zero) }
         DMGraphicsPopContext()
     }
     

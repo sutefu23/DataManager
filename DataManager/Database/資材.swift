@@ -28,7 +28,7 @@ public class 資材型: Codable, Comparable, Hashable {
         self.単価 = record.double(forKey: "f88")
     }
     public convenience init?(図番: 図番型) {
-        guard let record = (try? 資材型.find(図番: 図番))?.record else { return nil }
+        guard let record = (try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番))?.record else { return nil }
         try? self.init(record)
     }
     
@@ -234,6 +234,8 @@ public extension 資材型 {
 
 extension 資材型 {
     public var 面積単価: Double? {
-        return nil
+        let sheet = 管理板材型(資材: self)
+        guard let width = sheet.横幅, let height = sheet.高さ, let price = self.単価 else { return nil }
+        return price / (width * height)
     }
 }

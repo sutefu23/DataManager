@@ -58,11 +58,11 @@ public class PaperRect: PaperObject {
         objects.append(object)
     }
     
-    public func draw(at: CGPoint) {
+    public func draw(at: CGPoint, isFlipped: Bool) {
         let px = self.px + at.x
-        let py = self.py + at.y
+        let py = isFlipped ? (at.y - self.py + pheight) : self.py + at.y
         let origin = CGPoint(x: px, y: py)
-        objects.forEach { $0.draw(at: origin) }
+        objects.forEach { $0.draw(at: origin, isFlipped: isFlipped) }
     }
     
     public func append(_ rect: PaperRect) {
@@ -79,7 +79,7 @@ public class PaperRect: PaperObject {
 }
 
 public protocol PaperObject {
-    func draw(at: CGPoint)
+    func draw(at: CGPoint, isFlipped: Bool)
 }
 
 public class PaperPath: PaperObject {
@@ -114,7 +114,7 @@ public class PaperPath: PaperObject {
         points.append(CGPoint(x: x, y: y))
     }
     
-    public func draw(at: CGPoint) {
+    public func draw(at: CGPoint, isFlipped: Bool) {
         var points: [CGPoint] = self.points.map {
             let x = $0.x + at.x
             let y = $0.y + at.y
@@ -131,17 +131,20 @@ public class PaperPath: PaperObject {
 public class PaperBarCode: PaperObject {
     var barCode: DMBarCode
     var rect: CGRect
+    let fontSize: CGFloat?
     
-    public init(barCode: DMBarCode, rect: CGRect) {
+    public init(barCode: DMBarCode, rect: CGRect, fontSize: CGFloat?) {
         self.barCode = barCode
         self.rect = rect
+        self.fontSize = fontSize
     }
     
-    public func draw(at: CGPoint) {
+    public func draw(at: CGPoint, isFlipped: Bool) {
         var rect = self.rect
+        if isFlipped { rect.origin.y = -rect.origin.y }
         rect.origin.x += at.x
         rect.origin.y += at.y
-        barCode.draw(inRect: rect)
+        barCode.draw(inRect: rect, isFlipped: isFlipped, fontSize: fontSize)
     }
 }
 #endif
@@ -161,9 +164,11 @@ public class PaperImage: PaperObject {
         self.image = image
     }
     
-    public func draw(at: CGPoint) {
+    public func draw(at: CGPoint, isFlipped: Bool) {
         let x = convertPoint(mm: self.x) + at.x
-        let y = convertPoint(mm: self.y) + at.y
+        var y = convertPoint(mm: self.y)
+        if isFlipped { y = -y }
+        y += at.y
         let width = convertPoint(mm: self.width)
         let height = convertPoint(mm: self.height)
         let rect = CGRect(x: x, y: y, width: width, height: height)
@@ -176,10 +181,10 @@ public class PaperText: PaperObject {
     let container: NSTextContainer
     let manager: NSLayoutManager
     
-    let x: Double
-    let y: Double
+    let x: CGFloat
+    let y: CGFloat
     
-    public init(x: Double, y: Double, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
+    public init(x: CGFloat, y: CGFloat, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
         self.x = x
         self.y = y
         let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
@@ -200,18 +205,13 @@ public class PaperText: PaperObject {
         return bounds
     }
     
-    public func draw(at: CGPoint) {
+    public func draw(at: CGPoint, isFlipped: Bool) {
         let rect = self.bounds
+        let dx = x - rect.origin.x
+        let dy = isFlipped ? (-y-rect.height/2) : (y - (rect.height/2))
         var origin = at
-        #if targetEnvironment(macCatalyst)
-        let dx = CGFloat(-x)
-        let dy = CGFloat(-y)
-        #else
-        let dx = CGFloat(-x)
-        let dy = CGFloat(-y)
-        #endif
-        origin.x -= (rect.height/2 - 2) + dx
-        origin.y -= (rect.height/2 + 1) + dy
+        origin.x += dx
+        origin.y += dy
         guard let layoutManager = storage.layoutManagers.first else { return }
         guard let textContainer = layoutManager.textContainers.first else { return }
         let range = layoutManager.glyphRange(for: textContainer)

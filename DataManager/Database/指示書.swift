@@ -46,8 +46,8 @@ public class 指示書型 {
     public lazy var 伝票状態: 伝票状態型 = { record.伝票状態(forKey: "伝票状態") ?? .未製作 }()
     public lazy var 工程状態: 工程状態型 = { record.工程状態(forKey: "工程状態")! }()
     public lazy var 承認状態: 承認状態型 = { record.承認状態(forKey: "承認状態")! }()
-    public lazy var 製作納期: Day = { record.day(forKey: "製作納期")! }()
-    public lazy var 出荷納期: Day = { record.day(forKey: "出荷納期")! }()
+    public lazy var 製作納期: Day = { record.day(forKey: "製作納期") ?? record.day(forKey: "出荷納期")! }()
+    public lazy var 出荷納期: Day = { record.day(forKey: "出荷納期") ?? record.day(forKey: "製作納期")! }()
     
     public var 品名: String { record.string(forKey: "品名")! }
     public var 仕様: String { record.string(forKey: "仕様")! }
