@@ -218,3 +218,21 @@ public class PaperText: PaperObject {
         layoutManager.drawGlyphs(forGlyphRange: range, at: origin)
     }
 }
+
+public class PaperCanvas: PaperObject {
+    let rect: CGRect
+    let painter: (CGRect, Bool) -> ()
+    
+    public init(rect: CGRect, painter: @escaping (CGRect, Bool) -> ()) {
+        self.rect = rect
+        self.painter = painter
+    }
+    
+    public func draw(at: CGPoint, isFlipped: Bool) {
+        var rect = self.rect
+        rect.origin.x += at.x
+        rect.origin.y = isFlipped ? (at.y - rect.origin.y) : (at.y + rect.origin.y)
+        painter(rect, isFlipped)
+    }
+
+}
