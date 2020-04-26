@@ -100,3 +100,18 @@ extension UIViewController {
     }
 }
 #endif
+
+#if os(macOS)
+extension PDFDocument {
+    /// PDFDocumentを印刷する
+    public func print(info: NSPrintInfo = NSPrintInfo()) {
+        let info = NSPrintInfo()
+        let view = PDFView()
+        let window = NSWindow()
+        window.setContentSize(view.frame.size)
+        window.contentView = view
+        view.document = self
+        view.print(with: info, autoRotate: true, pageScaling: .pageScaleToFit)
+    }
+}
+#endif
