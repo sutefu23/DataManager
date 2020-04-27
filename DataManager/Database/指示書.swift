@@ -454,9 +454,6 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
         return try find(query)
-//         let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
     }
     
     static func find2(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {
@@ -467,9 +464,6 @@ public extension 指示書型 {
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
         return try find(query)
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
     }
 
     
@@ -490,9 +484,6 @@ public extension 指示書型 {
         }
         query["伝票状態"] = 伝票状態?.description
         return try find(query)
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
     }
         
     static func new_find(作業範囲 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
@@ -576,12 +567,6 @@ public extension 指示書型 {
         query["製作納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
         return try find(query).filter { $0.isActive }
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap {
-//            guard let order = 指示書型($0) else { return nil }
-//            return order.isActive ? order : nil
-//        }
     }
 
     static func findActive(伝票種類: 伝票種類型? = nil) throws -> [指示書型] {
@@ -590,12 +575,6 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
         return try find(query).filter { $0.isActive }
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap {
-//            guard let order = 指示書型($0) else { return nil }
-//            return order.isActive ? order : nil
-//        }
     }
     
     static func old_find2(作業範囲 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
@@ -604,9 +583,6 @@ public extension 指示書型 {
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
         return try find(query)
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
     }
     
     static func find(登録日 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
@@ -614,9 +590,6 @@ public extension 指示書型 {
         query ["登録日"] = makeQueryDayString(range)
         query["伝票種類"] = type?.fmString
         return try find(query)
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        return list.compactMap { 指示書型($0) }
     }
 
     static func findDirect(伝票番号: 伝票番号型) throws -> 指示書型? {
@@ -640,6 +613,23 @@ public extension 指示書型 {
             return order
         } else {
             return nil
+        }
+    }
+    
+    static func find(工程: 工程型, 伝票種類: 伝票種類型?, 基準製作納期: Day) throws -> [指示書型] {
+        let plist = try 進捗型.find(工程: 工程, 伝票種類: 伝票種類, 基準製作納期: 基準製作納期)
+        let orders = try Set<伝票番号型>(plist.map{ $0.伝票番号 }).compactMap { try 指示書型.findDirect(伝票番号: $0) }.filter {
+            switch $0.伝票状態 {
+            case .キャンセル, .発送済, .未製作:
+                return false
+            case .製作中:
+                guard let last = $0.工程別作業記録[工程]?.last else { return false }
+                return last.完了日時 == nil
+            }
+        }
+        return orders.sorted {
+            if $0.製作納期 != $1.製作納期 { return $0.製作納期 < $1.製作納期 }
+            return $0.伝票番号 < $1.伝票番号
         }
     }
 }
