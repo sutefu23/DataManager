@@ -616,15 +616,18 @@ public extension 指示書型 {
         }
     }
     
-    static func find(工程: 工程型, 伝票種類: 伝票種類型?, 基準製作納期: Day) throws -> [指示書型] {
-        let plist = try 進捗型.find(工程: 工程, 伝票種類: 伝票種類, 基準製作納期: 基準製作納期)
+    static func find(工程: 工程型, 伝票種類: Set<伝票種類型>, 基準製作納期: Day) throws -> [指示書型] {
+        var plist = [進捗型]()
+        for type in 伝票種類 {
+            let list = try 進捗型.find(工程: 工程, 伝票種類: type, 基準製作納期: 基準製作納期)
+            plist.append(contentsOf: list)
+        }
         let orders = try Set<伝票番号型>(plist.map{ $0.伝票番号 }).compactMap { try 指示書型.findDirect(伝票番号: $0) }.filter {
             switch $0.伝票状態 {
             case .キャンセル, .発送済, .未製作:
                 return false
             case .製作中:
-                guard let last = $0.工程別作業記録[工程]?.last else { return false }
-                return last.完了日時 == nil
+                return true
             }
         }
         return orders.sorted {

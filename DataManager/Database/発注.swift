@@ -125,6 +125,15 @@ extension 発注型 {
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }
     }
+    
+    public static func findDirect(送り状指定注文番号 str: String) throws -> 発注型? {
+        guard let num = 指定注文番号型(str, day: Day()) else { return nil }
+        var query = FileMakerQuery()
+        query["指定注文番号"] = num.テキスト
+        let db = FileMakerDB.pm_osakaname
+        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        return list.compactMap { 発注型($0) }.last
+    }
 }
 
 // MARK:

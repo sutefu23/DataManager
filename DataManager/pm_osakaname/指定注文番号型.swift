@@ -15,9 +15,25 @@ public struct 指定注文番号型: Codable, Hashable {
         guard let code = text.first?.uppercased() else { return nil }
         return 注文番号キャッシュ型.shared[code]
     }
-    
+
     init?(_ string: String) {
         self.text = string
+    }
+    
+    init?(_ string: String, day: Day) {
+        let string = string.uppercased()
+        let digs = string.split(separator: "-")
+        if digs.count != 2, !digs[0].isEmpty, digs[1].count == 6 { return nil }
+        var head = String(digs[0])
+        if head.count == 1 {
+            let mstr = digs[1].prefix(2)
+            guard let month = Int(mstr) else { return nil }
+            let year = day.year % 100
+            head += String(format: "%2d", day.month <= month ? year : year-1)
+            self.text = "\(head)-\(digs[1])"
+        } else {
+            self.text = string
+        }
     }
     
     // MARK: - Hashable
