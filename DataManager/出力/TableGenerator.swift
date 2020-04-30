@@ -114,7 +114,7 @@ public class TableGenerator<S> {
         self.columns = columns
     }
     
-    public func makeText<C : Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
+    public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
         var text = format.header(title: title)
         switch format {
         case .excel, .html, .numbers, .libreoffice:
@@ -131,13 +131,13 @@ public class TableGenerator<S> {
         return text
     }
     
-    public func makeData<C : Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
+    public func makeData<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
         let text = try makeText(source, format: format, title: title)
         let data = format.encode(text: text)
         return data
     }
     
-    public func write<C : Sequence>(_ source: C, format: ExportType, to url: URL) throws where C.Element == S {
+    public func write<C: Sequence>(_ source: C, format: ExportType, to url: URL) throws where C.Element == S {
         let title = url.deletingPathExtension().lastPathComponent
         let data = try makeData(source, format: format, title: title)
         try data.write(to: url, options: .atomicWrite)
