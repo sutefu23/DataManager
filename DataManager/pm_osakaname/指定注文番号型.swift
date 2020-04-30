@@ -23,7 +23,7 @@ public struct 指定注文番号型: Codable, Hashable {
     init?(_ string: String, day: Day) {
         let string = string.uppercased()
         let digs = string.split(separator: "-")
-        if digs.count != 2, !digs[0].isEmpty, digs[1].count == 6 { return nil }
+        guard digs.count == 2 && !digs[0].isEmpty && digs[1].count == 6 else { return nil }
         var head = String(digs[0])
         if head.count == 1 {
             let mstr = digs[1].prefix(2)

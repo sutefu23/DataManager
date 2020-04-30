@@ -70,16 +70,17 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
         一覧.append(item)
         return 一覧.count-1
     }
-    
+
+    public func insert(_ item: T, at: Int) {
+        一覧.insert(item, at: at)
+    }
+
     public func append<S: Sequence>(contentsOf list: S) where S.Element == T {
         list.forEach { _ = self.append($0) }
     }
-    public func insert<S: Sequence>(contentsOf list: S, at: Index) where S.Element == T {
-        var index = at
-        for item in list {
-            一覧.insert(item, at: index)
-            index = 一覧.index(after: index)
-        }
+
+    public func insert<C: Collection>(contentsOf list: C, at: Index) where C.Element == T {
+        一覧.insert(contentsOf: list, at: at)
     }
  
     public func remove(_ item: T) -> Int? {
@@ -151,6 +152,7 @@ public class 管理資材型: 管理対象型 {
     public var 在庫管理あり: Bool
     /// 発注状態が発注済で入庫したものの一覧
     public var 入庫済発注: Set<指定注文番号型> = []
+    public var 個別在庫: Int?
 
     // MARK: <Codable>
     enum CodingKeys: String, CodingKey {
@@ -160,15 +162,17 @@ public class 管理資材型: 管理対象型 {
         case 発注備考
         case 管理者メモ
         case 在庫管理あり
+        case 個別在庫
     }
     
-    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = false) {
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = false, 個別在庫: Int? = nil) {
         self.資材 = 資材
         self.基本発注数 = 基本発注数
         self.安全在庫数 = 安全在庫数
         self.発注備考 = 発注備考
         self.管理者メモ = 管理者メモ
         self.在庫管理あり = 在庫管理あり
+        self.個別在庫 = 個別在庫
     }
     
     public required init(from decoder: Decoder) throws {
@@ -179,6 +183,7 @@ public class 管理資材型: 管理対象型 {
         self.発注備考 = try values.decodeIfPresent(String.self, forKey: .発注備考) ?? ""
         self.管理者メモ = try values.decodeIfPresent(String.self, forKey: .管理者メモ) ?? ""
         self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? false
+        self.個別在庫 = try values.decodeIfPresent(Int.self, forKey: .個別在庫)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -188,7 +193,15 @@ public class 管理資材型: 管理対象型 {
         if let num = self.安全在庫数 { try container.encode(num, forKey: .安全在庫数) }
         if !self.発注備考.isEmpty { try container.encode(self.発注備考, forKey: .発注備考) }
         if !self.管理者メモ.isEmpty { try container.encode(self.管理者メモ, forKey: .管理者メモ) }
+        try container.encode(self.個別在庫, forKey: .個別在庫)
         try container.encode(self.在庫管理あり, forKey: .在庫管理あり)
+    }
+    
+    public var 個別在庫あり: Bool { 個別在庫 != nil }
+    
+    public var 最終調整日: Day? {
+        let list = try? 資材入出庫型.find(入力区分: .数量調整, 資材: self.資材).sorted { $0.登録日時 < $1.登録日時 }
+        return list?.last?.登録日
     }
     
     // MARK: <管理対象型>
@@ -210,7 +223,7 @@ public class 管理板材型: 管理資材型 {
     public var 横幅: Double?
     public var 高さ: Double?
 
-    public var 半切資材: 資材型?
+    public var is分割材: Bool { return 個別在庫 != nil }
 
     func updateSheetParameters() {
         let param = 資材板情報型(self.資材)
@@ -223,45 +236,42 @@ public class 管理板材型: 管理資材型 {
         self.管理者メモ = param.備考
     }
     
-    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true) {
-        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
+    public required init(資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true, 個別在庫: Int? = nil) {
+        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ, 在庫管理あり: 在庫管理あり, 個別在庫: 個別在庫)
         updateSheetParameters()
     }
     
-    public init(材質: String, 種類: String, 板厚: String, サイズ: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true) {
+    public init(材質: String, 種類: String, 板厚: String, サイズ: String, 資材: 資材型, 基本発注数: Int? = nil, 安全在庫数: Int? = nil, 発注備考: String = "", 管理者メモ: String = "", 在庫管理あり: Bool = true, 個別在庫: Int? = nil) {
         self.材質 = 材質
         self.種類 = 種類
         self.板厚 = 板厚
         self.板厚数値 = Double(板厚)
         self.サイズ = サイズ
-        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ)
+        
+        super.init(資材: 資材, 基本発注数: 基本発注数, 安全在庫数: 安全在庫数, 発注備考: 発注備考, 管理者メモ: 管理者メモ, 在庫管理あり: 在庫管理あり, 個別在庫: 個別在庫)
     }
     
     // MARK: <Codable>
     enum SheetCodingKeys: String, CodingKey {
-        case 半切資材
         case 材質
         case 種類
         case 板厚
         case サイズ
-        case 在庫管理あり
         case 高さ
         case 横幅
     }
     
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: SheetCodingKeys.self)
+        self.板厚数値 = Double(self.板厚)
         try super.init(from: decoder)
         let param = 資材板情報型(self.資材)
         self.材質 = try values.decodeIfPresent(String.self, forKey: .材質) ?? param.材質
         self.種類 = try values.decodeIfPresent(String.self, forKey: .種類) ?? param.種類
         self.板厚 = try values.decodeIfPresent(String.self, forKey: .板厚) ?? param.板厚
-        self.板厚数値 = Double(self.板厚)
         self.サイズ = try values.decodeIfPresent(String.self, forKey: .サイズ) ?? param.サイズ
         self.高さ = try values.decodeIfPresent(Double.self, forKey: .高さ) ?? param.高さ
         self.横幅 = try values.decodeIfPresent(Double.self, forKey: .横幅) ?? param.横幅
-        self.在庫管理あり = try values.decodeIfPresent(Bool.self, forKey: .在庫管理あり) ?? true
-        self.半切資材 = try values.decodeIfPresent(資材型.self, forKey: .半切資材)
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -272,7 +282,6 @@ public class 管理板材型: 管理資材型 {
         try container.encode(self.サイズ, forKey: .サイズ)
         try container.encode(self.高さ, forKey: .高さ)
         try container.encode(self.横幅, forKey: .横幅)
-        try container.encode(self.半切資材, forKey: .半切資材)
         try super.encode(to: encoder)
     }
     // MARK: -
@@ -285,21 +294,35 @@ public class 管理板材型: 管理資材型 {
             return "\(self.板厚)tx\(self.サイズ)"
         }
     }
+    
+    public func make分割板(height: Double, width: Double) -> 管理板材型? {
+        if self.高さ == height && self.横幅 == width { return nil }
+        let buddy = 管理板材型(材質: self.材質, 種類: self.種類, 板厚: self.板厚, サイズ: self.サイズ, 資材: self.資材, 基本発注数: self.基本発注数, 安全在庫数: self.安全在庫数, 発注備考: self.発注備考, 管理者メモ: self.管理者メモ, 在庫管理あり: self.在庫管理あり, 個別在庫: 0)
+        buddy.高さ = height
+        buddy.横幅 = width
+        buddy.サイズ = "\(String(format: "%.0f", height))x\(String(format: "%.0f", width))"
+        return buddy
+    }
+    
+    public func is同分割板(to item: 管理板材型) -> Bool {
+        if self.個別在庫 == nil { return false }
+        return self.高さ == item.高さ && self.横幅 == item.横幅 && self.資材 == item.資材
+    }
 }
 
 public extension 管理板材一覧一覧型 {
-    func find(図番: 図番型) -> 管理板材型? {
+    func find(図番: 図番型, 個別在庫あり: Bool) -> 管理板材型? {
         for list in self {
-            if let item = list.find(図番: 図番) { return item }
+            if let item = list.find(図番: 図番, 個別在庫あり: 個別在庫あり) { return item }
         }
         return nil
     }
 }
 
 public extension 管理板材一覧型 {
-    func find(図番: 図番型) -> 管理板材型? {
+    func find(図番: 図番型, 個別在庫あり: Bool) -> 管理板材型? {
         for item in self {
-            if item.資材.図番 == 図番 {
+            if item.資材.図番 == 図番 && item.個別在庫あり == 個別在庫あり  {
                 return item
             }
         }
