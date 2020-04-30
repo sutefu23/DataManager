@@ -41,7 +41,7 @@ public class 指示書型 {
     public lazy var 略号: Set<略号型> = { make略号(record.string(forKey: "略号")!) }()
     
     public lazy var 登録日時: Date = { record.date(dayKey: "登録日", timeKey: "登録時間")! }()
-    public lazy var 受注日: Day = { record.day(forKey: "受注日")! }()
+    public lazy var 受注日: Day = { record.day(forKey: "受注日") ?? record.day(forKey: "登録日")! }()
     public lazy var 伝票種類: 伝票種類型  = { record.伝票種類(forKey: "伝票種類")! }()
     public lazy var 伝票状態: 伝票状態型 = { record.伝票状態(forKey: "伝票状態") ?? .未製作 }()
     public lazy var 工程状態: 工程状態型 = { record.工程状態(forKey: "工程状態")! }()

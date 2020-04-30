@@ -114,7 +114,7 @@ public class TableGenerator<S> {
         self.columns = columns
     }
     
-    public func makeText(_ source: [S], format: ExportType, title: String) throws -> String {
+    public func makeText<C : Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
         var text = format.header(title: title)
         switch format {
         case .excel, .html, .numbers, .libreoffice:
@@ -131,13 +131,13 @@ public class TableGenerator<S> {
         return text
     }
     
-    public func makeData(_ source: [S], format: ExportType, title: String) throws -> Data {
+    public func makeData<C : Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
         let text = try makeText(source, format: format, title: title)
         let data = format.encode(text: text)
         return data
     }
     
-    public func write(_ source: [S], format: ExportType, to url: URL) throws {
+    public func write<C : Sequence>(_ source: C, format: ExportType, to url: URL) throws where C.Element == S {
         let title = url.deletingPathExtension().lastPathComponent
         let data = try makeData(source, format: format, title: title)
         try data.write(to: url, options: .atomicWrite)
@@ -188,21 +188,12 @@ public extension TableGenerator {
         case minute1
     }
 
-    func col(_ title: String, _ getter: @escaping (S) -> String?) -> TableGenerator<S> {
+    func colStr(_ title: String, _ getter: @escaping (S) -> String?) -> TableGenerator<S> {
         let col = TableColumn(title: title, getter: getter)
         return appending(col)
     }
 
-    func col(_ title: String, _ getter: @escaping (S) -> Substring?) -> TableGenerator<S> {
-        let col = TableColumn<S>(title: title) {
-            guard let str = getter($0) else { return nil }
-            return String(str)
-        }
-        return appending(col)
-    }
-    
-
-    func col(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S) -> Int?) -> TableGenerator<S> {
+    func colInt(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S) -> Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
                 switch format {
@@ -220,7 +211,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
+    func colDouble(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
@@ -239,7 +230,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: MonthFormat = .shortYearMonth, _ getter: @escaping (S) -> Month?) -> TableGenerator<S> {
+    func colMonth(_ title: String, _ format: MonthFormat = .shortYearMonth, _ getter: @escaping (S) -> Month?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let month = getter($0)
             switch format {
@@ -254,7 +245,7 @@ public extension TableGenerator {
         return appending(col)
     }
 
-    func col(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S) -> Day?) -> TableGenerator<S> {
+    func colDay(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S) -> Day?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let day = getter($0)
             switch format {
@@ -273,7 +264,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S) -> Time?) -> TableGenerator<S>
+    func colTime(_ title: String, _ format: TimeFormat = .hourMinute, _ getter: @escaping (S) -> Time?) -> TableGenerator<S>
     {
         let col = TableColumn<S>(title: title) {
             guard let time = getter($0) else { return nil }
@@ -287,7 +278,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func col(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
+    func colTimeInterval(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
