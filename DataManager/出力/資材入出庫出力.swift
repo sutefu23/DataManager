@@ -20,7 +20,7 @@ public struct 資材入出庫出力型 {
     
     public init?(登録日: Day = Day(), 登録時間: Time = Time(), 資材: 資材型, 部署: 部署型, 入庫数: Int, 出庫数: Int, 社員: 社員型, 入力区分: 入力区分型) {
         if 入庫数 < 0 || 出庫数 < 0 { return nil }
-        if 入庫数 == 0 && 出庫数 == 0 { return nil }
+//        if 入庫数 == 0 && 出庫数 == 0 { return nil }
         self.登録日 = 登録日
         self.登録時間 = 登録時間
         self.資材 = 資材
