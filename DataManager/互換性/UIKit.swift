@@ -104,9 +104,19 @@ public extension UIView {
         if let tag = tag { view.tag = tag }
         return view
     }
-
+    
     #endif
-
+    
+    @discardableResult func updateText(_ name: String, text: String?, tag: Int? = nil, target: Any? = nil, action: Selector? = nil) -> UITextField? {
+        guard let view = searchTextField(name) else { return nil }
+        if let target = target, let action = action {
+            view.addTarget(target, action: action, for: .primaryActionTriggered)
+        }
+        if let tag = tag { view.tag = tag }
+        view.text = text
+        return view
+    }
+    
     @discardableResult func updateLabel(_ name: String, text: String?, color: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(name) else { return nil }
         if let color = color {
@@ -123,12 +133,12 @@ public extension UIView {
         return view
     }
     
-        @discardableResult func updateLabel(_ name: String, text: NSAttributedString?, noEmpty: Bool = false) -> UILabel? {
-            guard let view = searchLabel(name) else { return nil }
-            view.attributedText = text ?? NSAttributedString()
-            return view
-        }
-
+    @discardableResult func updateLabel(_ name: String, text: NSAttributedString?, noEmpty: Bool = false) -> UILabel? {
+        guard let view = searchLabel(name) else { return nil }
+        view.attributedText = text ?? NSAttributedString()
+        return view
+    }
+    
     @discardableResult func updateImage(_ name: String, image: UIImage) -> UIImageView? {
         guard let view = searchImage(name) else { return nil }
         view.image = image

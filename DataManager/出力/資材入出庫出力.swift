@@ -41,10 +41,11 @@ public struct 資材入出庫出力型 {
             "社員番号": self.社員.Hなし社員コード,
             "入力区分": self.入力区分.name
         ]
-        if self.入庫数 > 0 {
+        let isZero = self.入庫数 == 0 && self.出庫数 == 0
+        if self.入庫数 > 0 || isZero {
             record["入庫数"] = "\(self.入庫数)"
         }
-        if self.出庫数 > 0 {
+        if self.出庫数 > 0 || isZero {
             record["出庫数"] = "\(self.出庫数)"
         }
         return record

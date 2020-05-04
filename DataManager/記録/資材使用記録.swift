@@ -185,17 +185,10 @@ public class 資材使用記録型 {
         operation.waitUntilFinished()
         self.recordID = try result.get()
     }
-    
-    public static func find(伝票番号: 伝票番号型? = nil, 図番: 図番型? = nil) throws -> [資材使用記録型] {
-        var result: Result<[FileMakerRecord], Error>!
-        var query = [String: String]()
-        if let order = 伝票番号 {
-            query["伝票番号"] = "==\(order)"
-        }
-        if let item = 図番 {
-            query["図番"] = "==\(item)"
-        }
+
+    static func find(query: FileMakerQuery) throws -> [資材使用記録型] {
         if query.isEmpty { return [] }
+        var result: Result<[FileMakerRecord], Error>!
         let operation = BlockOperation {
             let db = FileMakerDB.system
             do {
@@ -209,5 +202,21 @@ public class 資材使用記録型 {
         operation.waitUntilFinished()
         let list = try result.get().compactMap { 資材使用記録型($0) }
         return list
+    }
+    public static func find(登録日:ClosedRange<Day>) throws -> [資材使用記録型] {
+        var query = [String: String]()
+        query["登録日"] = makeQueryDayString(登録日)
+        return try find(query: query)
+    }
+    
+    public static func find(伝票番号: 伝票番号型? = nil, 図番: 図番型? = nil) throws -> [資材使用記録型] {
+        var query = [String: String]()
+        if let order = 伝票番号 {
+            query["伝票番号"] = "==\(order)"
+        }
+        if let item = 図番 {
+            query["図番"] = "==\(item)"
+        }
+        return try find(query: query)
     }
 }

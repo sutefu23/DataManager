@@ -109,7 +109,7 @@ func make4dig(_ value: Int) -> String {
 
 func calc箱文字側面高さ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, upperCased: true)
+    var scanner = DMScanner(line, toHalf: true, upperCased: true)
     while !scanner.isAtEnd {
         if scanner.scanParen("(", ")") != nil || scanner.scanParen("（", "）") != nil { continue }
         scanner.skip数字以外()
@@ -123,7 +123,7 @@ func calc箱文字側面高さ(_ line: String) -> [Double] {
 
 func calc箱文字以外側面高さ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, upperCased: true)
+    var scanner = DMScanner(line, toHalf: true, upperCased: true)
     while !scanner.isAtEnd {
         scanner.skip数字以外()
         if let value = scanner.scanDouble() {
@@ -137,7 +137,7 @@ func calc箱文字以外側面高さ(_ line: String) -> [Double] {
 
 func calc寸法サイズ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, upperCased: true, skipSpaces: true)
+    var scanner = DMScanner(line, toHalf: true, upperCased: true, skipSpaces: true)
     var header: Character? = nil
     while !scanner.isAtEnd {
         while scanner.first数字以外() {

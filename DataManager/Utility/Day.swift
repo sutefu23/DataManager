@@ -49,6 +49,11 @@ public struct Day: Hashable, Strideable, Codable {
     }
     
     // FileMakerの日付
+    public init?<S: StringProtocol>(fmDate2: S?) {
+        guard let fmDate = fmDate2 else { return nil }
+        self.init(fmDate: fmDate)
+    }
+
     public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")

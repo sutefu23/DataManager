@@ -61,17 +61,21 @@ public struct DMScanner: RandomAccessCollection {
     /// スキャン待ちの現在の文字(元データ)
 //    var originalSubstring: Substring { return originalSource[startIndex..<endIndex] }
 
-    public init(_ string: String, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
-        let string = newlineToSpace ? string.newlineToSpace : String(string)
-        self.source = upperCased ? string.uppercased() : string
-        self.startIndex = source.startIndex
-        self.endIndex = source.endIndex
-        self.skipSpaces = skipSpaces
-        self.needsSpaceCheck = skipSpaces
-    }
+//    public init(_ string: String, toHalf: Bool, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+//        var string: String = string
+//        if toHalf { string = string.applyingTransform(.fullwidthToHalfwidth, reverse: false) }
+//        if newlineToSpace { string = string.newlineToSpace }
+//        self.source = upperCased ? string.uppercased() : string
+//        self.startIndex = source.startIndex
+//        self.endIndex = source.endIndex
+//        self.skipSpaces = skipSpaces
+//        self.needsSpaceCheck = skipSpaces
+//    }
 
-    public init<S: StringProtocol>(_ string: S, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
-        let string = newlineToSpace ? string.newlineToSpace : String(string)
+    public init<S: StringProtocol>(_ string: S, toHalf: Bool, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+        var string: String = String(string)
+        if toHalf, let converted = string.applyingTransform(.fullwidthToHalfwidth, reverse: false) { string = converted }
+        if newlineToSpace { string = string.newlineToSpace }
         self.source = upperCased ? string.uppercased() : string
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
@@ -386,7 +390,7 @@ public struct DMScanner: RandomAccessCollection {
             return nil
         }
         if skipSpaces && leftContents.last?.isWhitespace == true {
-            var scanner = DMScanner(leftContents)
+            var scanner = DMScanner(leftContents, toHalf: false)
             scanner.dropTailSpaces()
             leftContents = String(scanner.substring)
         }
@@ -428,7 +432,7 @@ public struct DMScanner: RandomAccessCollection {
             return nil
         }
         if skipSpaces && leftContents.last?.isWhitespace == true {
-            var scanner = DMScanner(leftContents)
+            var scanner = DMScanner(leftContents, toHalf: false)
             scanner.dropTailSpaces()
             leftContents = String(scanner.substring)
         }
