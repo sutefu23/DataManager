@@ -11,8 +11,8 @@ import CoreGraphics
 
 /// 二次元バーコード
 public struct DMBarCode {
-    let text: String
-    let characters: [BarCodeCharacter]
+    public let text: String
+    public let characters: [BarCodeCharacter]
     
     public init?(code39 text: String) {
         var characters: [BarCodeCharacter] = [Code39.start]
@@ -45,7 +45,7 @@ public struct DMBarCode {
 }
 
 // MARK: -
-struct BarCodeCharacter {
+public struct BarCodeCharacter {
     enum StripeColor {
         case white
         case black
@@ -59,8 +59,8 @@ struct BarCodeCharacter {
     }
     
     let code: Int
-    let pattern: [CGFloat]
-    let digits: CGFloat
+    public let pattern: [CGFloat]
+    public let digits: CGFloat
     var character: Character? = nil
 
     init(code: Int, patternArray: [CGFloat]) {
@@ -465,5 +465,38 @@ public extension DMBarCode {
         }
     }
 }
+#endif
+
+#if os(iOS)
+#elseif os(macOS)
+import Cocoa
+public class NCBarCodePrintView: NSView {
+    var barCode: DMBarCode? = nil
+    var size: CGFloat = 20
+    
+    public override func draw(_ dirtyRect: NSRect) {
+        guard let barcode = self.barCode, barcode.characters.count > 0 else { return }
+        if NSGraphicsContext.currentContextDrawingToScreen() == true { // 画面
+        } else { // 印刷
+            let height = size
+            let width = CGFloat(barcode.characters.count) * height * 0.6
+            let minX = dirtyRect.midX - width/2
+            let minY = dirtyRect.midY - height/2
+            let rect = CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: width, height: height))
+            barcode.draw(inRect: rect, isFlipped: false)
+        }
+    }
+    /// 1ページで印刷する
+    public override func knowsPageRange(_ range: NSRangePointer) -> Bool {
+        range.pointee = NSRange(location: 1, length: 1)
+        return true
+    }
+    
+    public override func rectForPage(_ page: Int) -> NSRect {
+        guard let printInfo = NSPrintOperation.current?.printInfo else { fatalError("ProjectView.knowsForPage(:)でprintInfoが取得できない") }
+        return printInfo.imageablePageBounds
+    }
+}
+
 #endif
 

@@ -72,7 +72,7 @@ public struct DMScanner: RandomAccessCollection {
 //        self.needsSpaceCheck = skipSpaces
 //    }
 
-    public init<S: StringProtocol>(_ string: S, toHalf: Bool, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+    public init<S: StringProtocol>(_ string: S, toHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
         var string: String = String(string)
         if toHalf, let converted = string.applyingTransform(.fullwidthToHalfwidth, reverse: false) { string = converted }
         if newlineToSpace { string = string.newlineToSpace }
@@ -176,7 +176,7 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if numberCharacters.contains(ch) || changeMap[ch] != nil {
+            if numberCharacters.contains(ch) {
                 self.startIndex = index
                 return
             }
@@ -185,11 +185,12 @@ public struct DMScanner: RandomAccessCollection {
         self.startIndex = index
     }
     
+    /// 先頭文字が存在しないか数字以外ならtrue
     public mutating func first数字以外() -> Bool {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return true }
         let ch = source[startIndex]
-        return !numberCharacters.contains(ch) && changeMap[ch] == nil
+        return !numberCharacters.contains(ch)
     }
     
     public mutating func scan1Character() -> Character? {
@@ -269,9 +270,6 @@ public struct DMScanner: RandomAccessCollection {
                 if hasSign || hasNumber { break }
                 numberString.append(ch)
                 hasSign = true
-            } else if let numCh = changeMap[ch] {
-                numberString.append(numCh)
-                hasNumber = true
             } else {
                 break
             }
@@ -314,9 +312,6 @@ public struct DMScanner: RandomAccessCollection {
                 hasE = true
                 hasSign = false
                 hasNumber = false
-            } else if let numCh = changeMap[ch] {
-                numberString.append(numCh)
-                hasNumber = true
             } else {
                 break
             }
@@ -477,19 +472,54 @@ public struct DMScanner: RandomAccessCollection {
         return result
     }
     
-}
+    // MARK: - NCEngineより
+    public mutating func fetchCharacter() -> Character? {
+        dropHeadSpacesIfNeeds()
+        if isAtEnd { return nil }
+        defer { startIndex = source.index(after: startIndex) }
+        return source[startIndex]
+    }
+    
+    /// Gコード用10進数の取り出し。小数点がない場合defaultPrecisionが小数点位置となる
+    public mutating func scanNCDecimal(defaultPrecision: Int? = nil) -> Decimal? {
+        guard let str = self.scanDecimalString() else { return nil }
+        guard var decimal = Decimal(string: str) else { return nil }
+        if let count = defaultPrecision, count > 0, str.contains(".") == false {
+            for _ in 1...count { decimal /= 10 }
+        }
+        return decimal
+    }
 
-// isNumberだと漢数字なども含まれてしまうため
-private let changeMap: [Character: Character] = [
-    "０": "0",
-    "１": "1",
-    "２": "2",
-    "３": "3",
-    "４": "4",
-    "５": "5",
-    "６": "6",
-    "７": "7",
-    "８": "8",
-    "９": "9",
-]
-private let numberCharacters = Set<Character>(arrayLiteral: "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+    public mutating func scanDoubles(count: Int, separator: Character) -> [Double]? {
+        if count == 0 { return [] }
+        let initialIndex = self.startIndex
+        var result: [Double] = []
+        result.reserveCapacity(count)
+        for _ in 0..<count {
+            scanCharacter(separator)
+            guard let value = self.scanDouble() else {
+                self.startIndex = initialIndex
+                return nil
+            }
+            result.append(value)
+        }
+        return result
+    }
+    
+    public mutating func scanIntegers(count: Int, separator: Character) -> [Int]? {
+        if count == 0 { return [] }
+        let initialIndex = self.startIndex
+        var result: [Int] = []
+        result.reserveCapacity(count)
+        for _ in 0..<count {
+            scanCharacter(separator)
+            guard let value = self.scanInteger() else {
+                self.startIndex = initialIndex
+                return nil
+            }
+            result.append(value)
+        }
+        return result
+    }}
+
+private let numberCharacters = Set<Character>(arrayLiteral: "0", "1", "2", "3", "4", "5", "6", "7", "8", "9")

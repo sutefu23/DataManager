@@ -116,6 +116,8 @@
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
 		8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2CDF892340D22A00E7F147 /* 伝票番号.swift */; };
+		8E31841D24611EA4007FD008 /* DMFormula.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31841C24611EA4007FD008 /* DMFormula.swift */; };
+		8E31841F24611FC9007FD008 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31841E24611FC9007FD008 /* File.swift */; };
 		8E392EDA21FD61D900CEDF18 /* DataManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E392ED021FD61D900CEDF18 /* DataManager.framework */; };
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EE121FD61D900CEDF18 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E392ED321FD61D900CEDF18 /* DataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -250,6 +252,8 @@
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
 		8E2CDF892340D22A00E7F147 /* 伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票番号.swift"; sourceTree = "<group>"; };
+		8E31841C24611EA4007FD008 /* DMFormula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMFormula.swift; sourceTree = "<group>"; };
+		8E31841E24611FC9007FD008 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		8E392ED021FD61D900CEDF18 /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E392ED321FD61D900CEDF18 /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		8E392ED421FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				1404E905220D905100841373 /* FileMakerSession.swift */,
 				14552F6722099D32000BDCB8 /* FileMakerRecord.swift */,
 				8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */,
+				8E31841E24611FC9007FD008 /* File.swift */,
 				14713C4223F60F8A0093F22D /* UserDefaults.swift */,
 				141203702201C3EA0054B56F /* Date.swift */,
 				1425D99C230778B700A2D6AB /* Month.swift */,
@@ -311,6 +316,7 @@
 				14CAB7BE23E819910038870F /* Sequence.swift */,
 				14713C4023F607B40093F22D /* OrderedSet.swift */,
 				1469576A2405088100A29C4C /* DMScanner.swift */,
+				8E31841C24611EA4007FD008 /* DMFormula.swift */,
 				1470CFAD243C5C5000C76979 /* Alert.swift */,
 			);
 			path = Utility;
@@ -737,6 +743,7 @@
 				14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */,
 				146AA59D2406067100ED395D /* 箱文字優先度.swift in Sources */,
 				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
+				8E31841D24611EA4007FD008 /* DMFormula.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
 				8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */,
 				1469576B2405088100A29C4C /* DMScanner.swift in Sources */,
@@ -754,6 +761,7 @@
 				1468395C2429E703001E5656 /* 取引先.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
 				146D0B3123EA8C8B006FECA7 /* 入力区分.swift in Sources */,
+				8E31841F24611FC9007FD008 /* File.swift in Sources */,
 				1493E54F24484B03001467F2 /* 資材使用記録.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

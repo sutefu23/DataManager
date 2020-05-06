@@ -126,7 +126,7 @@ public extension UserDefaults {
         return self.json(forKey: key)
     }
     
-    func set(_ members: [社員型]?, forKey key: String) {
+    func setOptional(_ members: [社員型]?, forKey key: String) {
         self.setJson(object: members, forKey: key)
     }
     
@@ -134,7 +134,7 @@ public extension UserDefaults {
         return self.json(forKey: key)
     }
     
-    func set(_ member: 社員型?, forKey key: String) {
+    func setOptional(_ member: 社員型?, forKey key: String) {
         self.setJson(object: member, forKey: key)
     }
 }
