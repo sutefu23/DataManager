@@ -62,7 +62,10 @@ extension Sequence where Element == 資材要求出力型 {
         let db = FileMakerDB.pm_osakaname
         let session = db.retainSession()
         defer { db.releaseSession(session) }
-        return try self.exportToDB(loopCount: 0, session: session)
+        try self.exportToDB(loopCount: 0, session: session)
+        let set = Set<図番型>(self.map { $0.資材.図番 })
+        let cache = 資材発注キャッシュ型.shared
+        set.forEach { cache.flushCache(図番: $0) }
     }
     
     private func exportToDB(loopCount: Int, session: FileMakerSession) throws {

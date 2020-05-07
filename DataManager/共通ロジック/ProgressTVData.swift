@@ -150,7 +150,7 @@ public class ProgressTVCore {
     public var count: Int { return datas.count }
 
     public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, akonly: Bool = false) {
-        owner.showInfo3("Ver " + (BundleVersion()?.fullText ?? "")
+        owner.showInfo3("Ver " + (Version()?.fullText ?? "")
 )
         self.owner = owner
         self.target = target

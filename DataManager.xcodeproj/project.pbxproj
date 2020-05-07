@@ -74,6 +74,8 @@
 		14713C4123F607B40093F22D /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4023F607B40093F22D /* OrderedSet.swift */; };
 		14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaults.swift */; };
 		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
+		147169E2246382EF00189498 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E1246382EF00189498 /* Bundle.swift */; };
+		147169E42463837100189498 /* ChangeLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E32463837100189498 /* ChangeLog.swift */; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8806242F0508008FB8F4 /* 資材(板情報).swift */; };
 		147B8809242F06BF008FB8F4 /* Test資材板情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8808242F06BF008FB8F4 /* Test資材板情報.swift */; };
@@ -210,6 +212,8 @@
 		1470CFAD243C5C5000C76979 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		14713C4023F607B40093F22D /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		14713C4223F60F8A0093F22D /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		147169E1246382EF00189498 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		147169E32463837100189498 /* ChangeLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLog.swift; sourceTree = "<group>"; };
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
 		147B8806242F0508008FB8F4 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
 		147B8808242F06BF008FB8F4 /* Test資材板情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材板情報.swift"; sourceTree = "<group>"; };
@@ -310,6 +314,8 @@
 				146884D923E113750062F454 /* Set.swift */,
 				14CEBDF1222DFDE40023D0DC /* URL.swift */,
 				14C066A923757D47001E73F2 /* Version.swift */,
+				147169E1246382EF00189498 /* Bundle.swift */,
+				147169E32463837100189498 /* ChangeLog.swift */,
 				1460F9B82399DC02006B31C0 /* Utility.swift */,
 				146B4C4323E4F80B00FB392B /* Future.swift */,
 				148AA6C02436ED1400BE8A1F /* Int.swift */,
@@ -677,6 +683,7 @@
 				14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
+				147169E2246382EF00189498 /* Bundle.swift in Sources */,
 				1404E906220D905100841373 /* FileMakerSession.swift in Sources */,
 				1460F9B92399DC02006B31C0 /* Utility.swift in Sources */,
 				144C75542421A68800934282 /* 在庫キャッシュ.swift in Sources */,
@@ -714,6 +721,7 @@
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
 				149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */,
 				8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */,
+				147169E42463837100189498 /* ChangeLog.swift in Sources */,
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
