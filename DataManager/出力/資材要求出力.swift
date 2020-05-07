@@ -63,6 +63,7 @@ extension Sequence where Element == 資材要求出力型 {
         let session = db.retainSession()
         defer { db.releaseSession(session) }
         try self.exportToDB(loopCount: 0, session: session)
+        /// 発注キャッシュをクリアしないと表示がおかしくなる
         let set = Set<図番型>(self.map { $0.資材.図番 })
         let cache = 資材発注キャッシュ型.shared
         set.forEach { cache.flushCache(図番: $0) }

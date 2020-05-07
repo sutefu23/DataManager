@@ -69,6 +69,18 @@ extension String {
         }
         return false
     }
+    
+    public init?(any data: Any?) {
+        if let str = data as? String {
+            self = str
+        } else if let astr = data as? NSAttributedString {
+            self = astr.string
+        } else if let num = data as? CustomStringConvertible {
+            self = num.description
+        } else {
+            return nil
+        }
+    }
 }
 
 private let numberRange = (Character("0")...Character("9"))
@@ -152,3 +164,5 @@ func calc寸法サイズ(_ line: String) -> [Double] {
     }
     return result
 }
+
+
