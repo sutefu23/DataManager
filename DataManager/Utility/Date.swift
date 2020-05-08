@@ -106,7 +106,13 @@ extension Date {
         self = Date(day)
     }
 
-    // 装飾表示
+    /// 少数数点以下の秒を切り捨てる
+    public func rounded() -> Date {
+        let val = floor(self.timeIntervalSince1970)
+        return Date(timeIntervalSince1970: val)
+    }
+
+    /// 装飾表示
     public var yearMonthString: String {
         return day.yearMonthString
     }

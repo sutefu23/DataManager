@@ -55,9 +55,20 @@ public struct DMScanner: RandomAccessCollection {
     }
     
     public init<S: StringProtocol>(_ string: S, normalizedFullHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
-        var string: String = normalizedFullHalf ? string.toJapaneseNormal : String(string)
-        if newlineToSpace { string = string.newlineToSpace }
-        self.source = upperCased ? string.uppercased() : string
+        var str: String
+        if normalizedFullHalf {
+            str = string.toJapaneseNormal
+            if upperCased { str = str.uppercased() }
+            if newlineToSpace { str = str.newlineToSpace }
+        } else {
+            if upperCased {
+                str = string.uppercased()
+                if newlineToSpace { str = str.newlineToSpace }
+            } else {
+                str = newlineToSpace ? string.newlineToSpace : String(string)
+            }
+        }
+        self.source = str
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
         self.skipSpaces = skipSpaces

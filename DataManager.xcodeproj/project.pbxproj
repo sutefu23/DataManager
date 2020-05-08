@@ -73,7 +73,6 @@
 		14709DDC23F10CDA0014008C /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14709DDB23F10CDA0014008C /* BarCode.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		1470CFAE243C5C5000C76979 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470CFAD243C5C5000C76979 /* Alert.swift */; };
-		14713C4123F607B40093F22D /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4023F607B40093F22D /* OrderedSet.swift */; };
 		14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaults.swift */; };
 		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
 		147169E2246382EF00189498 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E1246382EF00189498 /* Bundle.swift */; };
@@ -95,7 +94,6 @@
 		1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498531C230BCEF6007734E0 /* 区分情報.swift */; };
 		14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14985324230BCF1C007734E0 /* マイルストーン情報.swift */; };
 		149BCAFD2208216B004066DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFC2208216B004066DD /* String.swift */; };
-		149BCAFF22082BF2004066DD /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCAFE22082BF2004066DD /* Lock.swift */; };
 		149BCB0122082D87004066DD /* Test出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB0022082D87004066DD /* Test出勤日.swift */; };
 		149BCB032208419E004066DD /* Test指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB022208419E004066DD /* Test指示書.swift */; };
 		149BCB05220854F6004066DD /* 伝票状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149BCB04220854F6004066DD /* 伝票状態.swift */; };
@@ -214,7 +212,6 @@
 		14709DDB23F10CDA0014008C /* BarCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
 		1470CFAD243C5C5000C76979 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		14713C4023F607B40093F22D /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		14713C4223F60F8A0093F22D /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		147169E1246382EF00189498 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		147169E32463837100189498 /* ChangeLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLog.swift; sourceTree = "<group>"; };
@@ -235,7 +232,6 @@
 		1498531C230BCEF6007734E0 /* 区分情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "区分情報.swift"; sourceTree = "<group>"; };
 		14985324230BCF1C007734E0 /* マイルストーン情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "マイルストーン情報.swift"; sourceTree = "<group>"; };
 		149BCAFC2208216B004066DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		149BCAFE22082BF2004066DD /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		149BCB0022082D87004066DD /* Test出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test出勤日.swift"; sourceTree = "<group>"; };
 		149BCB022208419E004066DD /* Test指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書.swift"; sourceTree = "<group>"; };
 		149BCB04220854F6004066DD /* 伝票状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票状態.swift"; sourceTree = "<group>"; };
@@ -308,23 +304,21 @@
 				8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */,
 				8E31841E24611FC9007FD008 /* File.swift */,
 				14713C4223F60F8A0093F22D /* UserDefaults.swift */,
+				1460F9B82399DC02006B31C0 /* Utility.swift */,
 				141203702201C3EA0054B56F /* Date.swift */,
 				1425D99C230778B700A2D6AB /* Month.swift */,
 				141203782201D82F0054B56F /* Day.swift */,
 				1412037A2201D8360054B56F /* Time.swift */,
 				149BCAFC2208216B004066DD /* String.swift */,
 				146B4C4523E4FE4200FB392B /* NSAttributedString.swift */,
-				149BCAFE22082BF2004066DD /* Lock.swift */,
 				146884D923E113750062F454 /* Set.swift */,
 				14CEBDF1222DFDE40023D0DC /* URL.swift */,
 				14C066A923757D47001E73F2 /* Version.swift */,
 				147169E1246382EF00189498 /* Bundle.swift */,
 				147169E32463837100189498 /* ChangeLog.swift */,
-				1460F9B82399DC02006B31C0 /* Utility.swift */,
 				146B4C4323E4F80B00FB392B /* Future.swift */,
 				148AA6C02436ED1400BE8A1F /* Int.swift */,
 				14CAB7BE23E819910038870F /* Sequence.swift */,
-				14713C4023F607B40093F22D /* OrderedSet.swift */,
 				1469576A2405088100A29C4C /* DMScanner.swift */,
 				8E31841C24611EA4007FD008 /* DMFormula.swift */,
 				1470CFAD243C5C5000C76979 /* Alert.swift */,
@@ -705,7 +699,6 @@
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1440531724203DC700C4E48C /* 注文番号.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
-				14713C4123F607B40093F22D /* OrderedSet.swift in Sources */,
 				146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				146AA59F2406108D00ED395D /* 箱文字優先度キャッシュ.swift in Sources */,
@@ -738,7 +731,6 @@
 				14363C4E238F891A0094FF00 /* 伝票種別.swift in Sources */,
 				14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */,
 				1425D99D230778B700A2D6AB /* Month.swift in Sources */,
-				149BCAFF22082BF2004066DD /* Lock.swift in Sources */,
 				148AA6C12436ED1400BE8A1F /* Int.swift in Sources */,
 				8E7B720F242113BD0067A13A /* 管理資材.swift in Sources */,
 				14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */,
