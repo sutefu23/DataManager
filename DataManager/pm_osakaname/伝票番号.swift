@@ -106,7 +106,7 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     
     /// 表示用伝票番号文字列
     public var 表示用文字列: String {
-        return "\(上位整数値)-\(下位整数値)"
+        return "\(上位整数値)-\(String(format: "%04d", 下位整数値))"
     }
     
     public var バーコード: String {

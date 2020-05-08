@@ -75,10 +75,10 @@ class History {
     }
 }
 
-import Cocoa
-
 #if os(iOS)
 #elseif os(macOS)
+import Cocoa
+
 /// 標準的な更新履歴コントローラー
 public class HistoryViewController: NSViewController {
     @IBOutlet public weak var textView: NSTextView!

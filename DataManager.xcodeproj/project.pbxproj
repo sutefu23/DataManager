@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1404C86D222CE8D900F3B025 /* Test進捗.swift */; };
 		1404E906220D905100841373 /* FileMakerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1404E905220D905100841373 /* FileMakerSession.swift */; };
+		1410066B2464FBF900CE7934 /* Test伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066A2464FBF900CE7934 /* Test伝票番号.swift */; };
+		1410066D24652ABA00CE7934 /* Test資材コイル情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */; };
 		141203712201C3EA0054B56F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203702201C3EA0054B56F /* Date.swift */; };
 		141203732201C5890054B56F /* 出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203722201C5890054B56F /* 出勤日.swift */; };
 		141203752201D6000054B56F /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203742201D6000054B56F /* スケジュール.swift */; };
@@ -147,6 +149,8 @@
 /* Begin PBXFileReference section */
 		1404C86D222CE8D900F3B025 /* Test進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗.swift"; sourceTree = "<group>"; };
 		1404E905220D905100841373 /* FileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerSession.swift; sourceTree = "<group>"; };
+		1410066A2464FBF900CE7934 /* Test伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test伝票番号.swift"; sourceTree = "<group>"; };
+		1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材コイル情報.swift"; sourceTree = "<group>"; };
 		141203702201C3EA0054B56F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		141203722201C5890054B56F /* 出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "出勤日.swift"; sourceTree = "<group>"; };
 		141203742201D6000054B56F /* スケジュール.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "スケジュール.swift"; sourceTree = "<group>"; };
@@ -476,6 +480,7 @@
 				14399D5823EAA28C00BAFD48 /* Test社員.swift */,
 				146AF0E823F5013A00F4DCFE /* Test発注.swift */,
 				14BA544D238D43010080925F /* Test指示書文字数.swift */,
+				1410066A2464FBF900CE7934 /* Test伝票番号.swift */,
 				146F1694239904DB003F88A1 /* Test進捗出力.swift */,
 				146D0B2A23EA765F006FECA7 /* Test資材要求出力.swift */,
 				146D0B2C23EA882F006FECA7 /* Test資材入出庫.swift */,
@@ -483,6 +488,7 @@
 				1467CF62242DCDF3003F15DF /* Test管理資材型.swift */,
 				8E7F6E50245842F000F40A2B /* Test管理板材型.swift */,
 				147B8808242F06BF008FB8F4 /* Test資材板情報.swift */,
+				1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */,
 				14644224244950940070FE89 /* Test資材使用記録.swift */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
@@ -779,6 +785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */,
+				1410066D24652ABA00CE7934 /* Test資材コイル情報.swift in Sources */,
 				146D0B2B23EA765F006FECA7 /* Test資材要求出力.swift in Sources */,
 				14BA544E238D43010080925F /* Test指示書文字数.swift in Sources */,
 				8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */,
@@ -793,6 +800,7 @@
 				14644225244950940070FE89 /* Test資材使用記録.swift in Sources */,
 				14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */,
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,
+				1410066B2464FBF900CE7934 /* Test伝票番号.swift in Sources */,
 				146D0B3523EA9513006FECA7 /* Test部署.swift in Sources */,
 				1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */,
 				146AF0E923F5013A00F4DCFE /* Test発注.swift in Sources */,

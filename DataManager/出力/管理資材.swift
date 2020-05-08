@@ -230,6 +230,10 @@ public class 管理板材型: 管理資材型 {
 
     public var is分割材: Bool { return 個別在庫 != nil }
 
+    public var 表示名: String {
+        "\(材質) \(板厚)t \(サイズ)"
+    }
+    
     func updateSheetParameters() {
         let param = 資材板情報型(self.資材)
         self.材質 = param.材質

@@ -67,7 +67,7 @@ public class 資材型: Codable, Comparable, Hashable {
     private var 図番_文字: String? = nil
     
     func analyze図番() {
-        var scanner = DMScanner(self.図番, toHalf: true)
+        var scanner = DMScanner(self.図番, normalizedFullHalf: true)
         self.図番_数 = scanner.scanInteger() ?? Int.max
         self.図番_文字 = scanner.string
     }

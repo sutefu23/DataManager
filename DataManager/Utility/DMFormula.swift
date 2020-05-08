@@ -7,17 +7,19 @@
 //
 
 import Foundation
+import CoreGraphics
+
 // MARK: - 数値変換
 /// 数式文字列 -> Double
 public extension Double {
     init(formula: String) throws {
-        var formula = NCFormula(formula)
+        var formula = DMFormula(formula)
         self = try formula.calc()
     }
     
     init?(optionalFormula: String?) {
         guard let string = optionalFormula else { return nil }
-        var formula = NCFormula(string)
+        var formula = DMFormula(string)
         guard let value = formula.result else { return nil }
         self = value
     }
@@ -50,7 +52,7 @@ public extension Int {
 }
 
 // MARK: -
-public struct NCFormula: ExpressibleByStringLiteral {
+public struct DMFormula: ExpressibleByStringLiteral {
     public enum NCFormulaError: LocalizedError {
         case noOperator
         case noValue
@@ -71,6 +73,7 @@ public struct NCFormula: ExpressibleByStringLiteral {
         }
     }
     private enum CalcOperator: Int8, Comparable {
+        static let map: [Character: CalcOperator] = [ "+": .plus, "-": .minus, "*": .mul, "/": .div, "%": .mod ]
         case mul = 0
         case div = 1
         case mod = 2
@@ -104,29 +107,25 @@ public struct NCFormula: ExpressibleByStringLiteral {
         case func_min = "MIN"
         case func_max = "MAX"
         
-        func exec(_ formula: inout NCFormula) throws -> Double {
+        func exec(_ formula: inout DMFormula) throws -> Double {
             func getValue() throws -> Double { return try formula.calc() }
             func get2Values() throws -> (Double, Double) {
                 let left = try formula.calc(terminator: ",")
                 let right = try formula.calc()
                 return (left, right)
             }
-            func degreeOfRadian(radian :Double) -> Double {
-                return radian * 180.0 / .pi
-            }
-            func radianOfDegree(degree: Double) -> Double {
-                return degree * .pi / 180.0
-            }
+            func degree(of radian :Double) -> Double { radian * 180.0 / .pi }
+            func radian(of degree: Double) -> Double { degree * .pi / 180.0 }
             switch self {
             case .func_sin:
                 let degree = try formula.calc()
-                return sin(radianOfDegree(degree: degree))
+                return sin(radian(of: degree))
             case .func_cos:
                 let degree = try formula.calc()
-                return cos(radianOfDegree(degree: degree))
+                return cos(radian(of: degree))
             case .func_tan:
                 let degree = try formula.calc()
-                return tan(radianOfDegree(degree: degree))
+                return tan(radian(of: degree))
             case .func_log:
                 return log10(try getValue())
             case .func_exp:
@@ -139,13 +138,13 @@ public struct NCFormula: ExpressibleByStringLiteral {
                 return round(try getValue())
             case .func_atan:
                 let rad = atan(try getValue())
-                return degreeOfRadian(radian: rad)
+                return degree(of: rad)
             case .func_acos:
                 let rad = acos(try getValue())
-                return degreeOfRadian(radian: rad)
+                return degree(of: rad)
             case .func_asin:
                 let rad = asin(try getValue())
-                return degreeOfRadian(radian: rad)
+                return degree(of: rad)
             case .func_abs:
                 return abs(try getValue())
             case .func_sqrt:
@@ -156,7 +155,7 @@ public struct NCFormula: ExpressibleByStringLiteral {
             case .func_atan2:
                 let (left, right) = try get2Values()
                 let rad = atan2(left, right)
-                return degreeOfRadian(radian: rad)
+                return degree(of: rad)
             case .func_min:
                 let (left, right) = try get2Values()
                 return min(left, right)
@@ -176,8 +175,8 @@ public struct NCFormula: ExpressibleByStringLiteral {
     private var values: [Double] = []
     private var variables: [String: Double] = [:]
     
-    private func makeChild(_ formula: String) -> NCFormula {
-        var child = NCFormula(formula)
+    private func makeChild(_ formula: String) -> DMFormula {
+        var child = DMFormula(formula)
         child.variables = self.variables
         return child
     }
@@ -188,7 +187,7 @@ public struct NCFormula: ExpressibleByStringLiteral {
     }
     
     public init(_ formula: String, variables: [String: Double] = [:]) {
-        self.scanner = DMScanner(formula, toHalf: false, upperCased: true, skipSpaces: true)
+        self.scanner = DMScanner(formula, normalizedFullHalf: false, upperCased: true, skipSpaces: true)
         for (key, value) in variables { self[key] = value }
         scanner.dropTailSpaces()
     }
@@ -229,19 +228,8 @@ public struct NCFormula: ExpressibleByStringLiteral {
     }
     
     private mutating func scanOperator() throws -> CalcOperator {
-        if scanner.scanCharacter("+") {
-            return .plus
-        } else if scanner.scanCharacter("-") {
-            return .minus
-        } else if scanner.scanCharacter("*") {
-            return .mul
-        } else if scanner.scanCharacter("/") {
-            return .div
-        } else if scanner.scanCharacter("%") {
-            return .mod
-        } else {
-            throw NCFormulaError.noOperator
-        }
+        if let ch = scanner.fetchCharacter(), let op = CalcOperator.map[ch] { return op }
+        throw NCFormulaError.noOperator
     }
     
     private mutating func execLastOperator() throws {
@@ -285,4 +273,3 @@ public struct NCFormula: ExpressibleByStringLiteral {
         }
     }
 }
-

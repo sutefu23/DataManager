@@ -39,9 +39,10 @@ public struct 資材板情報型 {
         
         // material, type
         let first: String
-        var scanner = DMScanner(製品名称, toHalf: true, newlineToSpace:true)
+        var scanner = DMScanner(製品名称, normalizedFullHalf: true, newlineToSpace:true)
+        let 製品名称 = scanner.string
         var index = scanner.startIndex
-        if let _ = scanner.scanParens(["(", "（"], [")", "）"], stopSpaces:true) {
+        if let _ = scanner.scanParen("(", ")", stopSpaces:true) {
             let _ = scanner.scanUpToSpace()
             
             first = scanner.leftString(from: index)
@@ -59,12 +60,13 @@ public struct 資材板情報型 {
                 let index = first.index(first.startIndex, offsetBy: 4)
                 type = String(first[index..<first.endIndex])
             }
-        } else if 製品名称.containsOne(of: "ｶﾗｰｽﾃﾝﾚｽ", "カラーステンレス", "チタンゴールド", "ﾁﾀﾝｺﾞｰﾙﾄﾞ") { // カラーステンレス専用処理
+        } else if 製品名称.containsOne(of: "カラーステンレス", "チタンゴールド") { // カラーステンレス専用処理
             material = "SUS304"
-            if scanner.scanString("ｶﾗｰｽﾃﾝﾚｽ") || scanner.scanString("カラーステンレス") {
+            thin = "1.5"
+            if scanner.scanString("カラーステンレス") {
                 scanner.dropHeadSpaces()
             }
-        } else if 製品名称.containsOne(of: "チタン", "ﾁﾀﾝ", "TP340") { // チタン専用処理
+        } else if 製品名称.containsOne(of: "チタン", "TP340") { // チタン専用処理
             material = "チタン"
         } else if first.hasSuffix("板") {
             material = String(first.dropLast())
@@ -74,7 +76,7 @@ public struct 資材板情報型 {
         // type, memo
         var second: String
         index = scanner.startIndex
-        if let _ = scanner.scanParens(["(", "（"], [")", "）"], stopSpaces:true) {
+        if let _ = scanner.scanParen("(", ")", stopSpaces:true) {
             let _ = scanner.scanUpToSpace()
             second = scanner.leftString(from: index)
         } else if let left = scanner.scanUpToSpace() {
@@ -101,7 +103,7 @@ public struct 資材板情報型 {
         }
         // サイズ計算
         func scanSheetSize(_ string: String, normalSize: Bool = false) -> (height: Double, width: Double)? {
-            var scanner = DMScanner(string, toHalf: false, skipSpaces: true)
+            var scanner = DMScanner(string, skipSpaces: true)
             if let (left, _, right) = scanner.scanDoubleAndDouble() {
                 if left > 10 && right > 10 {
                     if aktype == .スミペックス && left == 1000 && right == 2000 { return (1040, 2040) }
@@ -130,16 +132,16 @@ public struct 資材板情報型 {
         }
         
         // thin, size
-        scanner = DMScanner(規格, toHalf: true, skipSpaces: true, newlineToSpace: true)
-        if let left = scanner.scanUpTo("t", "ｔ") {
-            var head = DMScanner(left, toHalf: false)
+        scanner = DMScanner(規格, normalizedFullHalf: true, skipSpaces: true, newlineToSpace: true)
+        if let left = scanner.scanUpTo("t") {
+            var head = DMScanner(left)
             if let (str, val) = head.scanStringDouble() {
                 type.append(str)
                 thin = String(val)
             } else {
                 thin = left
             }
-            if let pair = scanner.scanParens(["(", "（"], [")", "）"]) {
+            if let pair = scanner.scanParen("(", ")") {
                 square = pair.left
                 if let (h, w) = scanSheetSize(pair.contents, normalSize: true) ?? scanSheetSize(pair.left) {
                     height = h

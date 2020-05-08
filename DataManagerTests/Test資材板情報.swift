@@ -45,7 +45,7 @@ class TestSizaiSheetInfo: XCTestCase {
 
         info = 資材板情報型(製品名称: "ｶﾗｰｽﾃﾝﾚｽ板 ﾌﾞﾛﾝｽﾞHL(SP-17/L-1)　SPV", 規格: "1.5t　4×8(1219×2438)")
         XCTAssertEqual(info.材質, "SUS304")
-        XCTAssertEqual(info.種類, "ﾌﾞﾛﾝｽﾞHL(SP-17/L-1)")
+        XCTAssertEqual(info.種類, "ブロンズHL(SP-17/L-1)")
         XCTAssertEqual(info.板厚, "1.5")
         XCTAssertEqual(info.サイズ, "4×8")
         XCTAssertEqual(info.高さ, 1219)
@@ -63,7 +63,7 @@ class TestSizaiSheetInfo: XCTestCase {
         
         info = 資材板情報型(製品名称: "SUS304板 ｶﾗｰｽﾃﾝﾚｽ ﾌﾞﾗｯｸHL SR-15", 規格: "0.8t　1219x2000")
         XCTAssertEqual(info.材質, "SUS304")
-        XCTAssertEqual(info.種類, "ﾌﾞﾗｯｸHL")
+        XCTAssertEqual(info.種類, "ブラックHL")
         XCTAssertEqual(info.板厚, "0.8")
         XCTAssertEqual(info.サイズ, "1219x2000")
         XCTAssertEqual(info.高さ, 1219)
@@ -72,19 +72,19 @@ class TestSizaiSheetInfo: XCTestCase {
         
         info = 資材板情報型(製品名称: "ｶﾗｰｽﾃﾝﾚｽ HLﾌﾞﾗｯｸ　SR-15(Z-1)　SPV", 規格: "0.8t　1×2(1000×2000)")
         XCTAssertEqual(info.材質, "SUS304")
-        XCTAssertEqual(info.種類, "HLﾌﾞﾗｯｸ")
+        XCTAssertEqual(info.種類, "HLブラック")
         XCTAssertEqual(info.板厚, "0.8")
         XCTAssertEqual(info.サイズ, "1×2")
         XCTAssertEqual(info.高さ, 1000)
         XCTAssertEqual(info.横幅, 2000)
-        XCTAssertEqual(info.備考, "SR-15(Z-1)　SPV")
+        XCTAssertEqual(info.備考, "SR-15(Z-1) SPV")
     }
 
     // MARK: - スチール
     func testスチール() {
         info = 資材板情報型(製品名称: "スチール　ボンデ鋼板(表面処理ﾃﾞﾝｷ)", 規格: "1.6t　5×10")
         XCTAssertEqual(info.材質, "スチール")
-        XCTAssertEqual(info.種類, "ボンデ鋼板(表面処理ﾃﾞﾝｷ)")
+        XCTAssertEqual(info.種類, "ボンデ鋼板(表面処理デンキ)")
         XCTAssertEqual(info.板厚, "1.6")
         XCTAssertEqual(info.サイズ, "5×10")
         XCTAssertEqual(info.高さ, 1524)
@@ -213,7 +213,7 @@ class TestSizaiSheetInfo: XCTestCase {
 
         info = 資材板情報型(製品名称: "スミペックス　乳半(032 ｵﾊﾟｰﾙ)", 規格: "5.0t　1×2(1000×2000)")
         XCTAssertEqual(info.材質, "スミペックス")
-        XCTAssertEqual(info.種類, "乳半(032 ｵﾊﾟｰﾙ)")
+        XCTAssertEqual(info.種類, "乳半(032 オパール)")
         XCTAssertEqual(info.板厚, "5.0")
         XCTAssertEqual(info.サイズ, "1×2")
         XCTAssertEqual(info.高さ, 1040)

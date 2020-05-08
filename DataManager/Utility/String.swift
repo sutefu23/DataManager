@@ -19,6 +19,32 @@ extension String {
         return self.split(separator: ",", omittingEmptySubsequences: false).map(\.controlStripped)
     }
 }
+extension StringProtocol {
+    /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
+    public var toJapaneseNormal: String {
+        var result = ""
+        var halfMode = true
+        for ch in self {
+            if !halfMode && (ch == "ー" || ch == "-" || ch == "ｰ") {
+                result.append("ー")
+            } else if ch.isASCII {
+                result.append(ch)
+                halfMode = true
+            } else if let half = String(ch).applyingTransform(.fullwidthToHalfwidth, reverse: false)?.first, half.isASCII {
+                result.append(half)
+                halfMode = true
+            } else {
+                if let full = String(ch).applyingTransform(.fullwidthToHalfwidth, reverse: true) {
+                    result.append(full)
+                } else {
+                    result.append(ch)
+                }
+                halfMode = false
+            }
+        }
+        return result
+    }
+}
 
 extension Substring {
     var controlStripped: Substring {
@@ -121,7 +147,7 @@ func make4dig(_ value: Int) -> String {
 
 func calc箱文字側面高さ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, toHalf: true, upperCased: true)
+    var scanner = DMScanner(line, normalizedFullHalf: true, upperCased: true)
     while !scanner.isAtEnd {
         if scanner.scanParen("(", ")") != nil || scanner.scanParen("（", "）") != nil { continue }
         scanner.skip数字以外()
@@ -135,7 +161,7 @@ func calc箱文字側面高さ(_ line: String) -> [Double] {
 
 func calc箱文字以外側面高さ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, toHalf: true, upperCased: true)
+    var scanner = DMScanner(line, normalizedFullHalf: true, upperCased: true)
     while !scanner.isAtEnd {
         scanner.skip数字以外()
         if let value = scanner.scanDouble() {
@@ -149,7 +175,7 @@ func calc箱文字以外側面高さ(_ line: String) -> [Double] {
 
 func calc寸法サイズ(_ line: String) -> [Double] {
     var result = [Double]()
-    var scanner = DMScanner(line, toHalf: true, upperCased: true, skipSpaces: true)
+    var scanner = DMScanner(line, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
     var header: Character? = nil
     while !scanner.isAtEnd {
         while scanner.first数字以外() {

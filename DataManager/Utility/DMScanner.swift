@@ -12,8 +12,6 @@ import Foundation
 public struct DMScanner: RandomAccessCollection {
     /// スキャン対象(調整済み)
     private let source: String
-    /// スキャン対象(元データ)
-//    private let originalSource: String
     /// スキャン開始時にスペースを除外するならtrue
     public var skipSpaces: Bool {
         didSet { needsSpaceCheck = skipSpaces }
@@ -56,25 +54,8 @@ public struct DMScanner: RandomAccessCollection {
         return String(source[from..<startIndex])
     }
     
-    /// スキャン待ちの現在の文字(元データ)
-//    public var originalString: String { return String(originalSubstring)}
-    /// スキャン待ちの現在の文字(元データ)
-//    var originalSubstring: Substring { return originalSource[startIndex..<endIndex] }
-
-//    public init(_ string: String, toHalf: Bool, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
-//        var string: String = string
-//        if toHalf { string = string.applyingTransform(.fullwidthToHalfwidth, reverse: false) }
-//        if newlineToSpace { string = string.newlineToSpace }
-//        self.source = upperCased ? string.uppercased() : string
-//        self.startIndex = source.startIndex
-//        self.endIndex = source.endIndex
-//        self.skipSpaces = skipSpaces
-//        self.needsSpaceCheck = skipSpaces
-//    }
-
-    public init<S: StringProtocol>(_ string: S, toHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
-        var string: String = String(string)
-        if toHalf, let converted = string.applyingTransform(.fullwidthToHalfwidth, reverse: false) { string = converted }
+    public init<S: StringProtocol>(_ string: S, normalizedFullHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+        var string: String = normalizedFullHalf ? string.toJapaneseNormal : String(string)
         if newlineToSpace { string = string.newlineToSpace }
         self.source = upperCased ? string.uppercased() : string
         self.startIndex = source.startIndex
@@ -176,7 +157,7 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if numberCharacters.contains(ch) {
+            if ch.isNumber {
                 self.startIndex = index
                 return
             }
@@ -190,7 +171,7 @@ public struct DMScanner: RandomAccessCollection {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return true }
         let ch = source[startIndex]
-        return !numberCharacters.contains(ch)
+        return ch.isNumber
     }
     
     public mutating func scan1Character() -> Character? {
@@ -259,11 +240,10 @@ public struct DMScanner: RandomAccessCollection {
         var hasSign: Bool = false
         var hasNumber: Bool = false
         var numberString = "" // 最後にまとめてsubstringを作るよりappendを繰り返す方が高速
-//        numberString.reserveCapacity(needsCapacity) 遅くなる
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if numberCharacters.contains(ch) {
+            if ch.isNumber {
                 numberString.append(ch)
                 hasNumber = true
             } else if ch == "+" || ch == "-" {
@@ -290,11 +270,10 @@ public struct DMScanner: RandomAccessCollection {
         var hasDot: Bool = false
         var hasE: Bool = false
         var numberString = "" // 最後にまとめてsubstringを作るよりappendを繰り返す方が高速
-//        numberString.reserveCapacity(needsCapacity) // 遅くなる
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if numberCharacters.contains(ch) {
+            if ch.isNumber {
                 numberString.append(ch)
                 hasNumber = true
             } else if ch == "+" || ch == "-" {
@@ -385,7 +364,7 @@ public struct DMScanner: RandomAccessCollection {
             return nil
         }
         if skipSpaces && leftContents.last?.isWhitespace == true {
-            var scanner = DMScanner(leftContents, toHalf: false)
+            var scanner = DMScanner(leftContents, normalizedFullHalf: false)
             scanner.dropTailSpaces()
             leftContents = String(scanner.substring)
         }
@@ -427,7 +406,7 @@ public struct DMScanner: RandomAccessCollection {
             return nil
         }
         if skipSpaces && leftContents.last?.isWhitespace == true {
-            var scanner = DMScanner(leftContents, toHalf: false)
+            var scanner = DMScanner(leftContents, normalizedFullHalf: false)
             scanner.dropTailSpaces()
             leftContents = String(scanner.substring)
         }
@@ -521,5 +500,3 @@ public struct DMScanner: RandomAccessCollection {
         }
         return result
     }}
-
-private let numberCharacters = Set<Character>(arrayLiteral: "0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
