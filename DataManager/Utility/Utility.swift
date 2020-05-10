@@ -108,6 +108,12 @@ extension Error {
         let alert = NSAlert(error: self)
         alert.runModal()
     }
+    
+    public func asyncShowAlert() {
+        DispatchQueue.main.async {
+            self.showAlert()
+        }
+    }
 }
 
 

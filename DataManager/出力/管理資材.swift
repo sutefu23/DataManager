@@ -200,15 +200,21 @@ public class 管理資材型: 管理対象型 {
     public var 個別在庫あり: Bool { 個別在庫 != nil }
     
     public var 最終調整日: Day? {
-        let list = try? 資材入出庫型.find(入力区分: .数量調整, 資材: self.資材).sorted { $0.登録日時 < $1.登録日時 }
+        let list = try? 資材.キャッシュ入出庫().filter { $0.入力区分 == .数量調整 }.sorted { $0.登録日時 < $1.登録日時 }
         return list?.last?.登録日
     }
 
     public var 最終調整者: 社員型? {
-        let list = try? 資材入出庫型.find(入力区分: .数量調整, 資材: self.資材).sorted { $0.登録日時 < $1.登録日時 }
+        let list = try? 資材.キャッシュ入出庫().filter { $0.入力区分 == .数量調整 }.sorted { $0.登録日時 < $1.登録日時 }
         return list?.last?.社員
     }
 
+    public func prepareキャッシュ() throws {
+        try 資材.prepareキャッシュ()
+        let _ = self.最終調整日
+        let _ = self.最終調整者
+        let _ = try self.資材.キャッシュ発注一覧().未納発注個数
+    }
     // MARK: <管理対象型>
     public func isIdential(to: 管理資材型) -> Bool {
         return self.資材.図番 == to.資材.図番
