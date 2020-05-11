@@ -9,7 +9,7 @@
 import Foundation
 
 class 入出庫キャッシュ型 {
-    var 在庫寿命: TimeInterval = 10 * 60 // 10分間
+    var 在庫寿命: TimeInterval = 15 * 60 // 15分間
     static let shared = 入出庫キャッシュ型()
     
     private let lock = NSLock()
