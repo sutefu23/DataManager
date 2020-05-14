@@ -11,6 +11,10 @@
 		1404E906220D905100841373 /* FileMakerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1404E905220D905100841373 /* FileMakerSession.swift */; };
 		1410066B2464FBF900CE7934 /* Test伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066A2464FBF900CE7934 /* Test伝票番号.swift */; };
 		1410066D24652ABA00CE7934 /* Test資材コイル情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */; };
+		141057C8246B8BC900277E42 /* 管理資材（板）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141057C7246B8BC900277E42 /* 管理資材（板）.swift */; };
+		141057CA246B8C1D00277E42 /* 管理資材（パイプ）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141057C9246B8C1D00277E42 /* 管理資材（パイプ）.swift */; };
+		141057CC246B8CBF00277E42 /* 資材（ボルト情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */; };
+		141057CE246B8DEF00277E42 /* 指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */; };
 		141203712201C3EA0054B56F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203702201C3EA0054B56F /* Date.swift */; };
 		141203732201C5890054B56F /* 出勤日.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203722201C5890054B56F /* 出勤日.swift */; };
 		141203752201D6000054B56F /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203742201D6000054B56F /* スケジュール.swift */; };
@@ -149,6 +153,10 @@
 		1404E905220D905100841373 /* FileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerSession.swift; sourceTree = "<group>"; };
 		1410066A2464FBF900CE7934 /* Test伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test伝票番号.swift"; sourceTree = "<group>"; };
 		1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材コイル情報.swift"; sourceTree = "<group>"; };
+		141057C7246B8BC900277E42 /* 管理資材（板）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（板）.swift"; sourceTree = "<group>"; };
+		141057C9246B8C1D00277E42 /* 管理資材（パイプ）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（パイプ）.swift"; sourceTree = "<group>"; };
+		141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（ボルト情報）.swift"; sourceTree = "<group>"; };
+		141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		141203702201C3EA0054B56F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		141203722201C5890054B56F /* 出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "出勤日.swift"; sourceTree = "<group>"; };
 		141203742201D6000054B56F /* スケジュール.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "スケジュール.swift"; sourceTree = "<group>"; };
@@ -334,6 +342,8 @@
 				145998D523E8E18F00E8AC2D /* 資材要求出力.swift */,
 				146D0B2E23EA8869006FECA7 /* 資材入出庫出力.swift */,
 				8E7B720E242113BD0067A13A /* 管理資材.swift */,
+				141057C7246B8BC900277E42 /* 管理資材（板）.swift */,
+				141057C9246B8C1D00277E42 /* 管理資材（パイプ）.swift */,
 			);
 			path = "出力";
 			sourceTree = "<group>";
@@ -501,6 +511,8 @@
 				14BEE9E32240928F00B2750B /* 資材.swift */,
 				147B8806242F0508008FB8F4 /* 資材(板情報).swift */,
 				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
+				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
+				141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,
 				146651AF240DC696008F50D0 /* 資材入出庫.swift */,
@@ -678,6 +690,7 @@
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
+				141057CC246B8CBF00277E42 /* 資材（ボルト情報）.swift in Sources */,
 				1468395A2429DC25001E5656 /* 指定注文番号型.swift in Sources */,
 				146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */,
 				14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */,
@@ -724,6 +737,7 @@
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
+				141057C8246B8BC900277E42 /* 管理資材（板）.swift in Sources */,
 				8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */,
 				146C1F35239F1F1200FE2918 /* 指示書進捗キャッシュ.swift in Sources */,
 				14552F6622099B76000BDCB8 /* 指示書.swift in Sources */,
@@ -757,12 +771,14 @@
 				8E8E0793235E0BD500D7832C /* レーザー加工機.swift in Sources */,
 				1469D67323C406DE00A28A6D /* TableGenerator.swift in Sources */,
 				145EE90623967BBB008BC8B4 /* 進捗出力.swift in Sources */,
+				141057CE246B8DEF00277E42 /* 指示書ボルト欄.swift in Sources */,
 				14DA57192209B0C600831625 /* 進捗.swift in Sources */,
 				141203712201C3EA0054B56F /* Date.swift in Sources */,
 				14F1FF1B24283DCF00FAA2C8 /* 入出庫キャッシュ.swift in Sources */,
 				14173F3D242ACBA9000EF0AF /* 記録.swift in Sources */,
 				14985313230BCEA7007734E0 /* 供給資源情報.swift in Sources */,
 				14985315230BCEB4007734E0 /* カレンダ情報.swift in Sources */,
+				141057CA246B8C1D00277E42 /* 管理資材（パイプ）.swift in Sources */,
 				141203732201C5890054B56F /* 出勤日.swift in Sources */,
 				1468395C2429E703001E5656 /* 取引先.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
@@ -946,7 +962,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -960,7 +976,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.31;
+				MARKETING_VERSION = 1.32;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -979,7 +995,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -993,7 +1009,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.31;
+				MARKETING_VERSION = 1.32;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

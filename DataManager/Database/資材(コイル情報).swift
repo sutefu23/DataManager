@@ -8,16 +8,12 @@
 
 import Foundation
 
-public struct 資材コイル情報型 {
+public struct 資材コイル情報型: 資材情報型 {
     public private(set) var 材質: String = ""
     public private(set) var 表面: String = ""
     public private(set) var 板厚: Double = 0
     public private(set) var 高さ: Double = 0
     public private(set) var 種類: String = ""
-    
-    public init?(_ item: 資材型) {
-        self.init(製品名称: item.製品名称, 規格: item.規格)
-    }
     
     public init(製品名称: String, 規格: String) {
         var scanner = DMScanner(製品名称, normalizedFullHalf: true)

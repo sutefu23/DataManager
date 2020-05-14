@@ -80,4 +80,3 @@ extension Array {
         return try source.map { try $0.result!.get() }
     }
 }
-

@@ -147,6 +147,16 @@ public struct DMScanner: RandomAccessCollection {
             return false
         }
     }
+    
+    @discardableResult public mutating func scanCharacters(_ characters: Character...) -> Bool {
+        if characters.contains(where: { testCharacter($0) }) {
+            startIndex = source.index(after: startIndex)
+            return true
+        } else {
+            return false
+        }
+    }
+
     /// 先頭が指定文字ならtrue。indexは次に移動する
     @discardableResult public mutating func testCharacter(_ character: Character) -> Bool {
         dropHeadSpacesIfNeeds()
@@ -318,7 +328,7 @@ public struct DMScanner: RandomAccessCollection {
         return Double(str)
     }
     
-    public mutating func scanStringDouble() -> (String, Double)? {
+    public mutating func scanStringDouble() -> (string: String, value: Double)? {
         let initialIndex = self.startIndex
         var index = self.startIndex
         while index < self.endIndex {

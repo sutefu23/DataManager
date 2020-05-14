@@ -8,7 +8,17 @@
 
 import Foundation
 
-public struct 資材板情報型 {
+public protocol 資材情報型 {
+    init(製品名称: String, 規格: String)
+}
+
+public extension 資材情報型 {
+    init(_ item: 資材型) {
+        self.init(製品名称: item.製品名称, 規格: item.規格)
+    }
+}
+
+public struct 資材板情報型: 資材情報型 {
     public private(set) var 材質: String
     public private(set) var 種類: String
     public private(set) var 板厚: String
@@ -22,10 +32,6 @@ public struct 資材板情報型 {
     public var 面積: Double? {
         guard let height = self.高さ, let width = self.横幅 else { return nil }
         return width * height
-    }
-    
-    public init(_ item: 資材型) {
-        self.init(製品名称: item.製品名称, 規格: item.規格)
     }
     
     public init(製品名称: String, 規格: String) {
