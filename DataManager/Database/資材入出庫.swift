@@ -27,7 +27,7 @@ public class 資材入出庫型 {
         guard let worker = record.社員(forKey: "社員番号") else { return nil }
         guard let type = record.入力区分(forKey: "入力区分") else { return nil }
         guard let item = record.資材(forKey: "資材番号") else { return nil }
-        guard let sec = record.部署(forKey: "部署記号") else { return nil }
+        guard let sec = record.キャッシュ部署(forKey: "部署記号") else { return nil }
         let input = record.integer(forKey: "入庫数") ?? 0
         let output = record.integer(forKey: "出庫数") ?? 0
         self.登録日 = day

@@ -46,6 +46,7 @@
 		1460F9B92399DC02006B31C0 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1460F9B82399DC02006B31C0 /* Utility.swift */; };
 		14644225244950940070FE89 /* Test資材使用記録.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14644224244950940070FE89 /* Test資材使用記録.swift */; };
 		146508AC22FD4CF40095AD83 /* 発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146508AB22FD4CF40095AD83 /* 発注.swift */; };
+		1465B7F0246E541000BA8145 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = 1465B7EF246E541000BA8145 /* maru.ita */; };
 		146651B0240DC696008F50D0 /* 資材入出庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146651AF240DC696008F50D0 /* 資材入出庫.swift */; };
 		146746652373E8C90027B5C1 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146746642373E8C90027B5C1 /* インシデント.swift */; };
 		1467C77F243484F100813CB1 /* ProgressTVData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1467C77E243484F100813CB1 /* ProgressTVData.swift */; };
@@ -81,6 +82,10 @@
 		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
 		147169E2246382EF00189498 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E1246382EF00189498 /* Bundle.swift */; };
 		147169E42463837100189498 /* ChangeLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E32463837100189498 /* ChangeLog.swift */; };
+		1472202B246E4F4B001DBE97 /* TextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14722029246E4F4B001DBE97 /* TextReader.swift */; };
+		1472202C246E4F4B001DBE97 /* TextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202A246E4F4B001DBE97 /* TextWriter.swift */; };
+		1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202D246E51B9001DBE97 /* TestTextWriter.swift */; };
+		14722030246E51B9001DBE97 /* TestTextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202E246E51B9001DBE97 /* TestTextReader.swift */; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8806242F0508008FB8F4 /* 資材(板情報).swift */; };
 		147B8809242F06BF008FB8F4 /* Test資材板情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8808242F06BF008FB8F4 /* Test資材板情報.swift */; };
@@ -188,6 +193,7 @@
 		1460F9B82399DC02006B31C0 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		14644224244950940070FE89 /* Test資材使用記録.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材使用記録.swift"; sourceTree = "<group>"; };
 		146508AB22FD4CF40095AD83 /* 発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注.swift"; sourceTree = "<group>"; };
+		1465B7EF246E541000BA8145 /* maru.ita */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = maru.ita; sourceTree = "<group>"; };
 		146651AF240DC696008F50D0 /* 資材入出庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材入出庫.swift"; sourceTree = "<group>"; };
 		146746642373E8C90027B5C1 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
 		1467C77E243484F100813CB1 /* ProgressTVData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTVData.swift; sourceTree = "<group>"; };
@@ -223,6 +229,10 @@
 		14713C4223F60F8A0093F22D /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		147169E1246382EF00189498 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		147169E32463837100189498 /* ChangeLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLog.swift; sourceTree = "<group>"; };
+		14722029246E4F4B001DBE97 /* TextReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReader.swift; sourceTree = "<group>"; };
+		1472202A246E4F4B001DBE97 /* TextWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextWriter.swift; sourceTree = "<group>"; };
+		1472202D246E51B9001DBE97 /* TestTextWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextWriter.swift; sourceTree = "<group>"; };
+		1472202E246E51B9001DBE97 /* TestTextReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextReader.swift; sourceTree = "<group>"; };
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
 		147B8806242F0508008FB8F4 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
 		147B8808242F06BF008FB8F4 /* Test資材板情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材板情報.swift"; sourceTree = "<group>"; };
@@ -306,6 +316,8 @@
 		1412036F2201C3DF0054B56F /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				14722029246E4F4B001DBE97 /* TextReader.swift */,
+				1472202A246E4F4B001DBE97 /* TextWriter.swift */,
 				8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */,
 				1404E905220D905100841373 /* FileMakerSession.swift */,
 				14552F6722099D32000BDCB8 /* FileMakerRecord.swift */,
@@ -502,6 +514,9 @@
 				147B8808242F06BF008FB8F4 /* Test資材板情報.swift */,
 				1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */,
 				14644224244950940070FE89 /* Test資材使用記録.swift */,
+				1472202E246E51B9001DBE97 /* TestTextReader.swift */,
+				1472202D246E51B9001DBE97 /* TestTextWriter.swift */,
+				1465B7EF246E541000BA8145 /* maru.ita */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManagerTests;
@@ -680,6 +695,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1465B7F0246E541000BA8145 /* maru.ita in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +726,7 @@
 				144C75542421A68800934282 /* 在庫キャッシュ.swift in Sources */,
 				8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */,
 				14709DDC23F10CDA0014008C /* BarCode.swift in Sources */,
+				1472202C246E4F4B001DBE97 /* TextWriter.swift in Sources */,
 				8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */,
 				1454FEF32436A7E500CEE96F /* 工程必要チェック.swift in Sources */,
 				1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */,
@@ -757,6 +774,7 @@
 				8E7B720F242113BD0067A13A /* 管理資材.swift in Sources */,
 				14BA544C238D2EF70080925F /* 指示書文字数.swift in Sources */,
 				147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */,
+				1472202B246E4F4B001DBE97 /* TextReader.swift in Sources */,
 				14A251A223F38DBF00547371 /* 指示書キャッシュ.swift in Sources */,
 				146839602429EDA2001E5656 /* 資材入庫状況.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
@@ -809,10 +827,12 @@
 				1470B25B236832820043A7B4 /* TestMonth.swift in Sources */,
 				147B8809242F06BF008FB8F4 /* Test資材板情報.swift in Sources */,
 				8E7F6E51245842F000F40A2B /* Test管理板材型.swift in Sources */,
+				1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */,
 				14399D5923EAA28C00BAFD48 /* Test社員.swift in Sources */,
 				1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */,
 				14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */,
 				149BCB032208419E004066DD /* Test指示書.swift in Sources */,
+				14722030246E51B9001DBE97 /* TestTextReader.swift in Sources */,
 				14644225244950940070FE89 /* Test資材使用記録.swift in Sources */,
 				14BF2168230CCDBE00CE4253 /* TestEtc.swift in Sources */,
 				1430C033220CFFBE0095BA9C /* Test工程.swift in Sources */,

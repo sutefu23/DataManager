@@ -57,6 +57,13 @@ public class 社員型: Hashable, Codable {
         }
         return name
     }()
+    private var 部署Data: 部署型?
+    public var 部署: 部署型? {
+        if let data = self.部署Data { return data }
+        let mem = try? 社員型.findDirect(self.社員番号)
+        self.部署Data = mem?.部署Data
+        return mem?.部署Data
+    }
 
     public init?(社員番号: Int?) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
@@ -74,6 +81,7 @@ public class 社員型: Hashable, Codable {
         guard let 社員名称 = record.string(forKey: "社員名称") else { return nil }
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称
+        self.部署Data = record.キャッシュ部署(forKey: "部署記号") 
     }
     public convenience init?<S: StringProtocol>(社員コード: S) {
         guard let num = calc社員番号(社員コード) else { return nil }
@@ -154,5 +162,13 @@ extension 社員型 {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 社員型.dbName)
         return list.compactMap { 社員型($0) }
+    }
+    
+    static func findDirect(_ 社員番号: Int) throws -> 社員型? {
+        let db = FileMakerDB.pm_osakaname
+        var query = FileMakerQuery()
+        query["社員番号"] = "==\(String(format: "%03d",社員番号))"
+        let list = try db.find(layout: 社員型.dbName, query: [query])
+        return list.compactMap { 社員型($0) }.first
     }
 }

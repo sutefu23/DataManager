@@ -1,0 +1,18 @@
+iBase:10000,iVer:1
+*Ita{
+  fWidth:10000000,fHeight:10000000
+  *Moji{
+    *MojiData{
+      sName:nc24
+      fPSX:5000000,fPSY:5000000,iPal:41,iSpeed:1000,iCutNum:1,bCutFlg:1
+      *Attr{iPID:1,bJointAbs:1,fJointSize:2000,iLeadType:1,fLeadSize:120000}
+    }
+  }
+  *Pattern{
+    *PatternData{
+      *Param{iID:1,iSize:2,fPosX:-53000,fPosY:190000}
+      *NC{iG:1,fY:190000}
+      *NC{iG:2,fY:190000,fI:190000,fJ:190000}
+    }
+  }
+}

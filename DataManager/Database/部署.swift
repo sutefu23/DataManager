@@ -100,7 +100,14 @@ extension 部署型 {
 
 // MARK: - 保存
 extension FileMakerRecord {
-    func 部署(forKey key: String) -> 部署型? {
+    func キャッシュ部署(forKey key: String) -> 部署型? {
+        guard let number = self.integer(forKey: key) else { return nil }
+        if let member = 部署型.部署番号マップ[number] { return member }
+        return 現在部署(forKey: key)
+    }
+
+    
+    func 現在部署(forKey key: String) -> 部署型? {
         guard let number = self.integer(forKey: key) else { return nil }
         return 部署型(number)
     }
