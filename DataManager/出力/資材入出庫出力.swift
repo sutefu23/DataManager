@@ -22,7 +22,6 @@ public struct 資材入出庫出力型 {
         let day = 登録日 ?? Day()
         let time = 登録時間 ?? Time()
         if 入庫数 < 0 || 出庫数 < 0 { return nil }
-//        if 入庫数 == 0 && 出庫数 == 0 { return nil }
         self.登録日 = day
         self.登録時間 = time
         self.資材 = 資材
