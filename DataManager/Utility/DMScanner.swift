@@ -54,6 +54,10 @@ public struct DMScanner: RandomAccessCollection {
         return String(source[from..<startIndex])
     }
     
+    public mutating func reset() {
+        self.startIndex = source.startIndex
+    }
+    
     public init<S: StringProtocol>(_ string: S, normalizedFullHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
         var str: String
         if normalizedFullHalf {

@@ -169,35 +169,32 @@ public extension 資材型 {
     }
     
     // MARK: - 入出庫処理
-    func 入庫(日時: Date? = nil, 部署: 部署型, 入庫者: 社員型, 入庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
+    func 入庫(日時: Date? = nil, 部署: 部署型? = nil, 入庫者: 社員型, 入庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
         if 入庫数 == 0 { return }
         guard 入庫数 > 0 else {
             try self.出庫(日時: 日時, 部署: 部署, 出庫者: 入庫者, 出庫数: -入庫数, 入力区分: 入力区分)
             return
         }
-        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 入庫数, 出庫数: 0, 社員: 入庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材入庫: 図番:\(self.図番) 部署:\(部署.部署名) 入庫者:\(入庫者.社員名称) 入庫数:\(入庫数)") }
+        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 入庫数, 出庫数: 0, 社員: 入庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材入庫: 図番:\(self.図番) 入庫者:\(入庫者.社員名称) 入庫数:\(入庫数)") }
         try [action].exportToDB()
     }
     
-    func 出庫(日時: Date? = nil, 部署: 部署型, 出庫者: 社員型, 出庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
+    func 出庫(日時: Date? = nil, 部署: 部署型? = nil, 出庫者: 社員型, 出庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
         if 出庫数 == 0 { return }
         guard 出庫数 > 0 else {
             try self.入庫(部署: 部署, 入庫者: 出庫者, 入庫数: -出庫数, 入力区分: 入力区分)
             return
         }
-        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 0, 出庫数: 出庫数, 社員: 出庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材出庫: 図番:\(self.図番) 部署:\(部署.部署名) 出庫者:\(出庫者.社員名称) 出庫数:\(出庫数)") }
+        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 0, 出庫数: 出庫数, 社員: 出庫者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材出庫: 図番:\(self.図番) 出庫者:\(出庫者.社員名称) 出庫数:\(出庫数)") }
         try [action].exportToDB()
     }
 
-    func 数量確認(日時: Date? = nil, 部署: 部署型, 確認者: 社員型, 入力区分: 入力区分型 = .数量調整) throws {
-        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 0, 出庫数: 0, 社員: 確認者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材確認: 図番:\(self.図番) 部署:\(部署.部署名) 確認者:\(確認者.社員名称))") }
+    func 数量確認(日時: Date? = nil, 部署: 部署型? = nil, 確認者: 社員型, 入力区分: 入力区分型 = .数量調整) throws {
+        guard let action = 資材入出庫出力型(登録日: 日時?.day, 登録時間: 日時?.time, 資材: self, 部署: 部署, 入庫数: 0, 出庫数: 0, 社員: 確認者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材確認: 図番:\(self.図番) 確認者:\(確認者.社員名称))") }
         try [action].exportToDB()
-//        guard let action1 = 資材入出庫出力型(資材: self, 部署: 部署, 入庫数: 1, 出庫数: 0, 社員: 確認者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材確認: 図番:\(self.図番) 部署:\(部署.部署名) 確認者:\(確認者.社員名称))") }
-//        guard let action2 = 資材入出庫出力型(資材: self, 部署: 部署, 入庫数: 0, 出庫数: 1, 社員: 確認者, 入力区分: 入力区分) else { throw FileMakerError.invalidData(message: "資材確認: 図番:\(self.図番) 部署:\(部署.部署名) 確認者:\(確認者.社員名称))") }
-//        try [action1, action2].exportToDB()
     }
     
-    @discardableResult func 数量調整(部署: 部署型, 調整者: 社員型, 現在数: Int) throws -> Bool {
+    @discardableResult func 数量調整(部署: 部署型? = nil, 調整者: 社員型, 現在数: Int) throws -> Bool {
         let data = try self.現在在庫数()
         let diff = 現在数 - data
         if diff == 0 { return false }

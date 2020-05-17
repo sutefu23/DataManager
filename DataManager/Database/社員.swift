@@ -83,6 +83,7 @@ public class 社員型: Hashable, Codable {
         self.社員名称 = 社員名称
         self.部署Data = record.キャッシュ部署(forKey: "部署記号") 
     }
+    
     public convenience init?<S: StringProtocol>(社員コード: S) {
         guard let num = calc社員番号(社員コード) else { return nil }
         self.init(社員番号: num)
