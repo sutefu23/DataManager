@@ -8,9 +8,180 @@
 
 import Foundation
 
-public struct 消費情報型 {
-    public var 図番: 図番型
-    public var 分量: Double
+public class 資材使用情報型 {
+    public let 図番: 図番型
+    public let 分量: Double
+    public let 使用量: String
+    public var 金額: Double? {
+        guard let price = 資材型(図番: 図番)?.単価 else { return nil }
+        return price * Double(分量)
+    }
+    
+    public func checkRegistered(_ section: 部署型?) throws -> Bool {
+        return false
+//        guard let section = section { return false }
+//        guard let item = 資材型(図番: 図番) else { return false }
+//        let list = try item.キャッシュ入出庫()
+//        return list.contains { $0.部署 == section & $0.}
+    }
+    
+    public init?(ボルト欄: String, 数量欄: String) {
+        guard let type = 資材種類型(ボルト欄: ボルト欄) else { return nil }
+        guard let count = type.個数(数量欄) else { return nil }
+        assert(count > 0)
+        switch type {
+        case .ボルト(サイズ: let size, 長さ: let length):
+            if length == 285 {
+                switch Double(size) {
+                case  4: self.図番 = "321"
+                case  5: self.図番 = "322"
+                case  6: self.図番 = "323"
+                case  8: self.図番 = "324"
+                case 10: self.図番 = "326"
+                case 12: self.図番 = "327"
+                case 16: self.図番 = "314"
+                default:
+                    switch size {
+                    case "3/8": self.図番 = "325"
+                    default:
+                        return nil
+                    }
+                }
+                self.分量 = Double(count)
+            } else {
+                switch Double(size) {
+                case  3: self.図番 = "328I"
+                case  4: self.図番 = "329"
+                case  5: self.図番 = "330"
+                case  6: self.図番 = "331"
+                case  8: self.図番 = "332"
+                case 10: self.図番 = "334"
+                case 12: self.図番 = "335"
+                case 16: self.図番 = "2733"
+                default:
+                    switch size {
+                    case "3/8": self.図番 = "333"
+                    default:
+                        return nil
+                    }
+                }
+                self.分量 = Double(count * 1000) / length
+            }
+            self.使用量 = "\(count)本"
+        case .ナット(サイズ: let size):
+            switch Double(size) {
+            case  3: self.図番 = "363"
+            case  4: self.図番 = "364"
+            case  5: self.図番 = "365"
+            case  6: self.図番 = "366"
+            case  8: self.図番 = "367"
+            case 10: self.図番 = "389"
+            case 12: self.図番 = "370"
+            default:
+                switch size {
+                case "3/8": self.図番 = "368"
+                default:
+                    return nil
+                }
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)個"
+        case .ワッシャー(サイズ: let size):
+            switch Double(size) {
+            case  3: self.図番 = "381"
+            case  4: self.図番 = "382"
+            case  5: self.図番 = "383"
+            case  6: self.図番 = "384"
+            case  8: self.図番 = "385"
+            case 10: self.図番 = "386"
+            case 12: self.図番 = "387"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)個"
+        case .Sワッシャー(サイズ: let size):
+            switch Double(size) {
+            case  5: self.図番 = "391"
+            case  6: self.図番 = "392"
+            case  8: self.図番 = "393"
+            case 10: self.図番 = "396"
+            case 12: self.図番 = "395"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)個"
+        case .丸パイプ(サイズ: let size, 長さ: let length):
+            switch Double(size) {
+            case 5:  self.図番 = "991070"
+            case 6:  self.図番 = "991071"
+            case 7:  self.図番 = "991069"
+            case 8:  self.図番 = "991072"
+            case 9:  self.図番 = "996019"
+            case 10:  self.図番 = "991073"
+            case 12:  self.図番 = "991076"
+            case 13:  self.図番 = "996200"
+            case 15:  self.図番 = "991082"
+            case 16:  self.図番 = "991083"
+            case 19:  self.図番 = "991085"
+            case 21.7:  self.図番 = "996310"
+            case 22:  self.図番 = "996139"
+            case 25:  self.図番 = "996085"
+            default: return nil
+            }
+            self.分量 = Double(count * 4000) / length
+            self.使用量 = "\(count)本"
+        case .Cタッピング(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 6): self.図番 = "996585"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        case .サンロックトラス(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 6): self.図番 = "991680"
+            case (4, 8): self.図番 = "991681"
+            case (4, 10): self.図番 = "5827"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        case .サンロック特皿(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 10): self.図番 = "5790"
+            case (4, 6): self.図番 = "5922"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        case .特皿(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (3, 6): self.図番 = "5020"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        case .トラス(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (3, 10): self.図番 = "580"
+            case (4, 6): self.図番 = "39592"
+            case (5, 10): self.図番 = "582"
+            case (5, 15): self.図番 = "2569"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        case .スリムヘッド(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 6): self.図番 = "9799"
+            case (4, 10): self.図番 = "9699"
+            case (3, 6): self.図番 = "6711F"
+            default: return nil
+            }
+            self.分量 = Double(count)
+            self.使用量 = "\(count)本"
+        }
+    }
 }
 
 public enum 資材種類型 {
@@ -18,7 +189,7 @@ public enum 資材種類型 {
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
     case ナット(サイズ: String)
-    case 丸パイプ(サイズ: String)
+    case 丸パイプ(サイズ: String, 長さ: Double)
     case 特皿(サイズ: String, 長さ: Double)
     case サンロックトラス(サイズ: String, 長さ: Double)
     case サンロック特皿(サイズ: String, 長さ: Double)
@@ -42,30 +213,59 @@ public enum 資材種類型 {
         else { return nil }
     }
     
-    
-}
-
-private extension DMScanner {
-    mutating func scanSizeXLength(_ name: String) -> (size: String, length: Double)? {
-        guard scanString(name) else { return nil }
-        guard var size = scanStringDouble(), size.value > 0 else { return nil }
-        if scanCharacter("/"), let size2 = scanStringDouble() {
-            size.string += "/\(size2.string)"
+    func 個数(_ 数量欄: String) -> Int? {
+        let numbers = 数量欄.makeNumbers()
+        let total = numbers.reduce(0) { $0 + $1 }
+        let offset: [Int]
+        switch self {
+        case .ボルト(_, _):
+            offset = [1, 2, 3, 3, 3, 5, 5, 6]
+        case .丸パイプ(_, _):
+            offset = [1, 2, 3, 3, 3, 5, 5, 6]
+        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _):
+            offset = [2, 3, 3, 5, 10, 10, 10, 20]
+        case .ナット(_):
+            offset = [2, 3, 3, 5, 10, 10, 10, 15]
+        case .ワッシャー(_), .Sワッシャー(_):
+            offset = [2, 3, 3, 5, 10, 10, 10, 15]
         }
-        guard scanCharacters("X", "×", "*") else { return nil }
-        guard let length = scanDouble(), length > 0 else { return nil }
-        guard scanCharacter("L") else { return nil }
-        return (size.string, length)
+        assert(offset.count == 8)
+        if (1...5).contains(total) { return offset[0] + total }
+        if (6...10).contains(total) { return offset[1] + total }
+        if (11...15).contains(total) { return offset[2] + total }
+        if (16...30).contains(total) { return offset[3] + total }
+        if (31...40).contains(total) { return offset[4] + total }
+        if (41...50).contains(total) { return offset[5] + total }
+        if (51...100).contains(total) { return offset[6] + total }
+        if (101...).contains(total) { return offset[7] + total }
+        return total > 0 ? total : nil
+    }
     }
     
-    mutating func scanSize(_ name: String) -> String? {
-        guard name.isEmpty || scanString(name) else { return nil }
-        guard let size = scanStringDouble(), size.value > 0 else { return nil }
-        return size.string
-    }
-    
-    mutating func scanボルト() -> 資材種類型? {
-        guard let (size, length) = scanSizeXLength("M") else {
+    private extension DMScanner {
+        mutating func scanSizeXLength(_ name: String, unit1: Character? = nil) -> (size: String, length: Double)? {
+            guard scanString(name) else { return nil }
+            guard var size = scanStringAsDouble(), size.value > 0 else { return nil }
+            if scanCharacter("/") {
+                if let size2 = scanStringAsDouble() {
+                    size.string += "/\(size2.string)"
+                }
+            }
+            if let ch = unit1, !scanCharacter(ch) { return nil }
+            guard scanCharacters("X", "×", "*") else { return nil }
+            guard let length = scanDouble(), length > 0 else { return nil }
+            guard scanCharacter("L") else { return nil }
+            return (size.string, length)
+        }
+        
+        mutating func scanSize(_ name: String) -> String? {
+            guard name.isEmpty || scanString(name) else { return nil }
+            guard let size = scanStringAsDouble(), size.value > 0 else { return nil }
+            return size.string
+        }
+        
+        mutating func scanボルト() -> 資材種類型? {
+            guard let (size, length) = scanSizeXLength("M") else {
             self.reset()
             return nil
         }
@@ -90,7 +290,7 @@ private extension DMScanner {
     
     mutating func scanナット() -> 資材種類型? {
         guard scanString("ナット") else { return nil }
-        guard let size = scanStringDouble(), size.value > 0 else {
+        guard let size = scanStringAsDouble(), size.value > 0 else {
             self.reset()
             return nil
         }
@@ -98,14 +298,25 @@ private extension DMScanner {
     }
     
     mutating func scan丸パイプ() -> 資材種類型? {
-        guard let size = scanStringDouble(), size.value > 0 else {
-            self.reset()
-            return nil
+        if let (size, length) = scanSizeXLength("", unit1: "Φ") {
+            return .丸パイプ(サイズ: size, 長さ: length)
         }
-        guard scanCharacter("φ") else { return nil }
-        return .丸パイプ(サイズ: size.string)
+        self.reset()
+        if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
+            return .丸パイプ(サイズ: size, 長さ: length)
+        }
+        self.reset()
+        if let (size, length) = scanSizeXLength("配線", unit1: "Φ") {
+            return .丸パイプ(サイズ: size, 長さ: length)
+        }
+        self.reset()
+        if let (size, length) = scanSizeXLength("電源用", unit1: "Φ") {
+            return .丸パイプ(サイズ: size, 長さ: length)
+        }
+        self.reset()
+        return nil
     }
-    
+
     mutating func scan特皿() -> 資材種類型? {
         guard let (size, length) = scanSizeXLength("特皿M") else {
             self.reset()
@@ -131,7 +342,7 @@ private extension DMScanner {
     }
     
     mutating func scanトラス() -> 資材種類型? {
-        guard let (size, length) = scanSizeXLength("トラスM") else {
+        guard let (size, length) = scanSizeXLength("トラス") else {
             self.reset()
             return nil
         }

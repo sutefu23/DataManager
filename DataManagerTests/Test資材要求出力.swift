@@ -15,7 +15,7 @@ class TestExportOrder: XCTestCase {
     func testOutput() {
         if self.execDBTest == false { return }
         
-        let list = [makeOrder5()]
+        let list = [makeOrder1()]
         XCTAssertNoThrow(try list.exportToDB())
     }
 }
@@ -25,7 +25,7 @@ private func makeOrder1() -> 資材要求出力型 {
     let client1 = 社員型(社員番号: 23)!
     let item1 = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990180M")! // Cup 1.5t 1x2
     let count1  = 3
-    let limit1 = Day(2020, 3, 17)
+    let limit1 = Day(2020, 5, 20)
     let memo1 = "発注登録テスト"
     return 資材要求出力型(注文番号: order1, 社員: client1, 資材: item1, 数量: count1, 希望納期: limit1, 備考: memo1)
 }

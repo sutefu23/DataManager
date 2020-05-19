@@ -114,6 +114,9 @@ public struct Month: Hashable, Strideable, Codable {
     public var lastDay: Day {
         return self.nextMonth.firstDay.prevDay
     }
+    public var days: ClosedRange<Day> {
+        firstDay...lastDay
+    }
     
     public var weeks: [ClosedRange<Day>] {
         var weeks: [ClosedRange<Day>] = []

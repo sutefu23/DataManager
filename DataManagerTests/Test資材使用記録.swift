@@ -29,22 +29,6 @@ class TestUseItemRecord: XCTestCase {
         XCTAssertEqual(use.使用面積, 30000)
         XCTAssertEqual(use.金額, 782)
         
-        do {
-//            var list = try 資材使用記録型.find(伝票番号: order1)
-//            XCTAssertEqual(list.count, 0)
-//            try use.synchronize()
-//            list = try 資材使用記録型.find(伝票番号: order1)
-//            XCTAssertEqual(list.count, 1)
-//            list = try 資材使用記録型.find(図番: item1.図番)
-//            XCTAssertEqual(list.count, 1)
-//            let use1 = list[0]
-//            XCTAssertEqual(use1.data, use.data)
-//            try use1.delete()
-//            list = try 資材使用記録型.find(伝票番号: order1)
-//            XCTAssertEqual(list.count, 0)
-        } catch {
-            fatalError()
-        }
     }
 }
 

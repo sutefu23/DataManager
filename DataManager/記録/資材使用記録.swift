@@ -220,3 +220,42 @@ public class 資材使用記録型 {
         return try find(query: query)
     }
 }
+
+class 資材使用記録キャッシュ型 {
+    static let shared = 資材使用記録キャッシュ型()
+    var expireTime: TimeInterval = 1*60*60 // 1時間
+    private let lock = NSLock()
+    private var cache: [伝票番号型: (有効期限: Date, 資材使用記録: [資材使用記録型])] = [:]
+
+    func 現在資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+        let list = try 資材使用記録型.find(伝票番号: 伝票番号)
+        let expire = Date(timeIntervalSinceNow: self.expireTime)
+        lock.lock()
+        cache[伝票番号] = (expire, list)
+        lock.unlock()
+        return list
+    }
+
+    func キャッシュ資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+        lock.lock()
+        let data = self.cache[伝票番号]
+        lock.unlock()
+        if let data = data, Date() <= data.有効期限 {
+            return data.資材使用記録
+        }
+        return try self.現在資材使用記録(伝票番号: 伝票番号)
+    }
+
+    func flush(伝票番号: 伝票番号型) {
+        lock.lock()
+        cache[伝票番号] = nil
+        lock.unlock()
+    }
+    
+    func flushAllCache() {
+        lock.lock()
+        self.cache.removeAll()
+        lock.unlock()
+    }
+
+}

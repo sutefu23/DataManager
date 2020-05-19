@@ -141,7 +141,7 @@ public struct 資材板情報型: 資材情報型 {
         scanner = DMScanner(規格, normalizedFullHalf: true, skipSpaces: true, newlineToSpace: true)
         if let left = scanner.scanUpTo("t") {
             var head = DMScanner(left)
-            if let (str, val) = head.scanStringDouble() {
+            if let (str, val) = head.scanStringAndDouble() {
                 type.append(str)
                 thin = String(val)
             } else {

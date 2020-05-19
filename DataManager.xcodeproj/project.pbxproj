@@ -87,6 +87,7 @@
 		1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202D246E51B9001DBE97 /* TestTextWriter.swift */; };
 		14722030246E51B9001DBE97 /* TestTextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202E246E51B9001DBE97 /* TestTextReader.swift */; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
+		14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */; };
 		147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8806242F0508008FB8F4 /* 資材(板情報).swift */; };
 		147B8809242F06BF008FB8F4 /* Test資材板情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8808242F06BF008FB8F4 /* Test資材板情報.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
@@ -234,6 +235,7 @@
 		1472202D246E51B9001DBE97 /* TestTextWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextWriter.swift; sourceTree = "<group>"; };
 		1472202E246E51B9001DBE97 /* TestTextReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextReader.swift; sourceTree = "<group>"; };
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
+		14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		147B8806242F0508008FB8F4 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
 		147B8808242F06BF008FB8F4 /* Test資材板情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材板情報.swift"; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
@@ -516,6 +518,7 @@
 				14644224244950940070FE89 /* Test資材使用記録.swift */,
 				1472202E246E51B9001DBE97 /* TestTextReader.swift */,
 				1472202D246E51B9001DBE97 /* TestTextWriter.swift */,
+				14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */,
 				1465B7EF246E541000BA8145 /* maru.ita */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
@@ -829,6 +832,7 @@
 				8E7F6E51245842F000F40A2B /* Test管理板材型.swift in Sources */,
 				1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */,
 				14399D5923EAA28C00BAFD48 /* Test社員.swift in Sources */,
+				14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */,
 				1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */,
 				14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */,
 				149BCB032208419E004066DD /* Test指示書.swift in Sources */,

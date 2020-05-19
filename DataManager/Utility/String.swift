@@ -112,8 +112,19 @@ extension String {
 private let numberRange = (Character("0")...Character("9"))
 
 extension StringProtocol {
+    /// 整数を取り出す
     func makeNumbers() -> [Int] {
-        return self.split { numberRange.contains($0) == false }.compactMap { Int($0) }
+        var numbers: [Int] = []
+        var scanner = DMScanner(self, normalizedFullHalf: true)
+        scanner.skip数字以外()
+        while !scanner.isAtEnd {
+            if let number = scanner.scanInteger() {
+                numbers.append(number)
+            }
+            scanner.skip数字以外()
+        }
+        return numbers
+//        return self.split { numberRange.contains($0) == false }.compactMap { Int($0) }
     }
 }
 

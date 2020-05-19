@@ -171,4 +171,11 @@ extension UIResponder {
         #endif
     }
 }
+
+extension UIButton {
+    public var text: String? {
+        get { self.title(for: .normal) }
+        set { setTitle(newValue, for: .normal) }
+    }
+}
 #endif

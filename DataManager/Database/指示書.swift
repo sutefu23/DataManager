@@ -252,12 +252,20 @@ public class 指示書型 {
         }
     }
     
+    /// 半田かどうか
     public var is半田あり: Bool {
-        return self.略号.contains(.半田)
+        return self.略号.contains(.半田) || self.is旧半田
     }
-    
+    var is旧半田 : Bool { self.伝票種類 == .箱文字 && (self.上段右.contains("ハ") || self.下段右.contains("ハ")) }
+
+    /// 溶接かどうか
     public var is溶接あり: Bool {
-        return self.略号.contains(.溶接)
+        return self.略号.contains(.溶接) || self.is旧溶接
+    }
+    var is旧溶接 : Bool { self.伝票種類 == .箱文字 && (self.上段右.contains("ヨ") || self.下段右.contains("ヨ")) }
+
+    var is旧美濃在庫 : Bool {
+        return 伝票種類 == .切文字 && 社名.contains("美濃クラフト") && 品名.containsOne(of: "AS", "RX", "EP", "MX", "HT", "ワンロック", "モック")
     }
     
     public var is承認済有効: Bool {
@@ -349,7 +357,6 @@ public class 指示書型 {
     }()
     
     public lazy var 指示書文字数: 指示書文字数型 = 指示書文字数型(指示書: self)
-    
     public func showInfo() {
         self.伝票番号.showInfo()
     }

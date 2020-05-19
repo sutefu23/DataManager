@@ -332,7 +332,7 @@ public struct DMScanner: RandomAccessCollection {
         return Double(str)
     }
     
-    public mutating func scanStringDouble() -> (string: String, value: Double)? {
+    public mutating func scanStringAndDouble() -> (string: String, value: Double)? {
         let initialIndex = self.startIndex
         var index = self.startIndex
         while index < self.endIndex {
@@ -345,10 +345,22 @@ public struct DMScanner: RandomAccessCollection {
         self.startIndex = initialIndex
         return nil
     }
+    
+    public mutating func scanStringAsDouble() -> (string: String, value: Double)? {
+        let initialIndex = self.startIndex
+        skip数字以外()
+        let valueHead = self.startIndex
+        guard let value = self.scanDouble() else {
+            self.startIndex = initialIndex
+            return nil
+        }
+        let string = String(source[valueHead..<self.startIndex])
+        return (string, value)
+    }
 
     public mutating func scanDoubleAndDouble() -> (left: Double, splitter: String, right: Double)? {
         let initialIndex = self.startIndex
-        guard let left = scanDouble(), let (splitter, right) = scanStringDouble() else {
+        guard let left = scanDouble(), let (splitter, right) = scanStringAndDouble() else {
             self.startIndex = initialIndex
             return nil
         }
