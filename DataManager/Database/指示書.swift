@@ -80,6 +80,9 @@ public class 指示書型 {
     public var 下段中央: String { record.string(forKey: "下段中央")! }
     public var 下段右: String { record.string(forKey: "下段右")! }
 
+    public var 部門: 部門型 { record.部門(forKey: "部門コード")! }
+    public var 会社コード: String { record.string(forKey: "会社コード") ?? "" }
+    
     public var 単価1: Int { record.integer(forKey: "単価1") ?? 0 }
     public var 数量1: Int { record.integer(forKey: "数量1") ?? 0 }
     public lazy var 伝票種別: 伝票種別型 = { 伝票種別型(self.record.string(forKey: "伝票種別")!)! }()
@@ -474,7 +477,7 @@ public extension 指示書型 {
     }
 
     
-    static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 受注日 range0: ClosedRange<Day>? = nil, 製作納期 range: ClosedRange<Day>? = nil,  出荷納期 range2: ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil) throws -> [指示書型] {
+    static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 受注日 range0: ClosedRange<Day>? = nil, 製作納期 range: ClosedRange<Day>? = nil,  出荷納期 range2: ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil, 進捗準備: Bool = false) throws -> [指示書型] {
         var query = FileMakerQuery()
         if let num = 伝票番号 {
             query["伝票番号"] = "==\(num)"
@@ -490,7 +493,9 @@ public extension 指示書型 {
             query["出荷納期"] = makeQueryDayString(range2)
         }
         query["伝票状態"] = 伝票状態?.description
-        return try find(query)
+        let list = try find(query)
+        if 進捗準備 { list.forEach { let _ = $0.工程別進捗一覧 } }
+        return list
     }
         
     static func new_find(作業範囲 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {

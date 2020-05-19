@@ -75,6 +75,7 @@
 		146D0B3323EA8DB9006FECA7 /* 部署.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146D0B3223EA8DB9006FECA7 /* 部署.swift */; };
 		146D0B3523EA9513006FECA7 /* Test部署.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146D0B3423EA9513006FECA7 /* Test部署.swift */; };
 		146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F1694239904DB003F88A1 /* Test進捗出力.swift */; };
+		146FED8D2473C96200CC451E /* 部門.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146FED8C2473C96200CC451E /* 部門.swift */; };
 		14709DDC23F10CDA0014008C /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14709DDB23F10CDA0014008C /* BarCode.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		1470CFAE243C5C5000C76979 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470CFAD243C5C5000C76979 /* Alert.swift */; };
@@ -224,6 +225,7 @@
 		146D0B3223EA8DB9006FECA7 /* 部署.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "部署.swift"; sourceTree = "<group>"; };
 		146D0B3423EA9513006FECA7 /* Test部署.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test部署.swift"; sourceTree = "<group>"; };
 		146F1694239904DB003F88A1 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
+		146FED8C2473C96200CC451E /* 部門.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "部門.swift"; sourceTree = "<group>"; };
 		14709DDB23F10CDA0014008C /* BarCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
 		1470CFAD243C5C5000C76979 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				145EE8FE2396422F008BC8B4 /* 作業系列.swift */,
 				146D0B3223EA8DB9006FECA7 /* 部署.swift */,
 				1474761C23C6FE2600FE73B0 /* 製造グループ.swift */,
+				146FED8C2473C96200CC451E /* 部門.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -810,6 +813,7 @@
 				141057CA246B8C1D00277E42 /* 管理資材（パイプ）.swift in Sources */,
 				141203732201C5890054B56F /* 出勤日.swift in Sources */,
 				1468395C2429E703001E5656 /* 取引先.swift in Sources */,
+				146FED8D2473C96200CC451E /* 部門.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
 				146D0B3123EA8C8B006FECA7 /* 入力区分.swift in Sources */,
 				8E31841F24611FC9007FD008 /* File.swift in Sources */,
