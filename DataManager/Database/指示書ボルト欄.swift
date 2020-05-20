@@ -8,21 +8,73 @@
 
 import Foundation
 
+public enum 資材金額基準型 {
+    case 平面板(height: Double, width: Double, count: Int)
+    case 平面形状(area: Double, count: Int)
+    case カット棒(length: Double, count: Int)
+    case 個数物(count: Int)
+    case コイル材(weight: Double)
+    
+    public var area: Double? {
+        switch self {
+        case .平面板(height: let height, width: let width, let count):
+            return height * width * Double(count)
+        case .平面形状(area: let area, let count):
+            return area * Double(count)
+        default:
+            return nil
+        }
+    }
+    
+    public func makeData(資材 item: 資材型) -> (使用量: String, 使用面積: Double?, 金額: Double?) {
+        var value: Double? = nil
+        switch self {
+        case .カット棒(length: let length, count: let count):
+            if let price = item.単価 {
+                let itemLength = 1000.0
+                value = (length / itemLength) * price * Double(count)
+            }
+            return ("\(length)mm \(count)本", nil, value)
+        case .コイル材(weight: let weight):
+            if let price = item.単価 {
+                value = (weight / 43.0) * price
+            }
+            return ("\(weight)kg", nil, value)
+        case .個数物(count: let count):
+            if let price = item.単価 {
+                value = price * Double(count)
+            }
+            return ("\(count)個", nil, value)
+        case .平面形状(area: let area, count: let count):
+            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
+                value = (area / sheetArea) * price
+            }
+            return ("\(area)㎟ \(count)個", area, value)
+        case .平面板(height: let height, width: let width, count: let count):
+            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
+                let area = width * height
+                value = (area / sheetArea) * price
+            }
+            return ("\(height)x\(width) \(count)枚", area, value)
+        }
+    }
+}
+
 public class 資材使用情報型 {
     public let 図番: 図番型
     public let 分量: Double
     public let 使用量: String
+    
+    public lazy var 資材: 資材型? = 資材型(図番: self.図番)
+    public lazy var 単価: Double? = self.資材?.単価
     public var 金額: Double? {
-        guard let price = 資材型(図番: 図番)?.単価 else { return nil }
+        guard let price = self.単価 else { return nil }
         return price * Double(分量)
     }
-    
-    public func checkRegistered(_ section: 部署型?) throws -> Bool {
-        return false
-//        guard let section = section { return false }
-//        guard let item = 資材型(図番: 図番) else { return false }
-//        let list = try item.キャッシュ入出庫()
-//        return list.contains { $0.部署 == section & $0.}
+
+    public func checkRegistered(_ order: 指示書型, _ process: 工程型) throws -> Bool {
+        guard let list = try order.キャッシュ資材使用記録() else { return false }
+        return list.contains { $0.図番 == self.図番 && $0.工程 == process && $0.金額 == self.金額 }
     }
     
     public init?(ボルト欄: String, 数量欄: String) {

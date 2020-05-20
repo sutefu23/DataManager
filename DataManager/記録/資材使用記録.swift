@@ -160,6 +160,7 @@ public class 資材使用記録型 {
         serialQueue.addOperation {
             let db = FileMakerDB.system
             let _ = try? db.insert(layout: 資材使用記録Data型.dbName, fields: data)
+            資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
         }
     }
     
@@ -177,6 +178,7 @@ public class 資材使用記録型 {
                     let recordID = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
                     result = .success(recordID)
                 }
+                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
             } catch {
                 result = .failure(error)
             }

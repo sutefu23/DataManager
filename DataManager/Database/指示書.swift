@@ -434,6 +434,56 @@ extension 指示書型 {
         if self.伝票種類 != .箱文字 { return false }
         return self.管理用メモ.contains("アクリのみ")
     }
+    
+    public func ボルト等(_ index: Int) -> String? {
+        switch index {
+        case 1: return self.ボルト等1
+        case 2: return self.ボルト等2
+        case 3: return self.ボルト等3
+        case 4: return self.ボルト等4
+        case 5: return self.ボルト等5
+        case 6: return self.ボルト等6
+        case 7: return self.ボルト等7
+        case 8: return self.ボルト等8
+        case 9: return self.ボルト等9
+        case 10: return self.ボルト等10
+        case 11: return self.ボルト等11
+        case 12: return self.ボルト等12
+        case 13: return self.ボルト等13
+        case 14: return self.ボルト等14
+        case 15: return self.ボルト等15
+        default: return nil
+        }
+    }
+    
+    public func ボルト本数(_ index: Int) -> String? {
+        switch index {
+        case 1: return self.ボルト本数1
+        case 2: return self.ボルト本数2
+        case 3: return self.ボルト本数3
+        case 4: return self.ボルト本数4
+        case 5: return self.ボルト本数5
+        case 6: return self.ボルト本数6
+        case 7: return self.ボルト本数7
+        case 8: return self.ボルト本数8
+        case 9: return self.ボルト本数9
+        case 10: return self.ボルト本数10
+        case 11: return self.ボルト本数11
+        case 12: return self.ボルト本数12
+        case 13: return self.ボルト本数13
+        case 14: return self.ボルト本数14
+        case 15: return self.ボルト本数15
+        default: return nil
+        }
+    }
+    
+    func 現在資材使用記録() throws -> [資材使用記録型]? {
+        return try 資材使用記録キャッシュ型.shared.現在資材使用記録(伝票番号: self.伝票番号)
+    }
+
+    func キャッシュ資材使用記録() throws -> [資材使用記録型]? {
+        return try 資材使用記録キャッシュ型.shared.キャッシュ資材使用記録(伝票番号: self.伝票番号)
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {
