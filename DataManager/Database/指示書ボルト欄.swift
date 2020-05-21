@@ -11,7 +11,7 @@ import Foundation
 public enum 資材金額基準型 {
     case 平面板(height: Double, width: Double, count: Int)
     case 平面形状(area: Double, count: Int)
-    case カット棒(length: Double, count: Int)
+    case カット棒(itemLength: Double, length: Double, count: Int)
     case 個数物(count: Int)
     case コイル材(weight: Double)
     
@@ -29,9 +29,8 @@ public enum 資材金額基準型 {
     public func makeData(資材 item: 資材型) -> (使用量: String, 使用面積: Double?, 金額: Double?) {
         var value: Double? = nil
         switch self {
-        case .カット棒(length: let length, count: let count):
+        case .カット棒(itemLength: let itemLength, length: let length, count: let count):
             if let price = item.単価 {
-                let itemLength = 1000.0
                 value = (length / itemLength) * price * Double(count)
             }
             return ("\(length)mm \(count)本", nil, value)
@@ -62,16 +61,27 @@ public enum 資材金額基準型 {
 
 public class 資材使用情報型 {
     public let 図番: 図番型
-    public let 分量: Double
-    public let 使用量: String
+    public let 使用物資: 資材金額基準型?
     
     public lazy var 資材: 資材型? = 資材型(図番: self.図番)
     public lazy var 単価: Double? = self.資材?.単価
     public var 金額: Double? {
-        guard let price = self.単価 else { return nil }
-        return price * Double(分量)
+        guard let item = self.資材 else { return nil }
+        let data = 使用物資?.makeData(資材: item)
+        return data?.金額
     }
 
+    public var 使用量: String? {
+        guard let item = self.資材 else { return nil }
+        let data = 使用物資?.makeData(資材: item)
+        return data?.使用量
+    }
+    public var 使用面積: Double? {
+        guard let item = self.資材 else { return nil }
+        let data = 使用物資?.makeData(資材: item)
+        return data?.使用面積
+    }
+    
     public func checkRegistered(_ order: 指示書型, _ process: 工程型) throws -> Bool {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
         return list.contains { $0.図番 == self.図番 && $0.工程 == process && $0.金額 == self.金額 }
@@ -83,7 +93,9 @@ public class 資材使用情報型 {
         assert(count > 0)
         switch type {
         case .ボルト(サイズ: let size, 長さ: let length):
+            let itemLength: Double
             if length == 285 {
+                itemLength = 285
                 switch Double(size) {
                 case  4: self.図番 = "321"
                 case  5: self.図番 = "322"
@@ -99,8 +111,8 @@ public class 資材使用情報型 {
                         return nil
                     }
                 }
-                self.分量 = Double(count)
             } else {
+                itemLength = 1000
                 switch Double(size) {
                 case  3: self.図番 = "328I"
                 case  4: self.図番 = "329"
@@ -117,9 +129,8 @@ public class 資材使用情報型 {
                         return nil
                     }
                 }
-                self.分量 = Double(count * 1000) / length
             }
-            self.使用量 = "\(count)本"
+            self.使用物資 = .カット棒(itemLength: itemLength, length: length, count: count)
         case .ナット(サイズ: let size):
             switch Double(size) {
             case  3: self.図番 = "363"
@@ -136,8 +147,7 @@ public class 資材使用情報型 {
                     return nil
                 }
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)個"
+            self.使用物資 = .個数物(count: count)
         case .ワッシャー(サイズ: let size):
             switch Double(size) {
             case  3: self.図番 = "381"
@@ -149,8 +159,7 @@ public class 資材使用情報型 {
             case 12: self.図番 = "387"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)個"
+            self.使用物資 = .個数物(count: count)
         case .Sワッシャー(サイズ: let size):
             switch Double(size) {
             case  5: self.図番 = "391"
@@ -160,8 +169,7 @@ public class 資材使用情報型 {
             case 12: self.図番 = "395"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)個"
+            self.使用物資 = .個数物(count: count)
         case .丸パイプ(サイズ: let size, 長さ: let length):
             switch Double(size) {
             case 5:  self.図番 = "991070"
@@ -180,15 +188,14 @@ public class 資材使用情報型 {
             case 25:  self.図番 = "996085"
             default: return nil
             }
-            self.分量 = Double(count * 4000) / length
-            self.使用量 = "\(count)本"
+            let itemLength: Double = 4000
+            self.使用物資 = .カット棒(itemLength: itemLength, length: length, count: count)
         case .Cタッピング(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (4, 6): self.図番 = "996585"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         case .サンロックトラス(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (4, 6): self.図番 = "991680"
@@ -196,23 +203,20 @@ public class 資材使用情報型 {
             case (4, 10): self.図番 = "5827"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         case .サンロック特皿(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (4, 10): self.図番 = "5790"
             case (4, 6): self.図番 = "5922"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         case .特皿(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (3, 6): self.図番 = "5020"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         case .トラス(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (3, 10): self.図番 = "580"
@@ -221,8 +225,7 @@ public class 資材使用情報型 {
             case (5, 15): self.図番 = "2569"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         case .スリムヘッド(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (4, 6): self.図番 = "9799"
@@ -230,8 +233,7 @@ public class 資材使用情報型 {
             case (3, 6): self.図番 = "6711F"
             default: return nil
             }
-            self.分量 = Double(count)
-            self.使用量 = "\(count)本"
+            self.使用物資 = .個数物(count: count)
         }
     }
 }
@@ -415,5 +417,24 @@ public enum 資材種類型 {
             return nil
         }
         return .Cタッピング(サイズ: size, 長さ: length)
+    }
+}
+
+private let lengthMap: [図番型: Double] = [
+    // 285ボルト
+    "321": 285, "322": 285, "323": 285, "324": 285,
+    "326": 285, "327": 285, "314": 285, "325": 285,
+    // ボルト
+    "328I": 1000, "329": 1000, "330": 1000, "331": 1000, "333": 1000,
+    "332": 1000, "334": 1000, "335": 1000, "2733": 1000,
+    // 丸パイプ
+    "991070": 4000, "991071": 4000, "991069": 4000, "991072": 4000, "996019": 4000,
+    "991073": 4000, "991076": 4000, "996200": 4000, "991082": 4000, "991083": 4000,
+    "991085": 4000, "996310": 4000, "996139": 4000, "996085": 4000,
+]
+
+extension 資材型 {
+    public var itemLength: Double? {
+        return lengthMap[self.図番]
     }
 }
