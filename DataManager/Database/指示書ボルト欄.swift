@@ -172,20 +172,21 @@ public class 資材使用情報型 {
             self.使用物資 = .個数物(count: count)
         case .丸パイプ(サイズ: let size, 長さ: let length):
             switch Double(size) {
-            case 5:  self.図番 = "991070"
-            case 6:  self.図番 = "991071"
-            case 7:  self.図番 = "991069"
-            case 8:  self.図番 = "991072"
-            case 9:  self.図番 = "996019"
-            case 10:  self.図番 = "991073"
-            case 12:  self.図番 = "991076"
-            case 13:  self.図番 = "996200"
-            case 15:  self.図番 = "991082"
-            case 16:  self.図番 = "991083"
-            case 19:  self.図番 = "991085"
-            case 21.7:  self.図番 = "996310"
-            case 22:  self.図番 = "996139"
-            case 25:  self.図番 = "996085"
+            case 5: self.図番 = "991070"
+            case 6: self.図番 = "991071"
+            case 7: self.図番 = "991069"
+            case 8: self.図番 = "991072"
+            case 9: self.図番 = "996019"
+            case 10: self.図番 = "991073"
+            case 12: self.図番 = "991076"
+            case 13: self.図番 = "996200"
+            case 14: self.図番 = "991768"
+            case 15: self.図番 = "991082"
+            case 16: self.図番 = "991083"
+            case 19: self.図番 = "991085"
+            case 21.7: self.図番 = "996310"
+            case 22: self.図番 = "996139"
+            case 25: self.図番 = "996085"
             default: return nil
             }
             let itemLength: Double = 4000
@@ -352,10 +353,6 @@ public enum 資材種類型 {
     }
     
     mutating func scan丸パイプ() -> 資材種類型? {
-        if let (size, length) = scanSizeXLength("", unit1: "Φ") {
-            return .丸パイプ(サイズ: size, 長さ: length)
-        }
-        self.reset()
         if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
             return .丸パイプ(サイズ: size, 長さ: length)
         }
@@ -365,6 +362,10 @@ public enum 資材種類型 {
         }
         self.reset()
         if let (size, length) = scanSizeXLength("電源用", unit1: "Φ") {
+            return .丸パイプ(サイズ: size, 長さ: length)
+        }
+        self.reset()
+        if let (size, length) = scanSizeXLength("", unit1: "Φ") {
             return .丸パイプ(サイズ: size, 長さ: length)
         }
         self.reset()

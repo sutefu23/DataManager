@@ -49,6 +49,8 @@ public class 指示書型 {
     public lazy var 製作納期: Day = { record.day(forKey: "製作納期") ?? record.day(forKey: "出荷納期")! }()
     public lazy var 出荷納期: Day = { record.day(forKey: "出荷納期") ?? record.day(forKey: "製作納期")! }()
     
+    public lazy var 取引先: 取引先型? = { try? 取引先型.find(会社コード: self.会社コード) }()
+    
     public var 品名: String { record.string(forKey: "品名")! }
     public var 仕様: String { record.string(forKey: "仕様")! }
     public var 寸法: String { record.string(forKey: "寸法")! }
@@ -273,6 +275,10 @@ public class 指示書型 {
     
     public var is承認済有効: Bool {
         return self.承認状態 == .承認済 && self.伝票状態 != .キャンセル
+    }
+    
+    public var isオブジェ: Bool {
+        return self.伝票種類 == .加工 && self.仕様.applyingTransform(.fullwidthToHalfwidth, reverse: true)?.contains("オブジェ") == true
     }
     
     public var 金額: Int {

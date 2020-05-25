@@ -144,6 +144,7 @@ extension Sequence where Element == 進捗出力型 {
             let uuid = UUID()
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
+                指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
 //            if 進捗CheckMode == false { return }

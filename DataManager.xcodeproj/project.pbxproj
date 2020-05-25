@@ -76,6 +76,7 @@
 		146D0B3523EA9513006FECA7 /* Test部署.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146D0B3423EA9513006FECA7 /* Test部署.swift */; };
 		146F1695239904DB003F88A1 /* Test進捗出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F1694239904DB003F88A1 /* Test進捗出力.swift */; };
 		146FED8D2473C96200CC451E /* 部門.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146FED8C2473C96200CC451E /* 部門.swift */; };
+		1470792F247B9E6D0044134E /* 付属品封筒.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470792E247B9E6D0044134E /* 付属品封筒.swift */; };
 		14709DDC23F10CDA0014008C /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14709DDB23F10CDA0014008C /* BarCode.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		1470CFAE243C5C5000C76979 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470CFAD243C5C5000C76979 /* Alert.swift */; };
@@ -226,6 +227,7 @@
 		146D0B3423EA9513006FECA7 /* Test部署.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test部署.swift"; sourceTree = "<group>"; };
 		146F1694239904DB003F88A1 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
 		146FED8C2473C96200CC451E /* 部門.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "部門.swift"; sourceTree = "<group>"; };
+		1470792E247B9E6D0044134E /* 付属品封筒.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "付属品封筒.swift"; sourceTree = "<group>"; };
 		14709DDB23F10CDA0014008C /* BarCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
 		1470CFAD243C5C5000C76979 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 				146AA03623EB828900126B0F /* PaperPDFPage.swift */,
 				8E0CBAE323EB62DB00587F6B /* PaperRect.swift */,
 				14709DDB23F10CDA0014008C /* BarCode.swift */,
+				1470792E247B9E6D0044134E /* 付属品封筒.swift */,
 			);
 			name = "ラベル印刷";
 			path = "ラベル印刷";
@@ -756,6 +759,7 @@
 				1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */,
 				146B4C4623E4FE4200FB392B /* NSAttributedString.swift in Sources */,
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
+				1470792F247B9E6D0044134E /* 付属品封筒.swift in Sources */,
 				145EE8FF2396422F008BC8B4 /* 作業系列.swift in Sources */,
 				146D0B2F23EA8869006FECA7 /* 資材入出庫出力.swift in Sources */,
 				1470CFAE243C5C5000C76979 /* Alert.swift in Sources */,
