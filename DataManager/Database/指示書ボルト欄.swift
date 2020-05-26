@@ -62,6 +62,7 @@ public enum 資材金額基準型 {
 public class 資材使用情報型 {
     public let 図番: 図番型
     public let 使用物資: 資材金額基準型?
+    public let 内容表示: String
     
     public lazy var 資材: 資材型? = 資材型(図番: self.図番)
     public lazy var 単価: Double? = self.資材?.単価
@@ -88,6 +89,7 @@ public class 資材使用情報型 {
     }
     
     public init?(ボルト欄: String, 数量欄: String) {
+        self.内容表示 = ボルト欄
         guard let type = 資材種類型(ボルト欄: ボルト欄) else { return nil }
         guard let count = type.個数(数量欄) else { return nil }
         assert(count > 0)

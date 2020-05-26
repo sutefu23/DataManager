@@ -61,7 +61,8 @@ public class PaperRect: PaperObject {
     
     public func draw(at: CGPoint, isFlipped: Bool) {
         let px = self.px + at.x
-        let py = isFlipped ? (at.y - self.py + pheight) : self.py + at.y
+        let py = self.py + at.y
+//        let py = isFlipped ? (at.y - self.py + pheight) : self.py + at.y
         let origin = CGPoint(x: px, y: py)
         objects.forEach { $0.draw(at: origin, isFlipped: isFlipped) }
     }
@@ -123,7 +124,9 @@ public class PaperPath: PaperObject {
     public func draw(at: CGPoint, isFlipped: Bool) {
         var points: [CGPoint] = self.points.map {
             let x = $0.x + at.x
-            let y = $0.y + at.y
+            var y = $0.y
+            if isFlipped { y = -y }
+            y += at.y
             return CGPoint(x: x, y: y)
         }
         let path = DMBezierPath(polyline: &points)
@@ -201,15 +204,16 @@ public class PaperText: PaperObject {
     let x: CGFloat
     let y: CGFloat
 
-    public convenience init(mmx: Double, mmy: Double, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
+    public convenience init(mmx: Double, mmy: Double, inset: Double = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
         let x = convertPoint(mm: mmx)
         let y = convertPoint(mm: mmy)
-        self.init(x: x, y: y, text: text, fontSize: fontSize, bold: bold, color: color)
+        let inset = convertPoint(mm: inset)
+        self.init(x: x, y: y, inset: inset, text: text, fontSize: fontSize, bold: bold, color: color)
     }
     
-    public init(x: CGFloat, y: CGFloat, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
-        self.x = x
-        self.y = y
+    public init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
+        self.x = x + inset
+        self.y = y + inset
         let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
         let storage = NSTextStorage(string: text, attributes: attributes)

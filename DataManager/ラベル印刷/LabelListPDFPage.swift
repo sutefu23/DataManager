@@ -66,6 +66,7 @@ public class LabelPDFDocument {
             count += 1
         }
         if !page.isEmpty { pdf.insert(page, at: index) }
+        if count == xCount * yCount { count = 0 }
         skipCount = count
         return pdf
     }
