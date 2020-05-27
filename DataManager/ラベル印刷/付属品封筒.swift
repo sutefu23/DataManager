@@ -36,16 +36,16 @@ public class 付属品封筒型 {
         
         page.append(rect1)
         // 図
-        if let image = order.図 {
-            let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 35, width: 110, height: 25)
-            rect2.append(PaperImage(mx: 0, my: 0, mwidth: 110, mheight: 55, image: image))
-            rect2.append(PaperPath.makeBox(origin: (x: 0, y: 0), size: (width: 110, height: 55)))
-            page.append(rect2)
-        }
+//        if let image = order.図 {
+//            let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 35, width: 110, height: 25)
+//            rect2.append(PaperImage(mx: 0, my: 0, mwidth: 110, mheight: 55, image: image))
+//            rect2.append(PaperPath.makeBox(origin: (x: 0, y: 0), size: (width: 110, height: 55)))
+//            page.append(rect2)
+//        }
         // 社名
-//        let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 35, width: 110, height: 25)
-//        rect2.append(PaperText(mmx: 0, mmy: 15, offset: offset, text: "品名 \(order.品名)", fontSize: 16, bold: false, color: .black))
-//        page.append(rect2)
+        let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 35, width: 110, height: 25)
+        rect2.append(PaperText(mmx: 0, mmy: 15, inset: inset, text: "品名 \(order.品名)", fontSize: 16, bold: false, color: .black))
+        page.append(rect2)
             // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 95, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
@@ -66,10 +66,7 @@ public class 付属品封筒型 {
             "ビス塗装",
             "パイプ塗装",
             "L金具塗装",
-            "",
             "箱１有・箱２有",
-            "補修材  個"
-            
         ]
         for index in 0...7 {
             let x: Double = index < 4 ? 0 : 55

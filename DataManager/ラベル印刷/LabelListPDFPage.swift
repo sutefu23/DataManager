@@ -50,7 +50,7 @@ public class LabelPDFDocument {
         var count = skipCount
         var index = 0
         for label in labels {
-            let row = count/xCount
+            var row = count/xCount
             let col = count%xCount
             if row >= yCount {
                 if !page.isEmpty {
@@ -59,6 +59,7 @@ public class LabelPDFDocument {
                     page = PaperPDFPage()
                 }
                 count = 0
+                row = 0
             }
             let rect = label.makeLabel()
             rect.moveTo(x: originX + Double(col) * labelWidth, y: originY + Double(row)*labelHeight)
