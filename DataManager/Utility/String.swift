@@ -140,6 +140,18 @@ func make2dig(_ value: Int) -> String {
     }
 }
 
+func make2digS(_ value: Int) -> String {
+    let str = String(value)
+    switch str.count {
+    case 0:
+        return "  "
+    case 1:
+        return " " + str
+    default:
+        return str
+    }
+}
+
 func make4dig(_ value: Int) -> String {
     let str = String(value)
     switch str.count {

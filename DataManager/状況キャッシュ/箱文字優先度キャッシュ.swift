@@ -162,13 +162,15 @@ extension 指示書型 {
             return list.contains(工程: process, 作業内容: start) || list.contains(工程: process, 作業内容: .完了)
         }
         return targets.contains {
-            var limit = Day().nextWorkDay.nextWorkDay.nextWorkDay // 3営業日後
+            var limit = Day().nextWorkDay.nextWorkDay.nextWorkDay
             switch $0 {
-            case .原稿, .入力, .出力, .フィルム:
-                limit = limit.nextWorkDay // 4営業日後
-            case .営業, .管理:
-                limit = limit.nextWorkDay.nextWorkDay // 5営業日後
-            default:
+            case .営業, .管理: // 6営業日後
+                limit = limit.nextWorkDay.nextWorkDay.nextWorkDay
+            case .原稿, .入力, .出力: // 5営業日後
+                limit = limit.nextWorkDay.nextWorkDay // 4営業日後
+            case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接:
+                limit = limit.nextWorkDay
+            default: // 3営業日後
                 break
             }
             if self.製作納期 <= limit { return true }

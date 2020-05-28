@@ -132,15 +132,15 @@ public struct Day: Hashable, Strideable, Codable {
     }
 
     public var monthDayJString: String {
-        return "\(make2dig(month))月\(make2dig(day))日"
+        return "\(make2digS(month))月\(make2digS(day))日"
     }
 
     public var monthDayWeekJString: String {
-        return "\(make2dig(month))月\(make2dig(day))日(\(self.week))"
+        return "\(make2digS(month))月\(make2digS(day))日(\(self.week))"
     }
 
     public var yearMonthDayJString: String {
-        return "\(year)年\(make2dig(month))月\(make2dig(day))日"
+        return "\(year)年\(make2digS(month))月\(make2digS(day))日"
     }
 
     public var yearMonthDayString: String {

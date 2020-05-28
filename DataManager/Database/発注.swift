@@ -109,7 +109,32 @@ extension 発注型 {
         return list.compactMap { 発注型($0) }
     }
     
-
+    public static func find(登録期間: ClosedRange<Day>, 発注種類: 発注種類型) throws -> [発注型] {
+        var query = FileMakerQuery()
+        query["登録日"] = makeQueryDayString(登録期間)
+        query["発注種類"] = 発注種類.description
+        let db = FileMakerDB.pm_osakaname
+        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        return list.compactMap { 発注型($0) }
+    }
+    
+    public static func check指定注文番号(登録期間: ClosedRange<Day>) throws -> [(登録日: Day, 注文番号: String)] {
+        var result = [(登録日: Day, 注文番号: String)]()
+        var query = FileMakerQuery()
+        query["登録日"] = makeQueryDayString(登録期間)
+        query["発注種類"] = 発注種類型.資材.description
+        let db = FileMakerDB.pm_osakaname
+        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        for record in list {
+            guard let day = record.day(forKey: "登録日") else { continue }
+            guard let string = record.string(forKey: "指定注文番号") else { continue }
+            if 指定注文番号型(string) == nil {
+                result.append((day, string))
+            }
+        }
+        return result
+    }
+    
     public static func find(指定注文番号: 指定注文番号型? = nil, 登録日: Day? = nil, 発注種類: 発注種類型? = nil, 注文番号: 注文番号型? = nil, 社員: 社員型? = nil, 資材番号: 図番型? = nil, 数量: Int? = nil) throws -> [発注型]{
         var query = FileMakerQuery()
         query["指定注文番号"] = 指定注文番号?.テキスト

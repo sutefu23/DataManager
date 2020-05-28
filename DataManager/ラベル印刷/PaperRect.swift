@@ -135,6 +135,34 @@ public class PaperPath: PaperObject {
     }
 }
 
+public class PaperRoundBox: PaperObject {
+    let origin: (x: Double, y: Double)
+    let size: (width: Double, height: Double)
+    let r: Double
+    private let lineWidth: CGFloat
+
+    public init(origin: (x: Double, y: Double), size: (width: Double, height: Double), r: Double, lineWidth: CGFloat = 1.0) {
+        self.origin = origin
+        self.size = size
+        self.r = r
+        self.lineWidth = lineWidth
+    }
+    
+    public func draw(at: CGPoint, isFlipped: Bool) {
+        let x = convertPoint(mm: self.origin.x) + at.x
+        var y = convertPoint(mm: self.origin.y)
+        if isFlipped { y = -y }
+        y += at.y
+        let w = convertPoint(mm: self.size.width)
+        let h = convertPoint(mm: self.size.height)
+        let r = convertPoint(mm: self.r)
+        let rect = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: w, height: h))
+        let path = DMBezierPath(roundedRect: rect, cornerRadius: r)
+        path.lineWidth = lineWidth
+        path.stroke()
+    }
+}
+
 // MARK: - barcode
 #if os(tvOS)
 #else

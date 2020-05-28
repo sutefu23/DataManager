@@ -40,4 +40,10 @@ extension NSBezierPath {
     }
 }
 
+extension DMBezierPath {
+    public convenience init(roundedRect: CGRect, cornerRadius: CGFloat) {
+        self.init(roundedRect: roundedRect, xRadius: cornerRadius, yRadius: cornerRadius)
+    }
+}
+
 #endif

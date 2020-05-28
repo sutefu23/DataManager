@@ -451,9 +451,8 @@ public struct DMScanner: RandomAccessCollection {
         return (leftContents, contents)
     }
     
-
     /// 指定文字分スキップする
-    public mutating func scanString(_ pattern: String) -> Bool {
+    @discardableResult public mutating func scanString(_ pattern: String) -> Bool {
         dropHeadSpacesIfNeeds()
         let count = pattern.count
         let match = self.substring
@@ -475,7 +474,16 @@ public struct DMScanner: RandomAccessCollection {
             return false
         }
     }
-    
+
+    /// マッチする分スキップする
+    public mutating func skipMatchString(_ pattern: String) {
+        dropHeadSpacesIfNeeds()
+        for ch in pattern {
+            if !self.scanCharacter(ch) { return }
+        }
+        return
+    }
+
     /// スキャン完了状態にする
     public mutating func removeAll() {
         endIndex = startIndex // startIndexを動かすと余計な計算が入るのでendIndexを動かす

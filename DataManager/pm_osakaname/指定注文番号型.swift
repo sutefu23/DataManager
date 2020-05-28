@@ -16,8 +16,16 @@ public struct 指定注文番号型: Codable, Hashable {
         return 注文番号キャッシュ型.shared[code]
     }
 
-    init?(_ string: String) {
-        self.text = string
+    public init?(_ string: String) {
+        var scanner = DMScanner(string, normalizedFullHalf: true, upperCased: true)
+        let result = scanner.string
+        guard let ch1 = scanner.scan1Character(), ch1.isLetter else { return nil }
+        guard let ch2 = scanner.scan1Character(), ch2.isNumber else { return nil }
+        guard let ch3 = scanner.scan1Character(), ch3.isNumber else { return nil }
+        guard scanner.scanCharacter("-") else { return nil }
+        let rest = scanner.string
+        guard rest.count == 6, let num = Int(rest), num > 0 else { return nil }
+        self.text = result
     }
     
     init?(_ string: String, day: Day) {

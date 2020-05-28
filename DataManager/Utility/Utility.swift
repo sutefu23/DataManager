@@ -33,9 +33,8 @@ import UIKit
 
 extension Error {
     public func showAlert() {
-        let alert = UIAlertController(title: self.localizedDescription, message: "", preferredStyle: .alert)
-        let vc = UIApplication.shared.windows.first?.rootViewController
-        vc?.present(alert, animated: true, completion: nil)
+        let message = self.localizedDescription
+        showMessage(message: message)
     }
 }
 

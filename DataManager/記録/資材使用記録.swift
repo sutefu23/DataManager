@@ -23,24 +23,27 @@ struct 資材使用記録Data型: Equatable {
     var 工程: 工程型
     var 作業者: 社員型
     var 図番: 図番型
+    var 表示名: String
     var 単価: Double?
-    
     var 用途: String?
     var 使用量: String?
     var 使用面積: Double?
+    var 分量: String
     var 金額: Double?
     
-    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 金額: Double?) {
+    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: String, 金額: Double?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.工程 = 工程
         self.作業者 = 作業者
         self.図番 = 図番
+        self.表示名 = 表示名
         self.単価 = 単価
         self.用途 = 用途
         self.使用量 = 使用量
         self.使用面積 = 使用面積
         self.金額 = 金額
+        self.分量 = 分量
     }
     
     init?(_ record: FileMakerRecord) {
@@ -60,6 +63,12 @@ struct 資材使用記録Data型: Equatable {
         self.用途 = record.string(forKey: "用途")
         self.使用面積 = record.double(forKey: "使用面積")
         self.金額 = record.double(forKey: "金額")
+        if let title = record.string(forKey: "表示名"), !title.isEmpty {
+            self.表示名 = title
+        } else {
+            self.表示名 = "\(item.製品名称) \(item.規格)"
+        }
+        self.分量 = record.string(forKey: "分量") ?? ""
     }
     
     var fieldData: FileMakerQuery {
@@ -70,9 +79,11 @@ struct 資材使用記録Data型: Equatable {
         data["工程コード"] = 工程.code
         data["作業者コード"] = 作業者.Hなし社員コード
         data["図番"] = 図番
+        data["表示名"] = 表示名
         if let price = 単価 { data["単価"] = "\(price)" }
         data["使用量"] = 使用量
         data["用途"] = 用途
+        data["分量"] = 分量
         if let area = 使用面積 { data["使用面積"] = "\(area)" }
         if let charge = self.金額 { data["金額"] = "\(charge)" }
         return data
@@ -100,6 +111,11 @@ public class 資材使用記録型 {
         get { data.作業者 }
         set { data.作業者 = newValue }
     }
+    
+    public var 表示名: String {
+        get { data.表示名 }
+        set { data.表示名 = newValue }
+    }
     public var 図番: 図番型 {
         get { data.図番 }
         set { data.図番 = newValue }
@@ -124,9 +140,13 @@ public class 資材使用記録型 {
         get { data.金額 }
         set { data.金額 = newValue }
     }
+    public var 分量: String {
+        get { data.分量 }
+        set { data.分量 = newValue }
+    }
     
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 金額: Double?) {
-        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 単価: 単価, 用途: 用途, 使用量: 使用量, 使用面積: 使用面積, 金額: 金額)
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: String, 金額: Double?) {
+        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 使用面積: 使用面積, 分量: 分量, 金額: 金額)
     }
 
     init?(_ record: FileMakerRecord) {
