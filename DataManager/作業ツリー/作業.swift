@@ -284,6 +284,7 @@ extension 指示書型 {
         var firstAccepts: [工程型: 進捗型] = [:]
         var accepts: [工程型: 進捗型] = [:]
         var froms: [工程型: 進捗型] = [:]
+        var sharedFroms: [工程型: 進捗型] = [:]
         var completed: [工程型: 進捗型] = [:]
         var lastMarked: [工程型: 進捗型] = [:]
         func regist(work: 作業記録型, state: 工程型) {
@@ -402,11 +403,25 @@ extension 指示書型 {
 //                        } else {
 //                            completed[state] = progress
 //                        }
+                    case .レーザー（アクリル）:
+                        if let from = froms[.レーザー] {
+                            if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
+                                regist(work: work, state: state)
+                                sharedFroms[.レーザー] = from
+                                froms[.レーザー] = nil
+                            }
+                        } else {
+                            completed[state] = progress
+                        }
+                        if let work = 作業記録型(progress, from: nil, to: progress.登録日時) {
+                            regist(work: work, state: state)
+                        }
                     case .レーザー:
-                        if let from = froms[.レーザー（アクリル）] {
+                        if let from = froms[.レーザー（アクリル）] ?? sharedFroms[.レーザー] {
                             if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
                                 regist(work: work, state: state)
                                 froms[.レーザー（アクリル）] = nil
+                                sharedFroms[.レーザー] = nil
                             }
                         } else {
                             completed[state] = progress
