@@ -13,8 +13,8 @@ import Foundation
 import PDFKit
 
 public enum PaperType {
-    case a4
-    case envelope // 長形3号
+    case A4
+    case 長形3号
 }
 
 public class PaperPDFPage: PDFPage {
@@ -26,7 +26,7 @@ public class PaperPDFPage: PDFPage {
     public let orientaion: DMPaperOrientation
     public var margin: CGFloat
 
-    public init(paperType: PaperType = .a4, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
+    public init(paperType: PaperType = .A4, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
         self.paperType = paperType
         self.orientaion = orientaion
         self.margin = margin
@@ -36,10 +36,10 @@ public class PaperPDFPage: PDFPage {
     public override func bounds(for box: PDFDisplayBox) -> CGRect {
         let w, h: CGFloat
         switch paperType {
-        case .a4:
+        case .A4:
             w = 595
             h = 842
-        case .envelope:
+        case .長形3号:
             w = 340
             h = 666
         }

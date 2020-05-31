@@ -28,10 +28,10 @@ struct 資材使用記録Data型: Equatable {
     var 用途: String?
     var 使用量: String?
     var 使用面積: Double?
-    var 分量: String
+    var 分量: Double?
     var 金額: Double?
     
-    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: String, 金額: Double?) {
+    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: Double?, 金額: Double?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.工程 = 工程
@@ -68,7 +68,7 @@ struct 資材使用記録Data型: Equatable {
         } else {
             self.表示名 = "\(item.製品名称) \(item.規格)"
         }
-        self.分量 = record.string(forKey: "分量") ?? ""
+        self.分量 = record.double(forKey: "分量")
     }
     
     var fieldData: FileMakerQuery {
@@ -83,7 +83,7 @@ struct 資材使用記録Data型: Equatable {
         if let price = 単価 { data["単価"] = "\(price)" }
         data["使用量"] = 使用量
         data["用途"] = 用途
-        data["分量"] = 分量
+        if let value = self.分量 { data["分量"] = "\(value)" }
         if let area = 使用面積 { data["使用面積"] = "\(area)" }
         if let charge = self.金額 { data["金額"] = "\(charge)" }
         return data
@@ -140,12 +140,12 @@ public class 資材使用記録型 {
         get { data.金額 }
         set { data.金額 = newValue }
     }
-    public var 分量: String {
+    public var 分量: Double? {
         get { data.分量 }
         set { data.分量 = newValue }
     }
     
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: String, 金額: Double?) {
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 分量: Double?, 金額: Double?) {
         self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 使用面積: 使用面積, 分量: 分量, 金額: 金額)
     }
 

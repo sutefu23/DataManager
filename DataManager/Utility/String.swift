@@ -126,6 +126,10 @@ extension StringProtocol {
         return numbers
 //        return self.split { numberRange.contains($0) == false }.compactMap { Int($0) }
     }
+    
+    public func 全文字半角変換() -> String {
+        self.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? String(self)
+    }
 }
 
 func make2dig(_ value: Int) -> String {

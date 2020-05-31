@@ -243,6 +243,12 @@ extension 資材型 {
         guard let width = sheet.横幅, let height = sheet.高さ, let price = self.単価 else { return nil }
         return price / (width * height)
     }
-    
+
+    public var 面積: Double? {
+        let sheet = 管理板材型(資材: self)
+        guard let width = sheet.横幅, let height = sheet.高さ else { return nil }
+        return width * height
+    }
+
     public var 標準表示名: String { "\(self.製品名称) \(self.規格)" }
 }

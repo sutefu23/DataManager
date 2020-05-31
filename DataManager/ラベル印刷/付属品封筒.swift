@@ -24,9 +24,12 @@ public class 付属品封筒型 {
     }
     
     public func makePDFPage(offsetX: Double = 0, offsetY: Double = -7.0) -> PaperPDFPage {
-        let page = PaperPDFPage(paperType: .envelope, margin: 0)
+        let page = PaperPDFPage(paperType: .長形3号, margin: 0)
+        #if targetEnvironment(macCatalyst)
         page.rotationPrint = true
+        #endif
         let inset = 1.0
+        let setCount = order.セット数値
         // 伝票番~
         let rect0 = PaperRect(x: offsetX + 5, y: offsetY + 7, width: 110, height: 15)
 //        rect0.append(PaperPath.makeBox(origin: (x: 15, y: 9), size: (width: 80, height: 13)))
@@ -36,7 +39,7 @@ public class 付属品封筒型 {
         let rect1 = PaperRect(x: offsetX + 5, y: offsetY + 20, width: 110, height: 25)
         rect1.append(PaperText(mmx: 0, mmy: 15, text: "伝票No \(order.伝票番号.表示用文字列)", fontSize: 14, bold: false, color: .black))
 //        rect1.append(PaperText(mmx: 64, mmy: 15, text: "\(order.製作納期.monthDayJString)〜\(order.出荷納期.monthDayJString)", fontSize: 14, bold: false, color: .black))
-//        rect1.append(PaperText(mmx: 75, mmy: 15, text: "出荷：\(order.出荷納期.monthDayJString)", fontSize: 14, bold: false, color: .black))
+        rect1.append(PaperText(mmx: 75, mmy: 15, text: "出荷 \(order.出荷納期.monthDayJString)", fontSize: 14, bold: false, color: .black))
         rect1.append(PaperText(mmx: 0, mmy: 25, text: "社名　\(order.社名)　様", fontSize: 14, bold: false, color: .black))
 //        rect1.append(PaperText(mmx: 75, mmy: 25, text: "\(order.セット数) セット", fontSize: 14, bold: false, color: .black))
         
@@ -64,22 +67,22 @@ public class 付属品封筒型 {
             // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-        var pos = 0
+        var vlist: [資材使用情報型] = []
+        for index in 0...15 {
+            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), let info = 資材使用情報型(ボルト欄: text, 数量欄: count, セット数: setCount) else { continue }
+            vlist.append(info)
+        }
+        vlist.sort(by: sortCompare)
         for index in 0...16 {
-            func calcXY(_ index: Int) -> (x: Double, y: Double) {
-                let x: Double = index < 8 ? 0 : 55
-                let y: Double = 10 + Double(index % 8) * 10
-                return (x, y)
-            }
-            var (x, y) = calcXY(index)
+            let x: Double = index < 8 ? 0 : 55
+            let y: Double = 10 + Double(index % 8) * 10
             rect3.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 10, height: 10)))
             rect3.append(PaperPath.makeBox(origin: (x: x+10, y: y-5), size: (width: 45, height: 10)))
-            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), let info = 資材使用情報型(ボルト欄: text, 数量欄: count) else { continue }
-            (x, y) = calcXY(pos)
-            pos += 1
-//            rect3.append(PaperText(mmx: x+10, mmy: y, inset: inset, text: info.内容表示, fontSize: 14, bold: false, color: .black))
-            rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
-            rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+            if vlist.indices.contains(index) {
+                let info = vlist[index]
+                rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
+                rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+            }
         }
         page.append(rect3)
         

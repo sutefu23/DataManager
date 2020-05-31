@@ -440,6 +440,17 @@ extension 指示書型 {
         if self.伝票種類 != .箱文字 { return false }
         return self.管理用メモ.contains("アクリのみ")
     }
+    public var セット数値: Int {
+        var result = 1
+        var scanner = DMScanner(self.セット数, normalizedFullHalf: true, skipSpaces: true)
+        while !scanner.isAtEnd {
+            scanner.skip数字以外()
+            if let value = scanner.scanInteger(), value > result {
+                result = value
+            }
+        }
+        return result
+    }
     
     public func ボルト等(_ index: Int) -> String? {
         switch index {
