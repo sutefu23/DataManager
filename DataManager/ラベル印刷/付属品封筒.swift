@@ -67,21 +67,31 @@ public class 付属品封筒型 {
             // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-        var vlist: [資材使用情報型] = []
+
+        var vlist: [VData] = []
         for index in 0...15 {
-            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), let info = 資材使用情報型(ボルト欄: text, 数量欄: count, セット数: setCount) else { continue }
-            vlist.append(info)
+            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), !text.isEmpty && !count.isEmpty else { continue }
+            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount) {
+                vlist.append(.info(info))
+            } else {
+                vlist.append(.text(text))
+            }
+//            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), let info = 資材使用情報型(ボルト欄: text, 数量欄: count, セット数: setCount) else { continue }
         }
-        vlist.sort(by: sortCompare)
+        vlist.sort()
         for index in 0...16 {
             let x: Double = index < 8 ? 0 : 55
             let y: Double = 10 + Double(index % 8) * 10
             rect3.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 10, height: 10)))
             rect3.append(PaperPath.makeBox(origin: (x: x+10, y: y-5), size: (width: 45, height: 10)))
             if vlist.indices.contains(index) {
-                let info = vlist[index]
-                rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
-                rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+                switch vlist[index] {
+                case .info(let info):
+                    rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
+                    rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+                case .text(let text):
+                    rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: text, fontSize: 12, bold: false, color: .black))
+                }
             }
         }
         page.append(rect3)
@@ -113,3 +123,34 @@ public class 付属品封筒型 {
     }
 }
 #endif
+
+private enum VData: Comparable {
+    case info(資材要求情報型)
+    case text(String)
+    
+    static func==(left: VData, right: VData) -> Bool {
+        switch (left, right) {
+        case (.info(let linfo), .info(let rinfo)):
+            return linfo.分割表示名1 == rinfo.分割表示名1 && linfo.分割表示名2 == rinfo.分割表示名2
+        case (.text(let ltext), .text(let rtext)):
+            return ltext == rtext
+        default:
+            return false
+        }
+        
+    }
+    static func<(left: VData, right: VData) -> Bool {
+        switch (left, right) {
+        case (.info(let linfo), .info(let rinfo)):
+            return sortCompare(linfo, rinfo)
+        case (.text(let ltext), .text(let rtext)):
+            return ltext < rtext
+        case (.info, .text):
+            return true
+        case (.text, .info):
+            return false
+        }
+        
+    }
+
+}

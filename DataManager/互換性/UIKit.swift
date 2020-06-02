@@ -17,7 +17,7 @@ public typealias DMTextField = UITextField
 
 public typealias DMGraphicsContext = UIGraphicsPDFRendererContext
 public enum DMPaperOrientation {
-    case first
+    case landscape
     case portrait
 }
 public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(context) }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1404C86E222CE8D900F3B025 /* Test進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1404C86D222CE8D900F3B025 /* Test進捗.swift */; };
 		1404E906220D905100841373 /* FileMakerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1404E905220D905100841373 /* FileMakerSession.swift */; };
+		140F5F6D2484E5BD008F40EC /* 資材（パイプ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */; };
 		1410066B2464FBF900CE7934 /* Test伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066A2464FBF900CE7934 /* Test伝票番号.swift */; };
 		1410066D24652ABA00CE7934 /* Test資材コイル情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */; };
 		141057C8246B8BC900277E42 /* 管理資材（板）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141057C7246B8BC900277E42 /* 管理資材（板）.swift */; };
@@ -162,6 +163,7 @@
 /* Begin PBXFileReference section */
 		1404C86D222CE8D900F3B025 /* Test進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗.swift"; sourceTree = "<group>"; };
 		1404E905220D905100841373 /* FileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerSession.swift; sourceTree = "<group>"; };
+		140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（パイプ情報）.swift"; sourceTree = "<group>"; };
 		1410066A2464FBF900CE7934 /* Test伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test伝票番号.swift"; sourceTree = "<group>"; };
 		1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材コイル情報.swift"; sourceTree = "<group>"; };
 		141057C7246B8BC900277E42 /* 管理資材（板）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（板）.swift"; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 				147B8806242F0508008FB8F4 /* 資材(板情報).swift */,
 				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
 				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
+				140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */,
 				141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,
@@ -766,6 +769,7 @@
 				1468395E2429E7CE001E5656 /* 取引先キャッシュ.swift in Sources */,
 				1467C77F243484F100813CB1 /* ProgressTVData.swift in Sources */,
 				1498531D230BCEF6007734E0 /* 区分情報.swift in Sources */,
+				140F5F6D2484E5BD008F40EC /* 資材（パイプ情報）.swift in Sources */,
 				146B4C4623E4FE4200FB392B /* NSAttributedString.swift in Sources */,
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
 				1470792F247B9E6D0044134E /* 付属品封筒.swift in Sources */,

@@ -19,12 +19,12 @@ public extension 資材情報型 {
 }
 
 public struct 資材板情報型: 資材情報型 {
-    public private(set) var 材質: String
-    public private(set) var 種類: String
-    public private(set) var 板厚: String
-    public private(set) var サイズ: String
-    public private(set) var 高さ: Double?
-    public private(set) var 横幅: Double?
+    public private(set) var 材質: String // SUS304
+    public private(set) var 種類: String // HL
+    public private(set) var 板厚: String // 3.0
+    public private(set) var サイズ: String // 4x8
+    public private(set) var 高さ: Double? // 1219
+    public private(set) var 横幅: Double? // 2438
     public private(set) var 備考: String
     
     var アクリル種類: アクリル種類型?

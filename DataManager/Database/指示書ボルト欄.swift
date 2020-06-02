@@ -8,6 +8,52 @@
 
 import Foundation
 
+public enum ボルト数欄型 {
+    case 合計(Int)
+    case 分納(Int, Int)
+    
+    public init?(ボルト数欄: String, セット数: Int) {
+        var scanner = DMScanner(ボルト数欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
+        guard let number = scanner.scanInteger() else { return nil }
+        if scanner.scanCharacter("+") {
+            guard let number2 = scanner.scanInteger() else { return nil }
+            self = .合計((number+number2) * セット数)
+        } else if scanner.scanCharacter("/") {
+            guard let number2 = scanner.scanInteger() else { return nil }
+            self = .分納(number * セット数, number2 * セット数)
+        } else {
+            self = .合計(number * セット数)
+        }
+    }
+    
+    public var 総数: Int {
+        switch self {
+        case .合計(let num):
+            return num
+        case .分納(let left, let right):
+            return left + right
+        }
+    }
+    
+    public var 溶接数: Int? {
+        switch self {
+        case .分納(let left, _):
+            return left
+        case .合計(_):
+            return nil
+        }
+    }
+    
+    public var 半田数: Int? {
+        switch self {
+        case .分納(_,let right):
+            return right
+        case .合計(_):
+            return nil
+        }
+    }
+}
+
 public enum 金額計算タイプ型 {
     case 平面板(height: Double, width: Double, count: Int)
     case 平面形状(area: Double, count: Int)
@@ -80,7 +126,7 @@ public enum 金額計算タイプ型 {
     }
 }
 
-public class 資材使用情報型 {
+public class 資材要求情報型 {
     public let 図番: 図番型
     public let 金額計算タイプ: 金額計算タイプ型?
     public let 表示名: String
@@ -88,6 +134,7 @@ public class 資材使用情報型 {
     public let 分割表示名2: String
     public let ソート順: Int
     public let 資材種類: 資材種類型?
+    public let ボルト数量:ボルト数欄型?
 
     public lazy var 資材: 資材型? = 資材型(図番: self.図番)
     public lazy var 単価: Double? = self.資材?.単価
@@ -121,7 +168,9 @@ public class 資材使用情報型 {
         self.分割表示名2 = size
         self.資材種類 = type
         let set = (セット数 >= 1) ? セット数 : 1
-        guard let count = type.個数(数量欄, セット数: set) else { return nil }
+        guard let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set) else { return nil }
+        self.ボルト数量 = numbers
+        let count = numbers.総数
         assert(count > 0)
         switch type {
         case .ボルト(サイズ: let size, 長さ: let length):
@@ -270,7 +319,7 @@ public class 資材使用情報型 {
         }
     }
 }
-public func sortCompare(_ left: 資材使用情報型, _ right: 資材使用情報型) -> Bool {
+public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情報型) -> Bool {
     if left.ソート順 != right.ソート順 { return left.ソート順 < right.ソート順 }
     if left.分割表示名1 != right.分割表示名1 { return left.分割表示名1 < right.分割表示名2 }
     if left.分割表示名2 != right.分割表示名2 { return left.分割表示名1 < right.分割表示名2 }
@@ -338,12 +387,6 @@ public enum 資材種類型 {
         return count
     }
     
-    func 個数(_ 数量欄: String, セット数: Int) -> Int? {
-        let numbers = 数量欄.makeNumbers()
-        let count = numbers.reduce(0) { $0 + $1 } * セット数
-        let total = self.数量調整(count)
-        return total > 0 ? count : nil
-    }
 }
 
 private extension DMScanner {
