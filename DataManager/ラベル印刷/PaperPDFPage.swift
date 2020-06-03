@@ -18,6 +18,8 @@ public enum PaperType {
 }
 
 public class PaperPDFPage: PDFPage {
+    let title: String
+
     var rects: [PaperRect] = []
     // 180°回転して印刷する場合true
     public var rotationPrint: Bool = false
@@ -26,10 +28,11 @@ public class PaperPDFPage: PDFPage {
     public let orientaion: DMPaperOrientation
     public var margin: CGFloat
 
-    public init(paperType: PaperType = .A4, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
+    public init(paperType: PaperType = .A4, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36, title: String = "") {
         self.paperType = paperType
         self.orientaion = orientaion
         self.margin = margin
+        self.title = title
         super.init()
     }
  
@@ -60,9 +63,10 @@ public class PaperPDFPage: PDFPage {
     public var isEmpty: Bool { return rects.isEmpty }
     
     public override func draw(with box: PDFDisplayBox, to context: CGContext) {
-
         DMGraphicsPushContext(context)
         let rect = self.bounds(for: box)
+        let pos: CGPoint
+        let isFlipped: Bool
         #if targetEnvironment(macCatalyst)
         let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: rect.height)
         context.concatenate(flipVertical)
@@ -70,7 +74,8 @@ public class PaperPDFPage: PDFPage {
             let rotation = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: rect.width, ty: rect.height)
             context.concatenate(rotation)
         }
-        rects.forEach { $0.draw(at: CGPoint.zero, isFlipped: false) }
+        pos = CGPoint.zero
+        isFlipped = false
 
         #elseif os(iOS)
         let flipVertical = CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: rect.width, ty: 0)
@@ -79,17 +84,26 @@ public class PaperPDFPage: PDFPage {
             let rotation = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: rect.width, ty: rect.height)
             context.concatenate(rotation)
         }
-        rects.forEach { $0.draw(at: CGPoint.zero, isFlipped: false) }
+        pos = CGPoint.zero
+        isFlipped = false
 
         #elseif os(macOS)
         if rotationPrint {
             let rotation = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: rect.width, ty: rect.height)
             context.concatenate(rotation)
         }
-        let pos = CGPoint(x: 0, y: rect.height)
-        rects.forEach { $0.draw(at: pos, isFlipped: true) }
+        pos = CGPoint(x: 0, y: rect.height)
+        isFlipped = true
 
         #endif
+        if !title.isEmpty {
+            let header = PaperRect(px: 0, py: 0, pwidth: rect.width, pheight: 5)
+            let text = PaperText(mmx: 10, mmy: -12.5, inset: 0, text: title, fontSize: 10, bold: true, color: .black)
+            header.append(text)
+            header.draw(at: pos, isFlipped: isFlipped)
+        }
+        rects.forEach { $0.draw(at: pos, isFlipped: isFlipped) }
+
         DMGraphicsPopContext()
     }
     

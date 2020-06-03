@@ -192,6 +192,13 @@ public class 資材要求情報型 {
                         return nil
                     }
                 }
+            } else if length == 360 {
+                itemLength = 360
+                switch Double(size) {
+                case 16: self.図番 = "949"
+                default:
+                    return nil
+                }
             } else {
                 itemLength = 1000
                 switch Double(size) {
@@ -288,6 +295,7 @@ public class 資材要求情報型 {
             self.金額計算タイプ = .個数物(count: count)
         case .サンロック特皿(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
+            case (2, 5): self.図番 = "7277"
             case (4, 10): self.図番 = "5790"
             case (4, 6): self.図番 = "5922"
             default: return nil
@@ -311,8 +319,21 @@ public class 資材要求情報型 {
         case .スリムヘッド(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (4, 6): self.図番 = "9799"
+            case (4, 8): self.図番 = "7276"
             case (4, 10): self.図番 = "9699"
             case (3, 6): self.図番 = "6711F"
+            default: return nil
+            }
+            self.金額計算タイプ = .個数物(count: count)
+        case .ナベ(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 10): self.図番 = "3829"
+            default: return nil
+            }
+            self.金額計算タイプ = .個数物(count: count)
+        case .テクスナベ(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (4, 19): self.図番 = "7275"
             default: return nil
             }
             self.金額計算タイプ = .個数物(count: count)
@@ -345,6 +366,8 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     if let data = scanner.scanトラス() { return makeTail(data) }
     if let data = scanner.scanスリムヘッド() { return makeTail(data) }
     if let data = scanner.scanCタッピング() { return makeTail(data) }
+    if let data = scanner.scanナベ() { return makeTail(data) }
+    if let data = scanner.scanテクスナベ() { return makeTail(data) }
     return nil
 }
 
@@ -360,7 +383,9 @@ public enum 資材種類型 {
     case トラス(サイズ: String, 長さ: Double)
     case スリムヘッド(サイズ: String, 長さ: Double)
     case Cタッピング(サイズ: String, 長さ: Double)
-    
+    case ナベ(サイズ: String, 長さ: Double)
+    case テクスナベ(サイズ: String, 長さ: Double)
+
     public func 数量調整(_ count: Int) -> Int {
         let offset: [Int]
         switch self {
@@ -368,7 +393,7 @@ public enum 資材種類型 {
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
         case .丸パイプ(_, _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
-        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _):
+        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _):
             offset = [2, 3, 3, 5, 10, 10, 10, 20]
         case .ナット(_):
             offset = [2, 3, 3, 5, 10, 10, 10, 15]
@@ -510,6 +535,20 @@ private extension DMScanner {
             return nil
         }
         return ("Cタッピング", .Cタッピング(サイズ: size, 長さ: length), -60)
+    }
+    mutating func scanナベ() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+        guard let (size, length) = scanSizeXLength("ナベM") else {
+            self.reset()
+            return nil
+        }
+        return ("ナベ", .ナベ(サイズ: size, 長さ: length), -60)
+    }
+    mutating func scanテクスナベ() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+        guard let (size, length) = scanSizeXLength("テクスナベM") else {
+            self.reset()
+            return nil
+        }
+        return ("テクスナベ", .テクスナベ(サイズ: size, 長さ: length), -60)
     }
 }
 

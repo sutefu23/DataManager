@@ -18,6 +18,7 @@ public protocol LabelMaker {
 public class LabelPDFDocument {
     let orientaion: DMPaperOrientation
     var margin: CGFloat
+    let title: String
 
     // 横に並ぶラベルの個数
     let xCount: Int
@@ -31,7 +32,7 @@ public class LabelPDFDocument {
 
     public var skipCount: Int
     
-    public init(originX: Double, originY: Double, labelWidth: Double, labelHeight: Double, xCount: Int, yCount: Int, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
+    public init(title: String, originX: Double, originY: Double, labelWidth: Double, labelHeight: Double, xCount: Int, yCount: Int, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
         self.originX = originX
         self.originY = originY
         self.labelWidth = labelWidth
@@ -41,12 +42,13 @@ public class LabelPDFDocument {
         self.orientaion = orientaion
         self.margin = margin
         self.skipCount = 0
+        self.title = title
     }
     
     public func makePDF<C: Collection>(labels: C) -> PDFDocument? where C.Element: LabelMaker {
         if labels.isEmpty { return nil }
         let pdf = PDFDocument()
-        var page = PaperPDFPage()
+        var page = PaperPDFPage(title: title)
         var count = skipCount
         var index = 0
         for label in labels {

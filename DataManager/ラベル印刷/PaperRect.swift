@@ -61,7 +61,12 @@ public class PaperRect: PaperObject {
     
     public func draw(at: CGPoint, isFlipped: Bool) {
         let px = self.px + at.x
-        let py = self.py + at.y
+        let py: CGFloat
+        if isFlipped {
+            py =  at.y - self.py
+        } else {
+            py =  self.py + at.y
+        }
 //        let py = isFlipped ? (at.y - self.py + pheight) : self.py + at.y
         let origin = CGPoint(x: px, y: py)
         objects.forEach { $0.draw(at: origin, isFlipped: isFlipped) }
