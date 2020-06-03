@@ -130,6 +130,10 @@ extension StringProtocol {
     public func 全文字半角変換() -> String {
         self.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? String(self)
     }
+    
+    @inlinable public func 全角半角日本語規格化() -> String {
+        self.toJapaneseNormal
+    }
 }
 
 func make2dig(_ value: Int) -> String {

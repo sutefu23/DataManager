@@ -10,7 +10,7 @@ import XCTest
 @testable import DataManager
 
 class TestOrderBoltField: XCTestCase {
-    var data: (名称: String, サイズ: String, 種類: 資材種類型)?
+    var data: (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Int)?
     
     func testBolt() {
         data = scanSource(ボルト欄: "M6x60L")

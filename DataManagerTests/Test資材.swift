@@ -26,4 +26,58 @@ class TestItem: XCTestCase {
         return
     }
 
+    func testItemBarcode() {
+        var code: String
+
+        code = "01"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "12"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "123"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "1234"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "12345"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "123456"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+
+        code = "1234567"
+        XCTAssertEqual(code.図番バーコード, code)
+
+        code = "12345678"
+        XCTAssertEqual(code.図番バーコード, "I"+code)
+
+        code = "123456789"
+        XCTAssertEqual(code.図番バーコード, "I"+code)
+
+        code = "1234567890"
+        XCTAssertEqual(code.図番バーコード, code)
+        //
+        
+        code = "1234-5678"
+        XCTAssertEqual(code.図番バーコード, nil)
+
+        code = "12345678B"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "1234-56789"
+        XCTAssertEqual(code.図番バーコード, nil)
+
+        code = "12345678B9"
+        XCTAssertEqual(code.図番バーコード, code)
+        //
+        code = "123456B"
+        XCTAssertEqual(code.図番バーコード, code)
+        
+        code = "1234567B"
+        XCTAssertEqual(code.図番バーコード, code)
+
+    }
 }

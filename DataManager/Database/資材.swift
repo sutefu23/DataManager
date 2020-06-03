@@ -135,7 +135,20 @@ public class 資材型: Codable, Comparable, Hashable {
     }
 }
 
+extension StringProtocol {
+    var 図番バーコード: String? {
+        if self.contains("-") { return nil }
+        let count = self.count
+        if (count == 8 || count == 9) && Int(self) != nil {
+            return "I\(self)"
+        }
+        return String(self)
+    }
+}
+
 public extension 資材型 {
+    var 図番バーコード: String? { self.図番.図番バーコード }
+
     var 版数: String {
         return record.string(forKey: "f14") ?? ""
     }
@@ -250,5 +263,5 @@ extension 資材型 {
         return width * height
     }
 
-    public var 標準表示名: String { "\(self.製品名称) \(self.規格)" }
+    public var 標準表示名: String { "\(self.製品名称) \(self.規格)".全角半角日本語規格化() }
 }

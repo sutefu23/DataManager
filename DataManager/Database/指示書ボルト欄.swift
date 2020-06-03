@@ -157,7 +157,14 @@ public class 資材要求情報型 {
     
     public func checkRegistered(_ order: 指示書型, _ process: 工程型) throws -> Bool {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
-        return list.contains { $0.図番 == self.図番 && $0.工程 == process && $0.金額 == self.金額 }
+        if list.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
+            return true
+        }
+//        guard let list2 = try order.現在資材使用記録() else { return false }
+//        if list2.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
+//            return true
+//        }
+        return false
     }
     
     public init?(ボルト欄: String, 数量欄: String, セット数: Int) {
