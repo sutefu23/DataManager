@@ -139,6 +139,4 @@ class TestOrderBoltField: XCTestCase {
             XCTAssert(false)
         }
     }
-
-    
 }

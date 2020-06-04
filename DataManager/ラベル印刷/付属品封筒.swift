@@ -38,29 +38,21 @@ public class 付属品封筒型 {
         page.append(rect0)
         let rect1 = PaperRect(x: offsetX + 5, y: offsetY + 20, width: 110, height: 25)
         rect1.append(PaperText(mmx: 0, mmy: 15, text: "伝票No \(order.伝票番号.表示用文字列)", fontSize: 14, bold: false, color: .black))
-//        rect1.append(PaperText(mmx: 64, mmy: 15, text: "\(order.製作納期.monthDayJString)〜\(order.出荷納期.monthDayJString)", fontSize: 14, bold: false, color: .black))
         rect1.append(PaperText(mmx: 75, mmy: 15, text: "出荷 \(order.出荷納期.monthDayJString)", fontSize: 14, bold: false, color: .black))
-        rect1.append(PaperText(mmx: 0, mmy: 25, text: "社名　\(order.社名)　様", fontSize: 14, bold: false, color: .black))
-//        rect1.append(PaperText(mmx: 75, mmy: 25, text: "\(order.セット数) セット", fontSize: 14, bold: false, color: .black))
+        if order.取引先?.is原稿社名不要 != true {
+            rect1.append(PaperText(mmx: 0, mmy: 25, text: "社名　\(order.社名)　様", fontSize: 14, bold: false, color: .black))
+        }
         
         page.append(rect1)
-        // 図
-//        if let image = order.図 {
-//            let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 35, width: 110, height: 25)
-//            rect2.append(PaperImage(mx: 0, my: 0, mwidth: 110, mheight: 55, image: image))
-//            rect2.append(PaperPath.makeBox(origin: (x: 0, y: 0), size: (width: 110, height: 55)))
-//            page.append(rect2)
-//        }
-        // 社名
         let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 50, width: 110, height: 25)
         rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(order.品名)", fontSize: 18, bold: false, color: .black))
-//        rect2.append(PaperPath.makeLine(from: (x: 0, y: 8), to: (x: 110, y: 8), lineWidth: 0.5))
         rect2.append(PaperText(mmx: 0, mmy: 14, inset: inset, text: "取付に必要な部品が入っています", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 21, inset: inset, text: "開封の上、ご確認ください", fontSize: 14, bold: false, color: .black))
 
-        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿 　　　　セット", fontSize: 14, bold: false, color: .black))
+        let setinfo = (order.セット数値 > 0) ? String(order.セット数値) : order.セット数
+        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(setinfo)　セット", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 5, mmy: 40, inset: inset, text: "補修材 　　　　個", fontSize: 14, bold: false, color: .black))
-        rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 29.15), size: (width: 4, height: 4)))
+//        rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 29.15), size: (width: 4, height: 4)))
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
 
         page.append(rect2)
@@ -71,12 +63,11 @@ public class 付属品封筒型 {
         var vlist: [VData] = []
         for index in 0...15 {
             guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), !text.isEmpty && !count.isEmpty else { continue }
-            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount) {
+            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount), info.is附属品 == true {
                 vlist.append(.info(info))
             } else {
                 vlist.append(.text(text))
             }
-//            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), let info = 資材使用情報型(ボルト欄: text, 数量欄: count, セット数: setCount) else { continue }
         }
         vlist.sort()
         for index in 0...16 {

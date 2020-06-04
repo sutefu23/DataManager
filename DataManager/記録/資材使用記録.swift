@@ -64,9 +64,9 @@ struct 資材使用記録Data型: Equatable {
         self.使用面積 = record.double(forKey: "使用面積")
         self.金額 = record.double(forKey: "金額")
         if let title = record.string(forKey: "表示名"), !title.isEmpty {
-            self.表示名 = title
+            self.表示名 = title.全角半角日本語規格化()
         } else {
-            self.表示名 = "\(item.製品名称) \(item.規格)"
+            self.表示名 = item.標準表示名
         }
         self.分量 = record.double(forKey: "分量")
     }

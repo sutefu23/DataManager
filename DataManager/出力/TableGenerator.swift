@@ -9,11 +9,11 @@
 import Foundation
 
 public enum ExportType {
-    case numbers
-    case excel
-    case html
+    case numbers(header: Bool = true)
+    case excel(header: Bool = true)
+    case html(header: Bool = true)
     case filemaker
-    case libreoffice
+    case libreoffice(header: Bool = true)
     
     func header(title: String) -> String {
         switch self {
@@ -117,9 +117,11 @@ public class TableGenerator<S> {
     public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
         var text = format.header(title: title)
         switch format {
-        case .excel, .html, .numbers, .libreoffice:
-            let titles = columns.map  { $0.title }
-            text += format.makeLine(titles)
+        case .excel(header: let header), .html(header: let header), .libreoffice(header: let header), .numbers(header: let header):
+            if header {
+                let titles = columns.map  { $0.title }
+                text += format.makeLine(titles)
+            }
         case .filemaker:
             text = ""
         }

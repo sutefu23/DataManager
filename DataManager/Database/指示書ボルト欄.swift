@@ -135,6 +135,7 @@ public class 資材要求情報型 {
     public let ソート順: Int
     public let 資材種類: 資材種類型?
     public let ボルト数量:ボルト数欄型?
+    public let is附属品: Bool?
 
     public lazy var 資材: 資材型? = 資材型(図番: self.図番)
     public lazy var 単価: Double? = self.資材?.単価
@@ -157,19 +158,30 @@ public class 資材要求情報型 {
     
     public func checkRegistered(_ order: 指示書型, _ process: 工程型) throws -> Bool {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
-        if list.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
-            return true
+        switch self.ボルト数量 {
+        case .合計(_), nil:
+            if list.contains(where: { $0.図番 == self.図番 && $0.表示名 == self.表示名 }) {
+                return true
+            }
+        case .分納(_, _):
+            if list.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
+                return true
+            }
         }
-//        guard let list2 = try order.現在資材使用記録() else { return false }
-//        if list2.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
-//            return true
-//        }
         return false
     }
     
     public init?(ボルト欄: String, 数量欄: String, セット数: Int) {
-        self.表示名 = ボルト欄
-        guard let (title, size, type, priority) = scanSource(ボルト欄: ボルト欄) else { return nil }
+        if ボルト欄.isEmpty { return nil }
+        var text = ボルト欄.toJapaneseNormal
+        self.表示名 = text
+        if text.hasPrefix("+") {
+            text.removeFirst(1)
+            self.is附属品 = false
+        } else {
+            self.is附属品 = true
+        }
+        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else { return nil }
         self.ソート順 = priority
         self.分割表示名1 = title
         self.分割表示名2 = size

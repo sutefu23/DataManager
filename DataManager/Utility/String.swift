@@ -11,6 +11,26 @@ import Foundation
 private let controlSet = CharacterSet.controlCharacters
 
 extension String {
+    public init(丸数字 num: Int) {
+        guard num >= 0 && num <= 50 else {
+            let str = "(\(num))"
+            self.init(str)
+            return
+        }
+        let code: Int
+        if num == 0 {
+            code = 0x24EA
+        } else if num <= 20 {
+            code = 0x2460 + num - 1
+        } else if num <= 35 {
+            code = 0x3251 + num - 21
+        } else {
+            code = 0x32B1 + num - 36
+        }
+        let ch = Character(UnicodeScalar(code)!)
+        self.init(ch)
+    }
+    
     var tabStripped: [Substring] {
         return self.split(separator: "\t", omittingEmptySubsequences: false).map(\.controlStripped)
     }
