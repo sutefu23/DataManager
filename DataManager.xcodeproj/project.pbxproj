@@ -79,6 +79,9 @@
 		146FED8D2473C96200CC451E /* 部門.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146FED8C2473C96200CC451E /* 部門.swift */; };
 		147046FB24887C6600A5D8F6 /* Test資材要求情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147046FA24887C6600A5D8F6 /* Test資材要求情報.swift */; };
 		147046FD2488890100A5D8F6 /* TestString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147046FC2488890100A5D8F6 /* TestString.swift */; };
+		147047012488C03400A5D8F6 /* 板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147047002488C03400A5D8F6 /* 板加工在庫.swift */; };
+		147047032488C39300A5D8F6 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147047022488C39300A5D8F6 /* Test板加工在庫.swift */; };
+		147047052488EE3600A5D8F6 /* 板加工在庫一覧.csv in Resources */ = {isa = PBXBuildFile; fileRef = 147047042488EE3600A5D8F6 /* 板加工在庫一覧.csv */; };
 		1470792F247B9E6D0044134E /* 付属品封筒.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470792E247B9E6D0044134E /* 付属品封筒.swift */; };
 		14709DDC23F10CDA0014008C /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14709DDB23F10CDA0014008C /* BarCode.swift */; };
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
@@ -236,6 +239,9 @@
 		146FED8C2473C96200CC451E /* 部門.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "部門.swift"; sourceTree = "<group>"; };
 		147046FA24887C6600A5D8F6 /* Test資材要求情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材要求情報.swift"; sourceTree = "<group>"; };
 		147046FC2488890100A5D8F6 /* TestString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestString.swift; sourceTree = "<group>"; };
+		147047002488C03400A5D8F6 /* 板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "板加工在庫.swift"; sourceTree = "<group>"; };
+		147047022488C39300A5D8F6 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
+		147047042488EE3600A5D8F6 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
 		1470792E247B9E6D0044134E /* 付属品封筒.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "付属品封筒.swift"; sourceTree = "<group>"; };
 		14709DDB23F10CDA0014008C /* BarCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		1470B25A236832820043A7B4 /* TestMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMonth.swift; sourceTree = "<group>"; };
@@ -502,6 +508,7 @@
 				8E392EEC21FD626B00CEDF18 /* pm_osakaname */,
 				1412036F2201C3DF0054B56F /* Utility */,
 				8E392ED321FD61D900CEDF18 /* DataManager.h */,
+				147047042488EE3600A5D8F6 /* 板加工在庫一覧.csv */,
 				8E392ED421FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManager;
@@ -540,6 +547,7 @@
 				14E26213247F44E3009A14E8 /* Test指定注文番号.swift */,
 				14E26215247F859B009A14E8 /* TestDMScanner.swift */,
 				147046FC2488890100A5D8F6 /* TestString.swift */,
+				147047022488C39300A5D8F6 /* Test板加工在庫.swift */,
 				1465B7EF246E541000BA8145 /* maru.ita */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
@@ -561,6 +569,7 @@
 				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
 				140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */,
 				141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */,
+				147047002488C03400A5D8F6 /* 板加工在庫.swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,
 				146651AF240DC696008F50D0 /* 資材入出庫.swift */,
@@ -715,6 +724,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				147047052488EE3600A5D8F6 /* 板加工在庫一覧.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +752,7 @@
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
 				141057CC246B8CBF00277E42 /* 資材（ボルト情報）.swift in Sources */,
+				147047012488C03400A5D8F6 /* 板加工在庫.swift in Sources */,
 				1468395A2429DC25001E5656 /* 指定注文番号型.swift in Sources */,
 				146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */,
 				14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */,
@@ -863,6 +874,7 @@
 				1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */,
 				14399D5923EAA28C00BAFD48 /* Test社員.swift in Sources */,
 				147046FB24887C6600A5D8F6 /* Test資材要求情報.swift in Sources */,
+				147047032488C39300A5D8F6 /* Test板加工在庫.swift in Sources */,
 				14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */,
 				1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */,
 				147046FD2488890100A5D8F6 /* TestString.swift in Sources */,

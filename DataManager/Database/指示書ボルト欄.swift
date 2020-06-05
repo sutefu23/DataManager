@@ -132,7 +132,7 @@ public class 資材要求情報型 {
     public let 表示名: String
     public let 分割表示名1: String
     public let 分割表示名2: String
-    public let ソート順: Int
+    public let ソート順: Double
     public let 資材種類: 資材種類型?
     public let ボルト数量:ボルト数欄型?
     public let is附属品: Bool?
@@ -181,17 +181,65 @@ public class 資材要求情報型 {
         } else {
             self.is附属品 = true
         }
-        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else { return nil }
+        let set = (セット数 >= 1) ? セット数 : 1
+        guard let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set) else { return nil }
+        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
+            for object in 板加工在庫一覧 {
+                if object.名称 == text {
+                    self.ソート順 = object.ソート順
+                    self.分割表示名1 = object.名称
+                    self.分割表示名2 = ""
+                    self.資材種類 = nil
+                    self.ボルト数量 = numbers
+                    self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積, count: numbers.総数)
+                    self.図番 = object.資材.図番
+                    return
+                }
+            }
+            return nil
+        }
         self.ソート順 = priority
         self.分割表示名1 = title
         self.分割表示名2 = size
         self.資材種類 = type
-        let set = (セット数 >= 1) ? セット数 : 1
-        guard let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set) else { return nil }
         self.ボルト数量 = numbers
         let count = numbers.総数
         assert(count > 0)
         switch type {
+        case .FB(サイズ: let size, 長さ: let length):
+            let itemLength: Double
+            switch Double(size) {
+            case 3:
+                itemLength = 2000
+                self.図番 = "996271"
+            case 6:
+                itemLength = 2000
+                self.図番 = "991200"
+            case 8:
+                itemLength = 2000
+                self.図番 = "991201"
+            case 10:
+                itemLength = 4000
+                self.図番 = "991206"
+            case 12:
+                itemLength = 4000
+                self.図番 = "991207"
+            case 15:
+                itemLength = 4000
+                self.図番 = "991208"
+            case 20:
+                itemLength = 4000
+                self.図番 = "991210"
+            case 25:
+                itemLength = 4000
+                self.図番 = "991212"
+            case 30:
+                itemLength = 4000
+                self.図番 = "991214"
+            default:
+                return nil
+            }
+            self.金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
         case .ボルト(サイズ: let size, 長さ: let length):
             let itemLength: Double
             if length == 285 {
@@ -320,6 +368,13 @@ public class 資材要求情報型 {
             default: return nil
             }
             self.金額計算タイプ = .個数物(count: count)
+        case .皿(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (2, 5): self.図番 = "7277"
+//            case (3, 12): self.図番 = "5020"
+            default: return nil
+            }
+            self.金額計算タイプ = .個数物(count: count)
         case .特皿(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (3, 6): self.図番 = "5020"
@@ -356,30 +411,56 @@ public class 資材要求情報型 {
             default: return nil
             }
             self.金額計算タイプ = .個数物(count: count)
+        case .六角(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (12, 30): self.図番 = "3135"
+            default: return nil
+            }
+            self.金額計算タイプ = .個数物(count: count)
+        case .スタッド(サイズ: let size, 長さ: let length):
+            switch (Double(size), length) {
+            case (3, 10): self.図番 = "280"
+            case (3, 20): self.図番 = "281"
+            case (3, 30): self.図番 = "282"
+            case (4, 20): self.図番 = "286"
+            case (4, 30): self.図番 = "287"
+            case (4, 40): self.図番 = "288"
+            case (4, 50): self.図番 = "289"
+            case (5, 10): self.図番 = "3285"
+            case (5, 20): self.図番 = "290"
+            case (5, 30): self.図番 = "291"
+            case (5, 40): self.図番 = "292"
+            case (5, 60): self.図番 = "294"
+            case (6, 55): self.図番 = "298"
+            default: return nil
+            }
+            self.金額計算タイプ = .個数物(count: count)
         }
     }
 }
 public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情報型) -> Bool {
-    if left.ソート順 != right.ソート順 { return left.ソート順 < right.ソート順 }
+    if left.ソート順 != right.ソート順 { return left.ソート順 > right.ソート順 }
     if left.分割表示名1 != right.分割表示名1 { return left.分割表示名1 < right.分割表示名2 }
     if left.分割表示名2 != right.分割表示名2 { return left.分割表示名1 < right.分割表示名2 }
     return false
 }
 
-func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Int)? {
+func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
     var scanner = DMScanner(ボルト欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
-    func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Int)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Int) {
+    func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Double)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double) {
         scanner.reset()
         scanner.skipMatchString(data.名称)
         return (data.名称, scanner.string, data.種類, data.ソート順)
     }
 
     if let data = scanner.scanボルト() { return makeTail(data) }
+    if let data = scanner.scanFB() { return makeTail(data) }
     if let data = scanner.scanワッシャー() { return makeTail(data) }
     if let data = scanner.scanSワッシャー() { return makeTail(data) }
     if let data = scanner.scanナット() { return makeTail(data) }
     if let data = scanner.scan丸パイプ() { return makeTail(data) }
     if let data = scanner.scan特皿() { return makeTail(data) }
+    if let data = scanner.scan皿() { return makeTail(data) }
     if let data = scanner.scanサンロックトラス() { return makeTail(data) }
     if let data = scanner.scanサンロック特皿() { return makeTail(data) }
     if let data = scanner.scanトラス() { return makeTail(data) }
@@ -387,15 +468,20 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     if let data = scanner.scanCタッピング() { return makeTail(data) }
     if let data = scanner.scanナベ() { return makeTail(data) }
     if let data = scanner.scanテクスナベ() { return makeTail(data) }
+    if let data = scanner.scan六角() { return makeTail(data) }
+    if let data = scanner.scanスタッド() { return makeTail(data) }
+
     return nil
 }
 
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
+    case FB(サイズ: String, 長さ: Double)
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
     case ナット(サイズ: String)
     case 丸パイプ(サイズ: String, 長さ: Double)
+    case 皿(サイズ: String, 長さ: Double)
     case 特皿(サイズ: String, 長さ: Double)
     case サンロックトラス(サイズ: String, 長さ: Double)
     case サンロック特皿(サイズ: String, 長さ: Double)
@@ -404,15 +490,17 @@ public enum 資材種類型 {
     case Cタッピング(サイズ: String, 長さ: Double)
     case ナベ(サイズ: String, 長さ: Double)
     case テクスナベ(サイズ: String, 長さ: Double)
+    case 六角(サイズ: String, 長さ: Double)
+    case スタッド(サイズ: String, 長さ: Double)
 
     public func 数量調整(_ count: Int) -> Int {
         let offset: [Int]
         switch self {
-        case .ボルト(_, _):
+        case .ボルト(_, _), .六角(サイズ: _, 長さ: _), .スタッド(サイズ: _, 長さ: _), .FB(サイズ: _, 長さ: _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
         case .丸パイプ(_, _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
-        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _):
+        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(サイズ: _, 長さ: _):
             offset = [2, 3, 3, 5, 10, 10, 10, 20]
         case .ナット(_):
             offset = [2, 3, 3, 5, 10, 10, 10, 15]
@@ -455,119 +543,149 @@ private extension DMScanner {
         return size.string
     }
     
-    mutating func scanボルト() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("M") else {
             self.reset()
             return nil
         }
-        return ("ボルト", .ボルト(サイズ: size, 長さ: length), -140)
+        return ("ボルト", .ボルト(サイズ: size, 長さ: length), 140)
     }
     
-    mutating func scanワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanFB() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("FB") else {
+            self.reset()
+            return nil
+        }
+        return ("FB", .FB(サイズ: size, 長さ: length), -1)
+    }
+
+    mutating func scanワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let size = scanSize("ワッシャー") else {
             self.reset()
             return nil
         }
-        return ("ワッシャー", .ワッシャー(サイズ: size), -80)
+        return ("ワッシャー", .ワッシャー(サイズ: size), 80)
     }
     
-    mutating func scanSワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanSワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let size = scanSize("Sワッシャー") else {
             self.reset()
             return nil
         }
-        return ("Sワッシャー", .Sワッシャー(サイズ: size), -70)
+        return ("Sワッシャー", .Sワッシャー(サイズ: size), 70)
     }
     
-    mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard scanString("ナット") else { return nil }
         guard let size = scanStringAsDouble(), size.value > 0 else {
             self.reset()
             return nil
         }
-        return ("ナット", .ナット(サイズ: size.string), -90)
+        return ("ナット", .ナット(サイズ: size.string), 90)
     }
     
-    mutating func scan丸パイプ() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scan丸パイプ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
-            return ("浮かしパイプ", .丸パイプ(サイズ: size, 長さ: length), -130)
+            return ("浮かしパイプ", .丸パイプ(サイズ: size, 長さ: length), 130)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("配線", unit1: "Φ") {
-            return ("配線パイプ", .丸パイプ(サイズ: size, 長さ: length), -120)
+            return ("配線パイプ", .丸パイプ(サイズ: size, 長さ: length), 120)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("電源用", unit1: "Φ") {
-            return ("電源用パイプ", .丸パイプ(サイズ: size, 長さ: length), -100)
+            return ("電源用パイプ", .丸パイプ(サイズ: size, 長さ: length), 100)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("", unit1: "Φ") {
-            return ("丸パイプ", .丸パイプ(サイズ: size, 長さ: length), -110)
+            return ("丸パイプ", .丸パイプ(サイズ: size, 長さ: length), 110)
         }
         self.reset()
         return nil
     }
     
-    mutating func scan特皿() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scan特皿() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("特皿M") else {
             self.reset()
             return nil
         }
-        return ("特皿", .特皿(サイズ: size, 長さ: length), -30)
+        return ("特皿", .特皿(サイズ: size, 長さ: length), 30)
     }
-    
-    mutating func scanサンロックトラス() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+
+    mutating func scan皿() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("皿M") else {
+            self.reset()
+            return nil
+        }
+        return ("皿", .皿(サイズ: size, 長さ: length), 30)
+    }
+
+    mutating func scanサンロックトラス() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("サンロックトラスM") else {
             self.reset()
             return nil
         }
-        return ("サンロックトラス", .サンロックトラス(サイズ: size, 長さ: length), -40)
+        return ("サンロックトラス", .サンロックトラス(サイズ: size, 長さ: length), 40)
     }
     
-    mutating func scanサンロック特皿() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanサンロック特皿() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("サンロック特皿M") else {
             self.reset()
             return nil
         }
-        return ("サンロック特皿", .サンロックトラス(サイズ: size, 長さ: length), -20)
+        return ("サンロック特皿", .サンロックトラス(サイズ: size, 長さ: length), 20)
     }
     
-    mutating func scanトラス() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanトラス() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("トラス") else {
             self.reset()
             return nil
         }
-        return ("トラス", .トラス(サイズ: size, 長さ: length), -50)
+        return ("トラス", .トラス(サイズ: size, 長さ: length), 50)
     }
     
-    mutating func scanスリムヘッド() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanスリムヘッド() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("スリムヘッドM") else {
             self.reset()
             return nil
         }
-        return ("スリムヘッド", .スリムヘッド(サイズ: size, 長さ: length), -10)
+        return ("スリムヘッド", .スリムヘッド(サイズ: size, 長さ: length), 10)
     }
     
-    mutating func scanCタッピング() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanCタッピング() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("CタッピングM") else {
             self.reset()
             return nil
         }
-        return ("Cタッピング", .Cタッピング(サイズ: size, 長さ: length), -60)
+        return ("Cタッピング", .Cタッピング(サイズ: size, 長さ: length), 60)
     }
-    mutating func scanナベ() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanナベ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("ナベM") else {
             self.reset()
             return nil
         }
-        return ("ナベ", .ナベ(サイズ: size, 長さ: length), -60)
+        return ("ナベ", .ナベ(サイズ: size, 長さ: length), 61)
     }
-    mutating func scanテクスナベ() -> (名称: String, 種類: 資材種類型, ソート順: Int)? {
+    mutating func scanテクスナベ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("テクスナベM") else {
             self.reset()
             return nil
         }
-        return ("テクスナベ", .テクスナベ(サイズ: size, 長さ: length), -60)
+        return ("テクスナベ", .テクスナベ(サイズ: size, 長さ: length), 62)
+    }
+    mutating func scan六角() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("六角M") else {
+            self.reset()
+            return nil
+        }
+        return ("六角", .六角(サイズ: size, 長さ: length), -1)
+    }
+    mutating func scanスタッド() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("スタッドM") else {
+            self.reset()
+            return nil
+        }
+        return ("スタッド", .スタッド(サイズ: size, 長さ: length), -1)
     }
 }
 

@@ -268,4 +268,12 @@ class TestSizaiSheetInfo: XCTestCase {
         XCTAssertEqual(info.横幅, 1000)
         XCTAssertEqual(info.備考, "SPV")
     }
+    
+    func testFormingList() {
+        let list = フォーミング板リスト
+        let dic = Dictionary(grouping: list) { $0.図番 }
+        for list in dic {
+            XCTAssertEqual(list.value.count, 1)
+        }
+    }
 }

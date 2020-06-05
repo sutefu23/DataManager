@@ -64,6 +64,25 @@ extension StringProtocol {
         }
         return result
     }
+    
+    public var remove㈱㈲: String {
+        var result = String(self)
+        if let ch = result.first, ch == "㈱" || ch == "㈲" {
+            result.removeFirst(1)
+            while let ch = result.first, ch.isWhitespace || ch == "　" {
+                result.removeFirst(1)
+            }
+            return result
+        }
+        if let ch = result.last, ch == "㈱" || ch == "㈲" {
+            result.removeLast(1)
+            while let ch = result.last, ch.isWhitespace || ch == "　" {
+                result.removeLast(1)
+            }
+            return result
+        }
+        return result
+    }
 }
 
 extension Substring {

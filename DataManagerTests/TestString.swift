@@ -24,4 +24,11 @@ class TestString: XCTestCase {
         XCTAssertEqual(String(丸数字: 51), "(51)")
     }
     
+    func testKabuYUUJogai() {
+        XCTAssertEqual("".remove㈱㈲, "")
+        XCTAssertEqual("ＭＩ万世ステンレス ㈱".remove㈱㈲, "ＭＩ万世ステンレス")
+        XCTAssertEqual("㈱ 松下商店".remove㈱㈲, "松下商店")
+        XCTAssertEqual("㈱ 菊浜　九州支店".remove㈱㈲, "菊浜　九州支店")
+    }
+    
 }
