@@ -96,7 +96,7 @@ extension UIViewController {
         let info = UIPrintInfo(dictionary: nil)
         info.jobName = jobName
         info.orientation = .portrait
-        info.duplex = .none
+        info.duplex = .info
         info.outputType = .photo
         printIntaractionController.printInfo = info
         printIntaractionController.printingItem = pdfData

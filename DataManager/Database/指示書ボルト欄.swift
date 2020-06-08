@@ -9,24 +9,24 @@
 import Foundation
 
 public enum ボルト数欄型 {
-    case 合計(Int)
-    case 分納(Int, Int)
+    case 合計(Double)
+    case 分納(Double, Double)
     
-    public init?(ボルト数欄: String, セット数: Int) {
+    public init?(ボルト数欄: String, セット数: Double) {
         var scanner = DMScanner(ボルト数欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
-        guard let number = scanner.scanInteger() else { return nil }
+        guard let number = scanner.scanDouble() else { return nil }
         if scanner.scanCharacter("+") {
-            guard let number2 = scanner.scanInteger() else { return nil }
+            guard let number2 = scanner.scanDouble() else { return nil }
             self = .合計((number+number2) * セット数)
         } else if scanner.scanCharacter("/") {
-            guard let number2 = scanner.scanInteger() else { return nil }
+            guard let number2 = scanner.scanDouble() else { return nil }
             self = .分納(number * セット数, number2 * セット数)
         } else {
             self = .合計(number * セット数)
         }
     }
     
-    public var 総数: Int {
+    public var 総数: Double {
         switch self {
         case .合計(let num):
             return num
@@ -35,7 +35,7 @@ public enum ボルト数欄型 {
         }
     }
     
-    public var 溶接数: Int? {
+    public var 溶接数: Double? {
         switch self {
         case .分納(let left, _):
             return left
@@ -44,7 +44,7 @@ public enum ボルト数欄型 {
         }
     }
     
-    public var 半田数: Int? {
+    public var 半田数: Double? {
         switch self {
         case .分納(_,let right):
             return right
@@ -55,10 +55,10 @@ public enum ボルト数欄型 {
 }
 
 public enum 金額計算タイプ型 {
-    case 平面板(height: Double, width: Double, count: Int)
-    case 平面形状(area: Double, count: Int)
-    case カット棒(itemLength: Double, length: Double, count: Int)
-    case 個数物(count: Int)
+    case 平面板(height: Double, width: Double, count: Double)
+    case 平面形状(area: Double, count: Double)
+    case カット棒(itemLength: Double, length: Double, count: Double)
+    case 個数物(count: Double)
     case コイル材(weight: Double)
     
     public var area: Double? {
@@ -171,7 +171,7 @@ public class 資材要求情報型 {
         return false
     }
     
-    public init?(ボルト欄: String, 数量欄: String, セット数: Int) {
+    public init?(ボルト欄: String, 数量欄: String, セット数: Double) {
         if ボルト欄.isEmpty { return nil }
         var text = ボルト欄.toJapaneseNormal
         self.表示名 = text
@@ -206,40 +206,30 @@ public class 資材要求情報型 {
         let count = numbers.総数
         assert(count > 0)
         switch type {
-        case .FB(サイズ: let size, 長さ: let length):
-            let itemLength: Double
+        case .FB(サイズ: let size):
             switch Double(size) {
             case 3:
-                itemLength = 2000
                 self.図番 = "996271"
             case 6:
-                itemLength = 2000
                 self.図番 = "991200"
             case 8:
-                itemLength = 2000
                 self.図番 = "991201"
             case 10:
-                itemLength = 4000
                 self.図番 = "991206"
             case 12:
-                itemLength = 4000
                 self.図番 = "991207"
             case 15:
-                itemLength = 4000
                 self.図番 = "991208"
             case 20:
-                itemLength = 4000
                 self.図番 = "991210"
             case 25:
-                itemLength = 4000
                 self.図番 = "991212"
             case 30:
-                itemLength = 4000
                 self.図番 = "991214"
             default:
                 return nil
             }
-            self.金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
+            self.金額計算タイプ = .個数物(count: count)
         case .ボルト(サイズ: let size, 長さ: let length):
             let itemLength: Double
             if length == 285 {
@@ -371,7 +361,7 @@ public class 資材要求情報型 {
         case .皿(サイズ: let size, 長さ: let length):
             switch (Double(size), length) {
             case (2, 5): self.図番 = "7277"
-//            case (3, 12): self.図番 = "5020"
+//            case (3, 12): self.図番 = ""
             default: return nil
             }
             self.金額計算タイプ = .個数物(count: count)
@@ -476,7 +466,7 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
 
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
-    case FB(サイズ: String, 長さ: Double)
+    case FB(サイズ: String)
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
     case ナット(サイズ: String)
@@ -493,10 +483,10 @@ public enum 資材種類型 {
     case 六角(サイズ: String, 長さ: Double)
     case スタッド(サイズ: String, 長さ: Double)
 
-    public func 数量調整(_ count: Int) -> Int {
-        let offset: [Int]
+    public func 数量調整(_ count: Double) -> Double {
+        let offset: [Double]
         switch self {
-        case .ボルト(_, _), .六角(サイズ: _, 長さ: _), .スタッド(サイズ: _, 長さ: _), .FB(サイズ: _, 長さ: _):
+        case .ボルト(_, _), .六角(サイズ: _, 長さ: _), .スタッド(サイズ: _, 長さ: _), .FB(サイズ: _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
         case .丸パイプ(_, _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
@@ -552,11 +542,11 @@ private extension DMScanner {
     }
     
     mutating func scanFB() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let (size, length) = scanSizeXLength("FB") else {
+        guard let size = scanSize("FB") else {
             self.reset()
             return nil
         }
-        return ("FB", .FB(サイズ: size, 長さ: length), -1)
+        return ("FB", .FB(サイズ: size), 0)
     }
 
     mutating func scanワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -678,14 +668,14 @@ private extension DMScanner {
             self.reset()
             return nil
         }
-        return ("六角", .六角(サイズ: size, 長さ: length), -1)
+        return ("六角", .六角(サイズ: size, 長さ: length), 0)
     }
     mutating func scanスタッド() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("スタッドM") else {
             self.reset()
             return nil
         }
-        return ("スタッド", .スタッド(サイズ: size, 長さ: length), -1)
+        return ("スタッド", .スタッド(サイズ: size, 長さ: length), 0)
     }
 }
 

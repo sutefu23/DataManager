@@ -114,4 +114,15 @@ class TestOrder : XCTestCase {
         let pic = order?.図
         XCTAssertNotNil(pic)
     }
+    
+    var doTest2 = true
+    func testDate2() {
+        if doTest2 == false { return }
+        let order = try! 指示書型.findDirect(伝票番号: 伝票番号型(validNumber: 2004_17486))!
+        let date1: Date? = order.最終完了日時([.裏加工, .裏加工_溶接])
+        let date2: Date? = order.最速開始日時([.研磨, .表面仕上, .塗装])
+        XCTAssertEqual(date1?.day, Day(2020,5,11))
+        XCTAssertEqual(date2?.day, Day(2020,5,11))
+
+    }
 }

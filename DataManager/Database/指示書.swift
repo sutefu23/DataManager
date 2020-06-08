@@ -440,12 +440,12 @@ extension 指示書型 {
         if self.伝票種類 != .箱文字 { return false }
         return self.管理用メモ.contains("アクリのみ")
     }
-    public var セット数値: Int {
-        var result = 1
+    public var セット数値: Double {
+        var result = 1.0
         var scanner = DMScanner(self.セット数, normalizedFullHalf: true, skipSpaces: true)
         while !scanner.isAtEnd {
             scanner.skip数字以外()
-            if let value = scanner.scanInteger(), value > result {
+            if let value = scanner.scanDouble(), value > result {
                 result = value
             }
         }
@@ -500,6 +500,26 @@ extension 指示書型 {
 
     func キャッシュ資材使用記録() throws -> [資材使用記録型]? {
         return try 資材使用記録キャッシュ型.shared.キャッシュ資材使用記録(伝票番号: self.伝票番号)
+    }
+    
+    public func 最終完了日時(_ group: [工程型]) -> Date? {
+        var result: Date? = nil
+        for process in group {
+            guard let date = self.工程別作業記録[process]?.last?.完了日時 else { continue }
+            if let current = result, current > date { continue }
+            result = date
+        }
+        return result
+    }
+    
+    public func 最速開始日時(_ group: [工程型]) -> Date? {
+        var result: Date? = nil
+        for process in group {
+            guard let date = self.工程別作業記録[process]?.first?.開始日時 else { continue }
+            if let current = result, current < date { continue }
+            result = date
+        }
+        return result
     }
 }
 

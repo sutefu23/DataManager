@@ -196,7 +196,7 @@ public struct DMScanner: RandomAccessCollection {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return true }
         let ch = source[startIndex]
-        return ch.isNumber
+        return !ch.isNumber
     }
     
     public mutating func scan1Character() -> Character? {
