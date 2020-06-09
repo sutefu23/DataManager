@@ -93,12 +93,12 @@ extension UIViewController {
     func print(printer: UIPrinter, doc: PDFDocument, jobName: String = "PDF印刷", outputType: UIPrintInfo.OutputType) {
         guard let pdfData = doc.dataRepresentation() else { return }
         let printIntaractionController = UIPrintInteractionController.shared
-        let info = UIPrintInfo(dictionary: nil)
-        info.jobName = jobName
-        info.orientation = .portrait
-        info.duplex = .none
-        info.outputType = outputType
-        printIntaractionController.printInfo = info
+        let noCutInfo = UIPrintInfo(dictionary: nil)
+        noCutInfo.jobName = jobName
+        noCutInfo.orientation = .portrait
+        noCutInfo.duplex = .none
+        noCutInfo.outputType = outputType
+        printIntaractionController.printInfo = noCutInfo
         printIntaractionController.printingItem = pdfData
         printIntaractionController.print(to: printer)
     }

@@ -20,7 +20,7 @@ public struct DMScanner: RandomAccessCollection {
     /// 先頭が空白チェック必要の場合true
     private var needsSpaceCheck: Bool = true
     /// 現在のスキャン位置
-    public private(set) var startIndex: String.Index {
+    public var startIndex: String.Index {
         didSet { needsSpaceCheck = skipSpaces }
     }
     /// 終端のスキャン位置(+1)
@@ -33,6 +33,8 @@ public struct DMScanner: RandomAccessCollection {
     
     /// 指定位置の文字
     public subscript(index: String.Index) -> Character { return source[index] }
+    /// 指定範囲の文字列
+    public subscript(range: Range<String.Index>) -> String { return String(source[range]) }
     /// 指定インデックスの前のインデックス
     public func index(before i: String.Index) -> String.Index { return source.index(before: i) }
     /// 指定インデックスの後のインデックス
@@ -50,10 +52,12 @@ public struct DMScanner: RandomAccessCollection {
         }
     }
 
+    /// 読み込みの終わった場所
     func leftString(from: String.Index) -> String {
         return String(source[from..<startIndex])
     }
     
+    /// カーソルを最初に戻す
     public mutating func reset() {
         self.startIndex = source.startIndex
     }
@@ -97,6 +101,11 @@ public struct DMScanner: RandomAccessCollection {
         }
     }
 
+    /// カーソルを1文字進める
+    public mutating func skip1Character() {
+        startIndex = source.index(after: startIndex)
+    }
+    
     /// 指定文字数末尾を削る
     public mutating func dropLast(_ count: Int) {
         if count <= 0 { return }
@@ -285,6 +294,19 @@ public struct DMScanner: RandomAccessCollection {
         }
         startIndex = index
         return Int(numberString)
+    }
+    
+    public mutating func searchInteger(suffix: String) -> Int? {
+        defer { self.reset() }
+        while !isAtEnd {
+            guard let number = self.scanInteger() else {
+                skip1Character()
+                continue
+            }
+            if scanString(suffix) { return number}
+            skip1Character()
+        }
+        return nil
     }
 
     /// 実数文字列を取り出す
@@ -475,6 +497,15 @@ public struct DMScanner: RandomAccessCollection {
         }
     }
 
+    /// patternsのどれか合致する物をスキップする
+    @discardableResult public mutating func scanStrings(_ patterns: String...) -> Bool {
+        let patterns = patterns.sorted { $0.count > $1.count }
+        for pattern in patterns {
+            if scanString(pattern) { return true }
+        }
+        return false
+    }
+    
     /// マッチする分スキップする
     public mutating func skipMatchString(_ pattern: String) {
         dropHeadSpacesIfNeeds()
@@ -544,4 +575,18 @@ public struct DMScanner: RandomAccessCollection {
             result.append(value)
         }
         return result
-    }}
+    }
+    
+    /// 指定文字にマッチするところまで進めてpatternより左にあるものを返す。マッチする文字列が無い場合進めずにnilを返す
+    public mutating func searchString(_ pattern: String) -> String? {
+        if scanString(pattern) { return "" }
+        var left: String = ""
+        let initailIndex = startIndex
+        while let ch = fetchCharacter() {
+            left.append(ch)
+            if scanString(pattern) { return left }
+        }
+        self.startIndex = initailIndex
+        return nil
+    }
+}
