@@ -81,23 +81,23 @@ public class LabelPDFDocument {
 import UIKit
 
 extension UIViewController {
-    public func print(_ pdf: PDFDocument, updateButton: UIButton, jobName: String) {
+    public func print(_ pdf: PDFDocument, updateButton: UIButton, jobName: String, outputType: UIPrintInfo.OutputType) {
         let picker = UIPrinterPickerController(initiallySelectedPrinter: nil)
         picker.present(from: updateButton.frame, in: self.view, animated: true) { (picker, userDidSelect, error) in
             guard error  == nil && userDidSelect == true else { return }
             guard let printer = picker.selectedPrinter else { return }
-            self.print(printer, pdf, jobName)
+            self.print(printer: printer, doc: pdf, jobName: jobName, outputType: outputType)
         }
     }
     
-    func print(_ printer: UIPrinter, _ doc: PDFDocument, _ jobName: String = "PDF印刷") {
+    func print(printer: UIPrinter, doc: PDFDocument, jobName: String = "PDF印刷", outputType: UIPrintInfo.OutputType) {
         guard let pdfData = doc.dataRepresentation() else { return }
         let printIntaractionController = UIPrintInteractionController.shared
         let info = UIPrintInfo(dictionary: nil)
         info.jobName = jobName
         info.orientation = .portrait
-        info.duplex = .info
-        info.outputType = .photo
+        info.duplex = .none
+        info.outputType = outputType
         printIntaractionController.printInfo = info
         printIntaractionController.printingItem = pdfData
         printIntaractionController.print(to: printer)
