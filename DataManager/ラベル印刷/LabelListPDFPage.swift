@@ -12,7 +12,7 @@ import Foundation
 import PDFKit
 
 public protocol LabelMaker {
-    func makeLabel() -> PaperRect
+    func makeLabel() -> PaperRect?
 }
 
 public class LabelPDFDocument {
@@ -52,6 +52,7 @@ public class LabelPDFDocument {
         var count = skipCount
         var index = 0
         for label in labels {
+            guard let rect = label.makeLabel() else { continue }
             var row = count/xCount
             let col = count%xCount
             if row >= yCount {
@@ -63,7 +64,6 @@ public class LabelPDFDocument {
                 count = 0
                 row = 0
             }
-            let rect = label.makeLabel()
             rect.moveTo(x: originX + Double(col) * labelWidth, y: originY + Double(row)*labelHeight)
             page.append(rect)
             count += 1

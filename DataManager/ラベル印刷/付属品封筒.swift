@@ -32,7 +32,6 @@ public class 付属品封筒型 {
         let setCount = order.セット数値
         // 伝票番~
         let rect0 = PaperRect(x: offsetX + 5, y: offsetY + 7, width: 110, height: 15)
-//        rect0.append(PaperPath.makeBox(origin: (x: 15, y: 9), size: (width: 80, height: 13)))
         rect0.append(PaperRoundBox(origin: (x: 15, y: 9), size: (width: 80, height: 13), r: 3))
         rect0.append(PaperText(mmx: 26, mmy: 15, inset: inset, text: "取付附属品表", fontSize: 28, bold: false, color: .black))
         page.append(rect0)
@@ -48,18 +47,21 @@ public class 付属品封筒型 {
         rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(order.品名)", fontSize: 18, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 14, inset: inset, text: "取付に必要な部品が入っています", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 21, inset: inset, text: "開封の上、ご確認ください", fontSize: 14, bold: false, color: .black))
-
+        
         let setinfo = (order.セット数値 > 0) ? String(order.セット数値) : order.セット数
-        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(setinfo)　セット", fontSize: 14, bold: false, color: .black))
+        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(Int(setinfo) ?? 1)　セット", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 5, mmy: 40, inset: inset, text: "補修材 　　　　個", fontSize: 14, bold: false, color: .black))
-//        rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 29.15), size: (width: 4, height: 4)))
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
-
+        if let barcode = DMBarCode(code39: "\(order.伝票番号.整数値)") {
+            let object4 = PaperBarCode(barCode: barcode, rect: CGRect(x: 200, y: 135, width: 110, height: 15), fontSize: 0)
+            rect2.append(object4)
+        }
+        
         page.append(rect2)
-            // ボルト
+        // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-
+        
         var vlist: [VData] = []
         for index in 0...15 {
             guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), !text.isEmpty && !count.isEmpty else { continue }
