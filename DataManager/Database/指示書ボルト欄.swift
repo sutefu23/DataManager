@@ -240,7 +240,7 @@ public class 資材要求情報型 {
                 return nil
             }
             self.金額計算タイプ = .個数物(count: count)
-        case .定番FB(サイズ: let size):
+        case .定番FB(板厚: let size):
             switch Double(size) {
             case 3:
                 self.図番 = "996271"
@@ -539,7 +539,7 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
     case FB(板厚: String, 高さ: Double)
-    case 定番FB(サイズ: String)
+    case 定番FB(板厚: String)
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
     case ナット(サイズ: String)
@@ -562,17 +562,17 @@ public enum 資材種類型 {
     public func 数量調整(_ count: Double) -> Double {
         let offset: [Double]
         switch self {
-        case .ボルト(_, _), .六角(サイズ: _, 長さ: _), .スタッド(サイズ: _, 長さ: _), .ALスタッド(サイズ: _, 長さ: _), .CDスタッド(サイズ: _, 長さ: _), .ストレートスタッド(サイズ: _, 長さ: _):
+        case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .CDスタッド(_, _), .ストレートスタッド(_, _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
         case .丸パイプ(_, _):
             offset = [1, 2, 3, 3, 3, 5, 5, 6]
-        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(サイズ: _, 長さ: _):
+        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(_, _):
             offset = [2, 3, 3, 5, 10, 10, 10, 20]
         case .ナット(_):
             offset = [2, 3, 3, 5, 10, 10, 10, 15]
         case .ワッシャー(_), .Sワッシャー(_):
             offset = [2, 3, 3, 5, 10, 10, 10, 15]
-        case .定番FB(サイズ: _), .FB(板厚: _, 高さ: _):
+        case .定番FB(_), .FB(_, _):
             return count
         }
         assert(offset.count == 8)
@@ -644,7 +644,7 @@ private extension DMScanner {
             self.reset()
             return nil
         }
-        return ("FB", .定番FB(サイズ: size), 0)
+        return ("FB", .定番FB(板厚: size), 0)
     }
 
     mutating func scanワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -780,21 +780,21 @@ private extension DMScanner {
             self.reset()
             return nil
         }
-        return ("スタッド", .スタッド(サイズ: size, 長さ: length), 0)
+        return ("ストレートスタッド", .ストレートスタッド(サイズ: size, 長さ: length), 0)
     }
     mutating func scanALスタッド() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("ALスタッドM") else {
             self.reset()
             return nil
         }
-        return ("スタッド", .スタッド(サイズ: size, 長さ: length), 0)
+        return ("ALスタッド", .ALスタッド(サイズ: size, 長さ: length), 0)
     }
     mutating func scanCDスタッド() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("CDスタッドM") else {
             self.reset()
             return nil
         }
-        return ("スタッド", .スタッド(サイズ: size, 長さ: length), 0)
+        return ("CDスタッド", .CDスタッド(サイズ: size, 長さ: length), 0)
     }
 }
 
@@ -809,6 +809,7 @@ private let lengthMap: [図番型: Double] = [
     "991070": 4000, "991071": 4000, "991069": 4000, "991072": 4000, "996019": 4000,
     "991073": 4000, "991076": 4000, "996200": 4000, "991082": 4000, "991083": 4000,
     "991085": 4000, "996310": 4000, "996139": 4000, "996085": 4000,
+    // フラットバー
 ]
 
 extension 資材型 {

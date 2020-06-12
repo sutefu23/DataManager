@@ -21,7 +21,26 @@ class TestOrderBoltField: XCTestCase {
             XCTAssert(false)
         }
     }
-    
+
+    func testFB() {
+        data = scanSource(ボルト欄: "FB2x10")
+        if case .FB(let thin, let height) = data?.種類 {
+            XCTAssertEqual(thin, "2")
+            XCTAssertEqual(height, 10)
+        } else {
+            XCTAssert(false)
+        }
+    }
+
+    func test定番FB() {
+        data = scanSource(ボルト欄: "FB3")
+        if case .定番FB(let size) = data?.種類 {
+            XCTAssertEqual(size, "3")
+        } else {
+            XCTAssert(false)
+        }
+    }
+
     func testWasher() {
         data = scanSource(ボルト欄: "ワッシャー5φ")
         if case .ワッシャー(let size) = data?.種類 {
@@ -49,7 +68,7 @@ class TestOrderBoltField: XCTestCase {
         }
     }
     
-    func testPipe() {
+    func testMPipe() {
         data = scanSource(ボルト欄: "6φx30L")
         if case .丸パイプ(let size, let length) = data?.種類 {
             XCTAssertEqual(size, "6")
@@ -85,6 +104,16 @@ class TestOrderBoltField: XCTestCase {
         if case .特皿(let size, let length) = data?.種類 {
             XCTAssertEqual(size, "3")
             XCTAssertEqual(length, 6)
+        } else {
+            XCTAssert(false)
+        }
+    }
+
+    func testSara() {
+        data = scanSource(ボルト欄: "皿M2x5L")
+        if case .皿(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "2")
+            XCTAssertEqual(length, 5)
         } else {
             XCTAssert(false)
         }
@@ -135,6 +164,76 @@ class TestOrderBoltField: XCTestCase {
         if case .Cタッピング(let size, let length) = data?.種類 {
             XCTAssertEqual(size, "4")
             XCTAssertEqual(length, 6)
+        } else {
+            XCTAssert(false)
+        }
+    }
+    
+    func testNabe() {
+        data = scanSource(ボルト欄: "ナベM4x10L")
+        if case .ナベ(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "4")
+            XCTAssertEqual(length, 10)
+        } else {
+            XCTAssert(false)
+        }
+    }
+    
+    func testTekustNabe() {
+        data = scanSource(ボルト欄: "テクスナベM4x19L")
+        if case .テクスナベ(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "4")
+            XCTAssertEqual(length, 19)
+        } else {
+            XCTAssert(false)
+        }
+    }
+
+    func testRokkaku() {
+        data = scanSource(ボルト欄: "六角M3x10L")
+        if case .六角(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "3")
+            XCTAssertEqual(length, 10)
+        } else {
+            XCTAssert(false)
+        }
+    }
+    
+    func testStud() {
+        data = scanSource(ボルト欄: "スタッドM5x30L")
+        if case .スタッド(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "5")
+            XCTAssertEqual(length, 30)
+        } else {
+            XCTAssert(false)
+        }
+    }
+    
+    func testStarightStud() {
+        data = scanSource(ボルト欄: "ストレートスタッドM3x10L")
+        if case .ストレートスタッド(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "3")
+            XCTAssertEqual(length, 10)
+        } else {
+            XCTAssert(false)
+        }
+    }
+
+    func testALStud() {
+        data = scanSource(ボルト欄: "ALスタッドM3x10L")
+        if case .ALスタッド(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "3")
+            XCTAssertEqual(length, 10)
+        } else {
+            XCTAssert(false)
+        }
+    }
+
+    func testCDStud() {
+        data = scanSource(ボルト欄: "CDスタッドM3x45L")
+        if case .CDスタッド(let size, let length) = data?.種類 {
+            XCTAssertEqual(size, "3")
+            XCTAssertEqual(length, 45)
         } else {
             XCTAssert(false)
         }

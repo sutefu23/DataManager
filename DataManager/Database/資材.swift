@@ -180,6 +180,8 @@ public extension 資材型 {
     var 単位: String {
         return record.string(forKey: "dbo.SYS_T2:f4") ?? ""
     }
+
+    var 登録日: Day { record.day(forKey: "登録日")! }
     
     // MARK: - 入出庫処理
     func 入庫(日時: Date? = nil, 部署: 部署型? = nil, 入庫者: 社員型, 入庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {
@@ -234,7 +236,7 @@ public extension 資材型 {
     static let dbName = "DataAPI_5"
     
     /// 全資材の読み込み
-    static func fetch() throws -> [資材型] {
+    static func fetchAll() throws -> [資材型] {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 資材型.dbName)
         return try list.compactMap { try 資材型($0) }.sorted()
