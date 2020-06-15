@@ -54,7 +54,24 @@ public struct 選択ボルト等型 {
     }
 }
 
-func searchボルト等(種類: String, サイズ: String, 長さ: String?) -> 選択ボルト等型? {
+func searchボルト等(種類: String, サイズ: String, 長さ: Double?) -> 選択ボルト等型? {
+    guard let list = ボルト等選択肢マップ[種類] else { return nil }
+    let size = サイズ.toJapaneseNormal
+    return list.first {
+        if $0.サイズ != size { return false }
+        if let length = 長さ {
+            if let str = $0.長さ, Double(str) == length {
+                return true
+            } else {
+                return false 
+            }
+        } else {
+            return $0.長さ == nil
+        }
+    }
+}
+
+func searchボルト等(種類: String, サイズ: String, 長さ: String? = nil) -> 選択ボルト等型? {
     guard let list = ボルト等選択肢マップ[種類] else { return nil }
     let size = サイズ.toJapaneseNormal
     let length = 長さ?.toJapaneseNormal

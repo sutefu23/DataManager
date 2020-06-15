@@ -316,28 +316,8 @@ public enum 資材種類型 {
         let 金額計算タイプ: 金額計算タイプ型
         switch self {
         case .FB(板厚: let thin, 高さ: let height):
-            switch (Double(thin), height) {
-            case (3, 3):
-                図番 = "996271"
-            case (2, 6):
-                図番 = "991200"
-            case (2, 8):
-                図番 = "991201"
-            case (2, 10):
-                図番 = "991206"
-            case (2, 12):
-                図番 = "991207"
-            case (2, 15):
-                図番 = "991208"
-            case (2, 20):
-                図番 = "991210"
-            case (2, 25):
-                図番 = "991212"
-            case (2, 30):
-                図番 = "991214"
-            default:
-                return nil
-            }
+            guard let object = searchボルト等(種類: "FB", サイズ: thin, 長さ: height) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .定番FB(板厚: let size):
             switch Double(size) {
@@ -364,227 +344,89 @@ public enum 資材種類型 {
             }
             金額計算タイプ = .個数物(count: count)
         case .ボルト(サイズ: let size, 長さ: let length):
-            var itemLength: Double = length
-            if size == "3/8" {
-                if length == 285 {
-                    図番 = "325"
-                } else {
-                    itemLength = 1000
-                    図番 = "333"
-                }
+            let itemLength: Double
+            if let object = searchボルト等(種類: "ボルト", サイズ: size, 長さ: length) {
+                itemLength = length
+                図番 = object.図番
+            } else if let object = searchボルト等(種類: "ボルト", サイズ: size) {
+                itemLength = 1000
+                図番 = object.図番
             } else {
-                guard let size = Double(size) else { return nil }
-                switch (size, length) { // 規格品
-                case (2, 20): 図番 = "301"
-                case (2, 40): 図番 = "302"
-                case (2, 60): 図番 = "943F"
-                case (16, 360): 図番 = "949"
-                case (4, 285): 図番 = "321"
-                case (5, 285): 図番 = "322"
-                case (6, 285): 図番 = "323"
-                case (8, 285): 図番 = "324"
-                case (10, 285): 図番 = "326"
-                case (12, 285): 図番 = "327"
-                case (16, 285): 図番 = "314"
-                default: // カット品
-                    itemLength = 1000
-                    switch size {
-                    case  3: 図番 = "328I"
-                    case  4: 図番 = "329"
-                    case  5: 図番 = "330"
-                    case  6: 図番 = "331"
-                    case  8: 図番 = "332"
-                    case 10: 図番 = "334"
-                    case 12: 図番 = "335"
-                    case 16: 図番 = "2733"
-                    default:
-                        return nil
-                    }
-                }
+                return nil
             }
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
         case .ナット(サイズ: let size):
-            switch Double(size) {
-            case  3: 図番 = "363"
-            case  4: 図番 = "364"
-            case  5: 図番 = "365"
-            case  6: 図番 = "366"
-            case  8: 図番 = "367"
-            case 10: 図番 = "389"
-            case 12: 図番 = "370"
-            default:
-                switch size {
-                case "3/8": 図番 = "368"
-                default:
-                    return nil
-                }
-            }
+            guard let object = searchボルト等(種類: "ナット", サイズ: size) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .ワッシャー(サイズ: let size):
-            switch Double(size) {
-            case  3: 図番 = "381"
-            case  4: 図番 = "382"
-            case  5: 図番 = "383"
-            case  6: 図番 = "384"
-            case  8: 図番 = "385"
-            case 10: 図番 = "386"
-            case 12: 図番 = "387"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "ワッシャー", サイズ: size) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .Sワッシャー(サイズ: let size):
-            switch Double(size) {
-            case  5: 図番 = "391"
-            case  6: 図番 = "392"
-            case  8: 図番 = "393"
-            case 10: 図番 = "396"
-            case 12: 図番 = "395"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "Sワッシャー", サイズ: size) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .丸パイプ(サイズ: let size, 長さ: let length):
-            switch Double(size) {
-            case 5: 図番 = "991070"
-            case 6: 図番 = "991071"
-            case 7: 図番 = "991069"
-            case 8: 図番 = "991072"
-            case 9: 図番 = "996019"
-            case 10: 図番 = "991073"
-            case 12: 図番 = "991076"
-            case 13: 図番 = "996200"
-            case 14: 図番 = "991768"
-            case 15: 図番 = "991082"
-            case 16: 図番 = "991083"
-            case 19: 図番 = "991085"
-            case 21.7: 図番 = "996310"
-            case 22: 図番 = "996139"
-            case 25: 図番 = "996085"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "丸パイプ", サイズ: size) else { return nil }
+            図番 = object.図番
             let itemLength: Double = 4000
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
         case .Cタッピング(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (4, 6): 図番 = "996585"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "Cタッピング", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .サンロックトラス(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (4, 6): 図番 = "991680"
-            case (4, 8): 図番 = "991681"
-            case (4, 10): 図番 = "5827"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "サンロックトラス", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .サンロック特皿(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (2, 5): 図番 = "7277"
-            case (4, 10): 図番 = "5790"
-            case (4, 6): 図番 = "5922"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "サンロック特皿", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .皿(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (2, 5): 図番 = "7277"
-            //            case (3, 12): 図番 = ""
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "皿", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .特皿(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 6): 図番 = "5020"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "特皿", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .トラス(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 10): 図番 = "580"
-            case (4, 6): 図番 = "39592"
-            case (5, 10): 図番 = "582"
-            case (5, 15): 図番 = "2569"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "トラス", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .スリムヘッド(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (4, 6): 図番 = "9799"
-            case (4, 8): 図番 = "7276"
-            case (4, 10): 図番 = "9699"
-            case (3, 6): 図番 = "6711F"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "スリムヘッド", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .ナベ(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (4, 10): 図番 = "3829"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "ナベ", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .テクスナベ(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (4, 19): 図番 = "7275"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "テクスナベ", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .六角(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (12, 30): 図番 = "3135"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "六角", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .スタッド(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 10): 図番 = "280"
-            case (3, 20): 図番 = "281"
-            case (3, 30): 図番 = "282"
-            case (3, 40): 図番 = "283"
-            case (3, 50): 図番 = "284"
-            case (4, 20): 図番 = "286"
-            case (4, 30): 図番 = "287"
-            case (4, 40): 図番 = "288"
-            case (4, 50): 図番 = "289"
-            case (5, 10): 図番 = "3285"
-            case (5, 15): 図番 = "9031"
-            case (5, 20): 図番 = "290"
-            case (5, 30): 図番 = "291"
-            case (5, 40): 図番 = "292"
-            case (5, 50): 図番 = "293"
-            case (5, 60): 図番 = "294"
-            case (6, 10): 図番 = "295"
-            case (6, 20): 図番 = "296"
-            case (6, 40): 図番 = "297"
-            case (6, 45): 図番 = "9853"
-            case (6, 50): 図番 = "8168"
-            case (6, 55): 図番 = "298"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "スタッド", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .ストレートスタッド(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 10): 図番 = "2951"
-            case (3, 30): 図番 = "9106"
-            case (3, 40): 図番 = "9627"
-            case (4, 20): 図番 = "3652"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "ストレートスタッド", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .ALスタッド(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 10): 図番 = "4326"
-            case (4, 10): 図番 = "5754"
-            case (4, 20): 図番 = "5755"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "ALスタッド", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         case .CDスタッド(サイズ: let size, 長さ: let length):
-            switch (Double(size), length) {
-            case (3, 45): 図番 = "9850"
-            case (4, 45): 図番 = "9851"
-            case (5, 45): 図番 = "9852"
-            default: return nil
-            }
+            guard let object = searchボルト等(種類: "CDスタッド", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物(count: count)
         }
         return (図番, 金額計算タイプ)
