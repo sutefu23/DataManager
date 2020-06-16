@@ -16,6 +16,10 @@ public struct 指定注文番号型: Codable, Hashable {
         return 注文番号キャッシュ型.shared[code]
     }
 
+    init(text: String) {
+        self.text = text
+    }
+    
     public init?(_ string: String) {
         var scanner = DMScanner(string, normalizedFullHalf: true, upperCased: true)
         let result = scanner.string

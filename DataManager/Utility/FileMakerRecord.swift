@@ -22,6 +22,10 @@ class FileMakerRecord {
     let recordID: String?
     let name: String
     
+    convenience init() {
+        self.init(portal: "", fieldData: [:])
+    }
+
     init?(json data: Any) {
         guard let dic = data as? [String: Any] else { return nil }
         self.recordID = dic["recordId"] as? String

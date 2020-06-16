@@ -57,22 +57,33 @@ public class 付属品封筒型 {
         rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(Int(setinfo) ?? 1)　セット", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 5, mmy: 40, inset: inset, text: "補修材 　　　　個", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
-        if let barcode = DMBarCode(code39: "\(order.伝票番号.整数値)") {
-            let object4 = PaperBarCode(barCode: barcode, rect: CGRect(x: 200, y: 83, width: 110, height: 15), fontSize: 0)
+        // 印鑑欄
+        var 印鑑欄: [(text: String, offset: Double)] = []
+        if order.社内塗装あり { 印鑑欄.append(("塗装", 3.6)) }
+        印鑑欄.append(("附属品準備", -0.2))
+        if order.外注塗装あり { 印鑑欄.append(("外注塗装", 1.0)) }
+        if order.外注メッキあり { 印鑑欄.append(("外注メッキ", -0.2)) }
+        印鑑欄.append(("品質管理", 0.8))
+        //        印鑑欄: [(text: String, offset: Double)] = [("塗装", 3.6), ("附属品準備", -0.2), ("外注塗装", 1.0), ("外注メッキ", -0.2), ("品質管理", 0.8)]
+        let count = Double(印鑑欄.count)
+        rect2.append(PaperPath.makeBox(origin: (x: 45+13*(5-count), y: 37), size: (width: 13*count, height: 16))) // 枠線
+        rect2.append(PaperPath.makeLine(from: (x: 45+13*(5-count), y: 41), to: (x: 45+13*5, y: 41), lineWidth: 0.5)) // 横線
+        for index in stride(from: 4.0, to: 5.0-count, by: -1.0) {
+            rect2.append(PaperPath.makeLine(from: (x: 45+13*index, y: 37), to: (x: 45+13*index, y: 53))) // 縦線
+        }
+        印鑑欄.enumerated().forEach {
+            let text = $0.element.text
+            if text.isEmpty { return }
+            let index = (5-count) + Double($0.offset)
+            rect2.append(PaperText(mmx: 45+13*index + $0.element.offset, mmy: 38.15, inset: inset, text: text, fontSize: 7, bold: false, color: .black)) // 欄2
+        }
+        // バーコード
+        if let barcode = DMBarCode(code39: "\(order.伝票番号.整数値)") { // 200,83 or CGPoint(x: convertPoint(mm: 68.5-count*13), y: convertPoint(mm: 53) - 15)
+            let bpos = CGPoint(x: 200, y: convertPoint(mm: 138.75))
+            let object4 = PaperBarCode(barCode: barcode, rect: CGRect(origin: bpos, size: CGSize(width: 110, height: 15)), fontSize: 0)
             rect2.append(object4)
         }
-        rect2.append(PaperPath.makeBox(origin: (x: 45, y: 37), size: (width: 13*5, height: 16)))
-        rect2.append(PaperPath.makeLine(from: (x: 45+13, y: 37), to: (x: 45+13, y: 53)))
-        rect2.append(PaperPath.makeLine(from: (x: 45+13*2, y: 37), to: (x: 45+13*2, y: 53)))
-        rect2.append(PaperPath.makeLine(from: (x: 45+13*3, y: 37), to: (x: 45+13*3, y: 53)))
-        rect2.append(PaperPath.makeLine(from: (x: 45+13*4, y: 37), to: (x: 45+13*4, y: 53)))
-        rect2.append(PaperPath.makeLine(from: (x: 45, y: 41), to: (x: 45+13*5, y: 41), lineWidth: 0.5))
-        rect2.append(PaperText(mmx: 45+3.6, mmy: 38.25, inset: inset, text: "塗装", fontSize: 7, bold: false, color: .black))
-        rect2.append(PaperText(mmx: 45+13-0.3, mmy: 38.15, inset: inset, text: "附属品準備", fontSize: 7, bold: false, color: .black))
-        rect2.append(PaperText(mmx: 45+13*2+1, mmy: 38.25, inset: inset, text: "外注塗装", fontSize: 7, bold: false, color: .black))
-        rect2.append(PaperText(mmx: 45+13*3-0.2, mmy: 38.25, inset: inset, text: "外注メッキ", fontSize: 7, bold: false, color: .black))
-        rect2.append(PaperText(mmx: 45+13*4+0.8, mmy: 38.25, inset: inset, text: "品質管理", fontSize: 7, bold: false, color: .black))
-
+        
         page.append(rect2)
         // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)

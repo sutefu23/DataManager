@@ -8,21 +8,31 @@
 
 import Foundation
 
+public class 外注型 {
+}
 public class 発注型 {
     let record: FileMakerRecord
+    public let 発注種類: 発注種類型
     public let 資材: 資材型
     public let 指定注文番号: 指定注文番号型
     
     init?(_ record: FileMakerRecord) {
         self.record = record
-        guard let item = record.資材(forKey: "図番") else { return nil }
-        self.資材 = item
-        guard let number = record.指定注文番号(forKey: "指定注文番号") else { return nil }
-        self.指定注文番号 = number
+        guard let type = record.発注種類(forKey: "発注種類") else { return nil }
+        self.発注種類 = type
+        switch type {
+        case .資材:
+            guard let item = record.資材(forKey: "図番") else { return nil }
+            self.資材 = item
+            guard let number = record.指定注文番号(forKey: "指定注文番号") else { return nil }
+            self.指定注文番号 = number
+        case .外注:
+            self.資材 = 資材型.empty
+            guard let text = record.string(forKey: "指定注文番号") else { return nil }
+            self.指定注文番号 = 指定注文番号型(text: text)
+        }
     }
-    
     public var 状態: 発注状態型 { return record.発注状態(forKey: "状態")! }
-    public var 発注種類: 発注種類型 { return record.発注種類(forKey: "発注種類")! }
 }
 
 public extension 発注型 {
@@ -94,9 +104,10 @@ extension FileMakerRecord {
 extension 発注型 {
     public static let dbName = "DataAPI_4"
     
-    public static func find(伝票番号: 伝票番号型) throws -> [発注型] {
+    public static func find(伝票番号: 伝票番号型, 発注種類: 発注種類型?) throws -> [発注型] {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号.整数値)"
+        query["発注種類"] = 発注種類?.description
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }

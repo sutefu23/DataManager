@@ -168,7 +168,7 @@ public class 指示書型 {
     }()
     
     public lazy var 外注一覧: [発注型] = {
-        let list = (try? 発注型.find(伝票番号: self.伝票番号)) ?? []
+        let list = (try? 発注型.find(伝票番号: self.伝票番号, 発注種類: .外注)) ?? []
         return list
     }()
     
@@ -421,9 +421,61 @@ public class 指示書型 {
             }
         }
     }()
+    
+    public lazy var ボルト資材情報: [Int: 資材要求情報型] = {
+        var map: [Int: 資材要求情報型] = [:]
+        let set = self.セット数値
+        for index in 1...15 {
+            let name = self.ボルト等(index) ?? ""
+            let count = self.ボルト本数(index) ?? ""
+            if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set) {
+                map[index] = info
+            }
+        }
+        return map
+    }()
 }
 
 extension 指示書型 {
+    public func is分納相手完納済み(自工程: 工程型) throws -> Bool? {
+        var result: Bool? = nil
+        for info in self.ボルト資材情報.values {
+            guard let isOk = try info.is分納相手完納済み(self, 自工程: 自工程) else { continue }
+            if isOk == false { return false }
+            result = true
+        }
+        return result
+    }
+    public func isボルト欄資材完了() throws -> Bool {
+        for info in self.ボルト資材情報.values {
+            if try !info.allRegistered(self) { return false }
+        }
+        return true
+    }
+    
+    public var 外注メッキあり: Bool {
+        return 外注一覧.contains {
+            if $0.会社コード == "2981" { return true } // 九州電化
+            return false
+        }
+    }
+
+    public var 外注塗装あり: Bool {
+        return 外注一覧.contains {
+            if $0.会社コード == "2971" { return true } // アラヤ
+            if $0.会社コード == "2993" { return true } // トキワ
+            if $0.会社コード == "4442" { return true } // 久野
+            return false
+        }
+    }
+    
+    public var 社内塗装あり: Bool {
+        func check(_ target: String) -> Bool {
+            return target.contains("塗装") && !target.contains("先方")
+        }
+        return check(側面仕上1) || check(側面仕上2)
+    }
+    
     public func 色付き略号(fontSize: CGFloat = 12, colorMapper:(略号型) -> DMColor = { $0.表示色 } ) -> NSMutableAttributedString {
         let result = NSMutableAttributedString()
         for mark in self.略号.sorted() {
@@ -691,6 +743,11 @@ public extension 指示書型 {
         return try find(query)
     }
 
+    static func findDirect(伝票番号文字列: String?) throws -> 指示書型? {
+        guard let str = 伝票番号文字列, let number = try 伝票番号型(invalidString: str) else { return nil }
+        return try findDirect(伝票番号: number)
+    }
+    
     static func findDirect(伝票番号: 伝票番号型) throws -> 指示書型? {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号)"

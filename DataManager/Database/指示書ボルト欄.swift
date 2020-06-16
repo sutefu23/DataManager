@@ -161,19 +161,38 @@ public class 資材要求情報型 {
         return data?.使用面積
     }
     
+    public func is分納相手完納済み(_ order: 指示書型, 自工程: 工程型) throws -> Bool? {
+        guard let list = try order.キャッシュ資材使用記録() else { return false }
+        switch self.ボルト数量 {
+        case .合計(_), nil:
+            return nil
+        case .分納(_, _):
+            return list.contains { $0.図番 == self.図番 && $0.工程 != 自工程 && $0.表示名 == self.表示名 }
+        }
+    }
+    
+    public func allRegistered(_ order: 指示書型) throws -> Bool {
+        guard let list = try order.キャッシュ資材使用記録() else { return false }
+        switch self.ボルト数量 {
+        case .合計(_), nil:
+            return list.contains { $0.図番 == self.図番 && $0.表示名 == self.表示名 }
+        case .分納(_, _):
+            var set = Set<工程型>()
+            for data in list where data.図番 == self.図番 && data.表示名 == self.表示名 {
+                set.insert(data.工程)
+            }
+            return set.count >= 2
+        }
+    }
+    
     public func checkRegistered(_ order: 指示書型, _ process: 工程型) throws -> Bool {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
         switch self.ボルト数量 {
         case .合計(_), nil:
-            if list.contains(where: { $0.図番 == self.図番 && $0.表示名 == self.表示名 }) {
-                return true
-            }
+            return list.contains{ $0.図番 == self.図番 && $0.表示名 == self.表示名 }
         case .分納(_, _):
-            if list.contains(where: { $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }) {
-                return true
-            }
+            return list.contains{ $0.図番 == self.図番 && $0.工程 == process && $0.表示名 == self.表示名 }
         }
-        return false
     }
     
     public init?(ボルト欄: String, 数量欄: String, セット数: Double, adjustCount: Bool = false) {

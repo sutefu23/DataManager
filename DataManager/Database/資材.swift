@@ -11,12 +11,22 @@ import Foundation
 public typealias 図番型 = String
 
 public class 資材型: Codable, Comparable, Hashable {
+    static let empty = 資材型()
+    
     let record: FileMakerRecord
     public let 図番: 図番型
     public let 製品名称: String
     public let 規格: String
     public let 単価: Double?
 
+    init() {
+        self.record = FileMakerRecord()
+        self.図番 = ""
+        self.製品名称 = ""
+        self.規格 = ""
+        self.単価 = nil
+    }
+    
     init(_ record: FileMakerRecord) throws {
         self.record = record
         guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordID ?? "")") }
