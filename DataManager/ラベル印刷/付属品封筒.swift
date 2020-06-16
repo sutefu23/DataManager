@@ -32,8 +32,13 @@ public class 付属品封筒型 {
         let setCount = order.セット数値
         // 伝票番~
         let rect0 = PaperRect(x: offsetX + 5, y: offsetY + 7, width: 110, height: 15)
+//        rect0.append(PaperRoundBox(origin: (x: 10, y: 8), size: (width: 90, height: 15), r: 3))
+//        rect0.append(PaperPath.makeLine(from: (x: 87, y: 9), to: (x: 87, y: 22)))
+//        rect0.append(PaperPath.makeLine(from: (x: 87, y: 12), to: (x: 100, y: 12), lineWidth: 0.5))
+//        rect0.append(PaperText(mmx: 86.5, mmy: 9.5, inset: inset, text: "附属品準備", fontSize: 7, bold: false, color: .black))
         rect0.append(PaperRoundBox(origin: (x: 15, y: 9), size: (width: 80, height: 13), r: 3))
         rect0.append(PaperText(mmx: 26, mmy: 15, inset: inset, text: "取付附属品表", fontSize: 28, bold: false, color: .black))
+//        rect0.append(PaperText(mmx: 19, mmy: 15, inset: inset, text: "取付附属品表", fontSize: 30, bold: false, color: .black))
         page.append(rect0)
         let rect1 = PaperRect(x: offsetX + 5, y: offsetY + 20, width: 110, height: 25)
         rect1.append(PaperText(mmx: 0, mmy: 15, text: "伝票No \(order.伝票番号.表示用文字列)", fontSize: 14, bold: false, color: .black))
@@ -53,10 +58,21 @@ public class 付属品封筒型 {
         rect2.append(PaperText(mmx: 5, mmy: 40, inset: inset, text: "補修材 　　　　個", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
         if let barcode = DMBarCode(code39: "\(order.伝票番号.整数値)") {
-            let object4 = PaperBarCode(barCode: barcode, rect: CGRect(x: 200, y: 135, width: 110, height: 15), fontSize: 0)
+            let object4 = PaperBarCode(barCode: barcode, rect: CGRect(x: 200, y: 83, width: 110, height: 15), fontSize: 0)
             rect2.append(object4)
         }
-        
+        rect2.append(PaperPath.makeBox(origin: (x: 45, y: 37), size: (width: 13*5, height: 16)))
+        rect2.append(PaperPath.makeLine(from: (x: 45+13, y: 37), to: (x: 45+13, y: 53)))
+        rect2.append(PaperPath.makeLine(from: (x: 45+13*2, y: 37), to: (x: 45+13*2, y: 53)))
+        rect2.append(PaperPath.makeLine(from: (x: 45+13*3, y: 37), to: (x: 45+13*3, y: 53)))
+        rect2.append(PaperPath.makeLine(from: (x: 45+13*4, y: 37), to: (x: 45+13*4, y: 53)))
+        rect2.append(PaperPath.makeLine(from: (x: 45, y: 41), to: (x: 45+13*5, y: 41), lineWidth: 0.5))
+        rect2.append(PaperText(mmx: 45+3.6, mmy: 38.25, inset: inset, text: "塗装", fontSize: 7, bold: false, color: .black))
+        rect2.append(PaperText(mmx: 45+13-0.3, mmy: 38.15, inset: inset, text: "附属品準備", fontSize: 7, bold: false, color: .black))
+        rect2.append(PaperText(mmx: 45+13*2+1, mmy: 38.25, inset: inset, text: "外注塗装", fontSize: 7, bold: false, color: .black))
+        rect2.append(PaperText(mmx: 45+13*3-0.2, mmy: 38.25, inset: inset, text: "外注メッキ", fontSize: 7, bold: false, color: .black))
+        rect2.append(PaperText(mmx: 45+13*4+0.8, mmy: 38.25, inset: inset, text: "品質管理", fontSize: 7, bold: false, color: .black))
+
         page.append(rect2)
         // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
