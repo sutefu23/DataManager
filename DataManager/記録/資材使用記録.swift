@@ -93,7 +93,7 @@ struct 資材使用記録Data型: Equatable {
 public class 資材使用記録型 {
     var original: 資材使用記録Data型?
     var data: 資材使用記録Data型
-    var recordID: String?
+    public internal(set) var recordID: String?
 
     public var 登録日時: Date {
         get { data.登録日時 }
@@ -253,7 +253,7 @@ public class 資材使用記録型 {
         return try find(query: query)
     }
     
-    public static func find2(伝票番号: 伝票番号型?, 工程: 工程型?, 登録期間: ClosedRange<Day>?) throws -> [資材使用記録型] {
+    public static func find(伝票番号: 伝票番号型?, 工程: 工程型?, 登録期間: ClosedRange<Day>?) throws -> [資材使用記録型] {
         var query = FileMakerQuery()
         if let number = 伝票番号 {
             query["伝票番号"] = "==\(number)"

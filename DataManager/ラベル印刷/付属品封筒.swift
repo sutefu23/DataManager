@@ -61,8 +61,8 @@ public class 付属品封筒型 {
         var 印鑑欄: [(text: String, offset: Double)] = []
         if order.社内塗装あり { 印鑑欄.append(("塗装", 3.6)) }
         印鑑欄.append(("附属品準備", -0.2))
-        if order.外注塗装あり { 印鑑欄.append(("外注塗装", 1.0)) }
-        if order.外注メッキあり { 印鑑欄.append(("外注メッキ", -0.2)) }
+        if order.外注塗装あり { 印鑑欄.append(("塗装", 3.6)) }
+        if order.外注メッキあり { 印鑑欄.append(("メッキ", 2.0)) }
         印鑑欄.append(("品質管理", 0.8))
         //        印鑑欄: [(text: String, offset: Double)] = [("塗装", 3.6), ("附属品準備", -0.2), ("外注塗装", 1.0), ("外注メッキ", -0.2), ("品質管理", 0.8)]
         let count = Double(印鑑欄.count)
