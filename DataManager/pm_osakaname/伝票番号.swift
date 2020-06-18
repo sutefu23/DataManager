@@ -23,6 +23,40 @@ func clear伝票番号Cache() {
     lock.unlock()
 }
 
+public class 伝票番号解析型 {
+    private var mainNumber: 伝票番号型?
+    private var subNumber: 伝票番号型?
+    private var mainChecked: Bool
+    
+    public init<S: StringProtocol>(_ value: S) {
+        if let number = Int(value) {
+            let order = 伝票番号型(validNumber: number)
+            if order.isValidNumber {
+                self.mainNumber = nil
+                self.subNumber = order
+                self.mainChecked = true
+                return
+            }
+        }
+        self.mainNumber = nil
+        self.subNumber = nil
+        self.mainChecked = true
+    }
+    
+    public var 本番号: 伝票番号型? {
+        if !mainChecked {
+            if (try? subNumber?.testIsValid()) == true {
+                mainNumber = subNumber
+            }
+            mainChecked = true
+        }
+        return mainNumber
+    }
+    public var 仮番号: 伝票番号型? {
+        return subNumber
+    }
+}
+
 public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
     public let 整数値: Int
     
@@ -40,8 +74,8 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     }
     
     public init?(invalidNumber: Int) throws {
-        if !伝票番号型.isValidNumber(invalidNumber) { return nil }
         self.整数値 = invalidNumber
+        if !self.isValidNumber { return nil }
         if try testIsValid() == false { return nil }
     }
     
@@ -73,16 +107,23 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     }
     
     // MARK: -
-    public static func isValidNumber(_ number: Int) -> Bool {
-        return number >= 10_0000 && number <= 9999_99999
-    }
     public static func isValidNumber(_ number: String) -> Bool {
         guard let number = Int(number) else { return false }
         return isValidNumber(number)
-//        return number >= 10_0000 && number <= 9999_99999
     }
 
-    
+    public static func isValidNumber(_ number: Int) -> Bool { 伝票番号型(validNumber: number).isValidNumber }
+
+    public var isValidNumber: Bool {
+        let low = self.下位整数値
+        guard low >= 1 && low <= 99999 else { return false }
+        let month = self.月値
+        guard month >= 1 && month <= 12 else { return false }
+        let year = self.年値
+        guard year >= 2000 && year <= 2099 else { return false }
+        return true
+    }
+
     // MARK: - Comparable
     public static func <(left: 伝票番号型, right: 伝票番号型) -> Bool {
         if left.上位整数値 != right.上位整数値 {
@@ -100,13 +141,16 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     public var 下位整数値: Int {
         return 整数値 > 9999_9999 ? 整数値 % 1000_00 : 整数値 % 100_00
     }
+    public var 下位文字列: String {
+        String(format: "%04d", 下位整数値)
+    }
     
     public var 年値: Int { 2000 + 上位整数値 / 100 }
     public var 月値: Int { 上位整数値 % 100 }
     
     /// 表示用伝票番号文字列
     public var 表示用文字列: String {
-        return "\(上位整数値)-\(String(format: "%04d", 下位整数値))"
+        return "\(上位整数値)-\(下位文字列)"
     }
     
     public var バーコード: String {
