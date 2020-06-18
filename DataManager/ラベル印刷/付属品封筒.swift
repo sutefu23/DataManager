@@ -53,8 +53,8 @@ public class 付属品封筒型 {
         rect2.append(PaperText(mmx: 0, mmy: 14, inset: inset, text: "取付に必要な部品が入っています", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 21, inset: inset, text: "開封の上、ご確認ください", fontSize: 14, bold: false, color: .black))
         
-        let setinfo = (order.セット数値 > 0) ? String(order.セット数値) : order.セット数
-        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(Int(setinfo) ?? 1)　セット", fontSize: 14, bold: false, color: .black))
+        let setinfo = Int(order.セット数値)
+        rect2.append(PaperText(mmx: 5, mmy: 30, inset: inset, text: "原稿　　\(setinfo)　セット", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 5, mmy: 40, inset: inset, text: "補修材 　　　　個", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
         // 印鑑欄

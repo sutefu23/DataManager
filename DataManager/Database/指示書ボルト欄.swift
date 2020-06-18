@@ -209,7 +209,7 @@ public class 資材要求情報型 {
         self.is附属品 = is附属品
         let set = (セット数 >= 1) ? セット数 : 1
         let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
-        if numbers == nil && is附属品 != false { return nil }
+        if numbers == nil && is附属品 { return nil }
         guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
             for object in 板加工在庫一覧 {
                 if object.名称 == text {
