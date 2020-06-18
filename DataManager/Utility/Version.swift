@@ -113,3 +113,17 @@ public func makeNewVersionInfo(newVersion: Version, currentVersion: Version) -> 
     }
     return info
 }
+
+#if os(iOS) || os(tvOS)
+import UIKit
+
+extension UILabel {
+    public func setupVersionInfo() {
+        if let ver = Version()?.fullText {
+            self.text = "Ver " + ver
+        } else {
+            self.text = nil
+        }
+    }
+}
+#endif

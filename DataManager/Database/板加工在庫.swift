@@ -14,17 +14,18 @@ struct 板加工在庫型 {
     let 面積: Double
     let ソート順: Double
     
-    init?(_ line: String) {
-        let digs = line.toJapaneseNormal.split(separator: "\t")
+    init?(_ line: String, order: Double?) {
+        let digs = line.toJapaneseNormal.split(separator: ",")
         guard digs.count >= 3 else { return nil }
         let name = digs[0]
         if name.isEmpty { return nil }
         guard let item = 資材型(図番: 図番型(digs[1])) else { return nil }
         guard let area = Double(digs[2]), area > 0 else { return nil }
+        let order = order ?? 0
         self.名称 = String(name)
         self.資材 = item
         self.面積 = area
-        self.ソート順 = (digs.count > 3) ? (Double(digs[3]) ?? 0) : 0
+        self.ソート順 = (digs.count > 3) ? (Double(digs[3]) ?? order) : order
     }
 }
 
@@ -33,9 +34,12 @@ let 板加工在庫一覧: [板加工在庫型] = {
     let url = bundle.url(forResource: "板加工在庫一覧", withExtension: "csv")!
     let text = try! String(contentsOf: url, encoding: .utf8)
     var list: [板加工在庫型] = []
+    let step: Double = 0.0001
+    var order: Double = -0.0001
     text.enumerateLines { (line, _) in
-        guard let object = 板加工在庫型(line) else { return }
+        guard let object = 板加工在庫型(line, order: order) else { return }
         list.append(object)
+        order -= step
     }
     return list
 }()
