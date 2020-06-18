@@ -103,7 +103,7 @@ public enum 金額計算タイプ型 {
         switch self {
         case .カット棒(itemLength: let itemLength, length: let length, count: let count):
             if let price = item.単価 {
-                value = (length / itemLength) * price * Double(count)
+                value = (length / itemLength) * price * count
             }
             return ("\(length)mm \(count)本", nil, value)
         case .コイル材(weight: let weight):
@@ -113,18 +113,18 @@ public enum 金額計算タイプ型 {
             return ("\(weight)kg", nil, value)
         case .個数物(count: let count):
             if let price = item.単価 {
-                value = price * Double(count)
+                value = price * count
             }
             return ("\(count)個", nil, value)
         case .平面形状(area: let area, count: let count):
             if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
-                value = (area / sheetArea) * price
+                value = (area / sheetArea) * price * count
             }
             return ("\(area)㎟ \(count)個", area, value)
         case .平面板(height: let height, width: let width, count: let count):
             if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
                 let area = width * height
-                value = (area / sheetArea) * price
+                value = (area / sheetArea) * price * count
             }
             return ("\(height)x\(width) \(count)枚", area, value)
         }

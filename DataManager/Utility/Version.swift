@@ -118,8 +118,15 @@ public func makeNewVersionInfo(newVersion: Version, currentVersion: Version) -> 
 import UIKit
 
 extension UILabel {
+    public func setupFullVersionInfo() {
+        if let ver = Version()?.fullText, !ver.isEmpty {
+            self.text = "Ver " + ver
+        } else {
+            self.text = nil
+        }
+    }
     public func setupVersionInfo() {
-        if let ver = Version()?.fullText {
+        if let ver = Version()?.simpleText, !ver.isEmpty {
             self.text = "Ver " + ver
         } else {
             self.text = nil
