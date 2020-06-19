@@ -64,7 +64,6 @@ public class 付属品封筒型 {
         if order.外注塗装あり { 印鑑欄.append(("塗装", 3.6)) }
         if order.外注メッキあり { 印鑑欄.append(("メッキ", 2.0)) }
         印鑑欄.append(("品質管理", 0.8))
-        //        印鑑欄: [(text: String, offset: Double)] = [("塗装", 3.6), ("附属品準備", -0.2), ("外注塗装", 1.0), ("外注メッキ", -0.2), ("品質管理", 0.8)]
         let count = Double(印鑑欄.count)
         rect2.append(PaperPath.makeBox(origin: (x: 45+13*(5-count), y: 37), size: (width: 13*count, height: 16))) // 枠線
         rect2.append(PaperPath.makeLine(from: (x: 45+13*(5-count), y: 41), to: (x: 45+13*5, y: 41), lineWidth: 0.5)) // 横線
@@ -88,14 +87,13 @@ public class 付属品封筒型 {
         // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-        
+        // 列挙
         var vlist: [VData] = []
         for index in 0...15 {
-            guard let text = order.ボルト等(index+1), let count = order.ボルト本数(index+1), !text.isEmpty && !count.isEmpty else { continue }
-            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount), info.is附属品 == true {
+            guard let text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
+            let count = order.ボルト本数(index+1) ?? "1"
+            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount) {
                 vlist.append(.info(info))
-            } else {
-                vlist.append(.text(text))
             }
         }
         vlist.sort()
@@ -109,6 +107,11 @@ public class 付属品封筒型 {
                 case .info(let info):
                     rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
                     rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+                    if let vol = info.現在数量(伝票番号: order.伝票番号), vol > 0 {
+                        let str = String(Int(vol))
+                        let mx = x + 52.5 - Double(str.count) * 2.5
+                        rect3.append(PaperText(mmx: mx, mmy: y+1.2, inset: inset, text: str, fontSize: 12, bold: false, color: .black))
+                    }
                 case .text(let text):
                     rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: text, fontSize: 12, bold: false, color: .black))
                 }

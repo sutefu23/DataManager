@@ -60,75 +60,124 @@ public enum ボルト数欄型 {
 }
 
 public enum 金額計算タイプ型 {
-    case 平面板(height: Double, width: Double, count: Double)
-    case 平面形状(area: Double, count: Double)
-    case カット棒(itemLength: Double, length: Double, count: Double)
-    case 個数物(count: Double)
+    case 平面板(height: Double, width: Double)
+    case 平面形状(area: Double)
+    case カット棒(itemLength: Double, length: Double)
+    case 個数物
     case コイル材(weight: Double)
     
     public var area: Double? {
         switch self {
-        case .平面板(height: let height, width: let width, let count):
-            return height * width * Double(count)
-        case .平面形状(area: let area, let count):
-            return area * Double(count)
+        case .平面板(height: let height, width: let width):
+            return height * width
+        case .平面形状(area: let area):
+            return area
         default:
             return nil
         }
     }
     
-    public func 分量(資材 item: 資材型) -> Double {
+//    public var 単位数: Double {
+//        switch self {
+//        case .カット棒(itemLength: _, length: _, count: let count):
+//            return count
+//        case .コイル材(weight: _):
+//            return 1
+//        case .個数物(count: let count):
+//            return count
+//        case .平面形状(area: _, count: let count):
+//            return count
+//        case .平面板(height: _, width: _, count: let count):
+//            return count
+//        }
+//    }
+    
+    public func 単位量(資材 item: 資材型) -> Double? {
         switch self {
-        case .カット棒(itemLength: let itemLength, length: let length, count: _):
+        case .カット棒(itemLength: let itemLength, length: let length):
             return length / itemLength
         case .コイル材(weight: let weight):
             return weight / 43.0
-        case .個数物(count: _):
+        case .個数物:
             return 1.0
-        case .平面形状(area: let area, count: _):
+        case .平面形状(area: let area):
             if let sheetArea = 資材板情報型(item).面積 {
                 return area / sheetArea
             }
-        case .平面板(height: let height, width: let width, count: _):
+        case .平面板(height: let height, width: let width):
             if let sheetArea = 資材板情報型(item).面積 {
                 let area = width * height
                 return area / sheetArea
             }
         }
-        return 0
+        return nil
     }
     
-    public func makeData(資材 item: 資材型) -> (使用量: String, 使用面積: Double?, 金額: Double?) {
-        var value: Double? = nil
-        switch self {
-        case .カット棒(itemLength: let itemLength, length: let length, count: let count):
-            if let price = item.単価 {
-                value = (length / itemLength) * price * count
+    public func 使用量表示(count: Double?) -> String {
+        if let count = count {
+            switch self {
+            case .カット棒(itemLength: _, length: let length):
+                return "\(length)mm \(count)本"
+            case .コイル材(weight: let weight):
+                return "\(weight)kg"
+            case .個数物:
+                return "\(count)個"
+            case .平面形状(area: let area):
+                return "\(area)㎟ \(count)個"
+            case .平面板(height: let height, width: let width):
+                return "\(height)x\(width) \(count)枚"
             }
-            return ("\(length)mm \(count)本", nil, value)
-        case .コイル材(weight: let weight):
-            if let price = item.単価 {
-                value = (weight / 43.0) * price
+        } else {
+            switch self {
+            case .カット棒(itemLength: _, length: let length):
+                return "\(length)mm"
+            case .コイル材(weight: let weight):
+                return "\(weight)kg"
+            case .個数物:
+                return ""
+            case .平面形状(area: let area):
+                return "\(area)㎟"
+            case .平面板(height: let height, width: let width):
+                return "\(height)x\(width)"
             }
-            return ("\(weight)kg", nil, value)
-        case .個数物(count: let count):
-            if let price = item.単価 {
-                value = price * count
-            }
-            return ("\(count)個", nil, value)
-        case .平面形状(area: let area, count: let count):
-            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
-                value = (area / sheetArea) * price * count
-            }
-            return ("\(area)㎟ \(count)個", area, value)
-        case .平面板(height: let height, width: let width, count: let count):
-            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
-                let area = width * height
-                value = (area / sheetArea) * price * count
-            }
-            return ("\(height)x\(width) \(count)枚", area, value)
         }
     }
+    public func 金額(資材: 資材型, count: Double?) -> Double? {
+        guard let price = 資材.単価, let unit = self.単位量(資材: 資材), let count = count else { return nil }
+        return unit * count * price
+    }
+    
+//    public func makeData(資材 item: 資材型) -> (使用量: String, 金額: Double?) {
+//        var value: Double? = nil
+//        switch self {
+//        case .カット棒(itemLength: let itemLength, length: let length, count: let count):
+//            if let price = item.単価 {
+//                value = (length / itemLength) * price * count
+//            }
+//            return ("\(length)mm \(count)本",  value)
+//        case .コイル材(weight: let weight):
+//            if let price = item.単価 {
+//                value = (weight / 43.0) * price
+//            }
+//            return ("\(weight)kg",  value)
+//        case .個数物(count: let count):
+//            if let price = item.単価 {
+//                value = price * count
+//            }
+//            return ("\(count)個",  value)
+//        case .平面形状(area: let area, count: let count):
+//            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
+//                value = (area / sheetArea) * price * count
+//            }
+//            return ("\(area)㎟ \(count)個",  value)
+//        case .平面板(height: let height, width: let width, count: let count):
+//            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
+//                let area = width * height
+//                value = (area / sheetArea) * price * count
+//            }
+//            return ("\(height)x\(width) \(count)枚",  value)
+//        }
+//    }
 }
 
 public class 資材要求情報型 {
@@ -144,22 +193,16 @@ public class 資材要求情報型 {
     
     public lazy var 資材: 資材型? = 資材型(図番: self.図番)
     public lazy var 単価: Double? = self.資材?.単価
+    public var 単位数: Double?
     public var 金額: Double? {
         guard let item = self.資材 else { return nil }
-        let data = 金額計算タイプ?.makeData(資材: item)
-        return data?.金額
+        return 金額計算タイプ?.金額(資材: item, count: self.単位数)
     }
     
-    public var 使用量: String? {
-        guard let item = self.資材 else { return nil }
-        let data = 金額計算タイプ?.makeData(資材: item)
-        return data?.使用量
-    }
-    public var 使用面積: Double? {
-        guard let item = self.資材 else { return nil }
-        let data = 金額計算タイプ?.makeData(資材: item)
-        return data?.使用面積
-    }
+    public var 使用量: String? { 金額計算タイプ?.使用量表示(count: self.単位数) }
+    public var 単価テキスト: String { self.資材?.単価?.金額テキスト ?? "" }
+    public var 金額テキスト: String { self.金額?.金額テキスト ?? "" }
+
     
     public func is分納相手完納済み(_ order: 指示書型, 自工程: 工程型) throws -> Bool? {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
@@ -218,7 +261,8 @@ public class 資材要求情報型 {
                     self.分割表示名2 = ""
                     self.資材種類 = nil
                     self.ボルト数量 = numbers
-                    self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積, count: numbers?.総数 ?? 0)
+                    self.単位数 = numbers?.総数
+                    self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
                     self.図番 = object.資材.図番
                     return
                 }
@@ -234,9 +278,24 @@ public class 資材要求情報型 {
         if adjustCount {
             count = type.数量調整(count)
         }
-        guard let info = type.make使用情報(count) else { return nil }
+        self.単位数 = count
+        guard let info = type.make使用情報() else { return nil }
         self.図番 = info.図番
         self.金額計算タイプ = info.金額計算タイプ
+    }
+    
+    public func 現在数量(伝票番号: 伝票番号型) ->  Double? {
+        guard self.資材種類 != nil, let list = (try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名)), !list.isEmpty else { return nil }
+        var volume: Double? = nil
+        for data in list {
+            guard let vol = data.単位数 else { continue }
+            if let vol2 = volume {
+                volume = vol2 + vol
+            } else {
+                volume = vol
+            }
+        }
+        return volume
     }
 }
 public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情報型) -> Bool {
@@ -330,14 +389,14 @@ public enum 資材種類型 {
         return count
     }
     
-    public func make使用情報(_ count: Double) -> (図番: 図番型, 金額計算タイプ: 金額計算タイプ型)? {
+    public func make使用情報() -> (図番: 図番型, 金額計算タイプ: 金額計算タイプ型)? {
         let 図番: 図番型
         let 金額計算タイプ: 金額計算タイプ型
         switch self {
         case .FB(板厚: let thin, 高さ: let height):
             guard let object = searchボルト等(種類: "FB", サイズ: thin, 長さ: height) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .定番FB(板厚: let size):
             switch Double(size) {
             case 3:
@@ -361,7 +420,7 @@ public enum 資材種類型 {
             default:
                 return nil
             }
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .ボルト(サイズ: let size, 長さ: let length):
             let itemLength: Double
             if let object = searchボルト等(種類: "ボルト", サイズ: size, 長さ: length) {
@@ -373,80 +432,80 @@ public enum 資材種類型 {
             } else {
                 return nil
             }
-            金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
+            金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
         case .ナット(サイズ: let size):
             guard let object = searchボルト等(種類: "ナット", サイズ: size) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .ワッシャー(サイズ: let size):
             guard let object = searchボルト等(種類: "ワッシャー", サイズ: size) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .Sワッシャー(サイズ: let size):
             guard let object = searchボルト等(種類: "Sワッシャー", サイズ: size) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .丸パイプ(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "丸パイプ", サイズ: size) else { return nil }
             図番 = object.図番
             let itemLength: Double = 4000
-            金額計算タイプ = .カット棒(itemLength: itemLength, length: length, count: count)
+            金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
         case .Cタッピング(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "Cタッピング", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .サンロックトラス(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "サンロックトラス", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .サンロック特皿(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "サンロック特皿", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .皿(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "皿", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .特皿(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "特皿", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .トラス(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "トラス", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .スリムヘッド(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "スリムヘッド", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .ナベ(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "ナベ", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .テクスナベ(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "テクスナベ", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .六角(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "六角", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .スタッド(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "スタッド", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .ストレートスタッド(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "ストレートスタッド", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .ALスタッド(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "ALスタッド", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         case .CDスタッド(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "CDスタッド", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
-            金額計算タイプ = .個数物(count: count)
+            金額計算タイプ = .個数物
         }
         return (図番, 金額計算タイプ)
     }
