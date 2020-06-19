@@ -451,6 +451,8 @@
 				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
 				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
 				140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */,
+				147047002488C03400A5D8F6 /* 板加工在庫.swift */,
+				147047042488EE3600A5D8F6 /* 板加工在庫一覧.csv */,
 			);
 			path = "資材使用記録";
 			sourceTree = "<group>";
@@ -523,7 +525,6 @@
 				8E392EEC21FD626B00CEDF18 /* pm_osakaname */,
 				1412036F2201C3DF0054B56F /* Utility */,
 				8E392ED321FD61D900CEDF18 /* DataManager.h */,
-				147047042488EE3600A5D8F6 /* 板加工在庫一覧.csv */,
 				8E392ED421FD61D900CEDF18 /* Info.plist */,
 			);
 			path = DataManager;
@@ -580,7 +581,6 @@
 				143FA9DC224F5EA9000F2029 /* 社員.swift */,
 				141203742201D6000054B56F /* スケジュール.swift */,
 				14BEE9E32240928F00B2750B /* 資材.swift */,
-				147047002488C03400A5D8F6 /* 板加工在庫.swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,
 				146651AF240DC696008F50D0 /* 資材入出庫.swift */,

@@ -168,6 +168,7 @@ public class 資材使用記録型 {
                 let db = FileMakerDB.system
                 try db.delete(layout: 資材使用記録Data型.dbName, recordId: recordID)
                 self.recordID = nil
+                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
             } catch {
                 result = error
             }

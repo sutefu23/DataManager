@@ -206,22 +206,17 @@ public class 資材要求情報型 {
         self.is附属品 = is附属品
         let set = (セット数 >= 1) ? セット数 : 1
         let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
-        if numbers == nil && is附属品 { return nil }
         guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
-            for object in 板加工在庫一覧 {
-                if object.名称 == text {
-                    self.ソート順 = object.ソート順
-                    self.分割表示名1 = object.名称
-                    self.分割表示名2 = ""
-                    self.資材種類 = nil
-                    self.ボルト数量 = numbers
-                    self.単位数 = numbers?.総数
-                    self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
-                    self.図番 = object.資材.図番
-                    return
-                }
-            }
-            return nil
+            guard let object = 板加工在庫マップ[text] else { return nil }
+            self.ソート順 = object.ソート順
+            self.分割表示名1 = object.名称
+            self.分割表示名2 = ""
+            self.資材種類 = nil
+            self.ボルト数量 = numbers
+            self.単位数 = numbers?.総数
+            self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
+            self.図番 = object.資材.図番
+            return
         }
         self.ソート順 = priority
         self.分割表示名1 = title
@@ -229,7 +224,7 @@ public class 資材要求情報型 {
         self.資材種類 = type
         self.ボルト数量 = numbers
         var count = numbers?.総数 ?? 0
-        if adjustCount {
+        if is附属品 && adjustCount {
             count = type.数量調整(count)
         }
         self.単位数 = count
@@ -239,7 +234,7 @@ public class 資材要求情報型 {
     }
     
     public func 現在数量(伝票番号: 伝票番号型) ->  Double? {
-        guard self.資材種類 != nil, let list = (try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名)), !list.isEmpty else { return nil }
+        guard let list = (try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名)), !list.isEmpty else { return nil }
         var volume: Double? = nil
         for data in list {
             guard let vol = data.単位数 else { continue }

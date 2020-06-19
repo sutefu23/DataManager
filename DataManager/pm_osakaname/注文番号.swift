@@ -35,6 +35,18 @@ private let 注文番号部署記号対応表: [String: 部署型] = [
     "X": 部署型.資材,
     "Y": 部署型.品質管理,
 ]
+private let 部署注文番号対応map: [部署型: 注文番号型] = {
+    var map: [部署型: 注文番号型] = [:]
+    for (number, section) in 注文番号部署記号対応表 {
+        map[section] = 注文番号キャッシュ型.shared[number]!
+    }
+    return map
+}()
+extension 部署型 {
+    var 注文番号: 注文番号型? {
+        部署注文番号対応map[self]
+    }
+}
 
 public class 注文番号キャッシュ型 {
     public static let shared = 注文番号キャッシュ型()

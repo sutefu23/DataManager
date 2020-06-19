@@ -49,7 +49,11 @@ public class 付属品封筒型 {
         
         page.append(rect1)
         let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 50, width: 110, height: 25)
-        rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(order.品名)", fontSize: 18, bold: false, color: .black))
+        var title = order.品名
+        if title.count >= 22 {
+            title = title.prefix(15) + "…" + title.suffix(6)
+        }
+        rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(title)", fontSize: 18, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 14, inset: inset, text: "取付に必要な部品が入っています", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 21, inset: inset, text: "開封の上、ご確認ください", fontSize: 14, bold: false, color: .black))
         
@@ -96,14 +100,17 @@ public class 付属品封筒型 {
                 vlist.append(.info(info))
             }
         }
-        vlist.sort()
+        let vmap = Dictionary(grouping: vlist) { $0.title }
+        let vlist2 = vmap.values.sorted { $0.first! < $1.first! }
         for index in 0...16 {
             let x: Double = index < 8 ? 0 : 55
             let y: Double = 10 + Double(index % 8) * 10
             rect3.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 10, height: 10)))
             rect3.append(PaperPath.makeBox(origin: (x: x+10, y: y-5), size: (width: 45, height: 10)))
-            if vlist.indices.contains(index) {
-                switch vlist[index] {
+            if vlist2.indices.contains(index) {
+                let list = vlist2[index]
+                let vfirst = list.first!
+                switch vfirst {
                 case .info(let info):
                     rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
                     rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
@@ -176,4 +183,12 @@ private enum VData: Comparable {
         
     }
 
+    var title: String {
+        switch self {
+        case .info(let info):
+            return info.表示名
+        case .text(let title):
+            return title
+        }
+    }
 }
