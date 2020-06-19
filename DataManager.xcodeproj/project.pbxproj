@@ -169,13 +169,13 @@
 /* Begin PBXFileReference section */
 		1404C86D222CE8D900F3B025 /* Test進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗.swift"; sourceTree = "<group>"; };
 		1404E905220D905100841373 /* FileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerSession.swift; sourceTree = "<group>"; };
-		140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（パイプ情報）.swift"; sourceTree = "<group>"; };
+		140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "資材（パイプ情報）.swift"; path = "../Database/資材（パイプ情報）.swift"; sourceTree = "<group>"; };
 		1410066A2464FBF900CE7934 /* Test伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test伝票番号.swift"; sourceTree = "<group>"; };
 		1410066C24652ABA00CE7934 /* Test資材コイル情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材コイル情報.swift"; sourceTree = "<group>"; };
 		141057C7246B8BC900277E42 /* 管理資材（板）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（板）.swift"; sourceTree = "<group>"; };
 		141057C9246B8C1D00277E42 /* 管理資材（パイプ）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（パイプ）.swift"; sourceTree = "<group>"; };
-		141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（ボルト情報）.swift"; sourceTree = "<group>"; };
-		141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書ボルト欄.swift"; sourceTree = "<group>"; };
+		141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "資材（ボルト情報）.swift"; path = "../Database/資材（ボルト情報）.swift"; sourceTree = "<group>"; };
+		141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "指示書ボルト欄.swift"; path = "../Database/指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		141203702201C3EA0054B56F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		141203722201C5890054B56F /* 出勤日.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "出勤日.swift"; sourceTree = "<group>"; };
 		141203742201D6000054B56F /* スケジュール.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "スケジュール.swift"; sourceTree = "<group>"; };
@@ -443,6 +443,18 @@
 			path = CSV;
 			sourceTree = "<group>";
 		};
+		14958446249C747A00D976B4 /* 資材使用記録 */ = {
+			isa = PBXGroup;
+			children = (
+				141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */,
+				147B8806242F0508008FB8F4 /* 資材(板情報).swift */,
+				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
+				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
+				140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */,
+			);
+			path = "資材使用記録";
+			sourceTree = "<group>";
+		};
 		1495F8082424608800944E46 /* 工程分析 */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +516,7 @@
 				146C1F33239F1EFA00FE2918 /* 状況キャッシュ */,
 				8ED7EEFD239948B600A47C44 /* 記録 */,
 				145EE90423966D5C008BC8B4 /* 出力 */,
+				14958446249C747A00D976B4 /* 資材使用記録 */,
 				8EBD198422248C43000644C1 /* 作業ツリー */,
 				14681F102212B37200C41D15 /* 工程図 */,
 				8E392EEB21FD625800CEDF18 /* Database */,
@@ -567,11 +580,6 @@
 				143FA9DC224F5EA9000F2029 /* 社員.swift */,
 				141203742201D6000054B56F /* スケジュール.swift */,
 				14BEE9E32240928F00B2750B /* 資材.swift */,
-				147B8806242F0508008FB8F4 /* 資材(板情報).swift */,
-				14388D4E2446A7BF00CD1503 /* 資材(コイル情報).swift */,
-				141057CB246B8CBF00277E42 /* 資材（ボルト情報）.swift */,
-				140F5F6C2484E5BD008F40EC /* 資材（パイプ情報）.swift */,
-				141057CD246B8DEF00277E42 /* 指示書ボルト欄.swift */,
 				147047002488C03400A5D8F6 /* 板加工在庫.swift */,
 				146508AB22FD4CF40095AD83 /* 発注.swift */,
 				149272402306959F00BE4BEF /* 指示書変更内容履歴.swift */,

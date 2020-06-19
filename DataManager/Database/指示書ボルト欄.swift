@@ -77,21 +77,6 @@ public enum 金額計算タイプ型 {
         }
     }
     
-//    public var 単位数: Double {
-//        switch self {
-//        case .カット棒(itemLength: _, length: _, count: let count):
-//            return count
-//        case .コイル材(weight: _):
-//            return 1
-//        case .個数物(count: let count):
-//            return count
-//        case .平面形状(area: _, count: let count):
-//            return count
-//        case .平面板(height: _, width: _, count: let count):
-//            return count
-//        }
-//    }
-    
     public func 単位量(資材 item: 資材型) -> Double? {
         switch self {
         case .カット棒(itemLength: let itemLength, length: let length):
@@ -143,41 +128,10 @@ public enum 金額計算タイプ型 {
         }
     }
     public func 金額(資材: 資材型, count: Double?) -> Double? {
-        guard let price = 資材.単価, let unit = self.単位量(資材: 資材), let count = count else { return nil }
+        guard let price = 資材.単価, let unit = self.単位量(資材: 資材) else { return nil }
+        let count = count ?? 1.0
         return unit * count * price
     }
-    
-//    public func makeData(資材 item: 資材型) -> (使用量: String, 金額: Double?) {
-//        var value: Double? = nil
-//        switch self {
-//        case .カット棒(itemLength: let itemLength, length: let length, count: let count):
-//            if let price = item.単価 {
-//                value = (length / itemLength) * price * count
-//            }
-//            return ("\(length)mm \(count)本",  value)
-//        case .コイル材(weight: let weight):
-//            if let price = item.単価 {
-//                value = (weight / 43.0) * price
-//            }
-//            return ("\(weight)kg",  value)
-//        case .個数物(count: let count):
-//            if let price = item.単価 {
-//                value = price * count
-//            }
-//            return ("\(count)個",  value)
-//        case .平面形状(area: let area, count: let count):
-//            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
-//                value = (area / sheetArea) * price * count
-//            }
-//            return ("\(area)㎟ \(count)個",  value)
-//        case .平面板(height: let height, width: let width, count: let count):
-//            if let price = item.単価, let sheetArea = 資材板情報型(item).面積 {
-//                let area = width * height
-//                value = (area / sheetArea) * price * count
-//            }
-//            return ("\(height)x\(width) \(count)枚",  value)
-//        }
-//    }
 }
 
 public class 資材要求情報型 {
