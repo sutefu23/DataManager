@@ -136,8 +136,8 @@ public class 指示書型 {
     var 図URL: URL? { record.url(forKey: "図") }
     #if os(iOS) || os(tvOS)
     public lazy var 図: UIImage? = {
-        lock.lock()
-        defer { lock.unlock() }
+        mutext.lock()
+        defer { mutext.unlock() }
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
         guard let 一覧 = (try? db.downloadObject(url: url)) else { return nil }
