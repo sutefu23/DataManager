@@ -62,6 +62,13 @@ public struct DMScanner: RandomAccessCollection {
         self.startIndex = source.startIndex
     }
     
+    /// 文字列スキャナの初期化
+    /// - Parameters:
+    ///   - string: 分析対象の文字列
+    ///   - normalizedFullHalf: 英数は半角に、日本語なは全角に寄せる
+    ///   - upperCased: 全て大文字にする
+    ///   - skipSpaces: 自動的に空欄を読み飛ばす
+    ///   - newlineToSpace: 改行コードをスペースに置き換える
     public init<S: StringProtocol>(_ string: S, normalizedFullHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
         var str: String
         if normalizedFullHalf {

@@ -9,15 +9,13 @@
 import Foundation
 
 public struct Month: Hashable, Strideable, Codable {
-    public var year: Int
+    public var longYear: Int
     public var month: Int
-    public var shortYear: Int {
-        return year % 100
-    }
+    public var shortYear: Int { longYear % 100 }
     
     public init() {
         let date = Date()
-        self.year = date.yearNumber
+        self.longYear = date.yearNumber
         self.month = date.monthNumber
     }
 
@@ -38,12 +36,12 @@ public struct Month: Hashable, Strideable, Codable {
             }
         }
         guard let year = Int(digs[0]), let month = Int(digs[1]) else { return nil }
-        self.year = year
+        self.longYear = year
         self.month = month
     }
     
     init(_ year: Int, _ month: Int) {
-        self.year = year
+        self.longYear = year
         self.month = month
     }
     // MARK: - <Codable>
@@ -54,19 +52,19 @@ public struct Month: Hashable, Strideable, Codable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.year = try values.decode(Int.self, forKey: .year)
+        self.longYear = try values.decode(Int.self, forKey: .year)
         self.month = try values.decodeIfPresent(Int.self, forKey: .month) ?? 1
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.year, forKey: .year)
+        try container.encode(self.longYear, forKey: .year)
         if self.month != 1 { try container.encode(self.month, forKey: .month) }
     }
 
     // MARK: -
     public var prevMonth: Month {
-        var year = self.year
+        var year = self.longYear
         var month = self.month-1
         if month < 1 {
             month = 12
@@ -76,7 +74,7 @@ public struct Month: Hashable, Strideable, Codable {
     }
     
     public var nextMonth: Month {
-        var year = self.year
+        var year = self.longYear
         var month = self.month+1
         if month > 12 {
             month = 1
@@ -95,20 +93,20 @@ public struct Month: Hashable, Strideable, Codable {
 
     public var monthOrYearMonthString: String {
         var monthString = "\(month)"
-        if Date().yearNumber == self.year {
+        if Date().yearNumber == self.longYear {
             return monthString
         } else {
             if monthString.count == 1 { monthString = "0" + monthString }
-            return "\(year)/\(monthString)"
+            return "\(longYear)/\(monthString)"
         }
     }
 
     public var yearMonthJString: String {
-        return "\(year)年\(month)月"
+        return "\(longYear)年\(month)月"
     }
     
     public var firstDay: Day {
-        return Day(self.year, self.month, 1)
+        return Day(self.longYear, self.month, 1)
     }
     
     public var lastDay: Day {
@@ -120,7 +118,7 @@ public struct Month: Hashable, Strideable, Codable {
     
     public var weeks: [ClosedRange<Day>] {
         var weeks: [ClosedRange<Day>] = []
-        var current = Day(year: self.year, month: self.month, day: 1)
+        var current = Day(year: self.longYear, month: self.month, day: 1)
         while current.week != .日 { current = current.prevDay }
         repeat {
             let lastDay = current.nextDay.nextDay.nextDay.nextDay.nextDay.nextDay
@@ -151,7 +149,7 @@ public struct Month: Hashable, Strideable, Codable {
     }
     
     public static func <(left: Month, right: Month) -> Bool {
-        if left.year != right.year { return left.year < right.year }
+        if left.longYear != right.longYear { return left.longYear < right.longYear }
         return left.month < right.month
     }
     
@@ -200,7 +198,7 @@ extension Date {
 
     public init(_ month: Month) {
         var comp = DateComponents()
-        comp.year = month.year
+        comp.year = month.longYear
         comp.month = month.month
         comp.day = 1
         let date = cal.date(from: comp)!

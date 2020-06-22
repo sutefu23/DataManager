@@ -8,6 +8,61 @@
 
 import Foundation
 
+private let 箱文字Set = Set<工程型>([.立ち上がり, .半田, .裏加工, .立ち上がり_溶接, .溶接, .裏加工_溶接])
+
+public enum ボルト数調整モード型 {
+    case 調整なし
+    case 箱文字式
+    
+    public init(_ process: 工程型) {
+        if 箱文字Set.contains(process) {
+            self = .箱文字式
+        } else {
+            self = .調整なし
+        }
+    }
+    
+    public func 数量調整(ベース数量 count: Double, 資材種類: 資材種類型?, 表示名: String) -> Double {
+        switch self {
+        case .箱文字式:
+            let offset: [Double]
+            switch 資材種類 {
+            case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .CDスタッド(_, _), .ストレートスタッド(_, _):
+                offset = [1, 2, 3, 3, 3, 5, 5, 6]
+            case .丸パイプ(_, _):
+                offset = [1, 2, 3, 3, 3, 5, 5, 6]
+            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(_, _):
+                offset = [2, 3, 3, 5, 10, 10, 10, 20]
+            case .ナット(_):
+                offset = [2, 3, 3, 5, 10, 10, 10, 15]
+            case .ワッシャー(_), .Sワッシャー(_):
+                offset = [2, 3, 3, 5, 10, 10, 10, 15]
+            case .定番FB(_), .FB(_, _):
+                return count
+            case nil:
+                if 表示名.hasPrefix("L金具") {
+                    offset = [2, 3, 3, 5, 10, 10, 10, 10]
+                    break
+                }
+                return count
+            }
+            assert(offset.count == 8)
+            if (1...5).contains(count) { return offset[0] + count }
+            if (6...10).contains(count) { return offset[1] + count }
+            if (11...15).contains(count) { return offset[2] + count }
+            if (16...30).contains(count) { return offset[3] + count }
+            if (31...40).contains(count) { return offset[4] + count }
+            if (41...50).contains(count) { return offset[5] + count }
+            if (51...100).contains(count) { return offset[6] + count }
+            if (101...).contains(count) { return offset[7] + count }
+            return count
+        default:
+            return count
+        }
+
+    }
+}
+
 public enum ボルト数欄型 {
     case 合計(Double)
     case 分納(Double, Double)
@@ -64,7 +119,7 @@ public enum 金額計算タイプ型 {
     case 平面形状(area: Double)
     case カット棒(itemLength: Double, length: Double)
     case 個数物
-    case コイル材(weight: Double)
+    case コイル材
     
     public var area: Double? {
         switch self {
@@ -81,8 +136,18 @@ public enum 金額計算タイプ型 {
         switch self {
         case .カット棒(itemLength: let itemLength, length: let length):
             return length / itemLength
-        case .コイル材(weight: let weight):
-            return weight / 43.0
+        case .コイル材:
+            let coil = 資材コイル情報型(item)
+            if coil.種類 != "コイル" { return nil }
+            let vol = coil.板厚 * coil.高さ
+            switch coil.材質 {
+            case "SUS304":
+                let kg = vol * 7.93 / 1000000
+                return kg
+            default:
+                return nil
+            }
+            
         case .個数物:
             return 1.0
         case .平面形状(area: let area):
@@ -103,8 +168,8 @@ public enum 金額計算タイプ型 {
             switch self {
             case .カット棒(itemLength: _, length: let length):
                 return "\(length)mm \(count)本"
-            case .コイル材(weight: let weight):
-                return "\(weight)kg"
+            case .コイル材:
+                return "\(count)mm"
             case .個数物:
                 return "\(count)個"
             case .平面形状(area: let area):
@@ -116,8 +181,8 @@ public enum 金額計算タイプ型 {
             switch self {
             case .カット棒(itemLength: _, length: let length):
                 return "\(length)mm"
-            case .コイル材(weight: let weight):
-                return "\(weight)kg"
+            case .コイル材:
+                return ""
             case .個数物:
                 return ""
             case .平面形状(area: let area):
@@ -192,7 +257,7 @@ public class 資材要求情報型 {
         }
     }
     
-    public init?(ボルト欄: String, 数量欄: String, セット数: Double, adjustCount: Bool = false) {
+    public init?(ボルト欄: String, 数量欄: String, セット数: Double, ボルト数調整モード: ボルト数調整モード型 = .調整なし) {
         if ボルト欄.isEmpty { return nil }
         var text = ボルト欄.toJapaneseNormal
         self.表示名 = text
@@ -213,7 +278,11 @@ public class 資材要求情報型 {
             self.分割表示名2 = ""
             self.資材種類 = nil
             self.ボルト数量 = numbers
-            self.単位数 = numbers?.総数
+            if let count = numbers?.総数 {
+                self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: nil, 表示名: text)
+            } else {
+                self.単位数 = nil
+            }
             self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
             self.図番 = object.資材.図番
             return
@@ -224,8 +293,8 @@ public class 資材要求情報型 {
         self.資材種類 = type
         self.ボルト数量 = numbers
         var count = numbers?.総数 ?? 0
-        if is附属品 && adjustCount {
-            count = type.数量調整(count)
+        if is附属品 && ボルト数調整モード != .調整なし {
+            count = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: type, 表示名: text)
         }
         self.単位数 = count
         guard let info = type.make使用情報() else { return nil }
@@ -309,34 +378,6 @@ public enum 資材種類型 {
     case ストレートスタッド(サイズ: String, 長さ: Double)
     case ALスタッド(サイズ: String, 長さ: Double)
     case CDスタッド(サイズ: String, 長さ: Double)
-    
-    public func 数量調整(_ count: Double) -> Double {
-        let offset: [Double]
-        switch self {
-        case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .CDスタッド(_, _), .ストレートスタッド(_, _):
-            offset = [1, 2, 3, 3, 3, 5, 5, 6]
-        case .丸パイプ(_, _):
-            offset = [1, 2, 3, 3, 3, 5, 5, 6]
-        case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(_, _):
-            offset = [2, 3, 3, 5, 10, 10, 10, 20]
-        case .ナット(_):
-            offset = [2, 3, 3, 5, 10, 10, 10, 15]
-        case .ワッシャー(_), .Sワッシャー(_):
-            offset = [2, 3, 3, 5, 10, 10, 10, 15]
-        case .定番FB(_), .FB(_, _):
-            return count
-        }
-        assert(offset.count == 8)
-        if (1...5).contains(count) { return offset[0] + count }
-        if (6...10).contains(count) { return offset[1] + count }
-        if (11...15).contains(count) { return offset[2] + count }
-        if (16...30).contains(count) { return offset[3] + count }
-        if (31...40).contains(count) { return offset[4] + count }
-        if (41...50).contains(count) { return offset[5] + count }
-        if (51...100).contains(count) { return offset[6] + count }
-        if (101...).contains(count) { return offset[7] + count }
-        return count
-    }
     
     public func make使用情報() -> (図番: 図番型, 金額計算タイプ: 金額計算タイプ型)? {
         let 図番: 図番型

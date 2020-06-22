@@ -9,6 +9,7 @@
 import Foundation
 
 public extension UserDefaults {
+    /// FileMakerへのアクセスを停止したいときはtrue
     var filemakerIsDisabled: Bool {
         get { return bool(forKey: "filemakerIsDisabled") }
         set { self.set(newValue, forKey: "filemakerIsDisabled") }
@@ -47,6 +48,7 @@ struct FileMakerSortItem: Encodable {
     let sortOrder: FileMakerSortType
 }
 
+/// １台のサーバーへの最大同時接続数
 let maxConnection = 4
 
 class FileMakerServer: Hashable {
@@ -169,7 +171,7 @@ public final class FileMakerDB {
                 throw error
             }
         }
-        
+
      }
 
     private func checkStop() throws {

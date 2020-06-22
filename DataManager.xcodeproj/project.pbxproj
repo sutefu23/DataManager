@@ -342,12 +342,12 @@
 		1412036F2201C3DF0054B56F /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				14722029246E4F4B001DBE97 /* TextReader.swift */,
-				1472202A246E4F4B001DBE97 /* TextWriter.swift */,
 				8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */,
 				1404E905220D905100841373 /* FileMakerSession.swift */,
 				14552F6722099D32000BDCB8 /* FileMakerRecord.swift */,
 				8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */,
+				14722029246E4F4B001DBE97 /* TextReader.swift */,
+				1472202A246E4F4B001DBE97 /* TextWriter.swift */,
 				8E31841E24611FC9007FD008 /* File.swift */,
 				14713C4223F60F8A0093F22D /* UserDefaults.swift */,
 				1460F9B82399DC02006B31C0 /* Utility.swift */,

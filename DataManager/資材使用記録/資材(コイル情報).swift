@@ -18,7 +18,7 @@ public struct 資材コイル情報型: 資材情報型 {
     public init(製品名称: String, 規格: String) {
         var scanner = DMScanner(製品名称, normalizedFullHalf: true)
         let 製品名称 = scanner.string
-        if 製品名称.contains("コイル") { self.種類 = "コイル" }
+        guard 製品名称.contains("コイル") else { return }
         guard let type = scanner.scanUpTo("板") else { return }
         self.材質 = type
         scanner.dropHeadSpaces()
@@ -30,6 +30,7 @@ public struct 資材コイル情報型: 資材情報型 {
         scanner.skip数字以外()
         guard let height = scanner.scanDouble() else { return }
         self.高さ = height
+        self.種類 = "コイル"
     }
     
     /// 有効ならtrue
