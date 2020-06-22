@@ -24,7 +24,7 @@ public class 資材入出庫型 {
         self.record = record
         guard let day = record.day(forKey: "登録日") else { return nil }
         guard let time = record.time(forKey: "登録時間") else { return nil }
-        guard let worker = record.社員(forKey: "社員番号") else { return nil }
+        guard let worker = record.社員(forKey: "社員番号") ?? record.社員名称(forKey: "社員名称") else { return nil }
         guard let type = record.入力区分(forKey: "入力区分") else { return nil }
         guard let item = record.資材(forKey: "資材番号") else { return nil }
         guard let sec = record.キャッシュ部署(forKey: "部署記号") else { return nil }
@@ -48,6 +48,12 @@ public class 資材入出庫型 {
 
 extension 資材入出庫型 {
     public static let dbName = "DataAPI_12"
+    
+    public static func fetchAll() throws -> [資材入出庫型] {
+        let db = FileMakerDB.pm_osakaname
+        let list = try db.fetch(layout: 資材入出庫型.dbName)
+        return list.compactMap { 資材入出庫型($0) }
+    }
     
     public static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil) throws -> [資材入出庫型] {
         var query = FileMakerQuery()

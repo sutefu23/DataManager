@@ -76,6 +76,16 @@ public class 社員型: Hashable, Codable {
         self.社員名称 = 社員名称
     }
     
+    convenience init?(社員名称: String) {
+        for member in 社員型.全社員一覧 {
+            if member.社員名称 == 社員名称 {
+                self.init(社員番号: member.社員番号, 社員名称: 社員名称)
+                return
+            }
+        }
+        return nil
+    }
+    
     init?(_ record: FileMakerRecord) {
         guard let 社員番号 = record.integer(forKey: "社員番号") else { return nil }
         guard let 社員名称 = record.string(forKey: "社員名称") else { return nil }
@@ -152,6 +162,10 @@ extension FileMakerRecord {
     func 社員(forKey key: String) -> 社員型? {
         guard let number = self.integer(forKey: key) else { return nil }
         return 社員型(社員番号: number)
+    }
+    func 社員名称(forKey key: String) -> 社員型? {
+        guard let name = self.string(forKey: key) else { return nil }
+        return 社員型(社員名称: name)
     }
 }
 
