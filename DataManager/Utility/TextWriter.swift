@@ -84,6 +84,11 @@ open class TextWriter: TextOutputStream {
         return data
     }
 
+    public func write(to url: URL, encoding: String.Encoding, lineEndType: LineEndType = .crlf) throws {
+        let data = dataWithEncoding(encoding: encoding, lineEndType: lineEndType)
+        try data.write(to: url)
+    }
+    
     public var text: String {
         return lines.joined(separator: "\n")
     }

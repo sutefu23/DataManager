@@ -70,6 +70,10 @@ public class TextReader {
         }
     }
 
+    public var isEmpty: Bool {
+        nextLineCache == nil && !(nextIndex < lines.count)
+    }
+    
     private var nextLineCache: String? = nil
 
     public func insertNextLine(_ line: String) {
