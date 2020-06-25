@@ -29,9 +29,9 @@ public enum ボルト数調整モード型 {
             switch 資材種類 {
             case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .CDスタッド(_, _), .ストレートスタッド(_, _):
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
-            case .丸パイプ(_, _):
+            case .丸パイプ(_, _), .浮かしパイプ(サイズ: _, 長さ: _):
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
-            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .皿(_, _):
+            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(サイズ: _, 長さ: _), .皿(_, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 20]
             case .ナット(_):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
@@ -363,6 +363,7 @@ public enum 資材種類型 {
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
     case ナット(サイズ: String)
+    case 浮かしパイプ(サイズ: String, 長さ: Double)
     case 丸パイプ(サイズ: String, 長さ: Double)
     case 皿(サイズ: String, 長さ: Double)
     case 特皿(サイズ: String, 長さ: Double)
@@ -373,6 +374,7 @@ public enum 資材種類型 {
     case Cタッピング(サイズ: String, 長さ: Double)
     case ナベ(サイズ: String, 長さ: Double)
     case テクスナベ(サイズ: String, 長さ: Double)
+    case テクス皿(サイズ: String, 長さ: Double)
     case 六角(サイズ: String, 長さ: Double)
     case スタッド(サイズ: String, 長さ: Double)
     case ストレートスタッド(サイズ: String, 長さ: Double)
@@ -423,6 +425,13 @@ public enum 資材種類型 {
                 return nil
             }
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
+        case .浮かしパイプ(サイズ: let size, 長さ: let length):
+            if let object = searchボルト等(種類: "浮かしパイプ", サイズ: size, 長さ: length) {
+                図番 = object.図番
+            } else {
+                return nil
+            }
+            金額計算タイプ = .個数物
         case .ナット(サイズ: let size):
             guard let object = searchボルト等(種類: "ナット", サイズ: size) else { return nil }
             図番 = object.図番
@@ -474,6 +483,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .テクスナベ(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "テクスナベ", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
+            金額計算タイプ = .個数物
+        case .テクス皿(サイズ: let size, 長さ: let length):
+            guard let object = searchボルト等(種類: "テクス皿", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .六角(サイズ: let size, 長さ: let length):
@@ -585,6 +598,14 @@ private extension DMScanner {
         return ("ナット", .ナット(サイズ: size.string), 90)
     }
     
+    mutating func scan浮かしパイプ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
+            return ("浮かしパイプ", .浮かしパイプ(サイズ: size, 長さ: length), 130)
+        }
+        self.reset()
+        return nil
+    }
+    
     mutating func scan丸パイプ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
             return ("浮かしパイプ", .丸パイプ(サイズ: size, 長さ: length), 130)
@@ -673,6 +694,13 @@ private extension DMScanner {
             return nil
         }
         return ("テクスナベ", .テクスナベ(サイズ: size, 長さ: length), 62)
+    }
+    mutating func scanテクス皿() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("テクス皿M") else {
+            self.reset()
+            return nil
+        }
+        return ("テクス皿", .テクス皿(サイズ: size, 長さ: length), 62)
     }
     mutating func scan六角() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("六角M") else {

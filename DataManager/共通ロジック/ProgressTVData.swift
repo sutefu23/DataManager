@@ -403,8 +403,8 @@ public class ProgressTVCore {
     public func updateLabel(view: DMView, row: Int, col: String) {
         guard let label = view.searchLabel(col) else { return }
         let font = label.font!
-        let text = tableViewData(row: row, col: col, font: font)
-        label.attributedText = text
+        let utf8 = tableViewData(row: row, col: col, font: font)
+        label.attributedText = utf8
     }
     #endif
 }

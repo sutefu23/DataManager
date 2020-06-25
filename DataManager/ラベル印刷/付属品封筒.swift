@@ -100,13 +100,21 @@ public class 付属品封筒型 {
         // ボルト
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-        // 列挙
+        // ボルト欄列挙
         var vlist: [VData] = []
         for index in 0...15 {
-            guard let text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
+            guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
             let count = order.ボルト本数(index+1) ?? "1"
             if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount) {
+                if info.分割表示名1 == "スタッド" { continue } // スタッドは枚数に入らない
                 vlist.append(.info(info))
+            } else {
+                if text.containsOne(of: "座金", "新規") {
+                    if text.hasPrefix("新規") {
+                        text = String(text.dropFirst(2))
+                    }
+                    vlist.append(.text(text))
+                }
             }
         }
         let vmap = Dictionary(grouping: vlist) { $0.title }
@@ -114,22 +122,23 @@ public class 付属品封筒型 {
         for index in 0...16 {
             let x: Double = index < 8 ? 0 : 55
             let y: Double = 10 + Double(index % 8) * 10
-            rect3.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 10, height: 10)))
-            rect3.append(PaperPath.makeBox(origin: (x: x+10, y: y-5), size: (width: 45, height: 10)))
+            rect3.append(PaperPath.makeBox(origin: (x: x+45, y: y-5), size: (width: 10, height: 10)))
+            rect3.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 45, height: 10)))
             if vlist2.indices.contains(index) {
                 let list = vlist2[index]
                 let vfirst = list.first!
                 switch vfirst {
                 case .info(let info):
-                    rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: info.分割表示名1, fontSize: 12, bold: false, color: .black))
-                    rect3.append(PaperText(mmx: x+10, mmy: y+1.2, inset: inset, text: info.分割表示名2, fontSize: 12, bold: false, color: .black))
+                    rect3.append(PaperText(mmx: x, mmy: y-2.8, inset: inset, text: String(info.分割表示名1.prefix(14)), fontSize: 12, bold: false, color: .black))
+                    rect3.append(PaperText(mmx: x, mmy: y+1.2, inset: inset, text: String(info.分割表示名2.prefix(14)), fontSize: 12, bold: false, color: .black))
                     if let vol = info.現在数量(伝票番号: order.伝票番号), vol > 0 {
                         let str = String(Int(vol))
                         let mx = x + 52.5 - Double(str.count) * 2.5
+//                        let mx = x - 11 - Double(str.count) * 2.5
                         rect3.append(PaperText(mmx: mx, mmy: y+1.2, inset: inset, text: str, fontSize: 12, bold: false, color: .black))
                     }
                 case .text(let text):
-                    rect3.append(PaperText(mmx: x+10, mmy: y-2.8, inset: inset, text: text, fontSize: 12, bold: false, color: .black))
+                    rect3.append(PaperText(mmx: x, mmy: y-2.8, inset: inset, text: text, fontSize: 12, bold: false, color: .black))
                 }
             }
         }
@@ -145,14 +154,14 @@ public class 付属品封筒型 {
             "箱１有・箱２有",
         ]
         for index in 0...7 {
-            let x: Double = index < 4 ? 0 : 55
+            let x: Double = (index < 4 ? 0 : 55) 
             let y: Double = 10 + Double(index % 4) * 10
-            rect4.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 10, height: 10)))
-            rect4.append(PaperPath.makeBox(origin: (x: x+10, y: y-5), size: (width: 45, height: 10)))
+            rect4.append(PaperPath.makeBox(origin: (x: x+45, y: y-5), size: (width: 10, height: 10)))
+            rect4.append(PaperPath.makeBox(origin: (x: x, y: y-5), size: (width: 45, height: 10)))
             if list.indices.contains(index) {
                 let text = list[index]
                 if !text.isEmpty {
-                    rect4.append(PaperText(mmx: x+10, mmy: y, inset: inset, text: text, fontSize: 14, bold: false, color: .black))
+                    rect4.append(PaperText(mmx: x, mmy: y, inset: inset, text: text, fontSize: 14, bold: false, color: .black))
                 }
             }
         }

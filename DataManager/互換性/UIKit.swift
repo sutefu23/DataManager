@@ -178,4 +178,14 @@ extension UIButton {
         set { setTitle(newValue, for: .normal) }
     }
 }
+
+extension UIViewController {
+    public func searchViewController<T: UIViewController>() -> T? {
+        if let vc: T = self as? T { return vc }
+        for child in self.children {
+            if let vc: T = child.searchViewController() { return vc }
+        }
+        return nil
+    }
+}
 #endif

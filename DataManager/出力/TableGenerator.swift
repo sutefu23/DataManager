@@ -13,11 +13,12 @@ public enum ExportType {
     case excel(header: Bool = true)
     case html(header: Bool = true)
     case filemaker
+    case utf8
     case libreoffice(header: Bool = true)
     
     func header(title: String) -> String {
         switch self {
-        case .numbers, .excel, .filemaker, .libreoffice:
+        case .numbers, .excel, .filemaker, .libreoffice, .utf8:
             return ""
         case .html:
             var line: String = ""
@@ -34,7 +35,7 @@ public enum ExportType {
     
     func footer() -> String {
         switch self {
-        case .numbers, .excel, .filemaker, .libreoffice:
+        case .numbers, .excel, .filemaker, .libreoffice, .utf8:
             return ""
         case .html:
             var line : String = ""
@@ -63,6 +64,8 @@ public enum ExportType {
 
     func makeLine(_ cols: [String]) -> String {
         switch self {
+        case .utf8:
+            return cols.joined() + "\n"
         case .filemaker:
             return cols.map { clamp($0) }.joined(separator: ",") + "\n"
         case .excel, .libreoffice:
@@ -82,7 +85,7 @@ public enum ExportType {
     
     func encode(text: String) -> Data {
         switch self {
-        case .numbers, .html, .libreoffice:
+        case .numbers, .html, .libreoffice, .utf8:
             return text.data(using: .utf8, allowLossyConversion: true) ?? Data()
         case .excel, .filemaker:
             return text.data(using: .shiftJIS, allowLossyConversion: true) ?? Data()
@@ -122,7 +125,7 @@ public class TableGenerator<S> {
                 let titles = columns.map  { $0.title }
                 text += format.makeLine(titles)
             }
-        case .filemaker:
+        case .filemaker, .utf8:
             text = ""
         }
         for rowSource in source {
@@ -131,6 +134,7 @@ public class TableGenerator<S> {
         }
         text += format.footer()
         return text
+            
     }
     
     public func makeData<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
