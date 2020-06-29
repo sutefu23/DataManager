@@ -166,6 +166,9 @@ public extension DMColor {
 extension UIResponder {
     public func makeFirstResponder2() {
         #if targetEnvironment(macCatalyst)
+        DispatchQueue.main.async {
+            self.becomeFirstResponder()
+        }
         #elseif os(iOS)
         self.becomeFirstResponder()
         #endif
