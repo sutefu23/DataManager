@@ -318,7 +318,7 @@ public extension TableGenerator {
 
         guard let source = UIApplication.shared.windows.last?.rootViewController else { return }
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        controller.excludedActivityTypes = [.airDrop, .mail]
+//        controller.excludedActivityTypes = [.airDrop, .mail]
         controller.popoverPresentationController?.sourceView = source.view
         if let button = shareButton {
                 controller.popoverPresentationController?.sourceRect = button.frame
