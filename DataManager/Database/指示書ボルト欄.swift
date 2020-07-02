@@ -31,7 +31,7 @@ public enum ボルト数調整モード型 {
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
             case .丸パイプ(_, _), .浮かしパイプ(サイズ: _, 長さ: _):
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
-            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(サイズ: _, 長さ: _), .皿(_, _):
+            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(サイズ: _, 長さ: _), .皿(_, _), .片ネジ(サイズ: _, 長さ: _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 20]
             case .ナット(_):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
@@ -375,6 +375,7 @@ public enum 資材種類型 {
     case ナベ(サイズ: String, 長さ: Double)
     case テクスナベ(サイズ: String, 長さ: Double)
     case テクス皿(サイズ: String, 長さ: Double)
+    case 片ネジ(サイズ: String, 長さ: Double)
     case 六角(サイズ: String, 長さ: Double)
     case スタッド(サイズ: String, 長さ: Double)
     case ストレートスタッド(サイズ: String, 長さ: Double)
@@ -487,6 +488,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .テクス皿(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "テクス皿", サイズ: size, 長さ: length) else { return nil }
+            図番 = object.図番
+            金額計算タイプ = .個数物
+        case .片ネジ(サイズ: let size, 長さ: let length):
+            guard let object = searchボルト等(種類: "片ネジ", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .六角(サイズ: let size, 長さ: let length):
@@ -702,6 +707,13 @@ private extension DMScanner {
         }
         return ("テクス皿", .テクス皿(サイズ: size, 長さ: length), 62)
     }
+    mutating func scan片ネジ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("片ネジM") else {
+            self.reset()
+            return nil
+        }
+        return ("片ネジ", .片ネジ(サイズ: size, 長さ: length), 62)
+    }
     mutating func scan六角() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("六角M") else {
             self.reset()
@@ -744,7 +756,7 @@ private let lengthMap: [図番型: Double] = [
     "321": 285, "322": 285, "323": 285, "324": 285,
     "326": 285, "327": 285, "314": 285, "325": 285,
     // ボルト
-    "328I": 1000, "329": 1000, "330": 1000, "331": 1000, "333": 1000,
+    "328F": 1000, "329": 1000, "330": 1000, "331": 1000, "333": 1000,
     "332": 1000, "334": 1000, "335": 1000, "2733": 1000,
     // 丸パイプ
     "991070": 4000, "991071": 4000, "991069": 4000, "991072": 4000, "996019": 4000,

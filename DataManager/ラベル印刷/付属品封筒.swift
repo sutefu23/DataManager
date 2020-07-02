@@ -55,7 +55,7 @@ public class 付属品封筒型 {
         rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(title)", fontSize: 18, bold: false, color: .black))
         } else if titleCount <= 24 {
             rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名", fontSize: 18, bold: false, color: .black))
-            rect2.append(PaperText(mmx: 13, mmy: 4, inset: inset, text: title, fontSize: 14, bold: false, color: .black))
+            rect2.append(PaperText(mmx: 13, mmy: 4, inset: inset, text: title, fontSize: 13, bold: false, color: .black))
         } else {
             let title1 = String(title.prefix(min(24, titleCount - titleCount/2)))
             let title2 = String(title.suffix(min(23, titleCount/2)))

@@ -215,6 +215,9 @@ public class 管理資材型: 管理対象型 {
         let _ = self.最終調整者
         let _ = try self.資材.キャッシュ発注一覧().未納発注個数
     }
+    
+    public var is分割板: Bool { 個別在庫 != nil }
+    
     // MARK: <管理対象型>
     public func isIdential(to: 管理資材型) -> Bool {
         return self.資材.図番 == to.資材.図番
