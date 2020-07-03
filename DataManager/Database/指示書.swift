@@ -424,12 +424,35 @@ public class 指示書型 {
     
     public lazy var ボルト資材情報: [Int: 資材要求情報型] = {
         var map: [Int: 資材要求情報型] = [:]
+        var sizeSet = Set<String>()
         let set = self.セット数値
         for index in 1...15 {
             let name = self.ボルト等(index) ?? ""
             let count = self.ボルト本数(index) ?? ""
             if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set) {
                 map[index] = info
+                if case .ボルト(let size, _) = info.資材種類 {
+                    sizeSet.insert(size)
+                }
+            }
+        }
+        if sizeSet.count == 1, let size = sizeSet.first {
+            for index in 1...15 {
+                guard map[index] == nil else { continue }
+                var name = self.ボルト等(index) ?? ""
+                var scanner = DMScanner(name, normalizedFullHalf: true, upperCased: true)
+                if scanner.hasPrefix("ナット") {
+                    guard scanner.scanナット() == nil else { continue }
+                    name = "ナットM\(size)"
+                } else if scanner.hasPrefix("平W") {
+                    name = "ワッシャーM\(size)"
+                } else {
+                    continue
+                }
+                let count = self.ボルト本数(index) ?? ""
+                if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set) {
+                    map[index] = info
+                }
             }
         }
         return map

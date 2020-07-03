@@ -104,8 +104,7 @@ public class 付属品封筒型 {
         var vlist: [VData] = []
         for index in 0...15 {
             guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
-            let count = order.ボルト本数(index+1) ?? "1"
-            if let info = 資材要求情報型(ボルト欄: text, 数量欄: count, セット数: setCount) {
+            if let info = order.ボルト資材情報[index+1] {
                 if info.分割表示名1 == "スタッド" { continue } // スタッドは枚数に入らない
                 vlist.append(.info(info))
             } else {

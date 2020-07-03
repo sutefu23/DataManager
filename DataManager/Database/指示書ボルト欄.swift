@@ -199,7 +199,7 @@ public enum 金額計算タイプ型 {
     }
 }
 
-public class 資材要求情報型 {
+public struct 資材要求情報型 {
     public let 図番: 図番型
     public let 金額計算タイプ: 金額計算タイプ型?
     public let 表示名: String
@@ -210,7 +210,7 @@ public class 資材要求情報型 {
     public let ボルト数量: ボルト数欄型?
     public let is附属品: Bool?
     
-    public lazy var 資材: 資材型? = 資材型(図番: self.図番)
+    public var 資材: 資材型? { 資材型(図番: self.図番) }
     public lazy var 単価: Double? = self.資材?.単価
     public var 単位数: Double?
     public var 金額: Double? {
@@ -221,7 +221,6 @@ public class 資材要求情報型 {
     public var 使用量: String? { 金額計算タイプ?.使用量表示(count: self.単位数) }
     public var 単価テキスト: String { self.資材?.単価?.金額テキスト ?? "" }
     public var 金額テキスト: String { self.金額?.金額テキスト ?? "" }
-
     
     public func is分納相手完納済み(_ order: 指示書型, 自工程: 工程型) throws -> Bool? {
         guard let list = try order.キャッシュ資材使用記録() else { return false }
@@ -257,7 +256,17 @@ public class 資材要求情報型 {
         }
     }
     
-    public init?(ボルト欄: String, 数量欄: String, セット数: Double, ボルト数調整モード: ボルト数調整モード型 = .調整なし) {
+    public mutating func 数量調整(ボルト数調整モード: ボルト数調整モード型) {
+        switch ボルト数調整モード {
+        case .調整なし: return
+        case .箱文字式:
+            if self.is附属品 != true { return }
+            guard let count = self.単位数 else { return }
+            self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: self.資材種類, 表示名: self.表示名)
+        }
+    }
+    
+    public init?(ボルト欄: String, 数量欄: String, セット数: Double) {
         if ボルト欄.isEmpty { return nil }
         var text = ボルト欄.toJapaneseNormal
         self.表示名 = text
@@ -278,11 +287,7 @@ public class 資材要求情報型 {
             self.分割表示名2 = ""
             self.資材種類 = nil
             self.ボルト数量 = numbers
-            if let count = numbers?.総数 {
-                self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: nil, 表示名: text)
-            } else {
-                self.単位数 = nil
-            }
+            self.単位数 = numbers?.総数
             self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
             self.図番 = object.資材.図番
             return
@@ -292,11 +297,7 @@ public class 資材要求情報型 {
         self.分割表示名2 = size
         self.資材種類 = type
         self.ボルト数量 = numbers
-        var count = numbers?.総数 ?? 0
-        if is附属品 && ボルト数調整モード != .調整なし {
-            count = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: type, 表示名: text)
-        }
-        self.単位数 = count
+        self.単位数 = numbers?.総数 ?? 0
         guard let info = type.make使用情報() else { return nil }
         self.図番 = info.図番
         self.金額計算タイプ = info.金額計算タイプ
@@ -519,7 +520,7 @@ public enum 資材種類型 {
     }
 }
 
-private extension DMScanner {
+extension DMScanner {
     mutating func scanSizeXLength(_ name: String, unit1: Character? = nil) -> (size: String, length: Double)? {
         guard scanString(name) else { return nil }
         guard var size = scanStringAsDouble(), size.value > 0 else { return nil }
