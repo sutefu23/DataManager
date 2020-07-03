@@ -73,9 +73,6 @@ extension Sequence where Element == 資材要求出力型 {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_MaterialRequirementsInput"
-//        if loopCount > 0 {
-//            debugPrint("retry count:\(loopCount) orders:\(targets.count)")
-//        }
         if loopCount >= 10 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
 
         let uuid = UUID()
@@ -87,7 +84,6 @@ extension Sequence where Element == 資材要求出力型 {
             try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
             let result = try 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
-//                NSLog("success")
                 return
             }
             if result.count > 0 { // 部分的に登録成功
