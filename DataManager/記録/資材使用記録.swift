@@ -15,6 +15,30 @@ private let serialQueue: OperationQueue = {
     return queue
 }()
 
+public enum 印刷対象型: String {
+    public static let 仮印刷対象工程: Set<工程型> = [.裏加工, .裏加工_溶接]
+    
+    case 全て
+    case なし
+    
+    public var is封筒印刷あり: Bool {
+        switch self {
+        case .全て:
+            return true
+        case .なし:
+            return false
+        }
+    }
+}
+
+extension FileMakerRecord {
+    func 印刷対象(forKey key: String) -> 印刷対象型? {
+        guard let str = self.string(forKey: key) else { return nil }
+        return 印刷対象型(rawValue: str)
+    }
+}
+
+
 struct 資材使用記録Data型: Equatable {
     static let dbName = "DataAPI_5"
     var 登録日時: Date
@@ -31,8 +55,9 @@ struct 資材使用記録Data型: Equatable {
     var 単位量: Double?
     var 単位数: Double?
     var 金額: Double?
+    var 印刷対象: 印刷対象型?
     
-    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?) {
+    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.工程 = 工程
@@ -45,6 +70,7 @@ struct 資材使用記録Data型: Equatable {
         self.金額 = 金額
         self.単位量 = 単位量
         self.単位数 = 単位数
+        self.印刷対象 = 印刷対象
     }
     
     init?(_ record: FileMakerRecord) {
@@ -70,6 +96,7 @@ struct 資材使用記録Data型: Equatable {
         }
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
+        self.印刷対象 = record.印刷対象(forKey: "印刷対象")
     }
     
     var fieldData: FileMakerQuery {
@@ -84,9 +111,26 @@ struct 資材使用記録Data型: Equatable {
         if let price = 単価 { data["単価"] = "\(price)" }
         data["使用量"] = 使用量
         data["用途"] = 用途
-        if let value = self.単位量 { data["単位量"] = "\(value)" }
-        if let value = self.単位数 { data["単位数"] = "\(value)" }
-        if let charge = self.金額 { data["金額"] = "\(charge)" }
+        if let value = self.単位量 {
+            data["単位量"] = "\(value)"
+        } else {
+            data["単位量"] = ""
+        }
+        if let value = self.単位数 {
+            data["単位数"] = "\(value)"
+        } else {
+            data["単位数"] = ""
+        }
+        if let charge = self.金額 {
+            data["金額"] = "\(charge)"
+        } else {
+            data["金額"] = ""
+        }
+        if let target = self.印刷対象 {
+            data["印刷対象"] = target.rawValue
+        } else {
+            data["印刷対象"] = ""
+        }
         return data
     }
 }
@@ -146,9 +190,19 @@ public class 資材使用記録型 {
         get { data.単位数 }
         set { data.単位数 = newValue }
     }
+    
+    public var 印刷対象: 印刷対象型? {
+        get { data.印刷対象 }
+        set { data.印刷対象 = newValue }
+    }
+    
+    public var 仮印刷対象: 印刷対象型 {
+        if let target = data.印刷対象 { return target }
+        return 印刷対象型.仮印刷対象工程.contains(data.工程) ? .全て : .なし
+    }
 
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?) {
-        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 単位量: 単位量, 単位数: 単位数, 金額: 金額)
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?) {
+        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 単位量: 単位量, 単位数: 単位数, 金額: 金額, 印刷対象: 印刷対象)
     }
 
     init?(_ record: FileMakerRecord) {

@@ -59,7 +59,6 @@ public enum ボルト数調整モード型 {
         default:
             return count
         }
-
     }
 }
 
@@ -303,6 +302,40 @@ public struct 資材要求情報型 {
         self.金額計算タイプ = info.金額計算タイプ
     }
     
+    
+    public init?(printSource: 資材使用記録型) {
+        var text = printSource.表示名.toJapaneseNormal
+        self.表示名 = text
+        let is附属品: Bool
+        if text.hasPrefix("+") {
+            text.removeFirst(1)
+            is附属品 = false
+        } else {
+            is附属品 = true
+        }
+        self.is附属品 = is附属品
+        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
+            guard let object = 板加工在庫マップ[text] else { return nil }
+            self.ソート順 = object.ソート順
+            self.分割表示名1 = object.名称
+            self.分割表示名2 = ""
+            self.資材種類 = nil
+            self.ボルト数量 = nil
+            self.単位数 = nil
+            self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
+            self.図番 = object.資材.図番
+            return
+        }
+        self.ソート順 = priority
+        self.分割表示名1 = title
+        self.分割表示名2 = size
+        self.資材種類 = type
+        self.ボルト数量 = nil
+        self.単位数 = nil
+
+        return nil
+    }
+    
     public func 現在数量(伝票番号: 伝票番号型) ->  Double? {
         guard let list = (try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名)), !list.isEmpty else { return nil }
         var volume: Double? = nil
@@ -325,7 +358,7 @@ public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情�
 }
 
 func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
-    var scanner = DMScanner(ボルト欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
+    var scanner = DMScanner(ボルト欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: true)
     func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Double)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double) {
         scanner.reset()
         scanner.skipMatchString(data.名称)

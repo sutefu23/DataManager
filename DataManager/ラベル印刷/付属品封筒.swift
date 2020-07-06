@@ -29,7 +29,7 @@ public class 付属品封筒型 {
         page.rotationPrint = true
         #endif
         let inset = 1.0
-        let setCount = order.セット数値
+//        let setCount = order.セット数値
         // 伝票番~
         let rect0 = PaperRect(x: offsetX + 5, y: offsetY + 7, width: 110, height: 15)
 //        rect0.append(PaperRoundBox(origin: (x: 10, y: 8), size: (width: 90, height: 15), r: 3))
@@ -97,25 +97,37 @@ public class 付属品封筒型 {
         }
         
         page.append(rect2)
-        // ボルト
+        // 附属品一覧
         let rect3 = PaperRect(x: offsetX + 5, y: offsetY + 100, width: 110, height: 80)
         rect3.append(PaperText(mmx: 0, mmy: 0, text: "付属品", fontSize: 14, bold: false, color: .black))
-        // ボルト欄列挙
+        // 印刷対象列挙
         var vlist: [VData] = []
-        for index in 0...15 {
-            guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
-            if let info = order.ボルト資材情報[index+1] {
-                if info.分割表示名1 == "スタッド" { continue } // スタッドは枚数に入らない
-                vlist.append(.info(info))
-            } else {
-                if text.containsOne(of: "座金", "新規") {
-                    if text.hasPrefix("新規") {
-                        text = String(text.dropFirst(2))
+        let source = (try? order.キャッシュ資材使用記録()) ?? []
+        if source.contains(where: { $0.印刷対象 != nil }) { // 新モード // 使用資材の内、印刷対象に含まれる物を印刷
+            var targets = source.filter { ($0.印刷対象 ?? $0.仮印刷対象).is封筒印刷あり }
+            struct VKey: Hashable {
+                let 図番: 図番型
+                let 表示名: String
+            }
+            targets = Dictionary(grouping: targets) { VKey(図番: $0.図番, 表示名: $0.表示名) }.map { $0.value.first! } // 同種をまとめる
+            vlist = targets.compactMap { 資材要求情報型(printSource: $0) }.map { .info($0) }
+        } else { // 旧モード（ボルトのうち、+の入っている物を印刷）
+            for index in 0...15 {
+                guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
+                if let info = order.ボルト資材情報[index+1] {
+                    if info.分割表示名1 == "スタッド" { continue } // スタッドは枚数に入らない
+                    vlist.append(.info(info))
+                } else {
+                    if text.containsOne(of: "座金", "新規") {
+                        if text.hasPrefix("新規") {
+                            text = String(text.dropFirst(2))
+                        }
+                        vlist.append(.text(text))
                     }
-                    vlist.append(.text(text))
                 }
             }
         }
+        // 附属品一覧印刷
         let vmap = Dictionary(grouping: vlist) { $0.title }
         let vlist2 = vmap.values.sorted { $0.first! < $1.first! }
         for index in 0...16 {
@@ -133,7 +145,6 @@ public class 付属品封筒型 {
                     if let vol = info.現在数量(伝票番号: order.伝票番号), vol > 0 {
                         let str = String(Int(vol))
                         let mx = x + 52.5 - Double(str.count) * 2.5
-//                        let mx = x - 11 - Double(str.count) * 2.5
                         rect3.append(PaperText(mmx: mx, mmy: y+1.2, inset: inset, text: str, fontSize: 12, bold: false, color: .black))
                     }
                 case .text(let text):
