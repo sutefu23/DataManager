@@ -327,13 +327,11 @@ public struct 資材要求情報型 {
             self.ソート順 = object.ソート順
             self.分割表示名1 = object.名称
             self.分割表示名2 = ""
-            return
         } else {
             self.ソート順 = 0
             self.分割表示名1 = printSource.表示名
             self.分割表示名2 = ""
         }
-        return nil
     }
     
     public func 現在数量(伝票番号: 伝票番号型) ->  Double? {

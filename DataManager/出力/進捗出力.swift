@@ -23,6 +23,7 @@ public struct 進捗出力型: Hashable {
     public var 登録日時: Date { return Date(self.登録日, self.登録時間) }
     
     public init(伝票番号: 伝票番号型, 工程: 工程型, 作業内容: 作業内容型, 社員: 社員型, 登録日時: Date, 作業種別: 作業種別型, 作業系列: 作業系列型?) {
+        let 登録日時 = 登録日時.rounded()
         self.伝票番号 = 伝票番号
         self.工程 = 工程
         self.作業内容 = 作業内容
