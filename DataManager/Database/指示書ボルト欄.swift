@@ -313,26 +313,26 @@ public struct 資材要求情報型 {
         } else {
             is附属品 = true
         }
+        self.図番 = printSource.図番
         self.is附属品 = is附属品
-        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
-            guard let object = 板加工在庫マップ[text] else { return nil }
+        self.資材種類 = nil
+        self.ボルト数量 = nil
+        self.単位数 = nil
+        self.金額計算タイプ = nil
+        if let (title, size, _, priority) = scanSource(ボルト欄: text) {
+            self.ソート順 = priority
+            self.分割表示名1 = title
+            self.分割表示名2 = size
+        } else if let object = 板加工在庫マップ[text] {
             self.ソート順 = object.ソート順
             self.分割表示名1 = object.名称
             self.分割表示名2 = ""
-            self.資材種類 = nil
-            self.ボルト数量 = nil
-            self.単位数 = nil
-            self.金額計算タイプ = 金額計算タイプ型.平面形状(area: object.面積)
-            self.図番 = object.資材.図番
             return
+        } else {
+            self.ソート順 = 0
+            self.分割表示名1 = printSource.表示名
+            self.分割表示名2 = ""
         }
-        self.ソート順 = priority
-        self.分割表示名1 = title
-        self.分割表示名2 = size
-        self.資材種類 = type
-        self.ボルト数量 = nil
-        self.単位数 = nil
-
         return nil
     }
     
