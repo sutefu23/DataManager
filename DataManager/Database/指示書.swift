@@ -429,7 +429,7 @@ public class 指示書型 {
         for index in 1...15 {
             let name = self.ボルト等(index) ?? ""
             let count = self.ボルト本数(index) ?? ""
-            if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set) {
+            if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set, 伝票種類: self.伝票種類) {
                 map[index] = info
                 if case .ボルト(let size, _) = info.資材種類 {
                     sizeSet.insert(size)
@@ -450,7 +450,7 @@ public class 指示書型 {
                     continue
                 }
                 let count = self.ボルト本数(index) ?? ""
-                if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set) {
+                if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set, 伝票種類: self.伝票種類) {
                     map[index] = info
                 }
             }

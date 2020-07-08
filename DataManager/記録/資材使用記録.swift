@@ -362,5 +362,4 @@ class 資材使用記録キャッシュ型 {
         self.cache.removeAll()
         lock.unlock()
     }
-
 }

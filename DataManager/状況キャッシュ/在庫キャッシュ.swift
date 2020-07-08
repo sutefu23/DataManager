@@ -48,7 +48,7 @@ public class 在庫数キャッシュ型 {
         lock.unlock()
     }
     
-    func flushAllCache() {
+    public func flushAllCache() {
         lock.lock()
         cache.removeAll()
         lock.unlock()

@@ -275,5 +275,7 @@ extension 資材型 {
         return width * height
     }
 
-    public var 標準表示名: String { "\(self.製品名称) \(self.規格)".全角半角日本語規格化() }
+    public var 標準表示名: String {
+        (self.規格.isEmpty ? self.製品名称 : "\(self.製品名称) \(self.規格)").全角半角日本語規格化()
+    }
 }

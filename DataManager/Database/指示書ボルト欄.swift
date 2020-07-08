@@ -265,7 +265,7 @@ public struct 資材要求情報型 {
         }
     }
     
-    public init?(ボルト欄: String, 数量欄: String, セット数: Double) {
+    public init?(ボルト欄: String, 数量欄: String, セット数: Double, 伝票種類: 伝票種類型) {
         if ボルト欄.isEmpty { return nil }
         var text = ボルト欄.toJapaneseNormal
         self.表示名 = text
@@ -301,8 +301,7 @@ public struct 資材要求情報型 {
         self.図番 = info.図番
         self.金額計算タイプ = info.金額計算タイプ
     }
-    
-    
+
     public init?(printSource: 資材使用記録型) {
         var text = printSource.表示名.toJapaneseNormal
         self.表示名 = text
@@ -325,7 +324,7 @@ public struct 資材要求情報型 {
             self.分割表示名2 = size
         } else if let object = 板加工在庫マップ[text] {
             self.ソート順 = object.ソート順
-            self.分割表示名1 = object.名称
+            self.分割表示名1 = printSource.表示名
             self.分割表示名2 = ""
         } else {
             self.ソート順 = 0
