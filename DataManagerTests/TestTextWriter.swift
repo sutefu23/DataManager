@@ -108,7 +108,9 @@ class TestTextWriter: XCTestCase {
     }
     
     func testOutputStreamType() {
-        var writer = TextWriter()        
+        var writer = TextWriter()
+        print("abc", to:&writer)
+        print("def", to:&writer)
         XCTAssertEqual(writer.lines.count, 2)
         XCTAssertEqual(writer.lines, ["abc", "def"])
     }

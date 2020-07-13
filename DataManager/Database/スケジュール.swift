@@ -33,6 +33,4 @@ extension スケジュール型 {
         let list = try db.find(layout: スケジュール型.dbName, query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
         return list.compactMap { スケジュール型($0) }
     }
-
 }
-

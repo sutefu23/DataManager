@@ -16,16 +16,16 @@ public extension UserDefaults {
     }
 }
 
-enum FileMakerSortType: String, Encodable {
-    case 昇順 = "ascend"
-    case 降順 = "descend"
-}
-
 private let serverCache = FileMakerServerCache()
-class FileMakerServerCache {
+
+/// サーバー名に対応するサーバーオブジェクトを保持する（共用のため）
+private class FileMakerServerCache {
     private var cache: [String: FileMakerServer] = [:]
     private let lock = NSLock()
     
+    /// サーバーを取り出す
+    /// - Parameter name: サーバー名
+    /// - Returns: 共用サーバーオブジェクト
     func server(_ name: String) -> FileMakerServer {
         lock.lock()
         defer { lock.unlock() }
@@ -35,6 +35,7 @@ class FileMakerServerCache {
         return server
     }
     
+    /// 全てのサーバーへの接続を解除する
     func logoutAll() {
         lock.lock()
         defer { lock.unlock() }
@@ -43,14 +44,21 @@ class FileMakerServerCache {
     }
 }
 
+/// 検索項目
 struct FileMakerSortItem: Encodable {
     let fieldName: String
     let sortOrder: FileMakerSortType
+}
+/// ソート順
+enum FileMakerSortType: String, Encodable {
+    case 昇順 = "ascend"
+    case 降順 = "descend"
 }
 
 /// １台のサーバーへの最大同時接続数
 let maxConnection = 4
 
+/// サーバーオブジェクト（セッションの管理）
 class FileMakerServer: Hashable {
     private var pool: [FileMakerSession] = []
     private let lock = NSLock()
@@ -59,7 +67,7 @@ class FileMakerServer: Hashable {
     let serverURL: URL
     let name: String
     
-    init(_ server: String) {
+    fileprivate init(_ server: String) {
         self.name = server
         let serverURL = URL(string: "https://\(server)/fmi/data/v1/databases/")!
         self.serverURL = serverURL
@@ -79,6 +87,7 @@ class FileMakerServer: Hashable {
         return left.name == right.name
     }
     
+    /// セッションを取得する
     func pullSession(url: URL, user: String, password: String) -> FileMakerSession {
         sem.wait()
         lock.lock()
@@ -97,6 +106,7 @@ class FileMakerServer: Hashable {
         return session
     }
     
+    /// セッションを解放する
     func putSession(_ session: FileMakerSession) {
         lock.lock()
         self.pool.append(session)
@@ -104,6 +114,7 @@ class FileMakerServer: Hashable {
         sem.signal()
     }
     
+    /// セッションを閉じる
     func logout() {
         lock.lock()
         for session in pool {
@@ -114,12 +125,16 @@ class FileMakerServer: Hashable {
     }
 }
 
+/// サーバー上のデータベースファイル
 public final class FileMakerDB {
-//    static let pm_osakaname2: FileMakerDB = FileMakerDB(server: "192.168.1.155", filename: "pm_osakaname", user: "admin", password: "ojwvndfM")
-    static let pm_osakaname2: FileMakerDB = FileMakerDB(server: "192.168.1.155", filename: "pm_osakaname", user: "api", password: "@pi")
+    /// 生産管理DB
     static let pm_osakaname: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
-    static let laser: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
+    /// 生産管理テストDB
+    static let pm_osakaname2: FileMakerDB = FileMakerDB(server: "192.168.1.155", filename: "pm_osakaname", user: "api", password: "@pi")
+    /// システムDB
     static let system: FileMakerDB =  FileMakerDB(server: "192.168.1.153", filename: "system", user: "admin", password: "ws161")
+    /// レーザーDB
+    static let laser: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
 
     public static var isEnabled = true
     
@@ -134,15 +149,19 @@ public final class FileMakerDB {
         self.user = user
         self.password = password
     }
-
+    
+    /// 接続セッションを取得する
     func retainSession() -> FileMakerSession {
         return server.pullSession(url: self.dbURL, user: self.user, password: self.password)
     }
     
+    /// セッションを解放する
     func releaseSession(_ session: FileMakerSession) {
         server.putSession(session)
     }
     
+    /// セッションを一時的に取得して作業を行う
+    /// - Parameter work: セッション上で行う作業
     private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
         defer { server.putSession(session) }
@@ -158,6 +177,9 @@ public final class FileMakerDB {
         }
     }
 
+    /// セッションを一時的に取得して作業を行う
+    /// - Parameter work: セッション上で行う作業。なんらかの値を返す
+    /// - Returns: 作業の返り値
     private func execute2<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
          let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
          defer { server.putSession(session) }
@@ -171,13 +193,18 @@ public final class FileMakerDB {
                 throw error
             }
         }
-
      }
-
+    
+    /// サーバーが停止中ならtrueを返す
     private func checkStop() throws {
         if !FileMakerDB.isEnabled || UserDefaults.standard.filemakerIsDisabled { throw FileMakerError.dbIsDisabled }
     }
-    
+
+    /// スクリプトを実行する
+    /// - Parameters:
+    ///   - layout: スクリプトを実行するレイアウト
+    ///   - script: スクリプト名
+    ///   - param: スクリプトのパラメータ
     func executeScript(layout: String, script: String, param: String) throws {
         try checkStop()
         try self.execute { try $0.executeScript(layout: layout, script: script, param: param) }

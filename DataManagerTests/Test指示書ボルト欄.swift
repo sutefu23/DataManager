@@ -238,4 +238,15 @@ class TestOrderBoltField: XCTestCase {
             XCTAssert(false)
         }
     }
+
+    func testTokuWasher() {
+        data = scanSource(ボルト欄: "特寸ワッシャー2t×18φ×5.4φ")
+        if case .特寸ワッシャー(サイズ: let size, 外径: let r1, 内径: let r2) = data?.種類 {
+            XCTAssertEqual(size, "2")
+            XCTAssertEqual(r1, 18)
+            XCTAssertEqual(r2, 5.4)
+        } else {
+            XCTAssert(false)
+        }
+    }
 }

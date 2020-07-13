@@ -9,14 +9,18 @@
 import Foundation
 
 private let 箱文字Set = Set<工程型>([.立ち上がり, .半田, .裏加工, .立ち上がり_溶接, .溶接, .裏加工_溶接])
+private let 切文字Set = Set<工程型>([.切文字])
 
 public enum ボルト数調整モード型 {
     case 調整なし
     case 箱文字式
+    case 切文字式
     
     public init(_ process: 工程型) {
         if 箱文字Set.contains(process) {
             self = .箱文字式
+        } else if 切文字Set.contains(process) {
+            self = .切文字式
         } else {
             self = .調整なし
         }
@@ -35,7 +39,7 @@ public enum ボルト数調整モード型 {
                 offset = [2, 3, 3, 5, 10, 10, 10, 20]
             case .ナット(_):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
-            case .ワッシャー(_), .Sワッシャー(_):
+            case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(サイズ: _, 外径: _, 内径: _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
             case .定番FB(_), .FB(_, _):
                 return count
@@ -44,6 +48,34 @@ public enum ボルト数調整モード型 {
                     offset = [2, 3, 3, 5, 10, 10, 10, 10]
                     break
                 }
+                return count
+            }
+            assert(offset.count == 8)
+            if (1...5).contains(count) { return offset[0] + count }
+            if (6...10).contains(count) { return offset[1] + count }
+            if (11...15).contains(count) { return offset[2] + count }
+            if (16...30).contains(count) { return offset[3] + count }
+            if (31...40).contains(count) { return offset[4] + count }
+            if (41...50).contains(count) { return offset[5] + count }
+            if (51...100).contains(count) { return offset[6] + count }
+            if (101...).contains(count) { return offset[7] + count }
+            return count
+        case .切文字式:
+            let offset: [Double]
+            switch 資材種類 {
+            case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .CDスタッド(_, _), .ストレートスタッド(_, _):
+                offset = [1, 2, 3, 3, 3, 5, 10, 10]
+            case .丸パイプ(_, _), .浮かしパイプ(サイズ: _, 長さ: _):
+                offset = [1, 2, 3, 3, 3, 5, 10, 10]
+            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(サイズ: _, 長さ: _), .皿(_, _), .片ネジ(サイズ: _, 長さ: _):
+                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+            case .ナット(_):
+                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+            case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(サイズ: _, 外径: _, 内径: _):
+                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+            case .定番FB(_), .FB(_, _):
+                return count
+            case nil:
                 return count
             }
             assert(offset.count == 8)
@@ -258,7 +290,7 @@ public struct 資材要求情報型 {
     public mutating func 数量調整(ボルト数調整モード: ボルト数調整モード型) {
         switch ボルト数調整モード {
         case .調整なし: return
-        case .箱文字式:
+        case .箱文字式, .切文字式:
             if self.is附属品 != true { return }
             guard let count = self.単位数 else { return }
             self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: self.資材種類, 表示名: self.表示名)
@@ -359,13 +391,14 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Double)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double) {
         scanner.reset()
         scanner.skipMatchString(data.名称)
-        return (data.名称, scanner.string, data.種類, data.ソート順)
+        return (data.名称, scanner.string.lowercased(), data.種類, data.ソート順)
     }
     
     if let data = scanner.scanボルト() { return makeTail(data) }
     if let data = scanner.scanFB() { return makeTail(data) }
     if let data = scanner.scanワッシャー() { return makeTail(data) }
     if let data = scanner.scanSワッシャー() { return makeTail(data) }
+    if let data = scanner.scan特寸ワッシャー() { return makeTail(data) }
     if let data = scanner.scanナット() { return makeTail(data) }
     if let data = scanner.scan丸パイプ() { return makeTail(data) }
     if let data = scanner.scan特皿() { return makeTail(data) }
@@ -377,6 +410,7 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     if let data = scanner.scanCタッピング() { return makeTail(data) }
     if let data = scanner.scanナベ() { return makeTail(data) }
     if let data = scanner.scanテクスナベ() { return makeTail(data) }
+    if let data = scanner.scanテクス皿() { return makeTail(data) }
     if let data = scanner.scan六角() { return makeTail(data) }
     if let data = scanner.scanスタッド() { return makeTail(data) }
     if let data = scanner.scanストレートスタッド() { return makeTail(data) }
@@ -393,6 +427,7 @@ public enum 資材種類型 {
     case 定番FB(板厚: String)
     case ワッシャー(サイズ: String)
     case Sワッシャー(サイズ: String)
+    case 特寸ワッシャー(サイズ: String, 外径: Double, 内径: Double)
     case ナット(サイズ: String)
     case 浮かしパイプ(サイズ: String, 長さ: Double)
     case 丸パイプ(サイズ: String, 長さ: Double)
@@ -425,6 +460,8 @@ public enum 資材種類型 {
             switch Double(size) {
             case 3:
                 図番 = "996271"
+            case 5:
+                図番 = "991176"
             case 6:
                 図番 = "991200"
             case 8:
@@ -476,6 +513,15 @@ public enum 資材種類型 {
             guard let object = searchボルト等(種類: "Sワッシャー", サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
+        case .特寸ワッシャー(サイズ: let size, 外径: let r1, 内径: let r2):
+            let r1str = String(format: "%.0f", r1)
+            let r2format = (r2 == round(r2)) ? "%.0f" : "%.1f"
+            let r2str = String(format: r2format, r2)
+
+            let len = "\(r1str)φx\(r2str)φ"
+            guard let object = searchボルト等(種類: "特寸ワッシャー", サイズ: size, 長さ: len) else { return nil }
+            図番 = object.図番
+            金額計算タイプ = .個数物
         case .丸パイプ(サイズ: let size, 長さ: let length):
             guard let object = searchボルト等(種類: "丸パイプ", サイズ: size) else { return nil }
             図番 = object.図番
@@ -510,7 +556,7 @@ public enum 資材種類型 {
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ナベ(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "ナベ", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: "ナベ", サイズ: size, 長さ: length) ?? searchボルト等(種類: "なべ", サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .テクスナベ(サイズ: let size, 長さ: let length):
@@ -584,6 +630,18 @@ extension DMScanner {
         guard let size = scanStringAsDouble(), size.value > 0 else { return nil }
         return size.string
     }
+    mutating func scanSizeXRXR(_ name: String) -> (size: String, r1: Double, r2: Double)? {
+        guard scanString(name) else { return nil }
+        guard let size = scanStringAsDouble(), size.value > 0 else { return nil }
+        let _ = scanCharacters("T", "t")
+        guard scanCharacters("X", "×", "*") else { return nil }
+        guard let r1 = scanDouble(), r1 > 0 else { return nil }
+        guard scanCharacters("Φ", "φ") else { return nil }
+        guard scanCharacters("X", "×", "*") else { return nil }
+        guard let r2 = scanDouble(), r2 > 0 else { return nil }
+        guard scanCharacters("Φ", "φ") else { return nil }
+        return (size.string, r1, r2)
+    }
     
     mutating func scanボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("M") else {
@@ -623,6 +681,14 @@ extension DMScanner {
             return nil
         }
         return ("Sワッシャー", .Sワッシャー(サイズ: size), 70)
+    }
+    
+    mutating func scan特寸ワッシャー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let result = self.scanSizeXRXR("特寸ワッシャー") else {
+            self.reset()
+            return nil
+        }
+        return ("特寸ワッシャー", 資材種類型.特寸ワッシャー(サイズ: result.size, 外径: result.r1, 内径: result.r2), 71)
     }
     
     mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -718,6 +784,10 @@ extension DMScanner {
         return ("Cタッピング", .Cタッピング(サイズ: size, 長さ: length), 60)
     }
     mutating func scanナベ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        if let (size, length) = scanSizeXLength("なべM") {
+            return ("なべ", .ナベ(サイズ: size, 長さ: length), 61)
+        }
+        self.reset()
         guard let (size, length) = scanSizeXLength("ナベM") else {
             self.reset()
             return nil
