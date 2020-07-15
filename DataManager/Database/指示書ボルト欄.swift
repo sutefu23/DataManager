@@ -315,7 +315,7 @@ public struct 資材要求情報型 {
         self.is附属品 = is附属品
         let set = (セット数 >= 1) ? セット数 : 1
         let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
-        guard let (title, size, type, priority) = scanSource(ボルト欄: text) else {
+        guard let (title, size, type, priority) = scanSource(ボルト欄: text, 伝票種類: 伝票種類) else {
             guard let object = 板加工在庫マップ[text] else { return nil }
             self.ソート順 = object.ソート順
             self.分割表示名1 = object.名称
@@ -339,6 +339,7 @@ public struct 資材要求情報型 {
     }
 
     public init?(printSource: 資材使用記録型) {
+        guard let order = printSource.伝票番号.キャッシュ指示書 else { return nil }
         var text = printSource.表示名.toJapaneseNormal
         self.表示名 = text
         let is附属品: Bool
@@ -354,7 +355,7 @@ public struct 資材要求情報型 {
         self.ボルト数量 = nil
         self.単位数 = nil
         self.金額計算タイプ = nil
-        if let (title, size, _, priority) = scanSource(ボルト欄: text) {
+        if let (title, size, _, priority) = scanSource(ボルト欄: text, 伝票種類: order.伝票種類) {
             self.ソート順 = priority
             self.分割表示名1 = title
             self.分割表示名2 = size
@@ -390,7 +391,7 @@ public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情�
     return false
 }
 
-func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
+func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
     var scanner = DMScanner(ボルト欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: true)
     func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Double)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double) {
         scanner.reset()
@@ -411,7 +412,7 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     if let data = scanner.scanSワッシャー() { return makeTail(data) }
     if let data = scanner.scan特寸ワッシャー() { return makeTail(data) }
     if let data = scanner.scanナット() { return makeTail(data) }
-    if let data = scanner.scan丸パイプ() { return makeTail(data) }
+    if let data = scanner.scan丸パイプ(伝票種類: 伝票種類) { return makeTail(data) }
     if let data = scanner.scan特皿() { return makeTail(data) }
     if let data = scanner.scan皿() { return makeTail(data) }
     if let data = scanner.scanサンロックトラス() { return makeTail(data) }
@@ -425,6 +426,7 @@ func scanSource(ボルト欄: String) -> (名称: String, サイズ: String, 種
     if let data = scanner.scanテクス特皿() { return makeTail(data) }
     if let data = scanner.scan六角() { return makeTail(data) }
     if let data = scanner.scanスタッド() { return makeTail(data) }
+    if let data = scanner.scan片ネジ() { return makeTail(data) }
     if let data = scanner.scanストレートスタッド() { return makeTail(data) }
     if let data = scanner.scanALスタッド() { return makeTail(data) }
     if let data = scanner.scanFBSimple() { return makeTail(data) }
@@ -466,7 +468,7 @@ public enum 資材種類型 {
         let 金額計算タイプ: 金額計算タイプ型
         switch self {
         case .FB(板厚: let thin, 高さ: let height):
-            guard let object = searchボルト等(種類: "FB", サイズ: thin, 長さ: height) else { return nil }
+            guard let object = searchボルト等(種類: .FB, サイズ: thin, 長さ: height) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .定番FB(板厚: let size):
@@ -497,10 +499,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .ボルト(サイズ: let size, 長さ: let length):
             let itemLength: Double
-            if let object = searchボルト等(種類: "ボルト", サイズ: size, 長さ: length) {
+            if let object = searchボルト等(種類: .ボルト, サイズ: size, 長さ: length) {
                 itemLength = length
                 図番 = object.図番
-            } else if let object = searchボルト等(種類: "ボルト", サイズ: size) {
+            } else if let object = searchボルト等(種類: .ボルト, サイズ: size) {
                 itemLength = 1000
                 図番 = object.図番
             } else {
@@ -508,22 +510,22 @@ public enum 資材種類型 {
             }
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
         case .浮かしパイプ(サイズ: let size, 長さ: let length):
-            if let object = searchボルト等(種類: "浮かしパイプ", サイズ: size, 長さ: length) {
+            if let object = searchボルト等(種類: .浮かしパイプ, サイズ: size, 長さ: length) {
                 図番 = object.図番
             } else {
                 return nil
             }
             金額計算タイプ = .個数物
         case .ナット(サイズ: let size):
-            guard let object = searchボルト等(種類: "ナット", サイズ: size) else { return nil }
+            guard let object = searchボルト等(種類: .ナット, サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ワッシャー(サイズ: let size):
-            guard let object = searchボルト等(種類: "ワッシャー", サイズ: size) else { return nil }
+            guard let object = searchボルト等(種類: .ワッシャー, サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .Sワッシャー(サイズ: let size):
-            guard let object = searchボルト等(種類: "Sワッシャー", サイズ: size) else { return nil }
+            guard let object = searchボルト等(種類: .Sワッシャー, サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .特寸ワッシャー(サイズ: let size, 外径: let r1, 内径: let r2):
@@ -532,76 +534,76 @@ public enum 資材種類型 {
             let r2str = String(format: r2format, r2)
 
             let len = "\(r1str)φx\(r2str)φ"
-            guard let object = searchボルト等(種類: "特寸ワッシャー", サイズ: size, 長さ: len) else { return nil }
+            guard let object = searchボルト等(種類: .特寸ワッシャー, サイズ: size, 長さ: len) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .丸パイプ(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "丸パイプ", サイズ: size) else { return nil }
+            guard let object = searchボルト等(種類: .丸パイプ, サイズ: size) else { return nil }
             図番 = object.図番
             let itemLength: Double = 4000
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
         case .Cタッピング(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "Cタッピング", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .Cタッピング, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .サンロックトラス(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "サンロックトラス", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .サンロックトラス, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .サンロック特皿(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "サンロック特皿", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .サンロック特皿, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .皿(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "皿", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .皿, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .特皿(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "特皿", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .特皿, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .トラス(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "トラス", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .トラス, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .スリムヘッド(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "スリムヘッド", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .スリムヘッド, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ナベ(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "ナベ", サイズ: size, 長さ: length) ?? searchボルト等(種類: "なべ", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .ナベ, サイズ: size, 長さ: length) ?? searchボルト等(種類: .なべ, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .テクスナベ(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "テクスナベ", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .テクスナベ, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .テクス皿(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "テクス皿", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .テクス皿, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .テクス特皿(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "テクス特皿", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .テクス特皿, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .片ネジ(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "片ネジ", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .片ネジ, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .六角(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "六角", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .六角, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .スタッド(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "スタッド", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .スタッド, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ストレートスタッド(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "ストレートスタッド", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .ストレートスタッド, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ALスタッド(サイズ: let size, 長さ: let length):
-            guard let object = searchボルト等(種類: "ALスタッド", サイズ: size, 長さ: length) else { return nil }
+            guard let object = searchボルト等(種類: .ALスタッド, サイズ: size, 長さ: length) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .三角コーナー:
@@ -716,29 +718,38 @@ extension DMScanner {
         return ("ナット", .ナット(サイズ: size.string), 90)
     }
     
-    mutating func scan浮かしパイプ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
-            return ("浮かしパイプ", .浮かしパイプ(サイズ: size, 長さ: length), 130)
+    mutating func scan丸パイプ(伝票種類: 伝票種類型) -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        func makePipe2(サイズ: String, 長さ: Double) -> 資材種類型 {
+            if searchボルト等(種類: .浮かしパイプ, サイズ: サイズ, 長さ: 長さ) != nil {
+                switch 伝票種類 {
+                case .箱文字:
+                    switch (サイズ, 長さ) {
+                    case ("6", 5.0), ("6", 10.0), ("6", 15.0):
+                        break
+                    default:
+                        return .浮かしパイプ(サイズ: サイズ, 長さ: 長さ)
+                    }
+                default:
+                    break
+                }
+                return .浮かしパイプ(サイズ: サイズ, 長さ: 長さ)
+            }
+            return .丸パイプ(サイズ: サイズ, 長さ: 長さ)
         }
-        self.reset()
-        return nil
-    }
-    
-    mutating func scan丸パイプ() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         if let (size, length) = scanSizeXLength("浮かし", unit1: "Φ") {
-            return ("浮かしパイプ", .丸パイプ(サイズ: size, 長さ: length), 130)
+            return ("浮かしパイプ", makePipe2(サイズ: size, 長さ: length), 130)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("配線", unit1: "Φ") {
-            return ("配線パイプ", .丸パイプ(サイズ: size, 長さ: length), 120)
+            return ("配線パイプ", makePipe2(サイズ: size, 長さ: length), 120)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("電源用", unit1: "Φ") {
-            return ("電源用パイプ", .丸パイプ(サイズ: size, 長さ: length), 100)
+            return ("電源用パイプ", makePipe2(サイズ: size, 長さ: length), 100)
         }
         self.reset()
         if let (size, length) = scanSizeXLength("", unit1: "Φ") {
-            return ("丸パイプ", .丸パイプ(サイズ: size, 長さ: length), 110)
+            return ("丸パイプ", makePipe2(サイズ: size, 長さ: length), 110)
         }
         self.reset()
         return nil

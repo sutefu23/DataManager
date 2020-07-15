@@ -193,6 +193,8 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
         }
         self.init(validNumber: number)
     }
+    
+    public var キャッシュ指示書: 指示書型? { try? 指示書キャッシュ.find(self) }
 }
 
 extension FileMakerRecord {
