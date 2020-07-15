@@ -493,6 +493,17 @@ extension 指示書型 {
     }
     
     public var 社内塗装あり: Bool {
+        表面社内塗装あり || 側面社内塗装あり
+    }
+    
+    public var 表面社内塗装あり: Bool {
+        func check(_ target: String) -> Bool {
+            return target.contains("塗装") && !target.contains("先方")
+        }
+        return check(表面仕上1) || check(表面仕上2)
+    }
+    
+    public var 側面社内塗装あり: Bool {
         func check(_ target: String) -> Bool {
             return target.contains("塗装") && !target.contains("先方")
         }

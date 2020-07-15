@@ -72,7 +72,7 @@ public class 付属品封筒型 {
         rect2.append(PaperPath.makeBox(origin: (x: 0.5, y: 39.15), size: (width: 4, height: 4)))
         // 印鑑欄
         var 印鑑欄: [(text: String, offset: Double)] = []
-        if order.社内塗装あり { 印鑑欄.append(("塗装", 3.6)) }
+        if order.側面社内塗装あり { 印鑑欄.append(("塗装", 3.6)) }
         印鑑欄.append(("附属品準備", -0.2))
         if order.外注塗装あり { 印鑑欄.append(("塗装", 3.6)) }
         if order.外注メッキあり { 印鑑欄.append(("メッキ", 2.0)) }
