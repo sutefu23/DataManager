@@ -148,7 +148,7 @@ extension Sequence where Element == 進捗出力型 {
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-//            if 進捗CheckMode == false { return }
+            Thread.sleep(forTimeInterval: 0.1)
             let checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             if checked.count == target.count { return }
             target = target.filter {
@@ -160,7 +160,7 @@ extension Sequence where Element == 進捗出力型 {
             loopCount += 1
             if (loopCount % 3) == 0 { FileMakerDB.logputAll() }
 
-        } while !target.isEmpty || loopCount > 10
+        } while !target.isEmpty || loopCount > 3
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")
     }
     
@@ -194,7 +194,6 @@ extension Array where Element == 進捗出力型 {
             var convertError: Error? = nil
             source.enumerateLines { (line, stop) in
                 do {
-//                    NSLog(line)
                     if let pl = try 進捗出力型(csvLine: line), !pl.isDBに重複あり {
                         targets.append(pl)
                     }
