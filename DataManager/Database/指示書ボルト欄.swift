@@ -37,7 +37,7 @@ public enum ボルト数調整モード型 {
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
             case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(_, _), .テクス特皿(_, _), .皿(_, _), .片ネジ(_, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 20]
-            case .ナット(_):
+            case .ナット(_), .鏡止めナット(_):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
             case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
@@ -71,7 +71,7 @@ public enum ボルト数調整モード型 {
                 offset = [1, 2, 3, 3, 3, 5, 10, 10]
             case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(_, _), .テクス特皿(_, _), .皿(_, _), .片ネジ(_, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .ナット(_):
+            case .ナット(_), .鏡止めナット(_):
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
             case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
@@ -412,6 +412,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     if let data = scanner.scanSワッシャー() { return makeTail(data) }
     if let data = scanner.scan特寸ワッシャー() { return makeTail(data) }
     if let data = scanner.scanナット() { return makeTail(data) }
+    if let data = scanner.scan鏡止めナット() { return makeTail(data) }
     if let data = scanner.scan丸パイプ(伝票種類: 伝票種類) { return makeTail(data) }
     if let data = scanner.scan特皿() { return makeTail(data) }
     if let data = scanner.scan皿() { return makeTail(data) }
@@ -443,6 +444,7 @@ public enum 資材種類型 {
     case Sワッシャー(サイズ: String)
     case 特寸ワッシャー(サイズ: String, 外径: Double, 内径: Double)
     case ナット(サイズ: String)
+    case 鏡止めナット(サイズ: String)
     case 浮かしパイプ(サイズ: String, 長さ: Double)
     case 丸パイプ(サイズ: String, 長さ: Double)
     case 皿(サイズ: String, 長さ: Double)
@@ -518,6 +520,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .ナット(サイズ: let size):
             guard let object = searchボルト等(種類: .ナット, サイズ: size) else { return nil }
+            図番 = object.図番
+            金額計算タイプ = .個数物
+        case .鏡止めナット(サイズ: let size):
+            guard let object = searchボルト等(種類: .鏡止めナット, サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ワッシャー(サイズ: let size):
@@ -717,7 +723,16 @@ extension DMScanner {
         }
         return ("ナット", .ナット(サイズ: size.string), 90)
     }
-    
+
+    mutating func scan鏡止めナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard scanString("C-") || scanString("鏡止めナットC-")  else { return nil }
+        guard let size = scanStringAsDouble(), size.value > 0 else {
+            self.reset()
+            return nil
+        }
+        return ("鏡止めナット", .鏡止めナット(サイズ: size.string), 90)
+    }
+
     mutating func scan丸パイプ(伝票種類: 伝票種類型) -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         func makePipe2(サイズ: String, 長さ: Double) -> 資材種類型 {
             if searchボルト等(種類: .浮かしパイプ, サイズ: サイズ, 長さ: 長さ) != nil {
