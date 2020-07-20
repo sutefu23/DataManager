@@ -15,6 +15,10 @@ public class 取引先型 {
     init?(_ record: FileMakerRecord) {
         self.record = record
     }
+    public init?(会社コード code: String) throws {
+        guard let record = try 取引先型.find(会社コード: code)?.record else { return nil }
+        self.record = record
+    }
     
     public var 会社コード: 会社コード型 { return record.string(forKey: "会社コード")! }
     public var 会社名: String { return record.string(forKey: "会社名")! }

@@ -187,14 +187,14 @@ extension Sequence where Element == 進捗出力型 {
     
 // MARK: - CSV関連
 extension Array where Element == 進捗出力型 {
-    public init(csv url: URL)  throws {
+    public init(csv url: URL, 重複排除: Bool = true)  throws {
         var targets: [進捗出力型] = []
         if url.isExists {
             let source = try String(contentsOf: url, encoding: .utf8)
             var convertError: Error? = nil
             source.enumerateLines { (line, stop) in
                 do {
-                    if let pl = try 進捗出力型(csvLine: line), !pl.isDBに重複あり {
+                    if let pl = try 進捗出力型(csvLine: line), !(重複排除 && pl.isDBに重複あり) {
                         targets.append(pl)
                     }
                 } catch {
