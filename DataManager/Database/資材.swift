@@ -19,10 +19,10 @@ public class 資材型: Codable, Comparable, Hashable {
     public let 規格: String
     public let 単価: Double?
 
-    init() {
+    init(図番: 図番型 = "", 製品名称: String = "") {
         self.record = FileMakerRecord()
-        self.図番 = ""
-        self.製品名称 = ""
+        self.図番 = 図番
+        self.製品名称 = 製品名称
         self.規格 = ""
         self.単価 = nil
     }
@@ -50,10 +50,11 @@ public class 資材型: Codable, Comparable, Hashable {
     public required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let num = try values.decode(String.self, forKey: .図番)
-        guard let record = try 資材キャッシュ型.shared.キャッシュ資材(図番: num)?.record else {
-            throw FileMakerError.notFound(message: "図番:\(num)")
+        if let record = try 資材キャッシュ型.shared.キャッシュ資材(図番: num)?.record {
+            try self.init(record)
+        } else {
+            self.init(図番: num, 製品名称: "\(num)?")
         }
-        try self.init(record)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -80,6 +81,11 @@ public class 資材型: Codable, Comparable, Hashable {
         var scanner = DMScanner(self.図番, normalizedFullHalf: true)
         self.図番_数 = scanner.scanInteger() ?? Int.max
         self.図番_文字 = scanner.string
+    }
+    
+    /// 図番が生産管理に存在する場合true
+    public var isValid: Bool {
+        (try? 資材キャッシュ型.shared.キャッシュ資材(図番: self.図番)) != nil
     }
     
     // MARK: - <Comparable>

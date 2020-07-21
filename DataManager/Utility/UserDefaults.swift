@@ -14,7 +14,7 @@ import UIKit
 // MARK: - 標準データ。デフォルトは空
 
 extension UserDefaults {
-    @objc public var programName: String { mainBundleName }
+    public var programName: String { mainBundleName }
 
     public var newVersionURL: URL? {
         get { url(forKey: "newVersionURL") }
