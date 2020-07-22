@@ -106,23 +106,19 @@ public class 資材入庫状況型 {
         資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: nil)
     }
     
-    public func synchronize() {
+    public func synchronize() throws {
         if self.recordID != nil && self.data == self.original { return }
         let data = self.data.fieldData
         let db = FileMakerDB.system
-        do {
-            if let recordID = self.recordID {
-                try db.update(layout: 資材入庫状況Data型.dbName, recordId: recordID, fields: data)
-            } else {
-                let db = FileMakerDB.system
-                let recordID = try db.insert(layout: 資材入庫状況Data型.dbName, fields: data)
-                self.recordID = recordID
-            }
-            self.original = self.data
-            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: self)
-        } catch {
-            NSLog(error.localizedDescription)
+        if let recordID = self.recordID {
+            try db.update(layout: 資材入庫状況Data型.dbName, recordId: recordID, fields: data)
+        } else {
+            let db = FileMakerDB.system
+            let recordID = try db.insert(layout: 資材入庫状況Data型.dbName, fields: data)
+            self.recordID = recordID
         }
+        self.original = self.data
+        資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: self)
     }
     
     static func findDirect(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
