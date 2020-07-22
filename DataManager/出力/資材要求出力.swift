@@ -8,12 +8,6 @@
 
 import Foundation
 
-//public struct 資材発注ベース型: Codable {
-//    public let 資材: 資材型
-//    public let 数量: Int?
-//    public let 備考: String
-//}
-//
 public struct 資材要求出力型 {
     public let 登録日: Day
     public let 登録時間: Time
