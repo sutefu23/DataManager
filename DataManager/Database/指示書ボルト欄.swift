@@ -41,9 +41,7 @@ public enum ボルト数調整モード型 {
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
             case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
-            case .定番FB(_), .FB(_, _):
-                return count
-            case .三角コーナー:
+            case .定番FB(_), .FB(_, _), .外注(_), .三角コーナー:
                 return count
             case nil:
                 if 表示名.hasPrefix("L金具") {
@@ -75,9 +73,7 @@ public enum ボルト数調整モード型 {
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
             case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .定番FB(_), .FB(_, _):
-                return count
-            case .三角コーナー:
+            case .定番FB(_), .FB(_, _), .外注(_), .三角コーナー:
                 return count
             case nil:
                 return count
@@ -432,6 +428,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     if let data = scanner.scanALスタッド() { return makeTail(data) }
     if let data = scanner.scanFBSimple() { return makeTail(data) }
     if let data = scanner.scan三角コーナー() { return makeTail(data) }
+    if let data = scanner.scan外注() { return makeTail(data) }
 
     return nil
 }
@@ -464,7 +461,8 @@ public enum 資材種類型 {
     case ストレートスタッド(サイズ: String, 長さ: Double)
     case ALスタッド(サイズ: String, 長さ: Double)
     case 三角コーナー
-    
+    case 外注(サイズ: String)
+
     public func make使用情報() -> (図番: 図番型, 金額計算タイプ: 金額計算タイプ型)? {
         let 図番: 図番型
         let 金額計算タイプ: 金額計算タイプ型
@@ -614,6 +612,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .三角コーナー:
             図番 = "2016"
+            金額計算タイプ = .個数物
+        case .外注(サイズ: let size):
+            guard let object = searchボルト等(種類: .外注, サイズ: size) else { return nil }
+            図番 = object.図番
             金額計算タイプ = .個数物
         }
         return (図番, 金額計算タイプ)
@@ -899,6 +901,16 @@ extension DMScanner {
         }
         return ("三角コーナー", .三角コーナー, 0)
     }
+    
+    mutating func scan外注() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard scanString("外注") else { return nil }
+        guard let size = scanStringAsDouble(), size.value > 0 else {
+            self.reset()
+            return nil
+        }
+        return ("外注", .外注(サイズ: size.string), 90)
+    }
+
 }
 
 private let lengthMap: [図番型: Double] = [
