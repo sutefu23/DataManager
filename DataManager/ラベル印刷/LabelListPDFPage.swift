@@ -115,7 +115,7 @@ extension PDFDocument {
         window.setContentSize(view.frame.size)
         window.contentView = view
         view.document = self
-        view.print(with: info, autoRotate: true, pageScaling: .pageScaleToFit)
+        view.print(with: info, autoRotate: true, pageScaling: .pageScaleNone)
     }
 }
 #endif

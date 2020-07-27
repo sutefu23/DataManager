@@ -97,8 +97,8 @@ public class PaperPDFPage: PDFPage {
 
         #endif
         if !title.isEmpty {
-            let header = PaperRect(px: 0, py: 0, pwidth: rect.width, pheight: 5)
-            let text = PaperText(mmx: 10, mmy: -12.5, inset: 0, text: title, fontSize: 10, bold: true, color: .black)
+            let header = PaperRect(px: 0, py: 3, pwidth: rect.width, pheight: 5)
+            let text = PaperText(mmx: 10, mmy: 10, inset: 0, text: title, fontSize: 10, bold: true, color: .black)
             header.append(text)
             header.draw(at: pos, isFlipped: isFlipped)
         }
