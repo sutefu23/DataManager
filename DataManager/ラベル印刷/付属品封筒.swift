@@ -29,16 +29,10 @@ public class 付属品封筒型 {
         page.rotationPrint = true
         #endif
         let inset = 1.0
-//        let setCount = order.セット数値
         // 伝票番~
         let rect0 = PaperRect(x: offsetX + 5, y: offsetY + 7, width: 110, height: 15)
-//        rect0.append(PaperRoundBox(origin: (x: 10, y: 8), size: (width: 90, height: 15), r: 3))
-//        rect0.append(PaperPath.makeLine(from: (x: 87, y: 9), to: (x: 87, y: 22)))
-//        rect0.append(PaperPath.makeLine(from: (x: 87, y: 12), to: (x: 100, y: 12), lineWidth: 0.5))
-//        rect0.append(PaperText(mmx: 86.5, mmy: 9.5, inset: inset, text: "附属品準備", fontSize: 7, bold: false, color: .black))
         rect0.append(PaperRoundBox(origin: (x: 15, y: 9), size: (width: 80, height: 13), r: 3))
         rect0.append(PaperText(mmx: 26, mmy: 15, inset: inset, text: "取付附属品表", fontSize: 28, bold: false, color: .black))
-//        rect0.append(PaperText(mmx: 19, mmy: 15, inset: inset, text: "取付附属品表", fontSize: 30, bold: false, color: .black))
         page.append(rect0)
         let rect1 = PaperRect(x: offsetX + 5, y: offsetY + 20, width: 110, height: 25)
         rect1.append(PaperText(mmx: 0, mmy: 15, text: "伝票No \(order.伝票番号.表示用文字列)", fontSize: 14, bold: false, color: .black))
@@ -142,7 +136,7 @@ public class 付属品封筒型 {
                 case .info(let info):
                     rect3.append(PaperText(mmx: x, mmy: y-2.8, inset: inset, text: String(info.分割表示名1.prefix(14)), fontSize: 12, bold: false, color: .black))
                     rect3.append(PaperText(mmx: x, mmy: y+1.2, inset: inset, text: String(info.分割表示名2.prefix(14)), fontSize: 12, bold: false, color: .black))
-                    if let vol = info.現在数量(伝票番号: order.伝票番号), vol > 0 {
+                    if let vol = info.現在数量(伝票番号: order.伝票番号, is封筒印刷のみ: true), vol > 0 {
                         let str = String(Int(vol))
                         let mx = x + 52.5 - Double(str.count) * 2.5
                         rect3.append(PaperText(mmx: mx, mmy: y+1.2, inset: inset, text: str, fontSize: 12, bold: false, color: .black))

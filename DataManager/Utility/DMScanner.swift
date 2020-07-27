@@ -596,4 +596,19 @@ public struct DMScanner: RandomAccessCollection {
         self.startIndex = initailIndex
         return nil
     }
+    
+    /// 微妙な文字（ローマ数字など）を使っている場合true
+    public var containsNGCharacters: Bool {
+        source[startIndex..<endIndex].containsNGCharacters
+    }
+}
+
+let ngCharacters: Set<Character> = [
+    "\u{2160}", "\u{2164}", "\u{2169}", "\u{216C}", "\u{216D}", "\u{216E}", "\u{216F}" // ローマ数字
+]
+
+public extension StringProtocol {
+    var containsNGCharacters: Bool {
+        self.contains { ngCharacters.contains($0) }
+    }
 }
