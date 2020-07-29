@@ -43,19 +43,27 @@ public class 付属品封筒型 {
         
         page.append(rect1)
         let rect2 = PaperRect(x: offsetX + 5, y: offsetY + 50, width: 110, height: 25)
-        let title = order.品名
-        let titleCount = title.count
-        if titleCount <= 16 {
-        rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(title)", fontSize: 18, bold: false, color: .black))
-        } else if titleCount <= 24 {
+        var title = order.品名
+        let titles = title.split(whereSeparator: { $0 == "\n" || $0 == "\r" })
+        if titles.count == 2 {
             rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名", fontSize: 18, bold: false, color: .black))
-            rect2.append(PaperText(mmx: 13, mmy: 4, inset: inset, text: title, fontSize: 13, bold: false, color: .black))
+            rect2.append(PaperText(mmx: 13, mmy: 1, inset: inset, text: String(titles[0]), fontSize: 14, bold: false, color: .black))
+            rect2.append(PaperText(mmx: 13, mmy: 6, inset: inset, text: String(titles[1]), fontSize: 14, bold: false, color: .black))
         } else {
-            let title1 = String(title.prefix(min(24, titleCount - titleCount/2)))
-            let title2 = String(title.suffix(min(23, titleCount/2)))
-            rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名", fontSize: 18, bold: false, color: .black))
-            rect2.append(PaperText(mmx: 13, mmy: 1, inset: inset, text: title1, fontSize: 14, bold: false, color: .black))
-            rect2.append(PaperText(mmx: 13, mmy: 6, inset: inset, text: title2, fontSize: 14, bold: false, color: .black))
+            title = title.newlineToSpace
+            let titleCount = title.count
+            if titleCount <= 16 {
+                rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名 \(title)", fontSize: 18, bold: false, color: .black))
+            } else if titleCount <= 24 {
+                rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名", fontSize: 18, bold: false, color: .black))
+                rect2.append(PaperText(mmx: 13, mmy: 4, inset: inset, text: title, fontSize: 13, bold: false, color: .black))
+            } else {
+                let title1 = String(title.prefix(min(24, titleCount - titleCount/2)))
+                let title2 = String(title.suffix(min(23, titleCount/2)))
+                rect2.append(PaperText(mmx: 0, mmy: 4, inset: inset, text: "品名", fontSize: 18, bold: false, color: .black))
+                rect2.append(PaperText(mmx: 13, mmy: 1, inset: inset, text: title1, fontSize: 14, bold: false, color: .black))
+                rect2.append(PaperText(mmx: 13, mmy: 6, inset: inset, text: title2, fontSize: 14, bold: false, color: .black))
+            }
         }
         rect2.append(PaperText(mmx: 0, mmy: 14, inset: inset, text: "取付に必要な部品が入っています", fontSize: 14, bold: false, color: .black))
         rect2.append(PaperText(mmx: 0, mmy: 21, inset: inset, text: "開封の上、ご確認ください", fontSize: 14, bold: false, color: .black))
