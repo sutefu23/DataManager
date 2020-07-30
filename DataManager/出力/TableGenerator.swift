@@ -300,8 +300,8 @@ public extension TableGenerator {
             case .minute0:
                 //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
                 let value = Int(value/60)
-                //結果が０より下の時はnilを返す
-                if value < 0 { return nil }
+                //結果が０以下の時はnilを返す
+                if value <= 0 { return nil }
                 return String(value)
             case .minute1:
                 return String(format: "%.1f", value/60)
