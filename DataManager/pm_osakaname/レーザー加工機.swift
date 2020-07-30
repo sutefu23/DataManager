@@ -8,7 +8,11 @@
 
 import Foundation
 
-public enum レーザー加工機型 {
+public enum レーザー加工機型: Equatable, Comparable {
+    public static func < (lhs: レーザー加工機型, rhs: レーザー加工機型) -> Bool {
+        lhs.name < rhs.name
+    }
+    
     case hv
     case ex
     case hp
