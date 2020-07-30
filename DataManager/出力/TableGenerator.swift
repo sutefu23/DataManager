@@ -161,14 +161,12 @@ public extension TableGenerator {
         case native
         case currency
     }
-    
     enum DoubleFormat {
         case native
         case round0
         case round1
         case currency
     }
-    
     enum DateFormat {
         case monthDayHourMinute
         case dayWeekToMinute
@@ -250,7 +248,18 @@ public extension TableGenerator {
         }
         return appending(col)
     }
-
+    func date(_ title: String, _ format: DateFormat = .monthDayHourMinute, _ getter: @escaping (S) -> Date?) -> TableGenerator<S>{
+        let col = TableColumn<S>(title: title){
+            let date = getter($0)
+            switch format {
+            case .monthDayHourMinute:
+                return date?.monthDayHourMinuteString
+            case .dayWeekToMinute:
+                return date?.dayWeekToMinuteString
+            }
+        }
+        return appending(col)
+    }
     func day(_ title: String, _ format: DayFormat = .monthDay, _ getter: @escaping (S) -> Day?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             let day = getter($0)
@@ -289,7 +298,11 @@ public extension TableGenerator {
             guard let value = getter($0) else { return nil }
             switch format {
             case .minute0:
-                return String(format: "%.0f", value/60)
+                //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
+                let value = Int(value/60)
+                //結果が０以下の時はnilを返す
+                if value <= 0 { return nil }
+                return String(value)
             case .minute1:
                 return String(format: "%.1f", value/60)
             }
@@ -328,3 +341,4 @@ public extension TableGenerator {
 }
 
 #endif
+
