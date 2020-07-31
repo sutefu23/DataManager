@@ -117,10 +117,10 @@ public extension UIView {
         return view
     }
     
-    @discardableResult func updateLabel(_ name: String, text: String?, color: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+    @discardableResult func updateLabel(_ name: String, text: String?, tcolor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(name) else { return nil }
-        if let color = color {
-            view.attributedText = text?.makeAttributedString(color: color, font: view.font)
+        if let tcolor = tcolor {
+            view.attributedText = text?.makeAttributedString(tcolor: tcolor, font: view.font)
         } else {
             view.text = text?.isEmpty == false ? text : " "
         }
