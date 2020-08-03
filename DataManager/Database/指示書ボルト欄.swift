@@ -389,8 +389,8 @@ public struct 資材要求情報型 {
 }
 public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情報型) -> Bool {
     if left.ソート順 != right.ソート順 { return left.ソート順 > right.ソート順 }
-    if left.分割表示名1 != right.分割表示名1 { return left.分割表示名1 < right.分割表示名2 }
-    if left.分割表示名2 != right.分割表示名2 { return left.分割表示名1 < right.分割表示名2 }
+    if left.分割表示名1 != right.分割表示名1 { return left.分割表示名1 < right.分割表示名1 }
+    if left.分割表示名2 != right.分割表示名2 { return left.分割表示名2 < right.分割表示名2 }
     return false
 }
 

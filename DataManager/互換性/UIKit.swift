@@ -120,7 +120,7 @@ public extension UIView {
     @discardableResult func updateLabel(_ name: String, text: String?, tcolor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(name) else { return nil }
         if let tcolor = tcolor {
-            view.attributedText = text?.makeAttributedString(tcolor: tcolor, font: view.font)
+            view.attributedText = text?.makeAttributedString(color: tcolor, font: view.font)
         } else {
             view.text = text?.isEmpty == false ? text : " "
         }
