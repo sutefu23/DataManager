@@ -115,6 +115,7 @@ public struct 資材板情報型: 資材情報型 {
                     if aktype == .スミペックス && left == 1000 && right == 2000 { return (1040, 2040) }
                     return (left, right)
                 }
+                let isMeter: Bool = (material.containsOne(of: "アルミ", "BSP"))
                 if normalSize == true { return nil }
                 if let size = aktype?.size(of: (left, right)) { return size }
                 switch (left, right) {
@@ -125,7 +126,7 @@ public struct 資材板情報型: 資材情報型 {
                 case (3, 6):
                     return (914, 1829)
                 case (4, 8):
-                    return (1219, 2438)
+                    return !isMeter ? (1219, 2438) : (1250, 2500)
                 case (4, 10):
                     return (1219, 3048)
                 case (5, 10):
