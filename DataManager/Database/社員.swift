@@ -134,28 +134,25 @@ public class 社員型: Hashable, Codable {
 }
 
 public extension 社員型 {
-    static let 室中哲郎: 社員型 = 社員番号マップ[019]!
-    static let 関雄也: 社員型 = 社員番号マップ[034]!
-    static let 森藤年栄: 社員型 = 社員番号マップ[717]!
+    static let 稗田_司: 社員型 = 社員番号マップ[012]!
+    static let 川原_夏彦: 社員型 = 社員番号マップ[017]!
+    static let 室中_哲郎: 社員型 = 社員番号マップ[019]!
+    static let 関_雄也: 社員型 = 社員番号マップ[034]!
+    static let 岸原_秀昌: 社員型 = 社員番号マップ[112]!
+    static let 葏口_徹: 社員型 = 社員番号マップ[125]!
+    static let 森藤_年栄: 社員型 = 社員番号マップ[717]!
+    static let 和田_千秋: 社員型 = 社員番号マップ[955]!
 }
 
 // MARK: - 保存
 public extension UserDefaults {
-    func 社員一覧(forKey key: String) -> [社員型]? {
-        return self.json(forKey: key)
-    }
+    func 社員一覧(forKey key: String) -> [社員型]? { self.json(forKey: key) }
     
-    func setOptional(_ members: [社員型]?, forKey key: String) {
-        self.setJson(object: members, forKey: key)
-    }
+    func setOptional(_ members: [社員型]?, forKey key: String) { self.setJson(object: members, forKey: key) }
     
-    func 社員(forKey key: String) -> 社員型? {
-        return self.json(forKey: key)
-    }
+    func 社員(forKey key: String) -> 社員型? { self.json(forKey: key) }
     
-    func setOptional(_ member: 社員型?, forKey key: String) {
-        self.setJson(object: member, forKey: key)
-    }
+    func setOptional(_ member: 社員型?, forKey key: String) { self.setJson(object: member, forKey: key) }
 }
 
 extension FileMakerRecord {

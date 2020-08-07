@@ -339,6 +339,15 @@ public extension TableGenerator {
         source.present(controller, animated: true, completion: nil)
     }
 }
+#elseif os(macOS)
+import AppKit
+
+public extension TableGenerator {
+    func share(_ source: [S], format: ExportType, title: String) throws {
+        let url = 生産管理集計URL.appendingPathComponent(title)
+        try self.write(source, format: format, to: url)
+    }
+}
 
 #endif
 
