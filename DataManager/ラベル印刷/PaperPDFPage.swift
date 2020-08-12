@@ -15,6 +15,7 @@ import PDFKit
 public enum PaperType {
     case A4
     case 長形3号
+    case 長形3号横
 }
 
 public class PaperPDFPage: PDFPage {
@@ -45,6 +46,9 @@ public class PaperPDFPage: PDFPage {
         case .長形3号:
             w = 340
             h = 666
+        case .長形3号横:
+            w = 666
+            h = 340
         }
         if orientaion == .landscape {
             return CGRect(x: 0, y: 0, width: h, height: w)

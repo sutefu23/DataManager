@@ -99,6 +99,7 @@
 		14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */; };
 		147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8806242F0508008FB8F4 /* 資材(板情報).swift */; };
 		147B8809242F06BF008FB8F4 /* Test資材板情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8808242F06BF008FB8F4 /* Test資材板情報.swift */; };
+		14831E4124E27B6A00E75051 /* 封筒裏面.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14831E4024E27B6A00E75051 /* 封筒裏面.swift */; };
 		1486C06C222C8F1F00199EA5 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1486C06B222C8F1F00199EA5 /* カレンダー.swift */; };
 		14872339249B3F7F006623C1 /* TestVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14872338249B3F7F006623C1 /* TestVersion.swift */; };
 		148AA6C12436ED1400BE8A1F /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148AA6C02436ED1400BE8A1F /* Int.swift */; };
@@ -259,6 +260,7 @@
 		14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		147B8806242F0508008FB8F4 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
 		147B8808242F06BF008FB8F4 /* Test資材板情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材板情報.swift"; sourceTree = "<group>"; };
+		14831E4024E27B6A00E75051 /* 封筒裏面.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "封筒裏面.swift"; sourceTree = "<group>"; };
 		1486C06B222C8F1F00199EA5 /* カレンダー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "カレンダー.swift"; sourceTree = "<group>"; };
 		14872338249B3F7F006623C1 /* TestVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVersion.swift; sourceTree = "<group>"; };
 		148AA6C02436ED1400BE8A1F /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				8E0CBAE323EB62DB00587F6B /* PaperRect.swift */,
 				14709DDB23F10CDA0014008C /* BarCode.swift */,
 				1470792E247B9E6D0044134E /* 付属品封筒.swift */,
+				14831E4024E27B6A00E75051 /* 封筒裏面.swift */,
 			);
 			name = "ラベル印刷";
 			path = "ラベル印刷";
@@ -762,6 +765,7 @@
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
 				146989AF24BD936100E96C79 /* 作業ステージ.swift in Sources */,
+				14831E4124E27B6A00E75051 /* 封筒裏面.swift in Sources */,
 				141057CC246B8CBF00277E42 /* 資材（ボルト情報）.swift in Sources */,
 				147047012488C03400A5D8F6 /* 板加工在庫.swift in Sources */,
 				1468395A2429DC25001E5656 /* 指定注文番号型.swift in Sources */,

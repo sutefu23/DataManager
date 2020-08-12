@@ -236,19 +236,25 @@ public class PaperText: PaperObject {
     
     let x: CGFloat
     let y: CGFloat
+    let nooffset: Bool
 
-    public convenience init(mmx: Double, mmy: Double, inset: Double = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
+    public convenience init(mmx: Double, mmy: Double, inset: Double = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
         let x = convertPoint(mm: mmx)
         let y = convertPoint(mm: mmy)
         let inset = convertPoint(mm: inset)
-        self.init(x: x, y: y, inset: inset, text: text, fontSize: fontSize, bold: bold, color: color)
+        self.init(x: x, y: y, inset: inset, text: text, fontSize: fontSize, bold: bold, color: color, nooffset: nooffset, lineSpace: lineSpace)
     }
     
-    public init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor) {
+    public init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
         self.x = x + inset
         self.y = y + inset
         let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
-        let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
+        var attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
+        if let lineSpace = lineSpace {
+            let style = NSMutableParagraphStyle()
+            style.lineSpacing = lineSpace
+            attributes[NSAttributedString.Key.paragraphStyle] = style
+        }
         let storage = NSTextStorage(string: text, attributes: attributes)
         let container = NSTextContainer()
         let manager = NSLayoutManager()
@@ -257,6 +263,7 @@ public class PaperText: PaperObject {
         self.storage = storage
         self.container = container
         self.manager = manager
+        self.nooffset = nooffset
     }
 
     var bounds: CGRect {
@@ -268,7 +275,12 @@ public class PaperText: PaperObject {
     public func draw(at: CGPoint, isFlipped: Bool) {
         let rect = self.bounds
         let dx = x - rect.origin.x
-        let dy = isFlipped ? (-y-rect.height/2) : (y - (rect.height/2))
+        let dy: CGFloat
+        if nooffset {
+            dy = isFlipped ? -y : y
+        } else {
+            dy = isFlipped ? (-y-rect.height/2) : (y - (rect.height/2))
+        }
         var origin = at
         origin.x += dx
         origin.y += dy

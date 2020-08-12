@@ -81,16 +81,16 @@ public class LabelPDFDocument {
 import UIKit
 
 extension UIViewController {
-    public func print(_ pdf: PDFDocument, updateButton: UIButton, jobName: String, outputType: UIPrintInfo.OutputType) {
+    public func print(_ pdf: PDFDocument, updateButton: UIButton, jobName: String, outputType: UIPrintInfo.OutputType, delegate: UIPrintInteractionControllerDelegate? = nil) {
         let picker = UIPrinterPickerController(initiallySelectedPrinter: nil)
         picker.present(from: updateButton.frame, in: self.view, animated: true) { (picker, userDidSelect, error) in
             guard error  == nil && userDidSelect == true else { return }
             guard let printer = picker.selectedPrinter else { return }
-            self.print(printer: printer, doc: pdf, jobName: jobName, outputType: outputType)
+            self.print(printer: printer, doc: pdf, jobName: jobName, outputType: outputType, delegate: delegate)
         }
     }
     
-    func print(printer: UIPrinter, doc: PDFDocument, jobName: String = "PDF印刷", outputType: UIPrintInfo.OutputType) {
+    func print(printer: UIPrinter, doc: PDFDocument, jobName: String = "PDF印刷", outputType: UIPrintInfo.OutputType, delegate: UIPrintInteractionControllerDelegate? = nil) {
         guard let pdfData = doc.dataRepresentation() else { return }
         let printIntaractionController = UIPrintInteractionController.shared
         let noCutInfo = UIPrintInfo(dictionary: nil)
@@ -100,6 +100,7 @@ extension UIViewController {
         noCutInfo.outputType = outputType
         printIntaractionController.printInfo = noCutInfo
         printIntaractionController.printingItem = pdfData
+        printIntaractionController.delegate = delegate
         printIntaractionController.print(to: printer)
     }
 }
