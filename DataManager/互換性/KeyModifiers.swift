@@ -10,7 +10,7 @@ import Foundation
 
 /// 修飾キーの状態
 public protocol KeyModifiers: class {
-    var modifierFlags: NCEvent.ModifierFlags { get }
+    var modifierFlags: DMEvent.ModifierFlags { get }
 }
 
 public extension KeyModifiers {
@@ -28,4 +28,4 @@ public extension KeyModifiers {
     }
 }
 
-extension NCEvent: KeyModifiers {}
+extension DMEvent: KeyModifiers {}

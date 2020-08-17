@@ -7,26 +7,26 @@
 //
 import Foundation
 
-public typealias NCColor = DMColor
-public typealias NCView = DMView
-public typealias NCTextField = DMTextField
+//public typealias DMColor = DMColor
+//public typealias DMView = DMView
+//public typealias DMTextField = DMTextField
 
-public typealias NCFont = DMFont
-public typealias NCBezierPath = DMBezierPath
-public typealias NCScreen = DMScreen
+//public typealias DMFont = DMFont
+//public typealias DMBezierPath = DMBezierPath
+//public typealias DMScreen = DMScreen
 
-public typealias NCEvent = DMEvent
+//public typealias DMEvent = DMEvent
 
-public typealias NCApplication = DMApplication
+//public typealias DMApplication = DMApplication
 
-public func NCGraphicsPushContext(_ context: CGContext) {
-    DMGraphicsPushContext(context)
-}
-public func NCGraphicsPopContext() {
-    DMGraphicsPopContext()
-}
+//public func DMGraphicsPushContext(_ context: CGContext) {
+//    DMGraphicsPushContext(context)
+//}
+//public func DMGraphicsPopContext() {
+//    DMGraphicsPopContext()
+//}
 
 
-public typealias NCTextStorage = DMTextStorage
-public typealias NCTextContainer = DMTextContainer
-public typealias NCLayoutManager = DMLayoutManager
+//public typealias DMTextStorage = DMTextStorage
+//public typealias DMTextContainer = DMTextContainer
+//public typealias DMLayoutManager = DMLayoutManager
