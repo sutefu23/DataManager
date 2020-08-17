@@ -138,6 +138,8 @@
 		14E26216247F859B009A14E8 /* TestDMScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E26215247F859B009A14E8 /* TestDMScanner.swift */; };
 		14E26218247FA7F7009A14E8 /* 分量.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E26217247FA7F7009A14E8 /* 分量.swift */; };
 		14F1FF1B24283DCF00FAA2C8 /* 入出庫キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */; };
+		679861D624EA3A03003ECCE0 /* NCtoDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679861D524EA3A03003ECCE0 /* NCtoDM.swift */; };
+		679861DC24EA5F7B003ECCE0 /* KeyModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679861DB24EA5F7B003ECCE0 /* KeyModifiers.swift */; };
 		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
@@ -299,6 +301,8 @@
 		14E26215247F859B009A14E8 /* TestDMScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDMScanner.swift; sourceTree = "<group>"; };
 		14E26217247FA7F7009A14E8 /* 分量.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "分量.swift"; sourceTree = "<group>"; };
 		14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入出庫キャッシュ.swift"; sourceTree = "<group>"; };
+		679861D524EA3A03003ECCE0 /* NCtoDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCtoDM.swift; sourceTree = "<group>"; };
+		679861DB24EA5F7B003ECCE0 /* KeyModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifiers.swift; sourceTree = "<group>"; };
 		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
@@ -487,6 +491,8 @@
 			children = (
 				8E0CBAE823EB658E00587F6B /* UIKit.swift */,
 				8E0CBAEA23EB659800587F6B /* Cocoa.swift */,
+				679861D524EA3A03003ECCE0 /* NCtoDM.swift */,
+				679861DB24EA5F7B003ECCE0 /* KeyModifiers.swift */,
 			);
 			path = "互換性";
 			sourceTree = "<group>";
@@ -808,6 +814,7 @@
 				145EE8FF2396422F008BC8B4 /* 作業系列.swift in Sources */,
 				146D0B2F23EA8869006FECA7 /* 資材入出庫出力.swift in Sources */,
 				1470CFAE243C5C5000C76979 /* Alert.swift in Sources */,
+				679861D624EA3A03003ECCE0 /* NCtoDM.swift in Sources */,
 				146884DA23E113750062F454 /* Set.swift in Sources */,
 				14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */,
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
@@ -815,6 +822,7 @@
 				8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */,
 				147169E42463837100189498 /* ChangeLog.swift in Sources */,
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
+				679861DC24EA5F7B003ECCE0 /* KeyModifiers.swift in Sources */,
 				141203792201D82F0054B56F /* Day.swift in Sources */,
 				14DA57152209A81E00831625 /* 工程.swift in Sources */,
 				141057C8246B8BC900277E42 /* 管理資材（板）.swift in Sources */,
@@ -1058,7 +1066,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1091,7 +1099,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

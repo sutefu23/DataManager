@@ -25,10 +25,10 @@ public extension Bundle {
         return Version(string, string2)
     }
     
-    var bundleIdentifier: String? {
-        guard let dic = self.infoDictionary else { return nil }
-        return dic["CFBundleIdentifier"] as? String
-    }
+//    var bundleIdentifier: String? {
+//        guard let dic = self.infoDictionary else { return nil }
+//        return dic["CFBundleIdentifier"] as? String
+//    }
 }
 
 extension DMApplication {

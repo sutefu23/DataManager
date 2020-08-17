@@ -192,3 +192,75 @@ extension UIViewController {
     }
 }
 #endif
+
+// NCEngine/Utility/ClossPlatformより移設
+#if os(iOS)
+import UIKit
+
+extension UIColor {
+    var rgba : (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red : CGFloat = 0
+        var green : CGFloat = 0
+        var blue : CGFloat = 0
+        var alpha : CGFloat = 0
+        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return (red, green, blue, alpha)
+        }
+        var white : CGFloat = 0
+        if self.getWhite(&white, alpha: &alpha) {
+            return (white, white, white, alpha)
+        }
+        fatalError("UIColor.rgbaでrgbaが取得できなかった")
+    }
+    
+    convenience init(srgbRed red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
+    }
+
+    var alphaComponent : CGFloat {
+        let (_, _, _, alpha) = self.rgba
+        return alpha
+    }
+    
+}
+
+extension UIView {
+    func updateAll() { self.setNeedsDisplay() }
+    func updateRect(_ frame:CGRect) { self.setNeedsDisplay(frame) }
+//    var screen : NCScreen? { return self.window?.screen }
+}
+
+extension UIFont  {
+    class func toolTipsFont(ofSize size: CGFloat) -> UIFont {
+        return UIFont.systemFont(ofSize: size)
+    }
+    class func userFont(ofSize size: CGFloat) -> UIFont? {
+        return UIFont.systemFont(ofSize: size)
+    }
+}
+
+public func getDisplayInfo(of screen: UIScreen)-> (screenSize: CGSize, xPixels: Int, yPixels: Int) {
+    let screen = UIScreen.main
+    let res = screen.bounds
+    let testPixels = defaults.testPixels
+    let testPhysicals = defaults.testPhisicals
+    let scaleX : CGFloat
+    let scaleY : CGFloat
+    if testPixels.offsetWidth > 0 && testPixels.height > 0 && testPhysicals.offsetWidth > 0 && testPhysicals.height > 0 {
+        scaleX = testPhysicals.offsetWidth / testPixels.offsetWidth
+        scaleY = testPhysicals.height / testPixels.height
+    } else {
+        scaleX = 132 / 22.4
+        scaleY = 132 / 22.4
+    }
+    let w = res.offsetWidth * scaleX
+    let h = res.height * scaleY
+    return (CGSize(offsetWidth: w, height: h), xPixels: Int(res.offsetWidth), yPixels: Int(res.height))
+}
+
+public typealias DMTextStorage = NSTextStorage
+public typealias DMTextContainer = NSTextContainer
+public typealias DMLayoutManager = NSLayoutManager
+
+#endif
+
