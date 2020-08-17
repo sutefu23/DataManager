@@ -25,6 +25,7 @@ public class 資材キャッシュ型 {
     }
     
     public func キャッシュ資材(図番: 図番型) throws -> 資材型? {
+        if 図番.isEmpty { return nil }
         lock.lock()
         let cache = self.cache[図番]
         lock.unlock()
