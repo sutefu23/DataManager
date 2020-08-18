@@ -115,18 +115,20 @@ public class 付属品封筒型 {
             vlist = targets.compactMap { 資材要求情報型(printSource: $0) }.map { .info($0) }
         } else { // 旧モード（ボルトのうち、+の入っている物を印刷）
             for index in 0...15 {
-                guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
+                guard let text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
                 if let info = order.ボルト資材情報[index+1] {
                     if info.分割表示名1 == "スタッド" { continue } // スタッドは枚数に入らない
                     vlist.append(.info(info))
-                } else {
-                    if text.containsOne(of: "座金", "新規") {
-                        if text.hasPrefix("新規") {
-                            text = String(text.dropFirst(2))
-                        }
-                        vlist.append(.text(text))
-                    }
                 }
+            }
+        }
+        for index in 0...15 { // 書き出し専用
+            guard var text = order.ボルト等(index+1)?.toJapaneseNormal, !text.isEmpty && !text.hasPrefix("+") else { continue }
+            if text.containsOne(of: "座金", "新規") {
+                if text.hasPrefix("新規") {
+                    text = String(text.dropFirst(2))
+                }
+                vlist.append(.text(text))
             }
         }
         // 附属品一覧印刷
@@ -151,6 +153,10 @@ public class 付属品封筒型 {
                     }
                 case .text(let text):
                     rect3.append(PaperText(mmx: x, mmy: y-2.8, inset: inset, text: text, fontSize: 12, bold: false, color: .black))
+                case .newbolt(let name, let cstr):
+                    rect3.append(PaperText(mmx: x, mmy: y-2.8, inset: inset, text: name, fontSize: 12, bold: false, color: .black))
+                    let mx = x + 52.5 - Double(cstr.count) * 2.5
+                    rect3.append(PaperText(mmx: mx, mmy: y+1.2, inset: inset, text: cstr, fontSize: 12, bold: false, color: .black))
                 }
             }
         }
@@ -187,6 +193,7 @@ public class 付属品封筒型 {
 private enum VData: Comparable {
     case info(資材要求情報型)
     case text(String)
+    case newbolt(String, String)
     
     static func==(left: VData, right: VData) -> Bool {
         switch (left, right) {
@@ -194,10 +201,11 @@ private enum VData: Comparable {
             return linfo.分割表示名1 == rinfo.分割表示名1 && linfo.分割表示名2 == rinfo.分割表示名2
         case (.text(let ltext), .text(let rtext)):
             return ltext == rtext
+        case (.newbolt(let lname, let lcount), .newbolt(let rname, let rcount)):
+            return lname == rname && lcount == rcount
         default:
             return false
         }
-        
     }
     static func<(left: VData, right: VData) -> Bool {
         switch (left, right) {
@@ -205,12 +213,14 @@ private enum VData: Comparable {
             return sortCompare(linfo, rinfo)
         case (.text(let ltext), .text(let rtext)):
             return ltext < rtext
-        case (.info, .text):
+        case (.newbolt(let lname, let lcount), .newbolt(let rname, let rcount)):
+            if lname == rname { return lname < rname }
+            return lcount < rcount
+        case (.info, .text), (.info, .newbolt), (.text, .newbolt):
             return true
-        case (.text, .info):
+        case (.newbolt, .info), (.newbolt, .text), (.text, .info):
             return false
         }
-        
     }
 
     var title: String {
@@ -219,6 +229,8 @@ private enum VData: Comparable {
             return info.表示名
         case .text(let title):
             return title
+        case .newbolt(let name, _):
+            return name
         }
     }
 }

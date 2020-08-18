@@ -8,6 +8,7 @@
 
 import Foundation
 
+#if os(macOS)
 /// 修飾キーの状態
 public protocol KeyModifiers: class {
     var modifierFlags: DMEvent.ModifierFlags { get }
@@ -29,3 +30,5 @@ public extension KeyModifiers {
 }
 
 extension DMEvent: KeyModifiers {}
+
+#endif

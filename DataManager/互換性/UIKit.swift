@@ -24,11 +24,6 @@ public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(
 public func DMGraphicsPopContext() { UIGraphicsPopContext() }
 
 public typealias DMFont = UIFont
-public extension DMFont {
-    static func userFont(ofSize size: CGFloat) -> DMFont? {
-        DMFont.systemFont(ofSize: size)
-    }
-}
 
 public typealias DMBezierPath = UIBezierPath
 public typealias DMScreen = UIScreen
@@ -239,24 +234,24 @@ extension UIFont  {
     }
 }
 
-public func getDisplayInfo(of screen: UIScreen)-> (screenSize: CGSize, xPixels: Int, yPixels: Int) {
-    let screen = UIScreen.main
-    let res = screen.bounds
-    let testPixels = defaults.testPixels
-    let testPhysicals = defaults.testPhisicals
-    let scaleX : CGFloat
-    let scaleY : CGFloat
-    if testPixels.offsetWidth > 0 && testPixels.height > 0 && testPhysicals.offsetWidth > 0 && testPhysicals.height > 0 {
-        scaleX = testPhysicals.offsetWidth / testPixels.offsetWidth
-        scaleY = testPhysicals.height / testPixels.height
-    } else {
-        scaleX = 132 / 22.4
-        scaleY = 132 / 22.4
-    }
-    let w = res.offsetWidth * scaleX
-    let h = res.height * scaleY
-    return (CGSize(offsetWidth: w, height: h), xPixels: Int(res.offsetWidth), yPixels: Int(res.height))
-}
+//public func getDisplayInfo(of screen: UIScreen)-> (screenSize: CGSize, xPixels: Int, yPixels: Int) {
+//    let screen = UIScreen.main
+//    let res = screen.bounds
+//    let testPixels = defaults.testPixels
+//    let testPhysicals = defaults.testPhisicals
+//    let scaleX : CGFloat
+//    let scaleY : CGFloat
+//    if testPixels.offsetWidth > 0 && testPixels.height > 0 && testPhysicals.offsetWidth > 0 && testPhysicals.height > 0 {
+//        scaleX = testPhysicals.offsetWidth / testPixels.offsetWidth
+//        scaleY = testPhysicals.height / testPixels.height
+//    } else {
+//        scaleX = 132 / 22.4
+//        scaleY = 132 / 22.4
+//    }
+//    let w = res.offsetWidth * scaleX
+//    let h = res.height * scaleY
+//    return (CGSize(offsetWidth: w, height: h), xPixels: Int(res.offsetWidth), yPixels: Int(res.height))
+//}
 
 public typealias DMTextStorage = NSTextStorage
 public typealias DMTextContainer = NSTextContainer
