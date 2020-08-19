@@ -238,24 +238,10 @@ public class PaperText: PaperObject {
     let y: CGFloat
     let nooffset: Bool
 
-    public convenience init(mmx: Double, mmy: Double, inset: Double = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
-        let x = convertPoint(mm: mmx)
-        let y = convertPoint(mm: mmy)
-        let inset = convertPoint(mm: inset)
-        self.init(x: x, y: y, inset: inset, text: text, fontSize: fontSize, bold: bold, color: color, nooffset: nooffset, lineSpace: lineSpace)
-    }
-    
-    public init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
+    public init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, attributedText: NSAttributedString, nooffset: Bool = false) {
         self.x = x + inset
         self.y = y + inset
-        let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
-        var attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
-        if let lineSpace = lineSpace {
-            let style = NSMutableParagraphStyle()
-            style.lineSpacing = lineSpace
-            attributes[NSAttributedString.Key.paragraphStyle] = style
-        }
-        let storage = NSTextStorage(string: text, attributes: attributes)
+        let storage = NSTextStorage(attributedString: attributedText)
         let container = NSTextContainer()
         let manager = NSLayoutManager()
         manager.addTextContainer(container)
@@ -264,6 +250,25 @@ public class PaperText: PaperObject {
         self.container = container
         self.manager = manager
         self.nooffset = nooffset
+    }
+
+    public convenience init(mmx: Double, mmy: Double, inset: Double = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
+        let x = convertPoint(mm: mmx)
+        let y = convertPoint(mm: mmy)
+        let inset = convertPoint(mm: inset)
+        self.init(x: x, y: y, inset: inset, text: text, fontSize: fontSize, bold: bold, color: color, nooffset: nooffset, lineSpace: lineSpace)
+    }
+
+    public convenience init(x: CGFloat, y: CGFloat, inset: CGFloat = 0, text: String, fontSize: CGFloat, bold: Bool = false, color: DMColor, nooffset: Bool = false, lineSpace: CGFloat? = nil) {
+        let font = bold ? DMFont.boldSystemFont(ofSize: fontSize) : DMFont.systemFont(ofSize: fontSize)
+        var attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
+        if let lineSpace = lineSpace {
+            let style = NSMutableParagraphStyle()
+            style.lineSpacing = lineSpace
+            attributes[NSAttributedString.Key.paragraphStyle] = style
+        }
+        let attributedText = NSAttributedString(string: text, attributes: attributes)
+        self.init(x: x, y: y, inset: inset, attributedText: attributedText, nooffset: nooffset)
     }
 
     var bounds: CGRect {

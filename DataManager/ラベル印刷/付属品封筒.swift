@@ -128,7 +128,8 @@ public class 付属品封筒型 {
                 if text.hasPrefix("新規") {
                     text = String(text.dropFirst(2))
                 }
-                vlist.append(.text(text))
+                let count = order.ボルト本数(index+1)?.toJapaneseNormal ?? ""
+                vlist.append(.newbolt(text, count))
             }
         }
         // 附属品一覧印刷

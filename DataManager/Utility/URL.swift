@@ -29,6 +29,24 @@ public let 生産管理集計URL: URL = {
 }()
 
 extension URL {
+    /// 指定された拡張子の一時ファイルを作成する
+    /// - Parameters:
+    ///   - ext: 拡張子
+    ///   - maxCount: この回数試して一時ファイルが作れないと失敗とする
+    public init?(temporaryFileWithExtension ext: String, maxCount: Int = 1000) {
+        var serial = 0
+        let dir = FileManager.default.temporaryDirectory
+        var url: URL
+        repeat {
+            serial += 1
+            var name = UUID().uuidString + String(serial)
+            if serial == maxCount { return nil }
+            if !ext.isEmpty { name += "." + ext }
+            url = dir.appendingPathComponent(name)
+        } while url.isExists
+        self = url
+    }
+    
     /// 存在するならtrueを返す
     public var isExists: Bool {
         let url = self.standardizedFileURL
