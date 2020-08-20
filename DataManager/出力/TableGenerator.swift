@@ -170,6 +170,7 @@ public extension TableGenerator {
     enum DateFormat {
         case monthDayHourMinute
         case dayWeekToMinute
+        case yearToMinute
     }
     enum MonthFormat {
         case shortYearMonth
@@ -256,6 +257,8 @@ public extension TableGenerator {
                 return date?.monthDayHourMinuteString
             case .dayWeekToMinute:
                 return date?.dayWeekToMinuteString
+            case .yearToMinute:
+                return date?.yearToMinuteString
             }
         }
         return appending(col)
