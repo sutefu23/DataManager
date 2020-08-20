@@ -539,7 +539,7 @@ extension 指示書型 {
     }
     
     public func 通常最終作業(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
-        guard let last = self.工程別進捗一覧[工程]?.filter { $0.作業内容 == 作業内容 && $0.作業種別 == .通常 }.last else { return nil }
+        guard let last = self.工程別進捗一覧[工程]?.filter({ $0.作業内容 == 作業内容 && $0.作業種別 == .通常 }).last else { return nil }
         return last
     }
     
