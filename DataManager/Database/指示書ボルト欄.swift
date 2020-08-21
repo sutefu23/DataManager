@@ -16,13 +16,25 @@ public enum ボルト数調整モード型 {
     case 箱文字式
     case 切文字式
     
-    public init(_ process: 工程型) {
+    public init(_ process: 工程型, 伝票種類: 伝票種類型) {
         if 箱文字Set.contains(process) {
             self = .箱文字式
         } else if 切文字Set.contains(process) {
             self = .切文字式
         } else {
-            self = .調整なし
+            switch process {
+            case .付属品準備:
+                switch 伝票種類 {
+                case .箱文字:
+                    self = .箱文字式
+                case .切文字:
+                    self = .切文字式
+                default:
+                    self = .調整なし
+                }
+            default:
+                self = .調整なし
+            }
         }
     }
     
