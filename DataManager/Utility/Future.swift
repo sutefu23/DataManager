@@ -33,13 +33,11 @@ public class Future<T> {
     }
 }
 
-private class MapObject<E,T> {
-    let source: E
-    var result: T? = nil
-    init(_ source: E) { self.source = source }
-}
-
 extension Array {
+    enum ConcurrentError: Error {
+        case emptyData
+    }
+
     public func concurrentForEach(_ operation: (Element)->Void) {
         DispatchQueue.concurrentPerform(iterations: self.count) {
             let object = self[$0]
@@ -47,36 +45,49 @@ extension Array {
         }
     }
 
-    public func concurrentCompactMap<T>(converter: (_ item:Element)->T?) -> [T] {
+    public func concurrentCompactMap<T>(converter: (_ item: Element) throws ->T?) rethrows -> [T] {
         if self.count <= 1 {
-            if self.isEmpty { return [] }
-            if let result = converter(self[0]) { return [result] } else { return [] }
+            if let result = try converter(self[0]) { return [result] } else { return [] }
         }
-        let source = self.map { MapObject<Element, T>($0) }
+        var results = [Result<T?, Error>](repeating: .failure(ConcurrentError.emptyData), count: self.count)
+        let lock = NSLock()
         DispatchQueue.concurrentPerform(iterations: self.count) {
-            index in
-            let object = source[index]
-            let result = converter(object.source)
-            object.result = result
+            let index = self.index(self.startIndex, offsetBy: $0)
+            let target = self[index]
+            do {
+                let result = try converter(target)
+                lock.lock()
+                results[$0] = .success(result)
+                lock.unlock()
+            } catch {
+                lock.lock()
+                results[$0] = .failure(error)
+                lock.unlock()
+            }
         }
-        return source.compactMap(\.result)
+        return try results.compactMap { try $0.get() }
     }
-    
-    public func concurrentMap<T>(converter: (_ item:Element) throws ->T) rethrows -> [T] {
+
+    public func concurrentMap<T>(converter: (_ item: Element) throws ->T) rethrows -> [T] {
         if self.count <= 1 {
             return try self.map { try converter($0) }
         }
-        let source = self.map { MapObject<Element, Result<T, Error>>($0) }
+        var results = [Result<T, Error>](repeating: .failure(ConcurrentError.emptyData), count: self.count)
+        let lock = NSLock()
         DispatchQueue.concurrentPerform(iterations: self.count) {
-            index in
-            let object = source[index]
+            let index = self.index(self.startIndex, offsetBy: $0)
+            let target = self[index]
             do {
-                let result = try converter(object.source)
-                object.result = .success(result)
+                let result = try converter(target)
+                lock.lock()
+                results[$0] = .success(result)
+                lock.unlock()
             } catch {
-                object.result = .failure(error)
+                lock.lock()
+                results[$0] = .failure(error)
+                lock.unlock()
             }
         }
-        return try source.map { try $0.result!.get() }
+        return try results.map { try $0.get() }
     }
 }
