@@ -34,7 +34,7 @@ public struct 工程社員型: Hashable, Comparable {
     }
 }
 
-class LineCounter {
+final class LineCounter {
     var map: [GroupSet: Int] = [:]
     func count(_ group1: 工程図グループ型, _ group2: 工程図グループ型, _ group3: 工程図グループ型) -> Int {
         let key = GroupSet(group1, group2, group3)
@@ -48,7 +48,7 @@ class LineCounter {
     }
 }
 
-public class 部署作業者分析型 {
+public final class 部署作業者分析型 {
     public var lines: [(GroupSet, 工程図工程型)]
     public var connections: [コンストレイン情報型] = []
     var range: ClosedRange<Date>

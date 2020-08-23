@@ -9,7 +9,7 @@
 import Foundation
 public typealias 会社コード型 = String
 
-public class 取引先型 {
+public final class 取引先型 {
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {

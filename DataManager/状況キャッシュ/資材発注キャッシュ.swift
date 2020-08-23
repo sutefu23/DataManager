@@ -12,7 +12,7 @@ public func flush資材発注キャッシュ() {
     資材発注キャッシュ型.shared.flushAllCache()
 }
 
-class 資材発注キャッシュ型 {
+final class 資材発注キャッシュ型 {
     static let shared = 資材発注キャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()

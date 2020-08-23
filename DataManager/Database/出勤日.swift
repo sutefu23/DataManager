@@ -74,7 +74,7 @@ extension Day {
         return 出勤日DB型.shared.dynamicIsHoliday(self)
     }
 }
-class 出勤日DB型 {
+final class 出勤日DB型 {
     static let shared: 出勤日DB型 = 出勤日DB型()
     // 2016/10/01 ~ 2019/03/31
     /// 土日以外の休日

@@ -11,7 +11,7 @@ import Foundation
 #else
 import PDFKit
 
-public class 付属品封筒型 {
+public final class 付属品封筒型 {
     private let order: 指示書型
 
     public init?(_ number: 伝票番号型) {

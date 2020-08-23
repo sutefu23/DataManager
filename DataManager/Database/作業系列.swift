@@ -17,7 +17,7 @@ func flush作業系列Cache() {
     lock.unlock()
 }
 
-public class 作業系列型: Hashable {
+public final class 作業系列型: Hashable {
     public static func 登録チェック() {
         let _ = 作業系列型.null
         let _ = 作業系列型.gx

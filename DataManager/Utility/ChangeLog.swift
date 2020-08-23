@@ -34,7 +34,7 @@ func makeHistory(text: String) -> [(version: Version, text: [String])] {
     return map.sorted { $0.key > $1.key }.map { (version: $0.key, text:$0.value) }
 }
 
-class History {
+final class History {
     let history: [(version: Version, text: [String])]
 
     convenience init?() {

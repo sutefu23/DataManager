@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 工程図型 {
+public final class 工程図型 {
     public static var empty: 工程図型 {
         let zu = 工程図型()
         zu.カレンダ情報 = [カレンダ情報型(カレンダID: 0, カレンダ名称: "デフォルト")]

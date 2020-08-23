@@ -135,7 +135,7 @@ struct 資材使用記録Data型: Equatable {
     }
 }
 
-public class 資材使用記録型 {
+public final class 資材使用記録型 {
     var original: 資材使用記録Data型?
     var data: 資材使用記録Data型
     public internal(set) var recordID: String?

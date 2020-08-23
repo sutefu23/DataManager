@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 在庫数キャッシュ型 {
+public final class 在庫数キャッシュ型 {
     var 在庫寿命: TimeInterval = 10 * 60 // 10分間
     public static let shared = 在庫数キャッシュ型()
     

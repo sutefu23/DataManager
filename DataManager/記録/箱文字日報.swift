@@ -52,7 +52,7 @@ struct 箱文字日報Data型 {
     }
 }
 
-public class 箱文字日報型 {
+public final class 箱文字日報型 {
     var data: 箱文字日報Data型
     var recordId: String?
     

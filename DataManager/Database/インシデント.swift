@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class インシデント型 {
+public final class インシデント型 {
     public enum 種類型 {
         case 受取
         case 開始

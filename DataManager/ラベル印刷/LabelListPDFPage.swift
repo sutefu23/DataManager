@@ -15,7 +15,7 @@ public protocol LabelMaker {
     func makeLabel() -> PaperRect?
 }
 
-public class LabelPDFDocument {
+public final class LabelPDFDocument {
     let orientaion: DMPaperOrientation
     var margin: CGFloat
     let title: String

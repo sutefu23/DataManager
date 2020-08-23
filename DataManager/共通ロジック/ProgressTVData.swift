@@ -22,7 +22,7 @@ private let ペア工程: [工程型: 工程型] = [
     .立ち上がり_溶接: .立ち上がり
 ]
 
-public class ProgressTVData {
+public final class ProgressTVData {
     private let lock = NSRecursiveLock()
 
     public let 指示書: 指示書型
@@ -134,7 +134,7 @@ public protocol ProgressTVCoreOwner: class {
 }
 
 // MARK: - コア
-public class ProgressTVCore {
+public final class ProgressTVCore {
     weak var owner: ProgressTVCoreOwner!
     public private(set) var アクリル有りのみ表示: Bool
     var currentTarget: 工程型?

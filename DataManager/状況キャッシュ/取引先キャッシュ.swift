@@ -8,7 +8,7 @@
 
 import Foundation
 
-class 取引先キャッシュ型 {
+final class 取引先キャッシュ型 {
     static let shared = 取引先キャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()

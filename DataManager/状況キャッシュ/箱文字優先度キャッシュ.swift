@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 箱文字優先度キャッシュ型 {
+public final class 箱文字優先度キャッシュ型 {
     public static let shared = 箱文字優先度キャッシュ型()
     public var キャッシュ寿命: TimeInterval = 60 * 10 // デフォルトは10分間
     

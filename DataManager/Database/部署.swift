@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 部署型: Comparable, Hashable {
+public final class 部署型: Comparable, Hashable {
     let record: FileMakerRecord
 
     public var 部署記号: String { return "\(self.部署番号)" }

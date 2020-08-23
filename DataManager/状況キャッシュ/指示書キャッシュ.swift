@@ -10,7 +10,7 @@ import Foundation
 
 public let 指示書キャッシュ = 指示書キャッシュ型()
 
-public class 指示書キャッシュ型 {
+public final class 指示書キャッシュ型 {
     let lock = NSLock()
     var cache: [伝票番号型 : 指示書型?] = [:]
 
@@ -31,7 +31,7 @@ public class 指示書キャッシュ型 {
 }
 
 public let 伝票番号キャッシュ = 伝票番号キャッシュ型()
-public class 伝票番号キャッシュ型 {
+public final class 伝票番号キャッシュ型 {
     let lock = NSLock()
     
     var cache: [Int: 伝票番号型] = [:]

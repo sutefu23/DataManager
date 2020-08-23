@@ -23,7 +23,7 @@ func clear伝票番号Cache() {
     lock.unlock()
 }
 
-public class 伝票番号解析型 {
+public final class 伝票番号解析型 {
     private var mainNumber: 伝票番号型?
     private var subNumber: 伝票番号型?
     private var mainChecked: Bool

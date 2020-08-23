@@ -442,13 +442,6 @@
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
 		};
-		14722028246E319F001DBE97 /* CSV */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CSV;
-			sourceTree = "<group>";
-		};
 		14958446249C747A00D976B4 /* 資材使用記録 */ = {
 			isa = PBXGroup;
 			children = (
@@ -519,7 +512,6 @@
 		8E392ED221FD61D900CEDF18 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
-				14722028246E319F001DBE97 /* CSV */,
 				1467C77B243484AA00813CB1 /* 共通ロジック */,
 				1495F8082424608800944E46 /* 工程分析 */,
 				8E0CBADA23EB5D6600587F6B /* ラベル印刷 */,

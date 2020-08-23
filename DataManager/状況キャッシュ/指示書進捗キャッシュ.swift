@@ -8,7 +8,7 @@
 
 import Foundation
 
-class 進捗一覧Data型 {
+final class 進捗一覧Data型 {
     let 進捗一覧: [進捗型]
     public lazy var 工程別進捗一覧: [工程型: [進捗型]] = { Dictionary(grouping: self.進捗一覧, by: { $0.工程 }) }()
     public lazy var 作業進捗一覧: [進捗型] = { self.進捗一覧.filter { $0.作業種別 != .その他 } }()
@@ -18,7 +18,7 @@ class 進捗一覧Data型 {
     }
 }
 
-public class 指示書進捗キャッシュ型 {
+public final class 指示書進捗キャッシュ型 {
     public var expire: TimeInterval = 10*60
     public static let shared = 指示書進捗キャッシュ型()
     

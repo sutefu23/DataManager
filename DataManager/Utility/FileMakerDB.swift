@@ -19,7 +19,7 @@ public extension UserDefaults {
 private let serverCache = FileMakerServerCache()
 
 /// サーバー名に対応するサーバーオブジェクトを保持する（共用のため）
-private class FileMakerServerCache {
+private final class FileMakerServerCache {
     private var cache: [String: FileMakerServer] = [:]
     private let lock = NSLock()
     
@@ -59,7 +59,7 @@ enum FileMakerSortType: String, Encodable {
 let maxConnection = 4
 
 /// サーバーオブジェクト（セッションの管理）
-class FileMakerServer: Hashable {
+final class FileMakerServer: Hashable {
     private var pool: [FileMakerSession] = []
     private let lock = NSLock()
     private let sem: DispatchSemaphore

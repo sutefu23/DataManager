@@ -19,7 +19,7 @@ private func calc社員番号<S: StringProtocol>(_ code: S) -> Int? {
     return num
 }
 
-public class 社員型: Hashable, Codable {
+public final class 社員型: Hashable, Codable {
     static let 社員番号マップ: [Int: 社員型] = {
         var map = [Int: 社員型]()
         for member in 社員型.全社員一覧 {

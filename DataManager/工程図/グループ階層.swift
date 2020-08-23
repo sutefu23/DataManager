@@ -14,7 +14,7 @@ private func makeID() -> String {
     return serial.description
 }
 
-public class 工程図工程型 {
+public final class 工程図工程型 {
     public let 工程ID: String
     public var 名称: String
     public var 開始日時: Date
@@ -37,7 +37,7 @@ public class 工程図工程型 {
         return clone
     }
 }
-public class 工程図グループ型: Hashable {
+public final class 工程図グループ型: Hashable {
     public let グループID: String
     public var 名称: String
     public var order: Double

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Version: Comparable, Hashable, Codable {
+public final class Version: Comparable, Hashable, Codable {
     public var simpleText: String { return self.versionText }
     public lazy var buildNumber: Int? = { Int(self.buildText) }()
     public lazy var fullText: String = {

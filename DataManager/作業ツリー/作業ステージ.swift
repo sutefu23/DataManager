@@ -17,7 +17,7 @@ public enum 作業ステージ種類型: Hashable {
     case 出荷
 }
 
-public class 作業ステージ型 {
+public final class 作業ステージ型 {
     public var 種類: 作業ステージ種類型
     public var 関連工程: Set<工程型> = []
     
@@ -38,7 +38,7 @@ enum 作業ステージエラー: String, LocalizedError {
     var errorDescription: String? { self.rawValue }
 }
 
-class 作業計画型 {
+final class 作業計画型 {
     var 手配作業ステージ: 作業ステージ型? = nil
     var データ作業ステージ: 作業ステージ型? = nil
     var 材料作業ステージ: 作業ステージ型? = nil

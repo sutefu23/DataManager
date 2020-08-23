@@ -8,7 +8,7 @@
 
 import Foundation
 
-class スケジュール型 {
+final class スケジュール型 {
     static let dbName = "DataAPI_6"
 
     let record: FileMakerRecord

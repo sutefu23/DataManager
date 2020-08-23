@@ -19,7 +19,7 @@ public enum 分析エラー型: LocalizedError {
     }
 }
 
-public class 指示書工程分析器型 {
+public final class 指示書工程分析器型 {
     public let order: 指示書型
     var lines: [工程ライン型]
     
@@ -73,7 +73,7 @@ public class 指示書工程分析器型 {
     }
 }
 
-public class 工程ライン型 {
+public final class 工程ライン型 {
     enum State {
         case 通常
         case 差し戻し(from: 工程型)
@@ -113,7 +113,7 @@ protocol 工程分析器型 {
 }
 
 // MARK: - 管理
-class 管理分析器型 : 工程分析器型 {
+final class 管理分析器型 : 工程分析器型 {
     func process(progress: 進捗型, line: 工程ライン型, context: 指示書工程分析器型) throws -> (next: 工程分析器型, target: 工程ライン型.Target)? {
         return nil
     }

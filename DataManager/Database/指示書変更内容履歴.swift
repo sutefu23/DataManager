@@ -39,7 +39,7 @@ public enum 変更履歴種類型: Hashable {
     }
 }
 
-public class 指示書変更内容履歴型 {
+public final class 指示書変更内容履歴型 {
     let record: FileMakerRecord
     
     init?(_ record: FileMakerRecord) {

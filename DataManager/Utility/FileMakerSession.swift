@@ -22,7 +22,7 @@ typealias FileMakerQuery = [String: String]
 
 private let expireSeconds: Double = 15 * 60 - 60 // 本来は15分だが余裕を見て60秒減らしている
 
-class FileMakerSession: NSObject, URLSessionDelegate {
+final class FileMakerSession: NSObject, URLSessionDelegate {
     let dbURL: URL
     let user: String
     let password: String

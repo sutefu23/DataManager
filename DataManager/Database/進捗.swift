@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 進捗型: Equatable, Identifiable {
+public final class 進捗型: Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
 
     let record: FileMakerRecord

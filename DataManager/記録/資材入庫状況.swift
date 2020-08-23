@@ -71,7 +71,7 @@ struct 資材入庫状況Data型: Equatable {
     }
 }
 
-public class 資材入庫状況型 {
+public final class 資材入庫状況型 {
     var original: 資材入庫状況Data型
     var data: 資材入庫状況Data型
     var recordID: String?

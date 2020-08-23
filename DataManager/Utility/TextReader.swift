@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class TextReader {
+public final class TextReader {
     public enum TextReaderError: LocalizedError {
         /// データを指定したエンコードで文字列かできない
         case invalidStringCoding

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 資材入出庫型 {
+public final class 資材入出庫型 {
     let record: FileMakerRecord
     public let 登録日: Day
     public let 登録時間: Time

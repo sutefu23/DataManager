@@ -162,7 +162,7 @@ public extension カレンダー型 {
     }
 }
 
-class 固定カレンダー型: カレンダー型 {
+final class 固定カレンダー型: カレンダー型 {
     private let dayDB: 出勤日DB型
     private let timeDB: 勤務時間型
     
@@ -200,9 +200,9 @@ class 固定カレンダー型: カレンダー型 {
     }
 }
 
-class 自動カレンダー型: カレンダー型 {
+final class 自動カレンダー型: カレンダー型 {
    
-    class DayDB {
+    final class DayDB {
         let day: Day
         private let lock = NSLock()
         private var map: [工程型: 勤務時間型] = [:]

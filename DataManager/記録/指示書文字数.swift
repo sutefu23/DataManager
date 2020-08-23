@@ -67,7 +67,7 @@ struct 箱文字文字数型: Hashable {
     }
 }
 
-public class 指示書文字数型 {
+public final class 指示書文字数型 {
     public static func synchronizeAll() {
         serialQueue.waitUntilAllOperationsAreFinished()
     }

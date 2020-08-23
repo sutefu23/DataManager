@@ -93,7 +93,7 @@ public enum ExportType {
     }
 }
 
-class TableColumn<S> {
+final class TableColumn<S> {
     let title: String
     let getter: (S) -> String?
     
@@ -107,7 +107,7 @@ class TableColumn<S> {
     }
 }
 
-public class TableGenerator<S> {
+public final class TableGenerator<S> {
     let columns: [TableColumn<S>]
     
     public init() {

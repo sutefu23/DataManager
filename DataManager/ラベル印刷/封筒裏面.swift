@@ -31,7 +31,7 @@ public func make封筒裏面(_ count: Int) -> PDFDocument {
         let rect = PaperRect(px: 10, py: 10, pwidth: 646, pheight: 320)
         let text1 = PaperText(mmx: lx+bigdx, mmy: y1, text: "【注意事項】", fontSize: bigFont, bold: false, color: .black, nooffset: true)
         let text1b = PaperText(mmx: lx, mmy: y1+bigHeight, text: """
-■研磨剤・タワシ・ペーパー等、表面に傷を付ける恐れのあるものは、絶対に使用しないでください。
+■研磨材・タワシ・ペーパー等、表面に傷を付ける恐れのあるものは、絶対に使用しないでください。
 ■溶解性(アルカリ性・酸性の洗剤など)・揮発性(シンナー・アルコールなど)の薬品は絶対に使用しないで下さい。
 ■塗装面(真鍮・銅・メッキ製品への透明クリアも含む)に、テープ類は貼らないで下さい。
 """, fontSize: normalFont, bold: false, color: .black, nooffset: true, lineSpace: lineSpace)

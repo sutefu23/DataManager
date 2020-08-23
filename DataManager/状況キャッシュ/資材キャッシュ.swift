@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class 資材キャッシュ型 {
+public final class 資材キャッシュ型 {
     var expire: TimeInterval = 4*60*60 // 8時間
     public static let shared = 資材キャッシュ型()
     

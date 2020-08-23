@@ -16,7 +16,7 @@ protocol FileMakerRecordOwner: class {
     init?(record: FileMakerRecord)
 }
 
-class FileMakerRecord {
+final class FileMakerRecord {
     let fieldData: [String: Any]
     let portalData: [String: [FileMakerRecord]]
     let recordID: String?

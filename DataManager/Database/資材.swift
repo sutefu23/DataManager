@@ -10,7 +10,7 @@ import Foundation
 
 public typealias 図番型 = String
 
-public class 資材型: Codable, Comparable, Hashable {
+public final class 資材型: Codable, Comparable, Hashable {
     static let empty = 資材型()
     
     let record: FileMakerRecord

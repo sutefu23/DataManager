@@ -18,7 +18,7 @@ public enum PaperType {
     case 長形3号横
 }
 
-public class PaperPDFPage: PDFPage {
+public final class PaperPDFPage: PDFPage {
     let title: String
 
     var rects: [PaperRect] = []

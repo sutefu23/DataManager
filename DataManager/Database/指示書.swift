@@ -15,7 +15,7 @@ import Cocoa
 let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 private let lock = NSLock()
 
-public class 指示書型 {
+public final class 指示書型 {
     let record: FileMakerRecord
     
     init?(_ record: FileMakerRecord) {

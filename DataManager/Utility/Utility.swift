@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class DataManagerController {
+public final class DataManagerController {
     public func flushAllCache() {
         clear伝票番号Cache()
         flush工程名称DB()

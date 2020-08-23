@@ -24,7 +24,7 @@ public func convertMM(point: CGFloat) -> Double {
 }
 
 // MARK: - rect
-public class PaperRect: PaperObject {
+public final class PaperRect: PaperObject {
     public var px: CGFloat
     public var py: CGFloat
     public var pwidth: CGFloat
@@ -90,7 +90,7 @@ public protocol PaperObject {
 }
 
 // MARK: - path
-public class PaperPath: PaperObject {
+public final class PaperPath: PaperObject {
     public static func makeLine(from: (x: Double, y: Double), to: (x: Double, y: Double), lineWidth: CGFloat = 1.0) -> PaperPath {
         let path = PaperPath(lineWidth: lineWidth)
         path.append(x: from.x, y: from.y)
@@ -140,7 +140,7 @@ public class PaperPath: PaperObject {
     }
 }
 
-public class PaperRoundBox: PaperObject {
+public final class PaperRoundBox: PaperObject {
     let origin: (x: Double, y: Double)
     let size: (width: Double, height: Double)
     let r: Double
@@ -171,7 +171,7 @@ public class PaperRoundBox: PaperObject {
 // MARK: - barcode
 #if os(tvOS)
 #else
-public class PaperBarCode: PaperObject {
+public final class PaperBarCode: PaperObject {
     var barCode: DMBarCode
     var rect: CGRect
     let fontSize: CGFloat?
@@ -193,7 +193,7 @@ public class PaperBarCode: PaperObject {
 #endif
 
 // MARK: - image
-public class PaperImage: PaperObject {
+public final class PaperImage: PaperObject {
     let x: CGFloat
     let y: CGFloat
     let width: CGFloat
@@ -229,7 +229,7 @@ public class PaperImage: PaperObject {
 }
 
 // MARK: - text
-public class PaperText: PaperObject {
+public final class PaperText: PaperObject {
     let storage: NSTextStorage
     let container: NSTextContainer
     let manager: NSLayoutManager
@@ -297,7 +297,7 @@ public class PaperText: PaperObject {
 }
 
 // MARK: - Canvas
-public class PaperCanvas: PaperObject {
+public final class PaperCanvas: PaperObject {
     let rect: CGRect
     let painter: (CGRect, Bool) -> ()
     

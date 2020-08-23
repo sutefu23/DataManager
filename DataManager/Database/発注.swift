@@ -10,7 +10,7 @@ import Foundation
 
 public class 外注型 {
 }
-public class 発注型 {
+public final class 発注型 {
     let record: FileMakerRecord
     public let 発注種類: 発注種類型
     public let 資材: 資材型

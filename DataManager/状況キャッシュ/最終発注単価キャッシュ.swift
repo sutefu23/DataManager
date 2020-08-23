@@ -8,7 +8,7 @@
 
 import Foundation
 
-class 最終発注単価キャッシュ型 {
+final class 最終発注単価キャッシュ型 {
     static let shared = 最終発注単価キャッシュ型()
     
     struct Value {

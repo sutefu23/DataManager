@@ -76,7 +76,7 @@ struct 箱文字優先度Data型: Equatable {
     
 }
 
-public class 箱文字優先度型 {
+public final class 箱文字優先度型 {
     public static let 自動有効期限: Time = Time(15, 00)
     
     var original: 箱文字優先度Data型 = 箱文字優先度Data型()
