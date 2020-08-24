@@ -9,7 +9,8 @@
 import Foundation
 import PDFKit
 
-public func make封筒裏面2(_ count: Int) -> PDFDocument {
+public func make封筒裏面(_ count: Int) -> PDFDocument {
+    if count < 0 { return make封筒裏面2(-count) }
     guard let url = Bundle(for: PaperPDFPage.self).url(forResource: "取付付属品表裏面", withExtension: "pdf"),
           let pdf = PDFDocument(url: url), pdf.pageCount > 0
     else { return PDFDocument() }
@@ -21,8 +22,7 @@ public func make封筒裏面2(_ count: Int) -> PDFDocument {
     return pdf
 }
 
-public func make封筒裏面(_ count: Int) -> PDFDocument {
-    if count < 0 { return make封筒裏面2(-count) }
+public func make封筒裏面2(_ count: Int) -> PDFDocument {
     let count = max(1, count)
     assert(count >= 1)
     let lx = 24.0
