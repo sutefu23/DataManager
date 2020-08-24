@@ -95,6 +95,7 @@
 		1472202C246E4F4B001DBE97 /* TextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202A246E4F4B001DBE97 /* TextWriter.swift */; };
 		1472202F246E51B9001DBE97 /* TestTextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202D246E51B9001DBE97 /* TestTextWriter.swift */; };
 		14722030246E51B9001DBE97 /* TestTextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472202E246E51B9001DBE97 /* TestTextReader.swift */; };
+		1473352524F35A42005E4747 /* 取付付属品表裏面.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1473352424F35A42005E4747 /* 取付付属品表裏面.pdf */; };
 		1474761D23C6FE2600FE73B0 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474761C23C6FE2600FE73B0 /* 製造グループ.swift */; };
 		14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */; };
 		147B8807242F0508008FB8F4 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = 147B8806242F0508008FB8F4 /* 資材(板情報).swift */; };
@@ -258,6 +259,7 @@
 		1472202A246E4F4B001DBE97 /* TextWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextWriter.swift; sourceTree = "<group>"; };
 		1472202D246E51B9001DBE97 /* TestTextWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextWriter.swift; sourceTree = "<group>"; };
 		1472202E246E51B9001DBE97 /* TestTextReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTextReader.swift; sourceTree = "<group>"; };
+		1473352424F35A42005E4747 /* 取付付属品表裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "取付付属品表裏面.pdf"; sourceTree = "<group>"; };
 		1474761C23C6FE2600FE73B0 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
 		14749B7124724DDB00E956EE /* Test指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		147B8806242F0508008FB8F4 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				8E0CBAE723EB657D00587F6B /* 互換性 */,
 				1412036F2201C3DF0054B56F /* Utility */,
 				8E392ED421FD61D900CEDF18 /* Info.plist */,
+				1473352424F35A42005E4747 /* 取付付属品表裏面.pdf */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1473352524F35A42005E4747 /* 取付付属品表裏面.pdf in Resources */,
 				147047052488EE3600A5D8F6 /* 板加工在庫一覧.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
