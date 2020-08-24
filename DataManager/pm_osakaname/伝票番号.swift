@@ -147,7 +147,7 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     
     public var 年値: Int { 2000 + 上位整数値 / 100 }
     public var 月値: Int { 上位整数値 % 100 }
-    public var month: Month { Month(year:年値, month: 月値) }
+    public var yearMonth: Month { Month(year:年値, month: 月値) }
     
     /// 表示用伝票番号文字列
     public var 表示用文字列: String {

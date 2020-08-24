@@ -102,11 +102,12 @@ public struct Month: Hashable, Strideable, Codable {
     }
 
     public var yearMonthJString: String { "\(longYear)年\(month)月" }
-    
+    /// ４桁年文字列
     public var longYearString: String { String(longYear) }
     public var shotYear2String: String {
         shortYear < 10 ? "0\(shortYear)" : String(shortYear)
     }
+    /// 2桁固定の月番号文字列
     public var month2String: String {
         month < 10 ? "0\(month)" : String(month)
     }
