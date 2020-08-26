@@ -43,17 +43,17 @@ public enum ボルト数調整モード型 {
         case .箱文字式:
             let offset: [Double]
             switch 資材種類 {
-            case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .ストレートスタッド(_, _):
+            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
-            case .丸パイプ(_, _), .浮かしパイプ(_, _):
+            case .丸パイプ, .浮かしパイプ:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
-            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(_, _), .テクス特皿(_, _), .皿(_, _), .片ネジ(_, _):
+            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ:
                 offset = [2, 3, 3, 5, 10, 10, 10, 20]
-            case .ナット(_), .鏡止めナット(_):
+            case .ナット, .鏡止めナット, .袋ナット:
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
-            case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
+            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
                 offset = [2, 3, 3, 5, 10, 10, 10, 15]
-            case .定番FB(_), .FB(_, _), .外注(_), .三角コーナー:
+            case .定番FB, .FB, .外注, .三角コーナー:
                 return count
             case nil:
                 if 表示名.hasPrefix("L金具") {
@@ -75,17 +75,17 @@ public enum ボルト数調整モード型 {
         case .切文字式:
             let offset: [Double]
             switch 資材種類 {
-            case .ボルト(_, _), .六角(_, _), .スタッド(_, _), .ALスタッド(_, _), .ストレートスタッド(_, _):
+            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
                 offset = [1, 2, 3, 3, 3, 5, 10, 10]
-            case .丸パイプ(_, _), .浮かしパイプ(_, _):
+            case .丸パイプ, .浮かしパイプ:
                 offset = [1, 2, 3, 3, 3, 5, 10, 10]
-            case .スリムヘッド(_, _), .トラス(_, _), .サンロックトラス(_, _), .サンロック特皿(_, _), .特皿(_, _), .Cタッピング(_, _), .ナベ(_, _), .テクスナベ(_, _), .テクス皿(_, _), .テクス特皿(_, _), .皿(_, _), .片ネジ(_, _):
+            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ:
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .ナット(_), .鏡止めナット(_):
+            case .ナット, .鏡止めナット, .袋ナット:
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .ワッシャー(_), .Sワッシャー(_), .特寸ワッシャー(_, _, _):
+            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
                 offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .定番FB(_), .FB(_, _), .外注(_), .三角コーナー:
+            case .定番FB, .FB, .外注, .三角コーナー:
                 return count
             case nil:
                 return count
@@ -422,12 +422,14 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     }
     
     if let data = scanner.scanボルト() { return makeTail(data) }
+    if let data = scanner.scanオールアンカー() { return makeTail(data) }
     if let data = scanner.scanFB() { return makeTail(data) }
     if let data = scanner.scanワッシャー() { return makeTail(data) }
     if let data = scanner.scanSワッシャー() { return makeTail(data) }
     if let data = scanner.scan特寸ワッシャー() { return makeTail(data) }
     if let data = scanner.scanナット() { return makeTail(data) }
     if let data = scanner.scan鏡止めナット() { return makeTail(data) }
+    if let data = scanner.scan袋ナット() { return makeTail(data) }
     if let data = scanner.scan丸パイプ(伝票種類: 伝票種類) { return makeTail(data) }
     if let data = scanner.scan特皿() { return makeTail(data) }
     if let data = scanner.scan皿() { return makeTail(data) }
@@ -454,6 +456,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
 
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
+    case オールアンカー(サイズ: String, 長さ: Double)
     case FB(板厚: String, 高さ: Double)
     case 定番FB(板厚: String)
     case ワッシャー(サイズ: String)
@@ -461,6 +464,7 @@ public enum 資材種類型 {
     case 特寸ワッシャー(サイズ: String, 外径: Double, 内径: Double)
     case ナット(サイズ: String)
     case 鏡止めナット(サイズ: String)
+    case 袋ナット(サイズ: String)
     case 浮かしパイプ(サイズ: String, 長さ: Double)
     case 丸パイプ(サイズ: String, 長さ: Double)
     case 皿(サイズ: String, 長さ: Double)
@@ -528,6 +532,13 @@ public enum 資材種類型 {
                 return nil
             }
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
+        case .オールアンカー(サイズ: let size, 長さ: let length):
+            if let object = searchボルト等(種類: .オールアンカー, サイズ: size, 長さ: length) {
+                図番 = object.図番
+            } else {
+                return nil
+            }
+            金額計算タイプ = .個数物
         case .浮かしパイプ(サイズ: let size, 長さ: let length):
             if let object = searchボルト等(種類: .浮かしパイプ, サイズ: size, 長さ: length) {
                 図番 = object.図番
@@ -541,6 +552,10 @@ public enum 資材種類型 {
             金額計算タイプ = .個数物
         case .鏡止めナット(サイズ: let size):
             guard let object = searchボルト等(種類: .鏡止めナット, サイズ: size) else { return nil }
+            図番 = object.図番
+            金額計算タイプ = .個数物
+        case .袋ナット(サイズ: let size):
+            guard let object = searchボルト等(種類: .袋ナット, サイズ: size) else { return nil }
             図番 = object.図番
             金額計算タイプ = .個数物
         case .ワッシャー(サイズ: let size):
@@ -695,7 +710,15 @@ extension DMScanner {
         }
         return ("ボルト", .ボルト(サイズ: size, 長さ: length), 140)
     }
-    
+
+    mutating func scanオールアンカー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("オールアンカーM") else {
+            self.reset()
+            return nil
+        }
+        return ("オールアンカー", .オールアンカー(サイズ: size, 長さ: length), 0)
+    }
+
     mutating func scanFB() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (thin, height) = thinXHeight("FB") else {
             self.reset()
@@ -752,6 +775,15 @@ extension DMScanner {
             return nil
         }
         return ("鏡止めナット", .鏡止めナット(サイズ: size.string), 90)
+    }
+
+    mutating func scan袋ナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard scanString("袋ナットM") else { return nil }
+        guard let size = scanStringAsDouble(), size.value > 0 else {
+            self.reset()
+            return nil
+        }
+        return ("袋ナット", .袋ナット(サイズ: size.string), 90)
     }
 
     mutating func scan丸パイプ(伝票種類: 伝票種類型) -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -824,7 +856,7 @@ extension DMScanner {
     }
     
     mutating func scanトラス() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let (size, length) = scanSizeXLength("トラス") else {
+        guard let (size, length) = scanSizeXLength("トラスM") else {
             self.reset()
             return nil
         }
