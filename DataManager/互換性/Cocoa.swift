@@ -74,7 +74,22 @@ extension NSColor {
 public extension NSView {
     func updateAll() { self.needsDisplay = true }
     func updateRect(_ rect:CGRect) { self.setNeedsDisplay(rect) }
-//    var screen : NCScreen? { return self.window?.screen }
+    
+    func searchView(_ blockName: String) -> NSView? {
+        if self.identifier?.rawValue == blockName { return self }
+        for view in subviews {
+            if let result = view.searchView(blockName) { return result }
+        }
+        return nil
+    }
+    
+    func searchButton(_ blockName: String) -> NSButton? {
+        return self.searchView(blockName) as? NSButton
+    }
+
+    func searchTextField(_ blockName: String) -> NSTextField? {
+        return self.searchView(blockName) as? NSTextField
+    }
 }
 
 public func getDisplayInfo(of screen: NSScreen)-> (screenSize: CGSize, xPixels: Int, yPixels: Int) {

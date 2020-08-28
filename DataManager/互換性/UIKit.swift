@@ -64,34 +64,34 @@ extension UITextField {
 }
 
 public extension UIView {
-    private func search(_ blockName: String) -> UIView? {
+    func searchView(_ blockName: String) -> UIView? {
         if self.accessibilityIdentifier == blockName { return self }
         for view in subviews {
-            if let result = view.search(blockName) { return result }
+            if let result = view.searchView(blockName) { return result }
         }
         return nil
     }
     
     func searchLabel(_ blockName: String) -> UILabel? {
-        return self.search(blockName) as? UILabel
+        return self.searchView(blockName) as? UILabel
     }
     
     func searchButton(_ blockName: String) -> UIButton? {
-        return self.search(blockName) as? UIButton
+        return self.searchView(blockName) as? UIButton
     }
 
     func searchTextField(_ blockName: String) -> UITextField? {
-        return self.search(blockName) as? UITextField
+        return self.searchView(blockName) as? UITextField
     }
 
     private func searchImage(_ blockName: String) -> UIImageView? {
-        return self.search(blockName) as? UIImageView
+        return self.searchView(blockName) as? UIImageView
     }
     
     #if os(tvOS)
     #else
     private func searchSwitch(_ blockName: String) -> UISwitch? {
-        return self.search(blockName) as? UISwitch
+        return self.searchView(blockName) as? UISwitch
     }
     @discardableResult func updateSwitch(_ blockName: String, _ flg: Bool, tag: Int? = nil) -> UISwitch? {
         guard let view = searchSwitch(blockName) else { return nil }
