@@ -277,6 +277,10 @@ public struct DMScanner: RandomAccessCollection {
     
     /// 整数値を取り出す
     public mutating func scanInteger() -> Int? {
+        return Int(self.scanIntegerString())
+    }
+
+    public mutating func scanIntegerString() -> String {
         dropHeadSpacesIfNeeds()
         var hasSign: Bool = false
         var hasNumber: Bool = false
@@ -297,12 +301,13 @@ public struct DMScanner: RandomAccessCollection {
             index = source.index(after: index)
         }
         if !hasNumber {
-            return nil
+            return ""
         }
         startIndex = index
-        return Int(numberString)
+        return numberString
     }
     
+
     public mutating func searchInteger(suffix: String) -> Int? {
         defer { self.reset() }
         while !isAtEnd {
