@@ -152,4 +152,50 @@ public typealias DMTextStorage = NSTextStorage
 public typealias DMTextContainer = NSTextContainer
 public typealias DMLayoutManager = NSLayoutManager
 
+public extension NSViewController {
+    // MARK: ツリー検索
+    /// 自身とその子に特定の型のViewControllerがないか検索し、最初に見つけた者を返す
+    func searchSpecificViewController<T: NSViewController> () -> T? {
+        if let vc = self as? T {
+            return vc
+        }
+        for childViewController in self.children {
+            if let vc : T = childViewController.searchSpecificViewController() {
+                return vc
+            }
+        }
+        return nil
+    }
+
+    /// 親をたどっていき最初に見つけた特定の型のViewControllerを返す
+    func searchSpecificParentViewController<T: NSViewController> () -> T? {
+        if let vc = self as? T {
+            return vc
+        }
+        if let parent = self.parent {
+            if let vc = parent as? T {
+                return vc
+            } else {
+                return parent.searchSpecificParentViewController()
+            }
+        }
+        return nil
+    }
+
+    @objc dynamic func iterate(_ action: (NSViewController) -> Void) {
+        action(self)
+        for child in children {
+            child.iterate(action)
+        }
+    }
+    
+    /// 最上位のViewController
+    var rootViewController: NSViewController {
+        if let parent = self.parent {
+            return parent.rootViewController
+        } else {
+            return self
+        }
+    }
+}
 #endif
