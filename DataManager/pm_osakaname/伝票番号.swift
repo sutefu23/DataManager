@@ -116,10 +116,15 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
 
     public var isValidNumber: Bool {
         let low = self.下位整数値
-        guard low >= 1 && low <= 99999 else { return false }
-        let month = self.月値
+        if is旧伝票暗号 {
+            guard low >= 1 && low <= 999999 else { return false }
+        } else {
+            guard low >= 1 && low <= 99999 else { return false }
+        }
+        guard let yearMonth = self.yearMonth else { return false }
+        let month = yearMonth.month
         guard month >= 1 && month <= 12 else { return false }
-        let year = self.年値
+        let year = yearMonth.longYear
         guard year >= 2000 && year <= 2099 else { return false }
         return true
     }
@@ -134,24 +139,46 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     }
 
     // MARK: - パーツ
+    public var is旧伝票暗号: Bool { 整数値 <= 999_9999 }
+    
     public var 上位整数値: Int {
+        if is旧伝票暗号 { return 0 }
         return 整数値 > 9999_9999 ? 整数値 / 1000_00 : 整数値 / 100_00
     }
 
     public var 下位整数値: Int {
+        if is旧伝票暗号 { return 整数値 }
         return 整数値 > 9999_9999 ? 整数値 % 1000_00 : 整数値 % 100_00
     }
     public var 下位文字列: String {
         String(format: "%04d", 下位整数値)
     }
     
-    public var 年値: Int { 2000 + 上位整数値 / 100 }
-    public var 月値: Int { 上位整数値 % 100 }
-    public var yearMonth: Month { Month(year:年値, month: 月値) }
+    public var yearMonth: Month? {
+        guard is旧伝票暗号 else {
+            let year = 2000 + 上位整数値 / 100
+            let month = 上位整数値 % 100
+            return Month(year, month)
+        }
+        do {
+            guard let date = try 指示書型.findDirect(伝票番号: self)?.受注日 else { return nil }
+            return Month(date.year, date.month)
+        } catch {
+            return nil
+        }
+    }
     
     /// 表示用伝票番号文字列
     public var 表示用文字列: String {
-        return "\(上位整数値)-\(下位文字列)"
+        if is旧伝票暗号 {
+            if let month = self.yearMonth?.shortYear2String {
+                return "\(month)-\(下位文字列)"
+            } else {
+                return self.下位文字列
+            }
+        } else {
+            return "\(上位整数値)-\(下位文字列)"
+        }
     }
     
     public var バーコード: String {

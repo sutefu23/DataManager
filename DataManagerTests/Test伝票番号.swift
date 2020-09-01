@@ -28,5 +28,9 @@ class TestOrderNumber: XCTestCase {
         
         number = 伝票番号型(validNumber: 2004_0001)
         XCTAssertEqual(number.表示用文字列, "2004-0001")
+        
+        number = 伝票番号型(validNumber: 358491) // 2007/09/04受注
+        XCTAssertEqual(number.表示用文字列, "07-358491")
+        XCTAssertEqual(number.yearMonth, Month(2007, 09))
     }
 }
