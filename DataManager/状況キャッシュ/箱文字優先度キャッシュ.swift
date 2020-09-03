@@ -167,8 +167,8 @@ extension 指示書型 {
             case .営業, .管理: // 6営業日後
                 limit = limit.nextWorkDay.nextWorkDay.nextWorkDay
             case .原稿, .入力, .出力: // 5営業日後
-                limit = limit.nextWorkDay.nextWorkDay // 4営業日後
-            case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接:
+                limit = limit.nextWorkDay.nextWorkDay
+            case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接: // 4営業日後
                 limit = limit.nextWorkDay
             default: // 3営業日後
                 break

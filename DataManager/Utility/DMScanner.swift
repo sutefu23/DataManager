@@ -215,6 +215,7 @@ public struct DMScanner: RandomAccessCollection {
         return !ch.isNumber
     }
     
+    /// 1文字取り出す
     public mutating func scan1Character() -> Character? {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return nil }
