@@ -26,10 +26,10 @@ public final class PaperPDFPage: PDFPage {
     public var rotationPrint: Bool = false
     public let paperType: PaperType
     
-    public let orientaion: DMPaperOrientation
+    public let orientaion: DMPrintInfo.PaperOrientation
     public var margin: CGFloat
 
-    public init(paperType: PaperType = .A4, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36, title: String = "") {
+    public init(paperType: PaperType = .A4, orientaion: DMPrintInfo.PaperOrientation = .portrait, margin: CGFloat = 36, title: String = "") {
         self.paperType = paperType
         self.orientaion = orientaion
         self.margin = margin

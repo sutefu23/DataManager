@@ -15,11 +15,15 @@ public typealias DMColor = UIColor
 public typealias DMView = UIView
 public typealias DMTextField = UITextField
 
-public typealias DMGraphicsContext = UIGraphicsPDFRendererContext
-public enum DMPaperOrientation {
-    case landscape
-    case portrait
+public typealias DMPrintInfo = UIPrintInfo
+public extension DMPrintInfo {
+    enum PaperOrientation {
+        case landscape
+        case portrait
+    }
 }
+
+public typealias DMGraphicsContext = UIGraphicsPDFRendererContext
 public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(context) }
 public func DMGraphicsPopContext() { UIGraphicsPopContext() }
 
@@ -33,7 +37,7 @@ public typealias DMEvent = UIEvent
 
 public typealias DMApplication = UIApplication
 
-extension UIBezierPath {
+public extension UIBezierPath {
     class func strokeLine(from: CGPoint, to: CGPoint) {
         let single = UIBezierPath()
         single.move(to: from)
@@ -50,16 +54,28 @@ extension UIBezierPath {
             self.addLine(to: nextPoint)
         }
     }
+    class func fill(_ rect: CGRect) {
+        let path = UIBezierPath(rect: rect)
+        path.fill()
+    }
     
     func line(to: CGPoint) {
         self.addLine(to: to)
     }
 }
 
-extension UITextField {
+public extension UITextField {
     var stringValue: String {
         get { return self.text ?? "" }
         set { self.text = newValue }
+    }
+    var placeholderString: String {
+        get { self.placeholder ?? "" }
+        set { self.placeholder = newValue }
+    }
+    var isEditable: Bool {
+        get { self.isEnabled }
+        set { self.isEnabled = newValue }
     }
 }
 
@@ -192,8 +208,8 @@ extension UIViewController {
 #if os(iOS)
 import UIKit
 
-extension UIColor {
-    var rgba : (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+public extension UIColor {
+    var srgbComponents : (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red : CGFloat = 0
         var green : CGFloat = 0
         var blue : CGFloat = 0
@@ -213,19 +229,19 @@ extension UIColor {
     }
 
     var alphaComponent : CGFloat {
-        let (_, _, _, alpha) = self.rgba
+        let (_, _, _, alpha) = self.srgbComponents
         return alpha
     }
     
 }
 
-extension UIView {
+public extension UIView {
     func updateAll() { self.setNeedsDisplay() }
     func updateRect(_ frame:CGRect) { self.setNeedsDisplay(frame) }
 //    var screen : NCScreen? { return self.window?.screen }
 }
 
-extension UIFont  {
+public extension UIFont  {
     class func toolTipsFont(ofSize size: CGFloat) -> UIFont {
         return UIFont.systemFont(ofSize: size)
     }
@@ -234,24 +250,6 @@ extension UIFont  {
     }
 }
 
-//public func getDisplayInfo(of screen: UIScreen)-> (screenSize: CGSize, xPixels: Int, yPixels: Int) {
-//    let screen = UIScreen.main
-//    let res = screen.bounds
-//    let testPixels = defaults.testPixels
-//    let testPhysicals = defaults.testPhisicals
-//    let scaleX : CGFloat
-//    let scaleY : CGFloat
-//    if testPixels.offsetWidth > 0 && testPixels.height > 0 && testPhysicals.offsetWidth > 0 && testPhysicals.height > 0 {
-//        scaleX = testPhysicals.offsetWidth / testPixels.offsetWidth
-//        scaleY = testPhysicals.height / testPixels.height
-//    } else {
-//        scaleX = 132 / 22.4
-//        scaleY = 132 / 22.4
-//    }
-//    let w = res.offsetWidth * scaleX
-//    let h = res.height * scaleY
-//    return (CGSize(offsetWidth: w, height: h), xPixels: Int(res.offsetWidth), yPixels: Int(res.height))
-//}
 
 public typealias DMTextStorage = NSTextStorage
 public typealias DMTextContainer = NSTextContainer

@@ -15,7 +15,8 @@ import Cocoa
 public typealias DMColor = NSColor
 public typealias DMView = NSView
 public typealias DMTextField = NSTextField
-public typealias DMPaperOrientation = NSPrintInfo.PaperOrientation
+public typealias DMPrintInfo = NSPrintInfo
+
 public func DMGraphicsPushContext(_ context: CGContext) {
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)

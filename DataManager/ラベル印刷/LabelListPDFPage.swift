@@ -16,7 +16,7 @@ public protocol LabelMaker {
 }
 
 public final class LabelPDFDocument {
-    let orientaion: DMPaperOrientation
+    let orientaion: DMPrintInfo.PaperOrientation
     var margin: CGFloat
     let title: String
 
@@ -32,7 +32,7 @@ public final class LabelPDFDocument {
 
     public var skipCount: Int
     
-    public init(title: String, originX: Double, originY: Double, labelWidth: Double, labelHeight: Double, xCount: Int, yCount: Int, orientaion: DMPaperOrientation = .portrait, margin: CGFloat = 36) {
+    public init(title: String, originX: Double, originY: Double, labelWidth: Double, labelHeight: Double, xCount: Int, yCount: Int, orientaion: DMPrintInfo.PaperOrientation, margin: CGFloat = 36) {
         self.originX = originX
         self.originY = originY
         self.labelWidth = labelWidth
