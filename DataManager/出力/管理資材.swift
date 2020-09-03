@@ -65,6 +65,19 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
         if !self.タイトル.isEmpty {  try container.encode(self.タイトル, forKey: .タイトル) }
     }
 
+    // MARK: - JSON
+    public func makeJSON() throws -> Data {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(self)
+        return data
+    }
+    
+    public static func importJSON(_ data: Data) throws -> Self {
+        let decoder = JSONDecoder()
+        let list = try decoder.decode(Self.self, from: data)
+        return list
+    }
+    
     // MARK: 通常操作
     public func append(_ item: T) -> Int {
         一覧.append(item)

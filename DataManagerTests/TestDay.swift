@@ -38,4 +38,11 @@ class TestDay: XCTestCase {
         XCTAssertEqual(day1.advanced(by: 1), Day(year: 2020, month: 10, day: 18))
     }
 
+    func testAppendWorkDays() {
+        let day = Day(2020, 9,2)
+        XCTAssertEqual(day.appendWorkDays(0), day)
+        XCTAssertEqual(day.appendWorkDays(-1), day.prevWorkDay)
+        XCTAssertEqual(day.appendWorkDays(-5), day.prevWorkDay.prevWorkDay.prevWorkDay.prevWorkDay.prevWorkDay)
+        XCTAssertEqual(day.appendWorkDays(5), day.nextWorkDay.nextWorkDay.nextWorkDay.nextWorkDay.nextWorkDay)
+    }
 }

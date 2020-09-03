@@ -192,6 +192,21 @@ public struct Day: Hashable, Strideable, Codable {
         return day
     }
     
+    public func appendWorkDays(_ days: Int) -> Day {
+        if days == 0 { return self }
+        var day: Day = self
+        if days < 0 {
+            for _ in 1...(-days) {
+                day = day.prevWorkDay
+            }
+        } else {
+            for _ in 1...days {
+                day = day.nextWorkDay
+            }
+        }
+        return day
+    }
+    
     // MARK: - <Strideable>
     public func distance(to other: Day) -> Int {
         if self > other { return -other.distance(to: self) }

@@ -15,6 +15,21 @@ import UIKit
 import Cocoa
 #endif
 
+/// 表示モード
+public enum ProgressTVMode: Int {
+    case 箱文字 = 1
+    case 箱文字アクリル = 2
+    case 切文字 = 3
+    
+    var targetName: String {
+        switch self {
+        case .箱文字: return "箱文字"
+        case .箱文字アクリル: return "箱文字アクリル"
+        case .切文字: return "切文字"
+        }
+    }
+}
+
 private let 注目工程: Set<工程型> = [.立ち上がり, .立ち上がり_溶接]
 private let スルー工程一覧: Set<工程型> = [.レーザー（アクリル）, .フォーミング, .シャーリング, .タップ, .タレパン, .プレーナー, .ルーター, .付属品準備]
 private let ペア工程: [工程型: 工程型] = [
@@ -104,7 +119,6 @@ public final class ProgressTVData {
         return true
     }
     
-
     public func backgroundColor(of target: 工程型) -> DMColor? {
         let flg2 = self.白表示(for: [target])
         if flg2 == true {
@@ -136,7 +150,13 @@ public protocol ProgressTVCoreOwner: class {
 // MARK: - コア
 public final class ProgressTVCore {
     weak var owner: ProgressTVCoreOwner!
-    public private(set) var アクリル有りのみ表示: Bool
+    public var mode: ProgressTVMode
+    public var アクリル有りのみ表示: Bool {
+        switch mode {
+        case .箱文字, .切文字: return false
+        case .箱文字アクリル: return true
+        }
+    }
     var currentTarget: 工程型?
     let queue = DispatchQueue(label: "serial queue")
     var sourceDatas: [ProgressTVData] = []
@@ -149,19 +169,18 @@ public final class ProgressTVCore {
     var lastAllUpdate: Date? = nil
     public var count: Int { return datas.count }
 
-    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, akonly: Bool = false) {
-        owner.showInfo3("Ver " + (Version()?.fullText ?? "")
-)
+    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, mode: ProgressTVMode) {
+        owner.showInfo3("Ver " + (Version()?.fullText ?? ""))
+        self.mode = mode
         self.owner = owner
         self.target = target
-        self.アクリル有りのみ表示 = akonly
         prepareFirstLabel()
         startOrderUpdate()
     }
     
     func prepareFirstLabel() {
         if currentTarget != target {
-            owner.showInfo1("\(self.target.description)\(self.アクリル有りのみ表示 ? "（アクリルのみ）" : "") 初回検索中・・・・・")
+            owner.showInfo1("\(self.target.description)\(self.mode.targetName) 初回検索中・・・・・")
             owner.showInfo2("")
             datas = []
             owner.reloadTableViewData()
@@ -179,8 +198,8 @@ public final class ProgressTVCore {
         self.startOrderUpdate()
     }
     
-    public func changeFilter(akonky: Bool) {
-        self.アクリル有りのみ表示 = akonky
+    public func changeFilter(mode: ProgressTVMode) {
+        self.mode = mode
         self.currentTarget = nil
         self.stopUpdateTimer()
         self.prepareFirstLabel()
@@ -193,7 +212,13 @@ public final class ProgressTVCore {
     
     func makeList(_ item: DispatchWorkItem?) throws -> [ProgressTVData]? {
         let today = Day()
-        let orders = try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字)
+        let orders: [指示書型]
+        switch mode {
+        case .箱文字, .箱文字アクリル:
+            orders = try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字)
+        case .切文字:
+            orders = try 指示書型.find(最小製作納期: today, 伝票種類: .切文字)
+        }
         if item?.isCancelled == true { return nil }
         orders.forEach { let _ = $0.工程別進捗一覧 }
         if item?.isCancelled == true { return nil }
@@ -351,7 +376,7 @@ public final class ProgressTVCore {
                 text = "?"
             }
         case "LimitDay":
-            let day3 = Day().nextWorkDay.nextWorkDay.nextWorkDay
+            let day3 = Day().appendWorkDays(3)
             color = (data.納期 <= day3) ? .red : .black
             text = data.納期.monthDayJString
         case "State":
