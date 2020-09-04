@@ -13,6 +13,7 @@ import UIKit
 
 public typealias DMColor = UIColor
 public typealias DMView = UIView
+public typealias DMViewController = UIViewController
 public typealias DMTextField = UITextField
 
 public typealias DMPrintInfo = UIPrintInfo

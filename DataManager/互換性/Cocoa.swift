@@ -14,6 +14,8 @@ import Cocoa
 
 public typealias DMColor = NSColor
 public typealias DMView = NSView
+public typealias DMViewController = NSViewController
+
 public typealias DMTextField = NSTextField
 public typealias DMPrintInfo = NSPrintInfo
 

@@ -31,3 +31,44 @@ public enum DataManagerError: LocalizedError, Equatable {
         }
     }
 }
+
+
+
+#if os(iOS)
+import UIKit
+
+class PikerDelegate: NSObject, UIDocumentPickerDelegate {
+    var files: [FileWrapper] = []
+    var handler: ([FileWrapper]) -> Void
+    init(_ handler: @escaping ([FileWrapper]) -> Void) {
+        self.handler = handler
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        let files = urls.compactMap { try? FileWrapper(url: $0)}
+        handler(files)
+    }
+}
+
+private var pickerDelegate: PikerDelegate?
+public extension UIViewController {
+    func selectExportFile(filename: String, data: Data) {
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(filename)
+        do {
+            try data.write(to: url)
+            let documentPicker = UIDocumentPickerViewController(url: url, in: .exportToService)
+            self.present(documentPicker, animated: true)
+        } catch {
+            error.showAlert()
+        }
+    }
+    
+    func selectImportFile(_ handler: @escaping ([FileWrapper]) -> Void) {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [String("public.content")], in: .import)
+        let delegate = PikerDelegate(handler)
+        pickerDelegate = delegate
+        documentPicker.delegate = delegate
+        present(documentPicker, animated: true)
+    }
+}
+#endif
