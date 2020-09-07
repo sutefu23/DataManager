@@ -145,6 +145,18 @@ public extension UIView {
         return view
     }
     
+    @discardableResult func updateLabel(_ blockName: String, text: NSAttributedString, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+        guard let view = searchLabel(blockName) else { return nil }
+        view.attributedText = text
+        if let target = target, let action = action {
+            let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+            self.isUserInteractionEnabled = true
+            self.addGestureRecognizer(myTap)
+        }
+        if let tag = tag { view.tag = tag }
+        return view
+    }
+
     @discardableResult func updateLabel(_ blockName: String, text: NSAttributedString?, noEmpty: Bool = false) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
         view.attributedText = text ?? NSAttributedString()
