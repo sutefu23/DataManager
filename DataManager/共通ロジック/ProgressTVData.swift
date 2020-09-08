@@ -157,6 +157,7 @@ public final class ProgressTVCore {
         case .箱文字アクリル: return true
         }
     }
+    var sourceOrders: [指示書型]?
     var currentTarget: 工程型?
     let queue = DispatchQueue(label: "serial queue")
     var sourceDatas: [ProgressTVData] = []
@@ -169,11 +170,12 @@ public final class ProgressTVCore {
     var lastAllUpdate: Date? = nil
     public var count: Int { return datas.count }
 
-    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, mode: ProgressTVMode) {
+    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, mode: ProgressTVMode, orders: [指示書型]? = nil) {
         owner.showInfo3("Ver " + (Version()?.fullText ?? ""))
         self.mode = mode
         self.owner = owner
         self.target = target
+        self.sourceOrders = orders
         prepareFirstLabel()
         startOrderUpdate()
     }
@@ -213,11 +215,15 @@ public final class ProgressTVCore {
     func makeList(_ item: DispatchWorkItem?) throws -> [ProgressTVData]? {
         let today = Day()
         let orders: [指示書型]
-        switch mode {
-        case .箱文字, .箱文字アクリル:
-            orders = try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字)
-        case .切文字:
-            orders = try 指示書型.find(最小製作納期: today, 伝票種類: .切文字)
+        if let source = self.sourceOrders {
+            orders = source
+        } else {
+            switch mode {
+            case .箱文字, .箱文字アクリル:
+                orders = try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字)
+            case .切文字:
+                orders = try 指示書型.find(最小製作納期: today, 伝票種類: .切文字)
+            }
         }
         if item?.isCancelled == true { return nil }
         orders.forEach { let _ = $0.工程別進捗一覧 }
@@ -331,6 +337,7 @@ public final class ProgressTVCore {
 
     public func prepareData(allChange: Bool = true) {
         assert(Thread.isMainThread)
+        if owner == nil  {return }
         let today = Day()
         let now = Time()
         if allChange {
@@ -433,6 +440,24 @@ public final class ProgressTVCore {
     }
     #endif
 }
+
+#if os(iOS) || os(tvOS)
+extension ProgressTVCore{
+    public func updateTableViewCell(cell: UITableViewCell, row: Int) {
+        let view = cell.contentView
+        self.updateLabel(view: view, row: row, col: "Check")
+        self.updateLabel(view: view, row: row, col: "LimitDay")
+        self.updateLabel(view: view, row: row, col: "State")
+        self.updateLabel(view: view, row: row, col: "Progress")
+        self.updateLabel(view: view, row: row, col: "Progress2")
+        self.updateLabel(view: view, row: row, col: "Name")
+        self.updateLabel(view: view, row: row, col: "Number")
+        self.updateLabel(view: view, row: row, col: "Mark")
+        self.updateLabel(view: view, row: row, col: "Message")
+        view.backgroundColor = self.tableViewRowBackgroundColor(row: row)
+    }
+}
+#endif
 
 public extension 指示書型 {
     var レーザーアクリルあり: Bool {

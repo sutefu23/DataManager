@@ -129,13 +129,20 @@ public extension UIView {
         return view
     }
     
-    @discardableResult func updateLabel(_ blockName: String, text: String?, tcolor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+    @discardableResult func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
-        if let tcolor = tcolor {
-            view.attributedText = text?.makeAttributedString(color: tcolor, font: view.font)
+        if let attr = text as? NSAttributedString {
+            view.attributedText = attr
+        } else if let text = text as? String {
+            if let tcolor = tcolor {
+                view.attributedText = text.makeAttributedString(color: tcolor, font: view.font)
+            } else {
+                view.text = text.isEmpty == false ? text : " "
+            }
         } else {
-            view.text = text?.isEmpty == false ? text : " "
+            view.text = nil
         }
+        view.backgroundColor = bgColor
         if let target = target, let action = action {
             let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
             self.isUserInteractionEnabled = true
@@ -145,24 +152,18 @@ public extension UIView {
         return view
     }
     
-    @discardableResult func updateLabel(_ blockName: String, text: NSAttributedString, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
-        guard let view = searchLabel(blockName) else { return nil }
-        view.attributedText = text
-        if let target = target, let action = action {
-            let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
-            self.isUserInteractionEnabled = true
-            self.addGestureRecognizer(myTap)
-        }
-        if let tag = tag { view.tag = tag }
-        return view
-    }
+//    @discardableResult func updateLabel(_ blockName: String, text: NSAttributedString, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+//        guard let view = searchLabel(blockName) else { return nil }
+//        view.attributedText = text
+//        if let target = target, let action = action {
+//            let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+//            self.isUserInteractionEnabled = true
+//            self.addGestureRecognizer(myTap)
+//        }
+//        if let tag = tag { view.tag = tag }
+//        return view
+//    }
 
-    @discardableResult func updateLabel(_ blockName: String, text: NSAttributedString?, noEmpty: Bool = false) -> UILabel? {
-        guard let view = searchLabel(blockName) else { return nil }
-        view.attributedText = text ?? NSAttributedString()
-        return view
-    }
-    
     @discardableResult func updateImage(_ blockName: String, image: UIImage) -> UIImageView? {
         guard let view = searchImage(blockName) else { return nil }
         view.image = image

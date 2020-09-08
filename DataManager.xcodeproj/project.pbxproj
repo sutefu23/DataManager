@@ -22,6 +22,7 @@
 		141203792201D82F0054B56F /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141203782201D82F0054B56F /* Day.swift */; };
 		1412037B2201D8360054B56F /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412037A2201D8360054B56F /* Time.swift */; };
 		14173F3D242ACBA9000EF0AF /* 記録.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14173F3C242ACBA9000EF0AF /* 記録.swift */; };
+		141BAE3025076A73009DC6D5 /* TargetMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141BAE2F25076A73009DC6D5 /* TargetMode.swift */; };
 		1425D99D230778B700A2D6AB /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1425D99C230778B700A2D6AB /* Month.swift */; };
 		1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1425D99E230798DA00A2D6AB /* 経理状態.swift */; };
 		1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1426FBB3231DECD1004D3EAC /* 作業.swift */; };
@@ -186,6 +187,7 @@
 		141203782201D82F0054B56F /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		1412037A2201D8360054B56F /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		14173F3C242ACBA9000EF0AF /* 記録.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "記録.swift"; sourceTree = "<group>"; };
+		141BAE2F25076A73009DC6D5 /* TargetMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetMode.swift; sourceTree = "<group>"; };
 		1425D99C230778B700A2D6AB /* Month.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
 		1425D99E230798DA00A2D6AB /* 経理状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "経理状態.swift"; sourceTree = "<group>"; };
 		1426FBB3231DECD1004D3EAC /* 作業.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業.swift"; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				1467C77E243484F100813CB1 /* ProgressTVData.swift */,
+				141BAE2F25076A73009DC6D5 /* TargetMode.swift */,
 			);
 			name = "共通ロジック";
 			path = "共通ロジック";
@@ -773,6 +776,7 @@
 				1468395A2429DC25001E5656 /* 指定注文番号型.swift in Sources */,
 				146AA03723EB828900126B0F /* PaperPDFPage.swift in Sources */,
 				14388D4F2446A7BF00CD1503 /* 資材(コイル情報).swift in Sources */,
+				141BAE3025076A73009DC6D5 /* TargetMode.swift in Sources */,
 				149BCB07220854FE004066DD /* 工程状態.swift in Sources */,
 				14985311230BCE91007734E0 /* 資源マスタ情報.swift in Sources */,
 				147169E2246382EF00189498 /* Bundle.swift in Sources */,
@@ -1076,7 +1080,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.33;
+				MARKETING_VERSION = 1.34;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1109,7 +1113,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.33;
+				MARKETING_VERSION = 1.34;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.co.osakaname.shikuma.DataManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
