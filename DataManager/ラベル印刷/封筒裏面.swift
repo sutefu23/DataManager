@@ -9,6 +9,7 @@
 import Foundation
 import PDFKit
 
+@available(iOS 11, *)
 public func make封筒裏面2(_ count: Int) -> PDFDocument {
     guard let url = Bundle(for: PaperPDFPage.self).url(forResource: "付属品封筒裏面", withExtension: "pdf"),
           let pdf = PDFDocument(url: url), pdf.pageCount > 0
@@ -21,6 +22,7 @@ public func make封筒裏面2(_ count: Int) -> PDFDocument {
     return pdf
 }
 
+@available(iOS 11, *)
 public func make封筒裏面(_ count: Int) -> PDFDocument {
     if count < 0 { return make封筒裏面2(-count) }
     let count = max(1, count)

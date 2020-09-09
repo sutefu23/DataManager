@@ -131,7 +131,6 @@
 		14BF216A230D083F00CE4253 /* グループ階層.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2169230D083F00CE4253 /* グループ階層.swift */; };
 		14C066AA23757D47001E73F2 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C066A923757D47001E73F2 /* Version.swift */; };
 		14C65E4724F4B5E40079148F /* 付属品封筒裏面.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 14C65E4624F4B5E40079148F /* 付属品封筒裏面.pdf */; };
-		14CAB7BF23E819910038870F /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CAB7BE23E819910038870F /* Sequence.swift */; };
 		14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CEBDF1222DFDE40023D0DC /* URL.swift */; };
 		14DA57152209A81E00831625 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57142209A81E00831625 /* 工程.swift */; };
 		14DA57192209B0C600831625 /* 進捗.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA57182209B0C600831625 /* 進捗.swift */; };
@@ -142,6 +141,13 @@
 		14F1FF1B24283DCF00FAA2C8 /* 入出庫キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */; };
 		679861D624EA3A03003ECCE0 /* NCtoDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679861D524EA3A03003ECCE0 /* NCtoDM.swift */; };
 		679861DC24EA5F7B003ECCE0 /* KeyModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679861DB24EA5F7B003ECCE0 /* KeyModifiers.swift */; };
+		67DFD9B125088CC500907781 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9B025088CC500907781 /* Sequence.swift */; };
+		67DFD9B325088FF300907781 /* RunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9B225088FF300907781 /* RunLoop.swift */; };
+		67DFD9B5250890D000907781 /* Concurrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9B4250890D000907781 /* Concurrent.swift */; };
+		67DFD9B9250894FF00907781 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9B8250894FF00907781 /* PropertyWrapper.swift */; };
+		67DFD9BB250895CF00907781 /* TwoElementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9BA250895CF00907781 /* TwoElementCache.swift */; };
+		67DFD9BD250895FD00907781 /* SerialCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9BC250895FD00907781 /* SerialCache.swift */; };
+		67DFD9BF2508962700907781 /* SerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DFD9BE2508962700907781 /* SerialNumber.swift */; };
 		8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE323EB62DB00587F6B /* PaperRect.swift */; };
 		8E0CBAE923EB658E00587F6B /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAE823EB658E00587F6B /* UIKit.swift */; };
 		8E0CBAEB23EB659800587F6B /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CBAEA23EB659800587F6B /* Cocoa.swift */; };
@@ -296,7 +302,6 @@
 		14BF2169230D083F00CE4253 /* グループ階層.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "グループ階層.swift"; sourceTree = "<group>"; };
 		14C066A923757D47001E73F2 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		14C65E4624F4B5E40079148F /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
-		14CAB7BE23E819910038870F /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		14CEBDF1222DFDE40023D0DC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		14DA57142209A81E00831625 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
 		14DA57182209B0C600831625 /* 進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗.swift"; sourceTree = "<group>"; };
@@ -307,6 +312,13 @@
 		14F1FF1A24283DCF00FAA2C8 /* 入出庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入出庫キャッシュ.swift"; sourceTree = "<group>"; };
 		679861D524EA3A03003ECCE0 /* NCtoDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCtoDM.swift; sourceTree = "<group>"; };
 		679861DB24EA5F7B003ECCE0 /* KeyModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifiers.swift; sourceTree = "<group>"; };
+		67DFD9B025088CC500907781 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		67DFD9B225088FF300907781 /* RunLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoop.swift; sourceTree = "<group>"; };
+		67DFD9B4250890D000907781 /* Concurrent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concurrent.swift; sourceTree = "<group>"; };
+		67DFD9B8250894FF00907781 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
+		67DFD9BA250895CF00907781 /* TwoElementCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoElementCache.swift; sourceTree = "<group>"; };
+		67DFD9BC250895FD00907781 /* SerialCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialCache.swift; sourceTree = "<group>"; };
+		67DFD9BE2508962700907781 /* SerialNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialNumber.swift; sourceTree = "<group>"; };
 		8E0CBAE323EB62DB00587F6B /* PaperRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRect.swift; sourceTree = "<group>"; };
 		8E0CBAE823EB658E00587F6B /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		8E0CBAEA23EB659800587F6B /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
@@ -374,10 +386,16 @@
 				147169E32463837100189498 /* ChangeLog.swift */,
 				146B4C4323E4F80B00FB392B /* Future.swift */,
 				148AA6C02436ED1400BE8A1F /* Int.swift */,
-				14CAB7BE23E819910038870F /* Sequence.swift */,
 				1469576A2405088100A29C4C /* DMScanner.swift */,
 				8E31841C24611EA4007FD008 /* DMFormula.swift */,
 				1470CFAD243C5C5000C76979 /* Alert.swift */,
+				67DFD9B025088CC500907781 /* Sequence.swift */,
+				67DFD9B225088FF300907781 /* RunLoop.swift */,
+				67DFD9B4250890D000907781 /* Concurrent.swift */,
+				67DFD9B8250894FF00907781 /* PropertyWrapper.swift */,
+				67DFD9BA250895CF00907781 /* TwoElementCache.swift */,
+				67DFD9BC250895FD00907781 /* SerialCache.swift */,
+				67DFD9BE2508962700907781 /* SerialNumber.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -769,6 +787,7 @@
 				141203752201D6000054B56F /* スケジュール.swift in Sources */,
 				1431E187220C2BC900E68ED7 /* 略号.swift in Sources */,
 				8E2CDF8A2340D22A00E7F147 /* 伝票番号.swift in Sources */,
+				67DFD9BD250895FD00907781 /* SerialCache.swift in Sources */,
 				146989AF24BD936100E96C79 /* 作業ステージ.swift in Sources */,
 				14831E4124E27B6A00E75051 /* 封筒裏面.swift in Sources */,
 				141057CC246B8CBF00277E42 /* 資材（ボルト情報）.swift in Sources */,
@@ -796,6 +815,7 @@
 				1412037B2201D8360054B56F /* Time.swift in Sources */,
 				1440531724203DC700C4E48C /* 注文番号.swift in Sources */,
 				1426FBB4231DECD1004D3EAC /* 作業.swift in Sources */,
+				67DFD9B325088FF300907781 /* RunLoop.swift in Sources */,
 				146AA03523EB818800126B0F /* LabelListPDFPage.swift in Sources */,
 				1425D99F230798DA00A2D6AB /* 経理状態.swift in Sources */,
 				146AA59F2406108D00ED395D /* 箱文字優先度キャッシュ.swift in Sources */,
@@ -812,6 +832,7 @@
 				143FA9DD224F5EA9000F2029 /* 社員.swift in Sources */,
 				1470792F247B9E6D0044134E /* 付属品封筒.swift in Sources */,
 				145EE8FF2396422F008BC8B4 /* 作業系列.swift in Sources */,
+				67DFD9BF2508962700907781 /* SerialNumber.swift in Sources */,
 				146D0B2F23EA8869006FECA7 /* 資材入出庫出力.swift in Sources */,
 				1470CFAE243C5C5000C76979 /* Alert.swift in Sources */,
 				679861D624EA3A03003ECCE0 /* NCtoDM.swift in Sources */,
@@ -819,6 +840,7 @@
 				14985319230BCECD007734E0 /* 必要資源情報.swift in Sources */,
 				14CEBDF2222DFDE40023D0DC /* URL.swift in Sources */,
 				149272412306959F00BE4BEF /* 指示書変更内容履歴.swift in Sources */,
+				67DFD9BB250895CF00907781 /* TwoElementCache.swift in Sources */,
 				8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */,
 				147169E42463837100189498 /* ChangeLog.swift in Sources */,
 				14985325230BCF1C007734E0 /* マイルストーン情報.swift in Sources */,
@@ -841,6 +863,7 @@
 				14A251A223F38DBF00547371 /* 指示書キャッシュ.swift in Sources */,
 				146839602429EDA2001E5656 /* 資材入庫状況.swift in Sources */,
 				149BCB09220858FE004066DD /* 伝票種類.swift in Sources */,
+				67DFD9B5250890D000907781 /* Concurrent.swift in Sources */,
 				14681F122212B3AE00C41D15 /* 工程図.swift in Sources */,
 				1426FBB8231DED92004D3EAC /* 部署作業者分析.swift in Sources */,
 				8EBB920D235C9A6400BA3394 /* 承認状態.swift in Sources */,
@@ -852,9 +875,9 @@
 				145EE8FD23964220008BC8B4 /* 作業種別.swift in Sources */,
 				14713C4323F60F8A0093F22D /* UserDefaults.swift in Sources */,
 				146AA59D2406067100ED395D /* 箱文字優先度.swift in Sources */,
-				14CAB7BF23E819910038870F /* Sequence.swift in Sources */,
 				8E31841D24611EA4007FD008 /* DMFormula.swift in Sources */,
 				149BCB05220854F6004066DD /* 伝票状態.swift in Sources */,
+				67DFD9B125088CC500907781 /* Sequence.swift in Sources */,
 				8E0CBAE423EB62DB00587F6B /* PaperRect.swift in Sources */,
 				1469576B2405088100A29C4C /* DMScanner.swift in Sources */,
 				146508AC22FD4CF40095AD83 /* 発注.swift in Sources */,
@@ -871,6 +894,7 @@
 				141057CA246B8C1D00277E42 /* 管理資材（パイプ）.swift in Sources */,
 				141203732201C5890054B56F /* 出勤日.swift in Sources */,
 				1468395C2429E703001E5656 /* 取引先.swift in Sources */,
+				67DFD9B9250894FF00907781 /* PropertyWrapper.swift in Sources */,
 				146FED8D2473C96200CC451E /* 部門.swift in Sources */,
 				149BCAFD2208216B004066DD /* String.swift in Sources */,
 				146D0B3123EA8C8B006FECA7 /* 入力区分.swift in Sources */,
@@ -1068,13 +1092,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DataManager/Info.plist;
 				INSTALL_PATH = "@rpath/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1101,13 +1126,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 13;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DataManager/Info.plist;
 				INSTALL_PATH = "@rpath/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

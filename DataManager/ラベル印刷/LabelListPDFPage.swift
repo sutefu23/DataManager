@@ -45,6 +45,7 @@ public final class LabelPDFDocument {
         self.title = title
     }
     
+    @available(iOS 11, *)
     public func makePDF<C: Collection>(labels: C) -> PDFDocument? where C.Element: LabelMaker {
         if labels.isEmpty { return nil }
         let pdf = PDFDocument()
@@ -80,6 +81,7 @@ public final class LabelPDFDocument {
 #if os(iOS)
 import UIKit
 
+@available(iOS 11, *)
 extension UIViewController {
     public func print(_ pdf: PDFDocument, updateButton: UIButton, jobName: String, outputType: UIPrintInfo.OutputType, delegate: UIPrintInteractionControllerDelegate? = nil) {
         let picker = UIPrinterPickerController(initiallySelectedPrinter: nil)

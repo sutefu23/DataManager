@@ -117,15 +117,3 @@ extension Error {
 
 #endif
 
-/// メインスレッドだとそのまま実行。そうでない場合、メインスレッドを待って、メインスレッドで実行
-func executeInMainThread<T>( _ exec: ()->T) -> T {
-    if Thread.isMainThread {
-        return exec()
-    } else {
-        var result : T?
-        DispatchQueue.main.sync {
-            result = exec()
-        }
-        return result!
-    }
-}

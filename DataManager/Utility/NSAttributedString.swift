@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreGraphics
+
 #if os(tvOS)
 import UIKit
 public typealias FMColor = UIColor
@@ -43,9 +45,18 @@ extension String {
 }
 
 extension NSAttributedString {
-    public static func+(left: NSAttributedString, right: NSAttributedString) -> NSAttributedString {
+    public convenience init(string: String, size: CGFloat, color: DMColor) {
+        let font = DMFont.systemFont(ofSize: size)
+        let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
+        self.init(string: string, attributes: attributes)
+    }
+    
+    public static func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString {
         let str = NSMutableAttributedString(attributedString: left)
         str.append(right)
         return str
+    }
+    public static func += (left: inout NSAttributedString, right: NSAttributedString) {
+        left = left + right
     }
 }

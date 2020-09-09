@@ -18,6 +18,7 @@ public enum PaperType {
     case 長形3号横
 }
 
+@available(iOS 11, *)
 public final class PaperPDFPage: PDFPage {
     let title: String
 
@@ -115,4 +116,5 @@ public final class PaperPDFPage: PDFPage {
         rects.append(rect)
     }
 }
+
 #endif

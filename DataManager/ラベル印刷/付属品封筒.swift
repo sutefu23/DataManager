@@ -23,6 +23,7 @@ public final class 付属品封筒型 {
         self.order = order
     }
     
+    @available(iOS 11, *)
     public func makePDFPage(offsetX: Double = 0, offsetY: Double = -7.0) -> PaperPDFPage {
         let page = PaperPDFPage(paperType: .長形3号, margin: 0)
         #if targetEnvironment(macCatalyst)

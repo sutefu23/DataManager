@@ -262,3 +262,70 @@ func calc寸法サイズ(_ line: String) -> [Double] {
 }
 
 
+//　NCEngineから移行
+extension String {
+    /// 文字列をパスに見立てたときの末尾のファイル名（絶対パスで区切り文字は"/"）
+    public var lastPathComponent: String {
+        guard let index = self.lastIndex(of: "/") else { return self }
+        let nextIndex = self.index(after: index)
+        return String(self[nextIndex...])
+    }
+    /// 文字列をファイル名またはファイルへのパスと見立てたときのファイルの拡張子
+    public var lowercasedExtension: String {
+        for index in self.indices.reversed() {
+            if self[index] == "." {
+                if index == self.startIndex { return "" }
+                let start = self.index(after: index)
+                return self[start...].lowercased()
+            }
+        }
+        return ""
+    }
+    /// 半角スペース・全角スペース・タブを除去する
+    public var spaceStripped: String {
+        return self.filter { $0 != " " && $0 != "　" && $0 != "\t" }
+    }
+    /// どれか一つを先頭に持つ
+    public func hasPrefix(oneOf: String...) -> Bool {
+        return oneOf.contains { self.hasPrefix($0) }
+    }
+    /// どれか一つを末尾に持つ
+    public func contains(oneOf: String...) -> Bool {
+        return oneOf.contains { self.contains($0) }
+    }
+    /// どれか一つを末尾に持つ
+    public func hasSuffix(oneOf: [String]) -> Bool {
+        return oneOf.contains { self.hasSuffix($0) }
+    }
+
+    // MARK: - QMetalItaファイル用
+    /// 「 / 」区切りのMacのパスを「 \ 」区切りのWindowsのパスに変換する（形式のみで実用は考慮していない）
+    public func windowsPath() -> String { self.replacingOccurrences(of: "/", with: "\\") }
+    
+    /// 「 \ 」区切りのWindowsのパスを「 / 」区切りのMacのパスに変換する（形式のみで実用は考慮していない）
+    public func macPath() -> String { self.replacingOccurrences(of: "\\", with: "/") }
+
+    public func encodeLF() -> String {
+        return self.replacingOccurrences(of: "\n", with: "[cr]")
+    }
+    
+    public func decodeLF() -> String {
+        return self.replacingOccurrences(of: "[cr]", with: "\n")
+    }
+}
+
+extension Array where Element == String {
+    public func contains(_ lines: [String]) -> Bool {
+        guard let firstLine = lines.first else { return false }
+        var index = self.startIndex
+        while index < self.endIndex {
+            if self[index] == firstLine {
+                let endIndex = self.index(index, offsetBy: lines.count)
+                if self.endIndex < endIndex { return false }
+                if Array<String>(self[index..<endIndex]) == lines { return true }
+            }
+            index = self.index(after: index)
+        }
+        return false
+    }
+}
