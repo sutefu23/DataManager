@@ -144,7 +144,9 @@ public extension UIView {
         } else {
             view.text = nil
         }
-        view.backgroundColor = bgColor
+        if let bgColor = bgColor {
+            view.backgroundColor = bgColor
+        }
         if let target = target, let action = action {
             let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
             self.isUserInteractionEnabled = true
@@ -191,14 +193,11 @@ public extension DMColor {
 
 #if os(iOS)
 extension UIResponder {
+    /// テキストフィールドのカーソルを持ってくる
     public func makeFirstResponder2() {
-        #if targetEnvironment(macCatalyst)
         DispatchQueue.main.async {
             self.becomeFirstResponder()
         }
-        #elseif os(iOS)
-        self.becomeFirstResponder()
-        #endif
     }
 }
 

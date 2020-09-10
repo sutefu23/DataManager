@@ -11,7 +11,7 @@ import Foundation
 /// 文字列を解析する
 public struct DMScanner: RandomAccessCollection {
     /// スキャン対象(調整済み)
-    private let source: String
+    public let source: String
     /// スキャン開始時にスペースを除外するならtrue
     public var skipSpaces: Bool {
         didSet { needsSpaceCheck = skipSpaces }

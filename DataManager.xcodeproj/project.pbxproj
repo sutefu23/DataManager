@@ -89,7 +89,7 @@
 		1470B25B236832820043A7B4 /* TestMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470B25A236832820043A7B4 /* TestMonth.swift */; };
 		1470CFAE243C5C5000C76979 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1470CFAD243C5C5000C76979 /* Alert.swift */; };
 		14713C4323F60F8A0093F22D /* UserDefaultsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14713C4223F60F8A0093F22D /* UserDefaultsUtility.swift */; };
-		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; platformFilter = maccatalyst; };
+		14713CAA23F670BF0093F22D /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146AA03923EB893E00126B0F /* PDFKit.framework */; };
 		147169E2246382EF00189498 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E1246382EF00189498 /* Bundle.swift */; };
 		147169E42463837100189498 /* ChangeLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147169E32463837100189498 /* ChangeLog.swift */; };
 		1472202B246E4F4B001DBE97 /* TextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14722029246E4F4B001DBE97 /* TextReader.swift */; };

@@ -23,7 +23,8 @@ public enum DMTargetMode: Int, CaseIterable {
     case 出力 = 5
     case レーザー = 6
     case 照合 = 7
-    case 立ち上がり = 8
+    case 切文字 = 8
+    case 立ち上がり = 9
 
     public var next: DMTargetMode {
         switch self {
@@ -40,7 +41,8 @@ public enum DMTargetMode: Int, CaseIterable {
         case .入力: return .出力
         case .出力: return .レーザー
         case .レーザー: return .照合
-        case .照合: return .立ち上がり
+        case .照合: return .切文字
+        case .切文字: return .立ち上がり
         case .立ち上がり: return .全部署
         }
     }
@@ -61,6 +63,7 @@ public enum DMTargetMode: Int, CaseIterable {
         case .出力: return [.出力]
         case .レーザー: return [.レーザー]
         case .照合: return [.照合検査]
+        case .切文字: return [.切文字]
         case .立ち上がり: return [.立ち上がり, .立ち上がり_溶接]
         }
     }
@@ -91,6 +94,7 @@ public enum DMTargetMode: Int, CaseIterable {
         case .出力: return "出力"
         case .レーザー: return "レーザー"
         case .照合: return "照合"
+        case .切文字: return "切文字"
         case .立ち上がり: return "立ち上がり"
         }
     }
