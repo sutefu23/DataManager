@@ -14,7 +14,6 @@ public let ダウンロードURL: URL = {
     return desktopURL
 }()
 
-
 public let デスクトップURL: URL = {
     let fm = FileManager.default
     let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.desktopDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)

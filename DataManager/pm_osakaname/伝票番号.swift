@@ -189,7 +189,7 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     public var description: String {
         return String(self.整数値)
     }
-    
+    /// FileMakerで指示書を表示する
     public func showInfo() {
         guard let url = URL(string: "fmp://outsideuser:outsideuser!@192.168.1.153/viewer?script=search&param=\(self)") else { return }
         #if os(macOS)

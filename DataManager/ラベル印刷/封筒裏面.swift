@@ -7,6 +7,10 @@
 //
 
 import Foundation
+
+#if os(tvOS)
+
+#else
 import PDFKit
 
 @available(iOS 11, *)
@@ -80,3 +84,4 @@ public func make封筒裏面(_ count: Int) -> PDFDocument {
     }
     return pdf
 }
+#endif

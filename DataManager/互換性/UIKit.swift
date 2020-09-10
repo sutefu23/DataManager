@@ -8,14 +8,7 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS)
-import UIKit
-
-public typealias DMColor = UIColor
-public typealias DMView = UIView
-public typealias DMViewController = UIViewController
-public typealias DMTextField = UITextField
-
+#if os(iOS)
 public typealias DMPrintInfo = UIPrintInfo
 public extension DMPrintInfo {
     enum PaperOrientation {
@@ -23,6 +16,15 @@ public extension DMPrintInfo {
         case portrait
     }
 }
+#endif
+
+#if os(iOS) || os(tvOS)
+import UIKit
+
+public typealias DMColor = UIColor
+public typealias DMView = UIView
+public typealias DMViewController = UIViewController
+public typealias DMTextField = UITextField
 
 public typealias DMGraphicsContext = UIGraphicsPDFRendererContext
 public func DMGraphicsPushContext(_ context: CGContext) { UIGraphicsPushContext(context) }

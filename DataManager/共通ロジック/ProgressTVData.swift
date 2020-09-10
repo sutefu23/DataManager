@@ -21,11 +21,30 @@ public enum ProgressTVMode: Int {
     case 箱文字アクリル = 2
     case 切文字 = 3
     
-    var targetName: String {
+    public var targetName: String {
         switch self {
         case .箱文字: return "箱文字"
         case .箱文字アクリル: return "箱文字アクリル"
         case .切文字: return "切文字"
+        }
+    }
+
+    public var simpleTargetName: String {
+        switch self {
+        case .箱文字: return "箱文字"
+        case .箱文字アクリル: return "アクリ"
+        case .切文字: return "切文字"
+        }
+    }
+
+    public var nextMode: ProgressTVMode {
+        switch self {
+        case .箱文字:
+            return .箱文字アクリル
+        case .箱文字アクリル:
+            return .切文字
+        case .切文字:
+            return .箱文字
         }
     }
 }
@@ -143,6 +162,7 @@ public protocol ProgressTVCoreOwner: class {
     func showInfo1(_ text: String)
     func showInfo2(_ text: String)
     func showInfo3(_ text: String)
+    func showMode(_ text: String)
 
     func reloadTableViewData()
 }
@@ -150,7 +170,9 @@ public protocol ProgressTVCoreOwner: class {
 // MARK: - コア
 public final class ProgressTVCore {
     weak var owner: ProgressTVCoreOwner!
-    public var mode: ProgressTVMode
+    public var mode: ProgressTVMode {
+        didSet { self.updateNow() }
+    }
     public var アクリル有りのみ表示: Bool {
         switch mode {
         case .箱文字, .切文字: return false
@@ -182,8 +204,9 @@ public final class ProgressTVCore {
     
     func prepareFirstLabel() {
         if currentTarget != target {
-            owner.showInfo1("\(self.target.description)\(self.mode.targetName) 初回検索中・・・・・")
+            owner.showInfo1("\(self.target.description) 初回検索中・・・・・")
             owner.showInfo2("")
+            owner.showMode(mode.simpleTargetName)
             datas = []
             owner.reloadTableViewData()
         }
@@ -195,14 +218,16 @@ public final class ProgressTVCore {
         var nextIndex = list.index(after: currentIndex)
         if !list.indices.contains(nextIndex) { nextIndex = list.startIndex }
         self.target = list[nextIndex]
-        self.stopUpdateTimer()
-        self.prepareFirstLabel()
-        self.startOrderUpdate()
+        self.updateNow()
     }
     
     public func changeFilter(mode: ProgressTVMode) {
         self.mode = mode
         self.currentTarget = nil
+        self.updateNow()
+    }
+    
+    private func updateNow() {
         self.stopUpdateTimer()
         self.prepareFirstLabel()
         self.startOrderUpdate()
@@ -354,6 +379,7 @@ public final class ProgressTVCore {
             label2 += " (仮表示\(count2)件)"
         }
         owner.showInfo2(label2)
+        owner.showMode(mode.simpleTargetName)
         self.currentTarget = self.target
         if allChange {
             owner.reloadTableViewData()
@@ -383,7 +409,14 @@ public final class ProgressTVCore {
                 text = "?"
             }
         case "LimitDay":
-            let day3 = Day().appendWorkDays(3)
+            let limitDay: Int
+            switch data.指示書.伝票種類 {
+            case .箱文字:
+                limitDay = 3
+            case .エッチング, .切文字, .加工, .外注, .校正:
+                limitDay = 1
+            }
+            let day3 = Day().appendWorkDays(limitDay)
             color = (data.納期 <= day3) ? .red : .black
             text = data.納期.monthDayJString
         case "State":

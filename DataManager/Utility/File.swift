@@ -32,8 +32,6 @@ public enum DataManagerError: LocalizedError, Equatable {
     }
 }
 
-
-
 #if os(iOS)
 import UIKit
 

@@ -14,6 +14,12 @@ public extension UserDefaults {
         get { return bool(forKey: "filemakerIsDisabled") }
         set { self.set(newValue, forKey: "filemakerIsDisabled") }
     }
+    
+    /// サーバーへの同時接続数
+    var filemakerMaxConnection: Int {
+        get { maxConnection }
+        set { maxConnection = newValue }
+    }
 }
 
 private let serverCache = FileMakerServerCache()
@@ -56,7 +62,7 @@ enum FileMakerSortType: String, Encodable {
 }
 
 /// １台のサーバーへの最大同時接続数
-let maxConnection = 4
+var maxConnection = 3
 
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: Hashable {

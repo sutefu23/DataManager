@@ -366,6 +366,8 @@ public final class 指示書型 {
     }()
     
     public lazy var 指示書文字数: 指示書文字数型 = 指示書文字数型(指示書: self)
+    
+    /// FileMakerで指示書を表示する
     public func showInfo() {
         self.伝票番号.showInfo()
     }

@@ -104,6 +104,20 @@ extension 指示書型 {
         }
         return false
     }
+    func 切文字優先状態(for target: [工程型]) -> Bool {
+        if self.略号.contains(.看板) { return true }
+        switch self.伝票種別 {
+        case .クレーム, .再製:
+            return true
+        case .通常:
+            break
+        }
+        func check仕上(_ surface: String) -> Bool {
+            return surface.contains("梨地") || surface.contains("メッキ") || surface.contains("めっき") || surface.contains("腐食") || surface.contains("イブシ")
+        }
+        if check仕上(self.表面仕上1) || check仕上(self.表面仕上2) || check仕上(self.側面仕上1) || check仕上(self.側面仕上2) { return true }
+        return false
+    }
     public func 優先状態(for targets: [工程型], cacheOnly: Bool = false) -> Bool? {
         switch self.優先設定(for: targets, cacheOnly: cacheOnly) {
         case .優先あり: return true
@@ -126,6 +140,8 @@ extension 指示書型 {
         switch self.伝票種類 {
         case .箱文字:
             return self.箱文字優先状態(for: targets)
+        case .切文字:
+            return self.切文字優先状態(for: targets)
         default:
             switch self.伝票種別 {
             case .クレーム, .再製:
@@ -144,15 +160,6 @@ extension 指示書型 {
         case .自動判定:
             break
         }
-//        if !targets.isEmpty {
-//            switch self.表示設定(for: [], cacheOnly: cacheOnly) {
-//            case .白: return true
-//            case .黒: return false
-//            case nil: return nil
-//            case .自動判定:
-//                break
-//            }
-//        }
         func check(_ process: 工程型) -> Bool {
             let start: 作業内容型 = (process == .管理 || process == .フォーミング) ? .受取 : .開始
             let list = self.進捗一覧.filter {
@@ -163,19 +170,38 @@ extension 指示書型 {
         }
         return targets.contains {
             let days: Int
-            switch $0 {
-            case .営業, .管理: // 6営業日後
-                days = 6
-            case .原稿, .入力, .出力: // 5営業日後
-                days = 5
-            case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接: // 4営業日後
-                days = 4
-            default: // 3営業日後
-                days = 3
+            switch self.伝票種類 {
+            case .箱文字:
+                switch $0 {
+                case .営業, .管理: // 6営業日後
+                    days = 6
+                case .原稿, .入力, .出力: // 5営業日後
+                    days = 5
+                case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接: // 4営業日後
+                    days = 4
+                default: // 3営業日後
+                    days = 3
+                }
+            case .エッチング, .切文字, .加工, .外注, .校正:
+                switch $0 {
+                case .営業, .管理: // 3営業日後
+                    days = 4
+                case .原稿, .入力, .出力: // 3営業日後
+                    days = 3
+                case .フィルム, .レーザー, .照合検査, . 立ち上がり, .立ち上がり_溶接: // 2営業日後
+                    days = 2
+                default: // 3営業日後
+                    days = 1
+                }
             }
             let limit = Day().appendWorkDays(days)
             if self.製作納期 <= limit { return true }
-            if check($0) { return true }
+            switch self.伝票種類 {
+            case .箱文字:
+                if check($0) { return true }
+            case .切文字, .エッチング, .加工, .外注, .校正:
+                break
+            }
             switch $0 {
             case .照合検査: return check(.レーザー) && check(.出力)
             case .立ち上がり, .立ち上がり_溶接: return check(.照合検査) || check(.レーザー)
