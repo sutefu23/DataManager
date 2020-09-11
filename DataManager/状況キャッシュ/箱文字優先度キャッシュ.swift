@@ -182,7 +182,7 @@ extension 指示書型 {
                 default: // 3営業日後
                     days = 3
                 }
-            case .エッチング, .切文字, .加工, .外注, .校正:
+            case .エッチング, .切文字, .加工:
                 switch $0 {
                 case .営業, .管理: // 3営業日後
                     days = 4
@@ -193,6 +193,8 @@ extension 指示書型 {
                 default: // 3営業日後
                     days = 1
                 }
+            case .外注, .校正:
+                days = 0
             }
             let limit = Day().appendWorkDays(days)
             if self.製作納期 <= limit { return true }

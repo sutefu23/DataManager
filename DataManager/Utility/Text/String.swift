@@ -39,7 +39,14 @@ extension String {
         return self.split(separator: ",", omittingEmptySubsequences: false).map(\.controlStripped)
     }
 }
+
 extension StringProtocol {
+    public var 比較用文字列: String {
+        var result = self.replacingOccurrences(of: "㈲", with: "（有）")
+        result = result.replacingOccurrences(of: "㈱", with: "（株）")
+        return result.toJapaneseNormal.spaceStripped
+    }
+
     /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
     public var toJapaneseNormal: String {
         var result = ""

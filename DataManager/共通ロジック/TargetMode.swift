@@ -9,6 +9,7 @@
 import Foundation
 
 public enum DMTargetMode: Int, CaseIterable {
+
     case 全部署 = 0
     case 営業管理 = -1
     case 原稿入力出力 = -2

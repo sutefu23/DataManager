@@ -22,15 +22,21 @@ public final class 取引先型 {
     
     public var 会社コード: 会社コード型 { return record.string(forKey: "会社コード")! }
     public var 会社名: String { return record.string(forKey: "会社名")! }
+    public var 印字会社名: String { return record.string(forKey: "印字会社名")! }
     public var 分類: String { return record.string(forKey: "分類")! }
     
     public var is原稿社名不要: Bool { 原稿社名不要会社コードSet.contains(self.会社コード) }
+    
+    public func is社名マッチ(to name: String) -> Bool {
+        let name = name.比較用文字列
+        return name == 会社名.比較用文字列 || name == 印字会社名.比較用文字列
+    }
 }
 
 extension 取引先型 {
     static let dbName = "DataAPI_14"
 
-    static func find(会社コード: 会社コード型) throws -> 取引先型? {
+    public static func find(会社コード: 会社コード型) throws -> 取引先型? {
         let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
         query["会社コード"] = "==\(会社コード)"
