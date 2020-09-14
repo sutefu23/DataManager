@@ -160,6 +160,7 @@
 		8E392EDF21FD61D900CEDF18 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EDE21FD61D900CEDF18 /* DataManagerTests.swift */; };
 		8E392EEE21FD62D200CEDF18 /* FileMakerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */; };
 		8E6EB38024151AFC0013D04D /* 資材キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */; };
+		8E7031C5250F973C00550A60 /* TestSerialCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7031C4250F973C00550A60 /* TestSerialCache.swift */; };
 		8E7B720F242113BD0067A13A /* 管理資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7B720E242113BD0067A13A /* 管理資材.swift */; };
 		8E7D387D239C38CD00FF1CF3 /* FileMakerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */; };
 		8E7F6E51245842F000F40A2B /* Test管理板材型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7F6E50245842F000F40A2B /* Test管理板材型.swift */; };
@@ -336,6 +337,7 @@
 		8E392EE021FD61D900CEDF18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E392EED21FD62D200CEDF18 /* FileMakerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerDB.swift; sourceTree = "<group>"; };
 		8E6EB37F24151AFC0013D04D /* 資材キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材キャッシュ.swift"; sourceTree = "<group>"; };
+		8E7031C4250F973C00550A60 /* TestSerialCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSerialCache.swift; sourceTree = "<group>"; };
 		8E7B720E242113BD0067A13A /* 管理資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材.swift"; sourceTree = "<group>"; };
 		8E7D387C239C38CD00FF1CF3 /* FileMakerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerError.swift; sourceTree = "<group>"; };
 		8E7F6E50245842F000F40A2B /* Test管理板材型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test管理板材型.swift"; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 				147046FC2488890100A5D8F6 /* TestString.swift */,
 				147047022488C39300A5D8F6 /* Test板加工在庫.swift */,
 				14872338249B3F7F006623C1 /* TestVersion.swift */,
+				8E7031C4250F973C00550A60 /* TestSerialCache.swift */,
 				1465B7EF246E541000BA8145 /* maru.ita */,
 				8E392EE021FD61D900CEDF18 /* Info.plist */,
 			);
@@ -956,6 +959,7 @@
 				147047032488C39300A5D8F6 /* Test板加工在庫.swift in Sources */,
 				14749B7224724DDB00E956EE /* Test指示書ボルト欄.swift in Sources */,
 				1467CF63242DCDF3003F15DF /* Test管理資材型.swift in Sources */,
+				8E7031C5250F973C00550A60 /* TestSerialCache.swift in Sources */,
 				147046FD2488890100A5D8F6 /* TestString.swift in Sources */,
 				14872339249B3F7F006623C1 /* TestVersion.swift in Sources */,
 				14BEE9E62240A8B300B2750B /* Test資材.swift in Sources */,

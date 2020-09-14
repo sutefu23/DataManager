@@ -35,3 +35,4 @@ enum Pattern3 {
     case 表面仕上塗装乾燥炉
     case 表面仕上塗装拭き取り
 }
+
