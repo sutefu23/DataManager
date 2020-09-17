@@ -201,11 +201,14 @@ public extension 進捗型 {
         return result
     }
     
-    static func find(工程 state: 工程型?, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day) throws -> [進捗型] {
+    static func find(工程 state: 工程型? = nil, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day, 作業種別: 作業種別型? = nil) throws -> [進捗型] {
         var query = FileMakerQuery()
         query["登録日"] = day.fmString
         if let state = state {
             query["工程コード"] = "==\(state.code)"
+        }
+        if let code = 作業種別?.code {
+            query["作業種別コード"] = code
         }
         query["伝票種類"] = type?.description
         return try self.find(query: query)
