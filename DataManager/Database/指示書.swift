@@ -127,6 +127,10 @@ public final class 指示書型 {
     public var その他1: String { record.string(forKey: "その他1")! }
     public var その他2: String { record.string(forKey: "その他2")! }
 
+    public var 枠材質: String { record.string(forKey: "枠材質")! }
+    public var 台板材質: String { record.string(forKey: "台板材質")! }
+    public var 裏仕様: String { record.string(forKey: "裏仕様")! }
+
     public var 合計金額: Int { record.integer(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }

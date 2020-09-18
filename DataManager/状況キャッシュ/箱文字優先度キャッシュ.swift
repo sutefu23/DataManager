@@ -112,8 +112,12 @@ extension 指示書型 {
         case .通常:
             break
         }
+        if !self.枠材質.isEmpty || !self.台板材質.isEmpty { return true }
+        let uranames = Set<String>(["ボルト立","浮かしパイプ付","ナット付","銘板ボルト立","看板三角コーナー","別枠三角コーナー","看板コの字ビス止","上下のみL金具止","別枠コの字ビス止","看板梯形Lアングル","別枠梯形Lアングル","看板四方Lアングル","別枠四方Lアングル","看板箱曲ビス止","別枠箱曲ビス止","下記"])
+        if self.塗装文字数概算 >= 20 && uranames.contains(self.裏仕様) { return true }
         func check仕上(_ surface: String) -> Bool {
-            return surface.contains("梨地") || surface.contains("メッキ") || surface.contains("めっき") || surface.contains("腐食") || surface.contains("イブシ")
+            let surface = surface.toJapaneseNormal
+            return (surface.contains("メッキ") && !surface.contains("チタン")) || surface.contains("めっき")
         }
         if check仕上(self.表面仕上1) || check仕上(self.表面仕上2) || check仕上(self.側面仕上1) || check仕上(self.側面仕上2) { return true }
         return false
