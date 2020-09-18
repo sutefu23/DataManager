@@ -142,13 +142,15 @@ extension Data {
     }
     
     private func decodeLossy(encoding: String.Encoding) -> String {
-        if let str = String(data: self, encoding: encoding) { return str }
         let count = self.count
         if count == 0 { return "" }
-        if self[0...6] == markData0 {
-            var data = self
-            data[0...6] =  markData1
-            return data.decodeLossy(encoding: encoding)
+        if let str = String(data: self, encoding: encoding) { return str }
+        if encoding == .shiftJIS {
+            for (key, value) in collectMap {
+                guard key.count <= count && key == self[..<key.count] else { continue }
+                let data = value + self[key.count...]
+                return data.decodeLossy(encoding: encoding)
+            }
         }
         return self[1..<count].decodeLossy(encoding: encoding)
     }
@@ -157,6 +159,28 @@ extension Data {
         let datas = self.splitLn()
         return datas.map { $0.decodeLossy(encoding: encoding) }
     }
+    
+    func hasNoPatchError() -> Bool {
+        let count = self.count
+        if count == 0 { return true }
+        if String(data: self, encoding: .shiftJIS) != nil { return true }
+        for (key, value) in collectMap {
+            guard key.count <= count && key == self[..<key.count] else { continue }
+            let data = value + self[key.count...]
+            return String(data: data, encoding: .shiftJIS) != nil
+        }
+        return false
+    }
+
+    /// 手当出来ないShiftJISのエラーがある
+    public var hasUnknownShiftJIS: Bool {
+        if String(data: self, encoding: .shiftJIS) != nil { return true }
+        let datas = self.splitLn()
+        return datas.contains { $0.hasNoPatchError() }
+    }
+
 }
-private let markData0 = Data([131, 37, 37, 100, 91, 131, 78])
-private let markData1 = Data([131, 125, 129, 91, 131, 78])
+/// 壊れたコード->修正後のコード
+private let collectMap: [Data: Data] = [
+    Data([131, 37, 37, 100, 91]) : Data([131, 125, 129, 91])
+]
