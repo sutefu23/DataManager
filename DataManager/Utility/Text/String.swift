@@ -268,7 +268,6 @@ func calc寸法サイズ(_ line: String) -> [Double] {
     return result
 }
 
-
 //　NCEngineから移行
 extension String {
     /// 文字列をパスに見立てたときの末尾のファイル名（絶対パスで区切り文字は"/"）
@@ -288,6 +287,17 @@ extension String {
         }
         return ""
     }
+    /// 文字列をファイル名と見立てたときのファイル名本体と拡張子
+    public var filenameComponents: (body: String, extension: String) {
+        for index in self.indices.reversed() {
+            if self[index] == "." {
+                let start = self.index(after: index)
+                return (String(self[..<index]), String(self[start...]))
+            }
+        }
+        return (self, "")
+    }
+    
     /// 半角スペース・全角スペース・タブを除去する
     public var spaceStripped: String {
         return self.filter { $0 != " " && $0 != "　" && $0 != "\t" }
