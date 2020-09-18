@@ -39,10 +39,12 @@ public final class TextReader {
     }
     
     public convenience init(data: Data, encoding: String.Encoding) throws {
-        guard let text = String(bytes: data, encoding: encoding) else {
-            throw TextReaderError.invalidStringCoding
+        if let text = String(bytes: data, encoding: encoding) {
+            self.init(text)
+        } else {
+            let lines = data.lossyStrings(encoding: encoding)
+            self.init(lines)
         }
-        self.init(text)
     }
     
     public convenience init(url: URL, encoding: String.Encoding) throws {
@@ -99,3 +101,62 @@ public final class TextReader {
     public private(set) var lines: [String]
     private var nextIndex: Int
 }
+
+extension Data {
+    private func splitLn() -> [Data] {
+        var result: [Data] = []
+        var current = Data()
+        var hasPrev10 = false
+        var hasPrev13 = false
+        
+        for ch in self {
+            if ch == 13 {
+                if hasPrev13 {
+                    result.append(current)
+                    current = Data()
+                    hasPrev10 = false
+                } else if hasPrev10 {
+                    hasPrev13 = false
+                } else {
+                    result.append(current)
+                    current = Data()
+                    hasPrev13 = true
+                }
+            } else if ch == 10 {
+                if hasPrev10 {
+                    result.append(Data())
+                    hasPrev13 = false
+                } else if hasPrev13 {
+                    hasPrev10 = false
+                } else {
+                    result.append(current)
+                    current = Data()
+                    hasPrev10 = true
+                }
+            } else {
+                current.append(ch)
+            }
+        }
+        if !current.isEmpty || !result.isEmpty { current.append(current) }
+        return result
+    }
+    
+    private func decodeLossy(encoding: String.Encoding) -> String {
+        if let str = String(data: self, encoding: encoding) { return str }
+        let count = self.count
+        if count == 0 { return "" }
+        if self[0...6] == markData0 {
+            var data = self
+            data[0...6] =  markData1
+            return data.decodeLossy(encoding: encoding)
+        }
+        return self[1..<count].decodeLossy(encoding: encoding)
+    }
+    
+    func lossyStrings(encoding: String.Encoding) -> [String] {
+        let datas = self.splitLn()
+        return datas.map { $0.decodeLossy(encoding: encoding) }
+    }
+}
+private let markData0 = Data([131, 37, 37, 100, 91, 131, 78])
+private let markData1 = Data([131, 125, 129, 91, 131, 78])
