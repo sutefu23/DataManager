@@ -138,29 +138,15 @@ public final class 指示書型 {
     }()
     
     var 図URL: URL? { record.url(forKey: "図") }
-    #if os(iOS) || os(tvOS)
-    public lazy var 図: UIImage? = {
+    public lazy var 図: DMImage? = {
         lock.lock()
         defer { lock.unlock() }
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
         guard let 一覧 = (try? db.downloadObject(url: url)) else { return nil }
-        let image = UIImage(data: 一覧)
+        let image = DMImage(data: 一覧)
         return image
     }()
-    #elseif os(macOS)
-    public lazy var 図: NSImage? = {
-        lock.lock()
-        defer { lock.unlock() }
-        guard let url = self.図URL else { return nil }
-        let db = FileMakerDB.pm_osakaname
-        guard let data = (try? db.downloadObject(url: url)) else { return nil }
-        let image = NSImage(data: data)
-        return image
-    }()
-    #else
-    #endif
-
     public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧) ?? [] }
     public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧) ?? [:] }
     public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).作業進捗一覧) ?? [] }
