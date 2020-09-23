@@ -12,7 +12,7 @@ import XCTest
 
 class TestTextReader: XCTestCase {
 
-    let bundle = Bundle(for: TestTextReader.self)
+    let bundle = Bundle.module
 
     func testInit() {
         let reader = TextReader()
