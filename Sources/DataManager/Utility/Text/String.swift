@@ -109,7 +109,7 @@ private var numberSet: CharacterSet = {
     return set
 }()
 
-extension StringProtocol {
+public extension StringProtocol {
     var newlineToSpace: String {
         return String(self.map { $0.isNewline ? " " : $0 })
     }
