@@ -30,7 +30,8 @@ struct 板加工在庫型 {
 }
 
 let 板加工在庫一覧: [板加工在庫型] = {
-    let url = Bundle.module.url(forResource: "板加工在庫一覧", withExtension: "csv")!
+    let bundle = Bundle(for: FileMakerDB.self)
+    let url = bundle.url(forResource: "板加工在庫一覧", withExtension: "csv")!
     let text = try! String(contentsOf: url, encoding: .utf8)
     var list: [板加工在庫型] = []
     let step: Double = 0.0001
