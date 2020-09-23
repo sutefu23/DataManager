@@ -562,11 +562,12 @@
 		OBJ_34 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_54 /* Text */,
+				OBJ_39 /* Date */,
 				OBJ_35 /* Alert.swift */,
 				OBJ_36 /* Bundle.swift */,
 				OBJ_37 /* ChangeLog.swift */,
 				OBJ_38 /* Concurrent.swift */,
-				OBJ_39 /* Date */,
 				OBJ_44 /* File.swift */,
 				OBJ_45 /* Future.swift */,
 				OBJ_46 /* Int.swift */,
@@ -577,7 +578,6 @@
 				OBJ_51 /* SerialNumber.swift */,
 				OBJ_52 /* Set.swift */,
 				OBJ_53 /* TableGenerator.swift */,
-				OBJ_54 /* Text */,
 				OBJ_61 /* TwoElementCache.swift */,
 				OBJ_62 /* URL.swift */,
 				OBJ_63 /* UserDefaults.swift */,
