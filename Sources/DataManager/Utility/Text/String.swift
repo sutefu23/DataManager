@@ -134,7 +134,7 @@ extension Double {
     }
 }
 
-extension String {
+public extension String {
     func containsOne(of strings: String...) -> Bool {
         for str in strings {
             if self.contains(str) { return true }
@@ -142,7 +142,7 @@ extension String {
         return false
     }
     
-    public init?(any data: Any?) {
+    init?(any data: Any?) {
         if let str = data as? String {
             self = str
         } else if let astr = data as? NSAttributedString {

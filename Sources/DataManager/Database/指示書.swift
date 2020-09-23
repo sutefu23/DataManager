@@ -577,11 +577,11 @@ extension 指示書型 {
         }
     }
     
-    func 現在資材使用記録() throws -> [資材使用記録型]? {
+    public func 現在資材使用記録() throws -> [資材使用記録型]? {
         return try 資材使用記録キャッシュ型.shared.現在資材使用記録(伝票番号: self.伝票番号)
     }
 
-    func キャッシュ資材使用記録() throws -> [資材使用記録型]? {
+    public func キャッシュ資材使用記録() throws -> [資材使用記録型]? {
         return try 資材使用記録キャッシュ型.shared.キャッシュ資材使用記録(伝票番号: self.伝票番号)
     }
     
