@@ -146,7 +146,7 @@ public final class TableGenerator<S> {
     public func write<C: Sequence>(_ source: C, format: ExportType, to url: URL) throws where C.Element == S {
         let title = url.deletingPathExtension().lastPathComponent
         let data = try makeData(source, format: format, title: title)
-        try data.write(to: url, options: .atomicWrite)
+        try data.write(to: url, options: .atomic)
     }
     
     func appending(_ col: TableColumn<S>) -> TableGenerator<S> {

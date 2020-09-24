@@ -1,0 +1,273 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+provides-nominal:
+provides-member:
+- ["Se", ""]
+- ["SE", ""]
+- ["10Foundation12UserDefaultsC", ""]
+- ["Se", "decodeJson"]
+- ["SE", "makeJsonData"]
+- ["10Foundation12UserDefaultsC", "json"]
+- ["10Foundation12UserDefaultsC", "setJson"]
+- ["10Foundation12UserDefaultsC", "set"]
+- ["10Foundation12UserDefaultsC", "cgfloat"]
+- ["10Foundation12UserDefaultsC", "nullable"]
+- ["10Foundation12UserDefaultsC", "optionalDouble"]
+- ["10Foundation12UserDefaultsC", "optionalInteger"]
+- ["10Foundation12UserDefaultsC", "setOptional"]
+- ["10Foundation12UserDefaultsC", "setOptional"]
+depends-top-level:
+- "=="
+- "CGFloat"
+- "CastingPrecedence"
+- "Codable"
+- "Data"
+- "Decodable"
+- "Double"
+- "Encodable"
+- "Int"
+- !private "JSONDecoder"
+- !private "JSONEncoder"
+- "Self"
+- "String"
+- "UserDefaults"
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "init"]
+- !private ["SB", "binade"]
+- !private ["SB", "exponentBitCount"]
+- !private ["SB", "exponentBitPattern"]
+- !private ["SB", "init"]
+- !private ["SB", "isTotallyOrdered"]
+- !private ["SB", "radix"]
+- !private ["SB", "significandBitCount"]
+- !private ["SB", "significandBitPattern"]
+- !private ["SB", "significandWidth"]
+- !private ["10Foundation7CGFloatV", "init"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "init"]
+- !private ["SL", ""]
+- !private ["SL", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "CGFloat"]
+- !private ["s28CustomDebugStringConvertibleP", "Double"]
+- !private ["s28CustomDebugStringConvertibleP", "double"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "integer"]
+- !private ["s28CustomDebugStringConvertibleP", "object"]
+- !private ["s28CustomDebugStringConvertibleP", "removeObject"]
+- !private ["s28CustomDebugStringConvertibleP", "set"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s23CustomStringConvertibleP", "CGFloat"]
+- !private ["s23CustomStringConvertibleP", "Double"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "double"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "integer"]
+- !private ["s23CustomStringConvertibleP", "object"]
+- !private ["s23CustomStringConvertibleP", "removeObject"]
+- !private ["s23CustomStringConvertibleP", "set"]
+- ["Se", "Data"]
+- !private ["Se", "JSONDecoder"]
+- !private ["Se", "Self"]
+- ["Se", ""]
+- ["Se", "decodeJson"]
+- !private ["Se", "init"]
+- !private ["Se", "makeJsonData"]
+- !private ["Sd", "init"]
+- ["SE", "Data"]
+- !private ["SE", "JSONEncoder"]
+- ["SE", ""]
+- !private ["SE", "decodeJson"]
+- !private ["SE", "init"]
+- ["SE", "makeJsonData"]
+- !private ["SQ", "CGFloat"]
+- !private ["SQ", "Double"]
+- !private ["SQ", ""]
+- !private ["SQ", "double"]
+- !private ["SQ", "init"]
+- !private ["SQ", "integer"]
+- !private ["SQ", "object"]
+- !private ["SQ", "removeObject"]
+- !private ["SQ", "set"]
+- !private ["s25ExpressibleByFloatLiteralP", ""]
+- !private ["s25ExpressibleByFloatLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["SF", "*"]
+- !private ["SF", "*="]
+- !private ["SF", "+"]
+- !private ["SF", "+="]
+- !private ["SF", "-"]
+- !private ["SF", "-="]
+- !private ["SF", "/"]
+- !private ["SF", "/="]
+- !private ["SF", ""]
+- !private ["SF", "addProduct"]
+- !private ["SF", "addingProduct"]
+- !private ["SF", "exponent"]
+- !private ["SF", "floatingPointClass"]
+- !private ["SF", "formRemainder"]
+- !private ["SF", "formSquareRoot"]
+- !private ["SF", "formTruncatingRemainder"]
+- !private ["SF", "greatestFiniteMagnitude"]
+- !private ["SF", "infinity"]
+- !private ["SF", "init"]
+- !private ["SF", "isCanonical"]
+- !private ["SF", "isEqual"]
+- !private ["SF", "isFinite"]
+- !private ["SF", "isInfinite"]
+- !private ["SF", "isLess"]
+- !private ["SF", "isLessThanOrEqualTo"]
+- !private ["SF", "isNaN"]
+- !private ["SF", "isNormal"]
+- !private ["SF", "isSignalingNaN"]
+- !private ["SF", "isSubnormal"]
+- !private ["SF", "isTotallyOrdered"]
+- !private ["SF", "isZero"]
+- !private ["SF", "leastNonzeroMagnitude"]
+- !private ["SF", "leastNormalMagnitude"]
+- !private ["SF", "maximum"]
+- !private ["SF", "maximumMagnitude"]
+- !private ["SF", "minimum"]
+- !private ["SF", "minimumMagnitude"]
+- !private ["SF", "nan"]
+- !private ["SF", "negate"]
+- !private ["SF", "nextDown"]
+- !private ["SF", "nextUp"]
+- !private ["SF", "pi"]
+- !private ["SF", "radix"]
+- !private ["SF", "remainder"]
+- !private ["SF", "round"]
+- !private ["SF", "rounded"]
+- !private ["SF", "sign"]
+- !private ["SF", "signalingNaN"]
+- !private ["SF", "significand"]
+- !private ["SF", "squareRoot"]
+- !private ["SF", "truncatingRemainder"]
+- !private ["SF", "ulp"]
+- !private ["SF", "ulpOfOne"]
+- !private ["SH", "CGFloat"]
+- !private ["SH", "Double"]
+- !private ["SH", ""]
+- !private ["SH", "double"]
+- !private ["SH", "init"]
+- !private ["SH", "integer"]
+- !private ["SH", "object"]
+- !private ["SH", "removeObject"]
+- !private ["SH", "set"]
+- !private ["10Foundation11JSONDecoderC", "decode"]
+- !private ["10Foundation11JSONDecoderC", "init"]
+- !private ["10Foundation11JSONEncoderC", "encode"]
+- !private ["10Foundation11JSONEncoderC", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- ["10Foundation8NSObjectC", "CGFloat"]
+- ["10Foundation8NSObjectC", "Codable"]
+- !private ["10Foundation8NSObjectC", "Data"]
+- ["10Foundation8NSObjectC", "Double"]
+- ["10Foundation8NSObjectC", "Int"]
+- ["10Foundation8NSObjectC", "String"]
+- ["10Foundation8NSObjectC", ""]
+- ["10Foundation8NSObjectC", "cgfloat"]
+- !private ["10Foundation8NSObjectC", "double"]
+- !private ["10Foundation8NSObjectC", "integer"]
+- ["10Foundation8NSObjectC", "json"]
+- ["10Foundation8NSObjectC", "nullable"]
+- !private ["10Foundation8NSObjectC", "object"]
+- ["10Foundation8NSObjectC", "optionalDouble"]
+- ["10Foundation8NSObjectC", "optionalInteger"]
+- !private ["10Foundation8NSObjectC", "removeObject"]
+- ["10Foundation8NSObjectC", "set"]
+- ["10Foundation8NSObjectC", "setJson"]
+- ["10Foundation8NSObjectC", "setOptional"]
+- !private ["10Foundation16NSObjectProtocolP", "CGFloat"]
+- !private ["10Foundation16NSObjectProtocolP", "Double"]
+- !private ["10Foundation16NSObjectProtocolP", "double"]
+- !private ["10Foundation16NSObjectProtocolP", "integer"]
+- !private ["10Foundation16NSObjectProtocolP", "object"]
+- !private ["10Foundation16NSObjectProtocolP", "removeObject"]
+- !private ["10Foundation16NSObjectProtocolP", "set"]
+- !private ["Sj", "*"]
+- !private ["Sj", "*="]
+- !private ["Sj", ""]
+- !private ["Sj", "init"]
+- !private ["Sj", "magnitude"]
+- !private ["s10SIMDScalarP", "init"]
+- !private ["s13SignedNumericP", "-"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "init"]
+- !private ["Sx", ""]
+- !private ["Sx", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- ["10Foundation12UserDefaultsC", "CGFloat"]
+- ["10Foundation12UserDefaultsC", "Codable"]
+- !private ["10Foundation12UserDefaultsC", "Data"]
+- ["10Foundation12UserDefaultsC", "Double"]
+- ["10Foundation12UserDefaultsC", "Int"]
+- ["10Foundation12UserDefaultsC", "String"]
+- ["10Foundation12UserDefaultsC", ""]
+- ["10Foundation12UserDefaultsC", "cgfloat"]
+- !private ["10Foundation12UserDefaultsC", "double"]
+- !private ["10Foundation12UserDefaultsC", "integer"]
+- ["10Foundation12UserDefaultsC", "json"]
+- ["10Foundation12UserDefaultsC", "nullable"]
+- !private ["10Foundation12UserDefaultsC", "object"]
+- ["10Foundation12UserDefaultsC", "optionalDouble"]
+- ["10Foundation12UserDefaultsC", "optionalInteger"]
+- !private ["10Foundation12UserDefaultsC", "removeObject"]
+- ["10Foundation12UserDefaultsC", "set"]
+- ["10Foundation12UserDefaultsC", "setJson"]
+- ["10Foundation12UserDefaultsC", "setOptional"]
+- !private ["s15_CVarArgAlignedP", "init"]
+- !private ["s22_CVarArgPassedAsDoubleP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "SB"
+- !private "10Foundation7CGFloatV"
+- !private "s7CVarArgP"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- "Se"
+- !private "Sd"
+- "SE"
+- !private "SQ"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "SF"
+- !private "SH"
+- !private "10Foundation11JSONDecoderC"
+- !private "10Foundation11JSONEncoderC"
+- !private "s25LosslessStringConvertibleP"
+- "10Foundation8NSObjectC"
+- !private "10Foundation16NSObjectProtocolP"
+- !private "Sj"
+- !private "s10SIMDScalarP"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "s20TextOutputStreamableP"
+- "10Foundation12UserDefaultsC"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "53bb8929e1af6d7eb6b8a8e81329d8be"

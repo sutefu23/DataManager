@@ -29,6 +29,7 @@ public typealias FMFont = UIFont
 
 #endif
 
+#if !os(Linux)
 extension String {
     public func makeAttributedString(color: FMColor = FMColor.black, size: CGFloat = 12, fontName: String?) -> NSAttributedString {
         let font: FMFont
@@ -62,3 +63,5 @@ extension NSAttributedString {
         left = left + right
     }
 }
+#endif
+

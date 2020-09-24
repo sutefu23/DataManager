@@ -83,6 +83,7 @@ public enum 略号型: Int, CaseIterable, Comparable {
         }
     }
  
+#if !os(Linux)
     public var 表示色: DMColor {
         switch self {
         case .外注,. 腐食, .印刷, .看板, .組込, .工程写真, .先出し: return .black
@@ -90,6 +91,7 @@ public enum 略号型: Int, CaseIterable, Comparable {
         case .溶接, .半田, .レーザー, .フォーミング, .研磨, .塗装, .両面テープ: return .blue
         }
     }
+    #endif
 }
 
 public extension Sequence where Element == 略号型 {

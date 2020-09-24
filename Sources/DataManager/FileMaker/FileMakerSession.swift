@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FoundationNetworking
 
 struct FileMakerPortal {
     let name : String
@@ -124,11 +125,15 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
     // MARK: - <URLSessionDelegate>
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let credential: URLCredential?
+    #if os(Linux)
+    credential = nil
+    #else
         if let trust = challenge.protectionSpace.serverTrust {
-            credential = URLCredential(trust: trust)
+            credential = URLCredential(trust:trust)
         } else {
             credential = nil
         }
+        #endif
         completionHandler(.useCredential, credential)
     }
     

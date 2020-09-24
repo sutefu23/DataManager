@@ -1,0 +1,159 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u90E8\u9580\u578B"
+provides-nominal:
+- "11DataManager0010xgsvIEkCEcO"
+provides-member:
+- ["11DataManager0010xgsvIEkCEcO", ""]
+- ["11DataManager15FileMakerRecordC", ""]
+- ["11DataManager15FileMakerRecordC", "\u90E8\u9580"]
+depends-top-level:
+- "=="
+- "AssignmentPrecedence"
+- "FileMakerRecord"
+- "FloatLiteralType"
+- "Int"
+- "IntegerLiteralType"
+- "String"
+- !private "StringLiteralType"
+- "StringProtocol"
+- !private "~="
+- "\u90E8\u9580\u578B"
+depends-member:
+- !private ["SK", "StringLiteralType"]
+- !private ["SK", ""]
+- !private ["Sl", "StringLiteralType"]
+- !private ["Sl", ""]
+- !private ["SL", "StringLiteralType"]
+- !private ["SL", ""]
+- !private ["s23CustomStringConvertibleP", "StringLiteralType"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- ["SQ", "=="]
+- ["SQ", "Default_RawValue"]
+- ["SQ", "RawValue"]
+- !private ["SQ", "StringLiteralType"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "\u5927\u962A"]
+- !private ["SQ", "\u672C\u793E"]
+- !private ["SQ", "\u6771\u4EAC"]
+- !private ["SQ", "\u90E8\u9580\u30B3\u30FC\u30C9"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "StringLiteralType"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringLiteralType"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "StringLiteralType"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "StringLiteralType"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- ["11DataManager15FileMakerRecordC", "String"]
+- ["11DataManager15FileMakerRecordC", ""]
+- !private ["11DataManager15FileMakerRecordC", "string"]
+- ["11DataManager15FileMakerRecordC", "\u90E8\u9580"]
+- ["11DataManager15FileMakerRecordC", "\u90E8\u9580\u578B"]
+- ["SH", "=="]
+- ["SH", "Default_RawValue"]
+- ["SH", "RawValue"]
+- !private ["SH", "StringLiteralType"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- ["SH", "_rawHashValue"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- ["SH", "rawValue"]
+- !private ["SH", "\u5927\u962A"]
+- !private ["SH", "\u672C\u793E"]
+- !private ["SH", "\u6771\u4EAC"]
+- !private ["SH", "\u90E8\u9580\u30B3\u30FC\u30C9"]
+- !private ["s25LosslessStringConvertibleP", "StringLiteralType"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- ["SY", "=="]
+- ["SY", "Default_RawValue"]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- ["SY", "_rawHashValue"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- ["SY", "init"]
+- ["SY", "rawValue"]
+- !private ["SY", "\u5927\u962A"]
+- !private ["SY", "\u672C\u793E"]
+- !private ["SY", "\u6771\u4EAC"]
+- !private ["SY", "\u90E8\u9580\u30B3\u30FC\u30C9"]
+- !private ["ST", "StringLiteralType"]
+- !private ["ST", ""]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["Sy", "StringLiteralType"]
+- !private ["s16TextOutputStreamP", "StringLiteralType"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["s20TextOutputStreamableP", "StringLiteralType"]
+- !private ["s20TextOutputStreamableP", ""]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- ["11DataManager0010xgsvIEkCEcO", "=="]
+- ["11DataManager0010xgsvIEkCEcO", "Default_RawValue"]
+- ["11DataManager0010xgsvIEkCEcO", "RawValue"]
+- ["11DataManager0010xgsvIEkCEcO", "String"]
+- ["11DataManager0010xgsvIEkCEcO", "StringProtocol"]
+- ["11DataManager0010xgsvIEkCEcO", ""]
+- ["11DataManager0010xgsvIEkCEcO", "_Default_RawValue"]
+- ["11DataManager0010xgsvIEkCEcO", "_rawHashValue"]
+- ["11DataManager0010xgsvIEkCEcO", "hash"]
+- ["11DataManager0010xgsvIEkCEcO", "hashValue"]
+- ["11DataManager0010xgsvIEkCEcO", "init"]
+- ["11DataManager0010xgsvIEkCEcO", "rawValue"]
+- ["11DataManager0010xgsvIEkCEcO", "\u5927\u962A"]
+- ["11DataManager0010xgsvIEkCEcO", "\u672C\u793E"]
+- ["11DataManager0010xgsvIEkCEcO", "\u6771\u4EAC"]
+- ["11DataManager0010xgsvIEkCEcO", "\u90E8\u9580\u30B3\u30FC\u30C9"]
+depends-nominal:
+- !private "SK"
+- !private "Sl"
+- !private "SL"
+- !private "s23CustomStringConvertibleP"
+- !private "s26DefaultStringInterpolationV"
+- "SQ"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "11DataManager15FileMakerRecordC"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- "SY"
+- !private "ST"
+- !private "s27StringInterpolationProtocolP"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- "11DataManager0010xgsvIEkCEcO"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "26c729c4cff6061dcd3a377adeedea8f"

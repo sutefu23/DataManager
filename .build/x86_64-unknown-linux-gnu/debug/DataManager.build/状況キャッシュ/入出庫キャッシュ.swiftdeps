@@ -1,0 +1,165 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "flush\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5"
+- "\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+provides-nominal:
+- "11DataManager0026nckuaJaximaJCABcCDaECBaEHpC"
+provides-member:
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", ""]
+depends-top-level:
+- "*"
+- "<"
+- "AssignmentPrecedence"
+- "Date"
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "NSLock"
+- "TimeInterval"
+- !private "cache"
+- "flush\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5"
+- !private "lock"
+- "\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- "\u56F3\u756A\u578B"
+- !private "\u5728\u5EAB\u5BFF\u547D"
+- !private "\u73FE\u5728\u5165\u51FA\u5EAB"
+- "\u8CC7\u6750\u5165\u51FA\u5EAB\u578B"
+- "\u8CC7\u6750\u578B"
+depends-member:
+- !private ["Sl", "removeAll"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "init"]
+- !private ["SL", "\u56F3\u756A"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "lock"]
+- !private ["s28CustomDebugStringConvertibleP", "removeAll"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "unlock"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "removeAll"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lock"]
+- !private ["s23CustomStringConvertibleP", "removeAll"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "unlock"]
+- !private ["10Foundation4DateV", "init"]
+- !private ["11DataManager3DayV", ""]
+- !private ["Se", "init"]
+- !private ["Se", "removeAll"]
+- !private ["Se", "subscript"]
+- !private ["Se", "\u56F3\u756A"]
+- !private ["SD", "removeAll"]
+- !private ["SD", "subscript"]
+- !private ["SE", "init"]
+- !private ["SE", "removeAll"]
+- !private ["SE", "subscript"]
+- !private ["SE", "\u56F3\u756A"]
+- ["SQ", ""]
+- ["SQ", "init"]
+- !private ["SQ", "lock"]
+- !private ["SQ", "removeAll"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "unlock"]
+- !private ["SQ", "\u56F3\u756A"]
+- ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "removeAll"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["SH", ""]
+- ["SH", "init"]
+- !private ["SH", "lock"]
+- !private ["SH", "removeAll"]
+- !private ["SH", "subscript"]
+- !private ["SH", "unlock"]
+- !private ["SH", "\u56F3\u756A"]
+- ["10Foundation6NSLockC", "init"]
+- !private ["10Foundation6NSLockC", "lock"]
+- !private ["10Foundation6NSLockC", "unlock"]
+- ["10Foundation9NSLockingP", "init"]
+- !private ["10Foundation9NSLockingP", "lock"]
+- !private ["10Foundation9NSLockingP", "unlock"]
+- ["10Foundation8NSObjectC", ""]
+- ["10Foundation8NSObjectC", "init"]
+- !private ["10Foundation8NSObjectC", "lock"]
+- !private ["10Foundation8NSObjectC", "unlock"]
+- ["10Foundation16NSObjectProtocolP", "init"]
+- !private ["10Foundation16NSObjectProtocolP", "lock"]
+- !private ["10Foundation16NSObjectProtocolP", "unlock"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["ST", ""]
+- !private ["ST", "removeAll"]
+- !private ["ST", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "removeAll"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "removeAll"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "removeAll"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "removeAll"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "Date"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "NSLock"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "TimeInterval"]
+- !private ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "cache"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "deinit"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "flushAllCache"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "flushCache"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "init"]
+- !private ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "lock"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "shared"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u30AD\u30E3\u30C3\u30B7\u30E5\u5165\u51FA\u5EAB"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u56F3\u756A\u578B"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u5728\u5EAB\u5BFF\u547D"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u73FE\u5728\u5165\u51FA\u5EAB"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u8CC7\u6750\u5165\u51FA\u5EAB\u578B"]
+- ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "\u8CC7\u6750\u578B"]
+- !private ["11DataManager0018yFqznpGlpqictlfuAdC", "find"]
+- !private ["11DataManager0011xgsvAIackCaC", "\u56F3\u756A"]
+depends-nominal:
+- !private "Sl"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- !private "s34CustomPlaygroundDisplayConvertibleP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation4DateV"
+- !private "11DataManager3DayV"
+- !private "Se"
+- !private "SD"
+- !private "SE"
+- "SQ"
+- "s30ExpressibleByDictionaryLiteralP"
+- "SH"
+- "10Foundation6NSLockC"
+- "10Foundation9NSLockingP"
+- "10Foundation8NSObjectC"
+- "10Foundation16NSObjectProtocolP"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "ST"
+- !private "10Foundation13_CFBridgeableP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- "11DataManager0026nckuaJaximaJCABcCDaECBaEHpC"
+- !private "11DataManager0018yFqznpGlpqictlfuAdC"
+- !private "11DataManager0011xgsvAIackCaC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "8db6688ffeb6509c566913a985d8150e"

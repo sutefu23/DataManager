@@ -1,0 +1,134 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "ObjectID"
+- "serialGenerator"
+- "SerialGenerator"
+provides-nominal:
+- "11DataManager15SerialGeneratorC"
+provides-member:
+- ["11DataManager15SerialGeneratorC", ""]
+depends-top-level:
+- "*"
+- !private "+="
+- "-"
+- "/"
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "NSLock"
+- "ObjectID"
+- "SerialGenerator"
+- "UInt32"
+- !private "lock"
+- !private "serial"
+- "serialGenerator"
+- "warningCount"
+- "warnintSpan"
+depends-member:
+- ["s18AdditiveArithmeticP", ""]
+- ["s18AdditiveArithmeticP", "max"]
+- ["Sz", ""]
+- ["Sz", "max"]
+- ["s7CVarArgP", "max"]
+- ["SL", ""]
+- ["SL", "max"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "lock"]
+- !private ["s28CustomDebugStringConvertibleP", "unlock"]
+- ["s17CustomReflectableP", "max"]
+- ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lock"]
+- ["s23CustomStringConvertibleP", "max"]
+- !private ["s23CustomStringConvertibleP", "unlock"]
+- ["Se", "max"]
+- ["SE", "max"]
+- ["SQ", ""]
+- ["SQ", "init"]
+- !private ["SQ", "lock"]
+- ["SQ", "max"]
+- !private ["SQ", "unlock"]
+- ["s27ExpressibleByIntegerLiteralP", ""]
+- ["s27ExpressibleByIntegerLiteralP", "max"]
+- ["s17FixedWidthIntegerP", "max"]
+- ["SH", ""]
+- ["SH", "init"]
+- !private ["SH", "lock"]
+- ["SH", "max"]
+- !private ["SH", "unlock"]
+- ["s25LosslessStringConvertibleP", ""]
+- ["s25LosslessStringConvertibleP", "max"]
+- ["10Foundation6NSLockC", "init"]
+- !private ["10Foundation6NSLockC", "lock"]
+- !private ["10Foundation6NSLockC", "unlock"]
+- ["10Foundation9NSLockingP", "init"]
+- !private ["10Foundation9NSLockingP", "lock"]
+- !private ["10Foundation9NSLockingP", "unlock"]
+- ["10Foundation8NSObjectC", ""]
+- ["10Foundation8NSObjectC", "init"]
+- !private ["10Foundation8NSObjectC", "lock"]
+- !private ["10Foundation8NSObjectC", "unlock"]
+- ["10Foundation16NSObjectProtocolP", "init"]
+- !private ["10Foundation16NSObjectProtocolP", "lock"]
+- !private ["10Foundation16NSObjectProtocolP", "unlock"]
+- ["Sj", ""]
+- ["Sj", "max"]
+- ["s10SIMDScalarP", "max"]
+- ["11DataManager15SerialGeneratorC", "NSLock"]
+- ["11DataManager15SerialGeneratorC", "ObjectID"]
+- ["11DataManager15SerialGeneratorC", "count"]
+- ["11DataManager15SerialGeneratorC", "deinit"]
+- ["11DataManager15SerialGeneratorC", "generateID"]
+- ["11DataManager15SerialGeneratorC", "init"]
+- !private ["11DataManager15SerialGeneratorC", "limit"]
+- !private ["11DataManager15SerialGeneratorC", "lock"]
+- !private ["11DataManager15SerialGeneratorC", "serial"]
+- ["11DataManager15SerialGeneratorC", "warningCount"]
+- ["11DataManager15SerialGeneratorC", "warnintSpan"]
+- ["Sx", ""]
+- ["Sx", "max"]
+- ["s6UInt32V", "max"]
+- ["SU", "max"]
+- ["s30_CustomPlaygroundQuickLookableP", "max"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "max"]
+- ["s35_HasCustomAnyHashableRepresentationP", "max"]
+- ["s21_ObjectiveCBridgeableP", "max"]
+depends-nominal:
+- "s18AdditiveArithmeticP"
+- "Sz"
+- "s7CVarArgP"
+- "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- "Se"
+- "SE"
+- "SQ"
+- "s27ExpressibleByIntegerLiteralP"
+- "s17FixedWidthIntegerP"
+- "SH"
+- "s25LosslessStringConvertibleP"
+- "10Foundation6NSLockC"
+- "10Foundation9NSLockingP"
+- "10Foundation8NSObjectC"
+- "10Foundation16NSObjectProtocolP"
+- "Sj"
+- "s10SIMDScalarP"
+- "11DataManager15SerialGeneratorC"
+- "Sx"
+- "s6UInt32V"
+- "SU"
+- "s30_CustomPlaygroundQuickLookableP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "3ab20ec8f2e827c208a6d5809528c78d"

@@ -1,0 +1,47 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u8A18\u9332Data\u578B"
+- "\u8A18\u9332\u578B"
+provides-nominal:
+- "11DataManager0016Data_oHEgFBAxJknP"
+- "11DataManager0010xgsFJIizyfC"
+provides-member:
+- ["11DataManager0016Data_oHEgFBAxJknP", ""]
+- ["11DataManager0010xgsFJIizyfC", ""]
+depends-top-level:
+- "Equatable"
+- "FileMakerQuery"
+- "FileMakerRecord"
+- "String"
+- "\u8A18\u9332Data\u578B"
+- "\u8A18\u9332\u578B"
+depends-member:
+- ["SQ", "FileMakerQuery"]
+- ["SQ", "FileMakerRecord"]
+- ["SQ", "String"]
+- ["SQ", ""]
+- ["SQ", "dbName"]
+- ["SQ", "fieldData"]
+- ["SQ", "init"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "FileMakerQuery"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "FileMakerRecord"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "String"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "dbName"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "fieldData"]
+- ["11DataManager0016Data_oHEgFBAxJknP", "init"]
+- ["11DataManager0010xgsFJIizyfC", "deinit"]
+- ["11DataManager0010xgsFJIizyfC", "init"]
+depends-nominal:
+- "SQ"
+- "11DataManager0016Data_oHEgFBAxJknP"
+- "11DataManager0010xgsFJIizyfC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "db08c13821f52ed1e74f1e78edd85010"

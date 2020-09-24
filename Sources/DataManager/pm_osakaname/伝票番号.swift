@@ -8,6 +8,8 @@
 
 #if os(macOS)
 import Cocoa
+#elseif os(Linux)
+import Foundation
 #else
 import UIKit
 #endif

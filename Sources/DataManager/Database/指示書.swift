@@ -10,6 +10,8 @@
 import UIKit
 #elseif os(macOS)
 import Cocoa
+#else
+import Foundation
 #endif
 
 let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
@@ -138,6 +140,7 @@ public final class 指示書型 {
     }()
     
     var 図URL: URL? { record.url(forKey: "図") }
+    #if !os(Linux)
     public lazy var 図: DMImage? = {
         lock.lock()
         defer { lock.unlock() }
@@ -147,6 +150,7 @@ public final class 指示書型 {
         let image = DMImage(data: 一覧)
         return image
     }()
+    #endif
     public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧) ?? [] }
     public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧) ?? [:] }
     public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).作業進捗一覧) ?? [] }
@@ -502,6 +506,7 @@ extension 指示書型 {
         return check(側面仕上1) || check(側面仕上2)
     }
     
+    #if !os(Linux)
     public func 色付き略号(fontSize: CGFloat = 12, colorMapper:(略号型) -> DMColor = { $0.表示色 } ) -> NSMutableAttributedString {
         let result = NSMutableAttributedString()
         for mark in self.略号.sorted() {
@@ -510,6 +515,7 @@ extension 指示書型 {
         }
         return result
     }
+    #endif
     
     public func contains(工程: 工程型) -> Bool { return self.工程別進捗一覧[工程]?.isEmpty == false }
     public func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool { return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 }) == true }

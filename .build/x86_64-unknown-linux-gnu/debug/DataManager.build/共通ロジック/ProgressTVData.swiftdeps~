@@ -1,0 +1,142 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+provides-nominal:
+provides-member:
+- ["11DataManager0012xgsBAyrGcfEyC", ""]
+- ["11DataManager0012xgsBAyrGcfEyC", "\u30EC\u30FC\u30B6\u30FC\u30A2\u30AF\u30EA\u30EB\u3042\u308A"]
+depends-top-level:
+- "Bool"
+- !private "BooleanLiteralType"
+- "String"
+- !private "StringLiteralType"
+- !private "is\u30EC\u30FC\u30B6\u30FC\u30A2\u30AF\u30EA"
+- !private "||"
+- !private "\u305D\u306E\u4ED61"
+- !private "\u305D\u306E\u4ED62"
+- "\u6307\u793A\u66F8\u578B"
+- !private "\u6750\u8CEA1"
+- !private "\u6750\u8CEA2"
+depends-member:
+- !private ["SK", ""]
+- !private ["SK", "contains"]
+- !private ["Sl", ""]
+- !private ["Sl", "contains"]
+- !private ["SL", ""]
+- !private ["SL", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["Se", "contains"]
+- !private ["SE", "contains"]
+- !private ["SQ", ""]
+- !private ["SQ", "contains"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "contains"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "contains"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "contains"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "contains"]
+- !private ["SH", ""]
+- !private ["SH", "contains"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "contains"]
+- !private ["s10MirrorPathP", "contains"]
+- !private ["10Foundation8NSCodingP", ""]
+- !private ["10Foundation8NSCodingP", "contains"]
+- !private ["10Foundation9NSCopyingP", "contains"]
+- !private ["10Foundation16NSMutableCopyingP", "contains"]
+- !private ["10Foundation8NSObjectC", "contains"]
+- !private ["10Foundation16NSObjectProtocolP", "contains"]
+- !private ["10Foundation14NSSecureCodingP", "contains"]
+- !private ["10Foundation8NSStringC", "contains"]
+- !private ["Sm", "contains"]
+- !private ["ST", ""]
+- !private ["ST", "contains"]
+- !private ["SS", "contains"]
+- !private ["Sy", "contains"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "contains"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "contains"]
+- !private ["10Foundation13_CFBridgeableP", "contains"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "contains"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "contains"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "contains"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "contains"]
+- !private ["s19_HasContiguousBytesP", "contains"]
+- !private ["10Foundation13_NSBridgeableP", "contains"]
+- !private ["s21_ObjectiveCBridgeableP", "_ObjectiveCType"]
+- !private ["s21_ObjectiveCBridgeableP", "contains"]
+- !private ["10Foundation17_StructBridgeableP", ""]
+- !private ["10Foundation17_StructBridgeableP", "contains"]
+- !private ["10Foundation21_StructTypeBridgeableP", "contains"]
+- !private ["10Foundation16_SwiftBridgeableP", "contains"]
+- ["11DataManager0012xgsBAyrGcfEyC", "Bool"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "String"]
+- ["11DataManager0012xgsBAyrGcfEyC", ""]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "is\u30EC\u30FC\u30B6\u30FC\u30A2\u30AF\u30EA"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u305D\u306E\u4ED61"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u305D\u306E\u4ED62"]
+- ["11DataManager0012xgsBAyrGcfEyC", "\u30EC\u30FC\u30B6\u30FC\u30A2\u30AF\u30EA\u30EB\u3042\u308A"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u6750\u8CEA1"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u6750\u8CEA2"]
+depends-nominal:
+- !private "SK"
+- !private "Sl"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SE"
+- !private "SQ"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "10Foundation8NSCodingP"
+- !private "10Foundation9NSCopyingP"
+- !private "10Foundation16NSMutableCopyingP"
+- !private "10Foundation8NSObjectC"
+- !private "10Foundation16NSObjectProtocolP"
+- !private "10Foundation14NSSecureCodingP"
+- !private "10Foundation8NSStringC"
+- !private "Sm"
+- !private "ST"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "10Foundation17_StructBridgeableP"
+- !private "10Foundation21_StructTypeBridgeableP"
+- !private "10Foundation16_SwiftBridgeableP"
+- "11DataManager0012xgsBAyrGcfEyC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "6235492921f5d823dfd2614d67ad1d7d"

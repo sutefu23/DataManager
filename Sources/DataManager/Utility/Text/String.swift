@@ -49,6 +49,9 @@ extension StringProtocol {
 
     /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
     public var toJapaneseNormal: String {
+    	#if os(Linux)
+    	return String(self)
+    	#else
         var result = ""
         var halfMode = true
         for ch in self {
@@ -70,6 +73,7 @@ extension StringProtocol {
             }
         }
         return result
+        #endif
     }
     
     public var remove㈱㈲: String {
@@ -174,7 +178,11 @@ extension StringProtocol {
     }
     
     public func 全文字半角変換() -> String {
-        self.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? String(self)
+    	#if os(Linux)
+    	return String(self)
+    	#else
+        return self.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? String(self)
+        #endif
     }
     
     @inlinable public func 全角半角日本語規格化() -> String {

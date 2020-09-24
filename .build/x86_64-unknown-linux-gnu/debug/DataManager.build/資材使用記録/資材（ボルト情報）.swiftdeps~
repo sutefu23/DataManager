@@ -1,0 +1,648 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u9078\u629E\u30DC\u30EB\u30C8\u7B49\u7A2E\u985E\u578B"
+- "\u9078\u629E\u30DC\u30EB\u30C8\u7B49\u578B"
+- "search\u30DC\u30EB\u30C8\u7B49"
+- "search\u30DC\u30EB\u30C8\u7B49"
+- "\u30DC\u30EB\u30C8\u7B49\u9078\u629E\u80A2\u30DE\u30C3\u30D7"
+- "\u30DC\u30EB\u30C8\u7B49\u9078\u629E\u80A2\u30EA\u30B9\u30C8"
+- "make\u30D1\u30A4\u30D7\u30EA\u30B9\u30C8"
+provides-nominal:
+- "11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO"
+- "11DataManager0022fdkwbEbCJExFtlxCIaqIEaV"
+provides-member:
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", ""]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", ""]
+depends-top-level:
+- "!="
+- "&&"
+- "+"
+- "=="
+- "Array"
+- "AssignmentPrecedence"
+- "BooleanLiteralType"
+- "Dictionary"
+- "Double"
+- !private "FloatLiteralType"
+- "Hashable"
+- !private "IntegerLiteralType"
+- "String"
+- "StringLiteralType"
+- "UnicodeScalarType"
+- !private "_findStringSwitchCase"
+- "make\u30D1\u30A4\u30D7\u30EA\u30B9\u30C8"
+- "search\u30DC\u30EB\u30C8\u7B49"
+- !private "~="
+- "\u30DC\u30EB\u30C8\u7B49\u9078\u629E\u80A2\u30DE\u30C3\u30D7"
+- "\u30DC\u30EB\u30C8\u7B49\u9078\u629E\u80A2\u30EA\u30B9\u30C8"
+- !private "\u5206\u5272\u8868\u793A\u540D1"
+- !private "\u5206\u5272\u8868\u793A\u540D2"
+- "\u56F3\u756A\u578B"
+- !private "\u8CC7\u6750\u578B"
+- "\u9078\u629E\u30DC\u30EB\u30C8\u7B49\u578B"
+- "\u9078\u629E\u30DC\u30EB\u30C8\u7B49\u7A2E\u985E\u578B"
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "init"]
+- !private ["Sa", "first"]
+- !private ["SK", ""]
+- !private ["SK", "callAsFunction"]
+- !private ["SK", "first"]
+- !private ["SK", "init"]
+- !private ["SK", "lowercased"]
+- !private ["SK", "remove\u3231\u3232"]
+- !private ["SK", "toJapaneseNormal"]
+- !private ["SB", "init"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "init"]
+- !private ["Sl", ""]
+- !private ["Sl", "callAsFunction"]
+- !private ["Sl", "first"]
+- ["Sl", "init"]
+- !private ["Sl", "lowercased"]
+- !private ["Sl", "remove\u3231\u3232"]
+- !private ["Sl", "subscript"]
+- !private ["Sl", "toJapaneseNormal"]
+- !private ["SL", ""]
+- !private ["SL", "callAsFunction"]
+- !private ["SL", "first"]
+- !private ["SL", "init"]
+- !private ["SL", "lowercased"]
+- !private ["SL", "remove\u3231\u3232"]
+- !private ["SL", "toJapaneseNormal"]
+- !private ["SL", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- !private ["10Foundation15ContiguousBytesP", "first"]
+- !private ["s28CustomDebugStringConvertibleP", "callAsFunction"]
+- !private ["s28CustomDebugStringConvertibleP", "first"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "lowercased"]
+- !private ["s28CustomDebugStringConvertibleP", "remove\u3231\u3232"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "toJapaneseNormal"]
+- !private ["s17CustomReflectableP", "callAsFunction"]
+- !private ["s17CustomReflectableP", "first"]
+- ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "lowercased"]
+- !private ["s17CustomReflectableP", "remove\u3231\u3232"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "toJapaneseNormal"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "callAsFunction"]
+- !private ["s23CustomStringConvertibleP", "first"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lowercased"]
+- !private ["s23CustomStringConvertibleP", "remove\u3231\u3232"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "toJapaneseNormal"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "first"]
+- !private ["Se", "callAsFunction"]
+- !private ["Se", "first"]
+- ["Se", "init"]
+- !private ["Se", "lowercased"]
+- !private ["Se", "remove\u3231\u3232"]
+- !private ["Se", "subscript"]
+- !private ["Se", "toJapaneseNormal"]
+- !private ["Se", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- ["SD", "init"]
+- !private ["SD", "subscript"]
+- !private ["Sd", "init"]
+- !private ["SE", "callAsFunction"]
+- !private ["SE", "first"]
+- ["SE", "init"]
+- !private ["SE", "lowercased"]
+- !private ["SE", "remove\u3231\u3232"]
+- !private ["SE", "subscript"]
+- !private ["SE", "toJapaneseNormal"]
+- !private ["SE", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- ["SQ", "=="]
+- ["SQ", "AL\u30B9\u30BF\u30C3\u30C9"]
+- ["SQ", "C\u30BF\u30C3\u30D4\u30F3\u30B0"]
+- ["SQ", "Default_RawValue"]
+- ["SQ", "FB"]
+- ["SQ", "RawValue"]
+- ["SQ", "S\u30B9\u30BF\u30C3\u30C9"]
+- ["SQ", "S\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- !private ["SQ", "_findStringSwitchCase"]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "callAsFunction"]
+- !private ["SQ", "findStringSwitchCase"]
+- !private ["SQ", "first"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- !private ["SQ", "lowercased"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "remove\u3231\u3232"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "toJapaneseNormal"]
+- ["SQ", "\u306A\u3079"]
+- ["SQ", "\u30AA\u30FC\u30EB\u30A2\u30F3\u30AB\u30FC"]
+- ["SQ", "\u30B5\u30F3\u30ED\u30C3\u30AF\u30C8\u30E9\u30B9"]
+- ["SQ", "\u30B5\u30F3\u30ED\u30C3\u30AF\u7279\u76BF"]
+- ["SQ", "\u30B9\u30BF\u30C3\u30C9"]
+- ["SQ", "\u30B9\u30C8\u30EC\u30FC\u30C8\u30B9\u30BF\u30C3\u30C9"]
+- ["SQ", "\u30B9\u30EA\u30E0\u30D8\u30C3\u30C9"]
+- ["SQ", "\u30C6\u30AF\u30B9\u30CA\u30D9"]
+- ["SQ", "\u30C6\u30AF\u30B9\u7279\u76BF"]
+- ["SQ", "\u30C6\u30AF\u30B9\u76BF"]
+- ["SQ", "\u30C8\u30E9\u30B9"]
+- ["SQ", "\u30CA\u30C3\u30C8"]
+- ["SQ", "\u30CA\u30D9"]
+- ["SQ", "\u30DC\u30EB\u30C8"]
+- ["SQ", "\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SQ", "\u4E09\u89D2\u30B3\u30FC\u30CA\u30FC"]
+- ["SQ", "\u4E38\u30D1\u30A4\u30D7"]
+- ["SQ", "\u516D\u89D2"]
+- ["SQ", "\u5916\u6CE8"]
+- ["SQ", "\u6728\u306D\u3058"]
+- ["SQ", "\u6D6E\u304B\u3057\u30D1\u30A4\u30D7"]
+- ["SQ", "\u7247\u30CD\u30B8"]
+- ["SQ", "\u7279\u5BF8\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SQ", "\u7279\u76BF"]
+- !private ["SQ", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- ["SQ", "\u76BF"]
+- ["SQ", "\u888B\u30CA\u30C3\u30C8"]
+- ["SQ", "\u914D\u7DDA\u30D1\u30A4\u30D7"]
+- ["SQ", "\u93E1\u6B62\u3081\u30CA\u30C3\u30C8"]
+- ["SQ", "\u96FB\u6E90\u7528\u30D1\u30A4\u30D7"]
+- ["SQ", "\u9AD8\u30CA\u30C3\u30C8"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "first"]
+- ["s25ExpressibleByArrayLiteralP", "init"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "callAsFunction"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "first"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "lowercased"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "remove\u3231\u3232"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "toJapaneseNormal"]
+- !private ["s25ExpressibleByFloatLiteralP", ""]
+- !private ["s25ExpressibleByFloatLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "callAsFunction"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "callAsFunction"]
+- !private ["s32ExpressibleByStringInterpolationP", "first"]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "lowercased"]
+- !private ["s32ExpressibleByStringInterpolationP", "remove\u3231\u3232"]
+- !private ["s32ExpressibleByStringInterpolationP", "toJapaneseNormal"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "callAsFunction"]
+- !private ["s26ExpressibleByStringLiteralP", "first"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "lowercased"]
+- !private ["s26ExpressibleByStringLiteralP", "remove\u3231\u3232"]
+- !private ["s26ExpressibleByStringLiteralP", "toJapaneseNormal"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "callAsFunction"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "first"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "lowercased"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "remove\u3231\u3232"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "toJapaneseNormal"]
+- !private ["SF", ""]
+- !private ["SF", "init"]
+- ["SH", "=="]
+- ["SH", "AL\u30B9\u30BF\u30C3\u30C9"]
+- ["SH", "C\u30BF\u30C3\u30D4\u30F3\u30B0"]
+- ["SH", "Default_RawValue"]
+- ["SH", "FB"]
+- ["SH", "RawValue"]
+- ["SH", "S\u30B9\u30BF\u30C3\u30C9"]
+- ["SH", "S\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- !private ["SH", "_findStringSwitchCase"]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "callAsFunction"]
+- !private ["SH", "findStringSwitchCase"]
+- !private ["SH", "first"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- !private ["SH", "lowercased"]
+- ["SH", "rawValue"]
+- !private ["SH", "remove\u3231\u3232"]
+- !private ["SH", "subscript"]
+- !private ["SH", "toJapaneseNormal"]
+- ["SH", "\u306A\u3079"]
+- ["SH", "\u30AA\u30FC\u30EB\u30A2\u30F3\u30AB\u30FC"]
+- ["SH", "\u30B5\u30F3\u30ED\u30C3\u30AF\u30C8\u30E9\u30B9"]
+- ["SH", "\u30B5\u30F3\u30ED\u30C3\u30AF\u7279\u76BF"]
+- ["SH", "\u30B9\u30BF\u30C3\u30C9"]
+- ["SH", "\u30B9\u30C8\u30EC\u30FC\u30C8\u30B9\u30BF\u30C3\u30C9"]
+- ["SH", "\u30B9\u30EA\u30E0\u30D8\u30C3\u30C9"]
+- ["SH", "\u30C6\u30AF\u30B9\u30CA\u30D9"]
+- ["SH", "\u30C6\u30AF\u30B9\u7279\u76BF"]
+- ["SH", "\u30C6\u30AF\u30B9\u76BF"]
+- ["SH", "\u30C8\u30E9\u30B9"]
+- ["SH", "\u30CA\u30C3\u30C8"]
+- ["SH", "\u30CA\u30D9"]
+- ["SH", "\u30DC\u30EB\u30C8"]
+- ["SH", "\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SH", "\u4E09\u89D2\u30B3\u30FC\u30CA\u30FC"]
+- ["SH", "\u4E38\u30D1\u30A4\u30D7"]
+- ["SH", "\u516D\u89D2"]
+- ["SH", "\u5916\u6CE8"]
+- ["SH", "\u6728\u306D\u3058"]
+- ["SH", "\u6D6E\u304B\u3057\u30D1\u30A4\u30D7"]
+- ["SH", "\u7247\u30CD\u30B8"]
+- ["SH", "\u7279\u5BF8\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SH", "\u7279\u76BF"]
+- !private ["SH", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- ["SH", "\u76BF"]
+- ["SH", "\u888B\u30CA\u30C3\u30C8"]
+- ["SH", "\u914D\u7DDA\u30D1\u30A4\u30D7"]
+- ["SH", "\u93E1\u6B62\u3081\u30CA\u30C3\u30C8"]
+- ["SH", "\u96FB\u6E90\u7528\u30D1\u30A4\u30D7"]
+- ["SH", "\u9AD8\u30CA\u30C3\u30C8"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "callAsFunction"]
+- !private ["s25LosslessStringConvertibleP", "first"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "lowercased"]
+- !private ["s25LosslessStringConvertibleP", "remove\u3231\u3232"]
+- !private ["s25LosslessStringConvertibleP", "toJapaneseNormal"]
+- !private ["s10MirrorPathP", "callAsFunction"]
+- !private ["s10MirrorPathP", "first"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "lowercased"]
+- !private ["s10MirrorPathP", "remove\u3231\u3232"]
+- !private ["s10MirrorPathP", "toJapaneseNormal"]
+- !private ["SM", ""]
+- !private ["SM", "first"]
+- !private ["10Foundation19MutableDataProtocolP", "first"]
+- !private ["10Foundation8NSCodingP", ""]
+- !private ["10Foundation8NSCodingP", "first"]
+- !private ["10Foundation8NSCodingP", "lowercased"]
+- !private ["10Foundation8NSCodingP", "remove\u3231\u3232"]
+- !private ["10Foundation8NSCodingP", "toJapaneseNormal"]
+- !private ["10Foundation9NSCopyingP", "first"]
+- !private ["10Foundation9NSCopyingP", "lowercased"]
+- !private ["10Foundation9NSCopyingP", "remove\u3231\u3232"]
+- !private ["10Foundation9NSCopyingP", "toJapaneseNormal"]
+- !private ["10Foundation16NSMutableCopyingP", "first"]
+- !private ["10Foundation16NSMutableCopyingP", "lowercased"]
+- !private ["10Foundation16NSMutableCopyingP", "remove\u3231\u3232"]
+- !private ["10Foundation16NSMutableCopyingP", "toJapaneseNormal"]
+- !private ["10Foundation8NSObjectC", "first"]
+- !private ["10Foundation8NSObjectC", "lowercased"]
+- !private ["10Foundation8NSObjectC", "remove\u3231\u3232"]
+- !private ["10Foundation8NSObjectC", "toJapaneseNormal"]
+- !private ["10Foundation16NSObjectProtocolP", "first"]
+- !private ["10Foundation16NSObjectProtocolP", "lowercased"]
+- !private ["10Foundation16NSObjectProtocolP", "remove\u3231\u3232"]
+- !private ["10Foundation16NSObjectProtocolP", "toJapaneseNormal"]
+- !private ["10Foundation14NSSecureCodingP", "first"]
+- !private ["10Foundation14NSSecureCodingP", "lowercased"]
+- !private ["10Foundation14NSSecureCodingP", "remove\u3231\u3232"]
+- !private ["10Foundation14NSSecureCodingP", "toJapaneseNormal"]
+- !private ["10Foundation8NSStringC", "first"]
+- !private ["10Foundation8NSStringC", "lowercased"]
+- !private ["10Foundation8NSStringC", "remove\u3231\u3232"]
+- !private ["10Foundation8NSStringC", "toJapaneseNormal"]
+- !private ["Sj", ""]
+- !private ["Sj", "init"]
+- !private ["Sq", "callAsFunction"]
+- !private ["Sk", ""]
+- !private ["Sk", "first"]
+- !private ["Sm", ""]
+- !private ["Sm", "callAsFunction"]
+- !private ["Sm", "first"]
+- !private ["Sm", "init"]
+- !private ["Sm", "lowercased"]
+- !private ["Sm", "remove\u3231\u3232"]
+- !private ["Sm", "toJapaneseNormal"]
+- ["SY", "=="]
+- ["SY", "AL\u30B9\u30BF\u30C3\u30C9"]
+- ["SY", "C\u30BF\u30C3\u30D4\u30F3\u30B0"]
+- ["SY", "Default_RawValue"]
+- ["SY", "FB"]
+- ["SY", "RawValue"]
+- ["SY", "S\u30B9\u30BF\u30C3\u30C9"]
+- ["SY", "S\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- !private ["SY", "_findStringSwitchCase"]
+- ["SY", "_rawHashValue"]
+- !private ["SY", "findStringSwitchCase"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- ["SY", "init"]
+- ["SY", "rawValue"]
+- ["SY", "\u306A\u3079"]
+- ["SY", "\u30AA\u30FC\u30EB\u30A2\u30F3\u30AB\u30FC"]
+- ["SY", "\u30B5\u30F3\u30ED\u30C3\u30AF\u30C8\u30E9\u30B9"]
+- ["SY", "\u30B5\u30F3\u30ED\u30C3\u30AF\u7279\u76BF"]
+- ["SY", "\u30B9\u30BF\u30C3\u30C9"]
+- ["SY", "\u30B9\u30C8\u30EC\u30FC\u30C8\u30B9\u30BF\u30C3\u30C9"]
+- ["SY", "\u30B9\u30EA\u30E0\u30D8\u30C3\u30C9"]
+- ["SY", "\u30C6\u30AF\u30B9\u30CA\u30D9"]
+- ["SY", "\u30C6\u30AF\u30B9\u7279\u76BF"]
+- ["SY", "\u30C6\u30AF\u30B9\u76BF"]
+- ["SY", "\u30C8\u30E9\u30B9"]
+- ["SY", "\u30CA\u30C3\u30C8"]
+- ["SY", "\u30CA\u30D9"]
+- ["SY", "\u30DC\u30EB\u30C8"]
+- ["SY", "\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SY", "\u4E09\u89D2\u30B3\u30FC\u30CA\u30FC"]
+- ["SY", "\u4E38\u30D1\u30A4\u30D7"]
+- ["SY", "\u516D\u89D2"]
+- ["SY", "\u5916\u6CE8"]
+- ["SY", "\u6728\u306D\u3058"]
+- ["SY", "\u6D6E\u304B\u3057\u30D1\u30A4\u30D7"]
+- ["SY", "\u7247\u30CD\u30B8"]
+- ["SY", "\u7279\u5BF8\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["SY", "\u7279\u76BF"]
+- ["SY", "\u76BF"]
+- ["SY", "\u888B\u30CA\u30C3\u30C8"]
+- ["SY", "\u914D\u7DDA\u30D1\u30A4\u30D7"]
+- ["SY", "\u93E1\u6B62\u3081\u30CA\u30C3\u30C8"]
+- ["SY", "\u96FB\u6E90\u7528\u30D1\u30A4\u30D7"]
+- ["SY", "\u9AD8\u30CA\u30C3\u30C8"]
+- !private ["s10SIMDScalarP", "init"]
+- ["ST", ""]
+- !private ["ST", "callAsFunction"]
+- !private ["ST", "first"]
+- ["ST", "init"]
+- !private ["ST", "lowercased"]
+- !private ["ST", "remove\u3231\u3232"]
+- !private ["ST", "subscript"]
+- !private ["ST", "toJapaneseNormal"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "init"]
+- !private ["Sx", ""]
+- !private ["Sx", "init"]
+- !private ["SS", "callAsFunction"]
+- !private ["SS", "first"]
+- !private ["SS", "init"]
+- !private ["SS", "lowercased"]
+- !private ["SS", "remove\u3231\u3232"]
+- !private ["SS", "toJapaneseNormal"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["Sy", "callAsFunction"]
+- !private ["Sy", "first"]
+- !private ["Sy", "init"]
+- !private ["Sy", "lowercased"]
+- !private ["Sy", "remove\u3231\u3232"]
+- !private ["Sy", "toJapaneseNormal"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["s16TextOutputStreamP", "callAsFunction"]
+- !private ["s16TextOutputStreamP", "first"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "lowercased"]
+- !private ["s16TextOutputStreamP", "remove\u3231\u3232"]
+- !private ["s16TextOutputStreamP", "toJapaneseNormal"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "callAsFunction"]
+- !private ["s20TextOutputStreamableP", "first"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "lowercased"]
+- !private ["s20TextOutputStreamableP", "remove\u3231\u3232"]
+- !private ["s20TextOutputStreamableP", "toJapaneseNormal"]
+- !private ["s14_ArrayProtocolP", "first"]
+- !private ["10Foundation13_CFBridgeableP", "callAsFunction"]
+- !private ["10Foundation13_CFBridgeableP", "first"]
+- ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "lowercased"]
+- !private ["10Foundation13_CFBridgeableP", "remove\u3231\u3232"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "toJapaneseNormal"]
+- !private ["s15_CVarArgAlignedP", "init"]
+- !private ["s22_CVarArgPassedAsDoubleP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "callAsFunction"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "first"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "lowercased"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "remove\u3231\u3232"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "toJapaneseNormal"]
+- !private ["s24_DestructorSafeContainerP", "first"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "callAsFunction"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "first"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "lowercased"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "remove\u3231\u3232"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "toJapaneseNormal"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "callAsFunction"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "first"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "lowercased"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "remove\u3231\u3232"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "toJapaneseNormal"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "callAsFunction"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "first"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "lowercased"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "remove\u3231\u3232"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "toJapaneseNormal"]
+- !private ["s19_HasContiguousBytesP", "callAsFunction"]
+- !private ["s19_HasContiguousBytesP", "first"]
+- !private ["s19_HasContiguousBytesP", "init"]
+- !private ["s19_HasContiguousBytesP", "lowercased"]
+- !private ["s19_HasContiguousBytesP", "remove\u3231\u3232"]
+- !private ["s19_HasContiguousBytesP", "toJapaneseNormal"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "first"]
+- ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "callAsFunction"]
+- !private ["10Foundation13_NSBridgeableP", "first"]
+- ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "lowercased"]
+- !private ["10Foundation13_NSBridgeableP", "remove\u3231\u3232"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "toJapaneseNormal"]
+- !private ["s21_ObjectiveCBridgeableP", "_ObjectiveCType"]
+- !private ["s21_ObjectiveCBridgeableP", "callAsFunction"]
+- !private ["s21_ObjectiveCBridgeableP", "first"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "lowercased"]
+- !private ["s21_ObjectiveCBridgeableP", "remove\u3231\u3232"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "toJapaneseNormal"]
+- !private ["10Foundation17_StructBridgeableP", ""]
+- !private ["10Foundation17_StructBridgeableP", "first"]
+- !private ["10Foundation17_StructBridgeableP", "lowercased"]
+- !private ["10Foundation17_StructBridgeableP", "remove\u3231\u3232"]
+- !private ["10Foundation17_StructBridgeableP", "toJapaneseNormal"]
+- !private ["10Foundation21_StructTypeBridgeableP", "first"]
+- !private ["10Foundation21_StructTypeBridgeableP", "lowercased"]
+- !private ["10Foundation21_StructTypeBridgeableP", "remove\u3231\u3232"]
+- !private ["10Foundation21_StructTypeBridgeableP", "toJapaneseNormal"]
+- !private ["10Foundation16_SwiftBridgeableP", "first"]
+- !private ["10Foundation16_SwiftBridgeableP", "lowercased"]
+- !private ["10Foundation16_SwiftBridgeableP", "remove\u3231\u3232"]
+- !private ["10Foundation16_SwiftBridgeableP", "toJapaneseNormal"]
+- !private ["s12_UnwrappableP", "callAsFunction"]
+- !private ["11DataManager0011xgsvAIackCaC", ""]
+- !private ["11DataManager0011xgsvAIackCaC", "init"]
+- !private ["11DataManager0011xgsvAIackCaC", "\u767A\u6CE8\u5148\u540D\u79F0"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "String"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "init"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u30B5\u30A4\u30BA"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u5206\u5272\u8868\u793A\u540D1"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u5206\u5272\u8868\u793A\u540D2"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u56F3\u756A"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u56F3\u756A\u578B"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u793E\u540D\u5148\u982D1\u6587\u5B57"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u7A2E\u985E"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u8868\u793A\u540D"]
+- !private ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u8CC7\u6750\u578B"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u9078\u629E\u30DC\u30EB\u30C8\u7B49\u7A2E\u985E\u578B"]
+- ["11DataManager0022fdkwbEbCJExFtlxCIaqIEaV", "\u9577\u3055"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "=="]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "AL\u30B9\u30BF\u30C3\u30C9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "C\u30BF\u30C3\u30D4\u30F3\u30B0"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "Default_RawValue"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "FB"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "RawValue"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "S\u30B9\u30BF\u30C3\u30C9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "S\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", ""]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "_Default_RawValue"]
+- !private ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "_findStringSwitchCase"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "_rawHashValue"]
+- !private ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "findStringSwitchCase"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "hash"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "hashValue"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "init"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "rawValue"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u306A\u3079"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30AA\u30FC\u30EB\u30A2\u30F3\u30AB\u30FC"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30B5\u30F3\u30ED\u30C3\u30AF\u30C8\u30E9\u30B9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30B5\u30F3\u30ED\u30C3\u30AF\u7279\u76BF"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30B9\u30BF\u30C3\u30C9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30B9\u30C8\u30EC\u30FC\u30C8\u30B9\u30BF\u30C3\u30C9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30B9\u30EA\u30E0\u30D8\u30C3\u30C9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30C6\u30AF\u30B9\u30CA\u30D9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30C6\u30AF\u30B9\u7279\u76BF"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30C6\u30AF\u30B9\u76BF"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30C8\u30E9\u30B9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30CA\u30C3\u30C8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30CA\u30D9"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30DC\u30EB\u30C8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u4E09\u89D2\u30B3\u30FC\u30CA\u30FC"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u4E38\u30D1\u30A4\u30D7"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u516D\u89D2"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u5916\u6CE8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u6728\u306D\u3058"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u6D6E\u304B\u3057\u30D1\u30A4\u30D7"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u7247\u30CD\u30B8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u7279\u5BF8\u30EF\u30C3\u30B7\u30E3\u30FC"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u7279\u76BF"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u76BF"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u888B\u30CA\u30C3\u30C8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u914D\u7DDA\u30D1\u30A4\u30D7"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u93E1\u6B62\u3081\u30CA\u30C3\u30C8"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u96FB\u6E90\u7528\u30D1\u30A4\u30D7"]
+- ["11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO", "\u9AD8\u30CA\u30C3\u30C8"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "Sa"
+- !private "SK"
+- !private "SB"
+- !private "s7CVarArgP"
+- "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- "Se"
+- !private "s26DefaultStringInterpolationV"
+- "SD"
+- !private "Sd"
+- "SE"
+- "SQ"
+- "s25ExpressibleByArrayLiteralP"
+- "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "SF"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "10Foundation8NSCodingP"
+- !private "10Foundation9NSCopyingP"
+- !private "10Foundation16NSMutableCopyingP"
+- !private "10Foundation8NSObjectC"
+- !private "10Foundation16NSObjectProtocolP"
+- !private "10Foundation14NSSecureCodingP"
+- !private "10Foundation8NSStringC"
+- !private "Sj"
+- !private "Sq"
+- !private "Sk"
+- !private "Sm"
+- "SY"
+- !private "s10SIMDScalarP"
+- "ST"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "SS"
+- !private "s27StringInterpolationProtocolP"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "s14_ArrayProtocolP"
+- "10Foundation13_CFBridgeableP"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- "10Foundation13_NSBridgeableP"
+- "s21_ObjectiveCBridgeableP"
+- !private "10Foundation17_StructBridgeableP"
+- !private "10Foundation21_StructTypeBridgeableP"
+- !private "10Foundation16_SwiftBridgeableP"
+- !private "s12_UnwrappableP"
+- !private "11DataManager0011xgsvAIackCaC"
+- "11DataManager0022fdkwbEbCJExFtlxCIaqIEaV"
+- "11DataManager0028fdkwbEbCJExFtlflHauvboxAfeEoO"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "f8be3a983d85e501371b6733c051a203"

@@ -1,0 +1,47 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "\/home\/manager\/prog\/DataManager\/.build\/x86_64-unknown-linux-gnu\/debug\/DataManagerPackageTests.xctest",
+      "packageName" : "DataManager",
+      "productName" : "DataManagerPackageTests"
+    }
+  ],
+  "copyCommands" : {
+    "\/home\/manager\/prog\/DataManager\/.build\/x86_64-unknown-linux-gnu\/debug\/DataManager_DataManager.resources\/板加工在庫一覧.csv" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "\/home\/manager\/prog\/DataManager\/Sources\/DataManager\/Resources\/板加工在庫一覧.csv"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "\/home\/manager\/prog\/DataManager\/.build\/x86_64-unknown-linux-gnu\/debug\/DataManager_DataManager.resources\/板加工在庫一覧.csv"
+        }
+      ]
+    },
+    "\/home\/manager\/prog\/DataManager\/.build\/x86_64-unknown-linux-gnu\/debug\/DataManager_DataManagerTests.resources\/maru.ita" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "\/home\/manager\/prog\/DataManager\/Tests\/DataManagerTests\/maru.ita"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "\/home\/manager\/prog\/DataManager\/.build\/x86_64-unknown-linux-gnu\/debug\/DataManager_DataManagerTests.resources\/maru.ita"
+        }
+      ]
+    }
+  },
+  "swiftTargetMap" : {
+    "C.DataManager-debug.module" : "DataManager",
+    "C.DataManagerPackageTests-debug.module" : "DataManagerPackageTests",
+    "C.DataManagerTests-debug.module" : "DataManagerTests"
+  },
+  "testDiscoveryCommands" : {
+
+  }
+}

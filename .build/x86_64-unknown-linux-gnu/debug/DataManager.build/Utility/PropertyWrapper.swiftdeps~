@@ -1,0 +1,43 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "NCSynchronized"
+provides-nominal:
+- "11DataManager14NCSynchronizedV"
+provides-member:
+- ["11DataManager14NCSynchronizedV", ""]
+depends-top-level:
+- "AssignmentPrecedence"
+- "NCSynchronized"
+- "T"
+- !private "mutext"
+- !private "pthread_mutex_init"
+- !private "pthread_mutex_lock"
+- "pthread_mutex_t"
+- !private "pthread_mutex_unlock"
+- !private "value"
+depends-member:
+- ["11DataManager14NCSynchronizedV", "init"]
+- !private ["11DataManager14NCSynchronizedV", "mutext"]
+- ["11DataManager14NCSynchronizedV", "projectedValue"]
+- !private ["11DataManager14NCSynchronizedV", "pthread_mutex_init"]
+- !private ["11DataManager14NCSynchronizedV", "pthread_mutex_lock"]
+- ["11DataManager14NCSynchronizedV", "pthread_mutex_t"]
+- !private ["11DataManager14NCSynchronizedV", "pthread_mutex_unlock"]
+- ["11DataManager14NCSynchronizedV", "subscript"]
+- !private ["11DataManager14NCSynchronizedV", "value"]
+- ["11DataManager14NCSynchronizedV", "wrappedValue"]
+- ["11DataManager14NCSynchronizedV", "wrapperValue"]
+- ["So15pthread_mutex_ta", "init"]
+depends-nominal:
+- "11DataManager14NCSynchronizedV"
+- "So15pthread_mutex_ta"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "25e16569a523da584419aa141c052d54"

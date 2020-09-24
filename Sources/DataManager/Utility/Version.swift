@@ -85,6 +85,7 @@ public final class Version: Comparable, Hashable, Codable {
 }
 
 // MARK: - バージョンチェック
+#if !os(Linux)
 public func makeNewVersionInfo(newVersion: Version, currentVersion: Version) -> String {
     assert(currentVersion >= newVersion || currentVersion.buildNumber != newVersion.buildNumber)
     var info : String
@@ -113,6 +114,7 @@ public func makeNewVersionInfo(newVersion: Version, currentVersion: Version) -> 
     }
     return info
 }
+#endif
 
 #if os(iOS) || os(tvOS)
 import UIKit

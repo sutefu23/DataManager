@@ -1,0 +1,405 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "make\u7565\u53F7"
+- "\u7565\u53F7\u578B"
+- "<"
+provides-nominal:
+- "11DataManager0010rprCGfIyJaO"
+provides-member:
+- ["Sh", ""]
+- ["11DataManager0010rprCGfIyJaO", ""]
+- ["ST", ""]
+- ["Sh", "code"]
+- ["ST", "code"]
+depends-top-level:
+- "+"
+- !private "+="
+- "<"
+- "<="
+- "=="
+- ">"
+- ">="
+- "AssignmentPrecedence"
+- "Bool"
+- "CaseIterable"
+- "Comparable"
+- "Element"
+- "FloatLiteralType"
+- "Int"
+- "IntegerLiteralType"
+- "Sequence"
+- "Set"
+- "String"
+- !private "StringLiteralType"
+- !private "UnicodeScalarType"
+- !private "codeMap"
+- "make\u7565\u53F7"
+- !private "~="
+- "\u7565\u53F7\u578B"
+depends-member:
+- !private ["SK", ""]
+- !private ["SK", "init"]
+- ["s12CaseIterableP", "<"]
+- ["s12CaseIterableP", "<="]
+- ["s12CaseIterableP", "=="]
+- ["s12CaseIterableP", ">"]
+- ["s12CaseIterableP", ">="]
+- ["s12CaseIterableP", "AllCases"]
+- ["s12CaseIterableP", "Default_AllCases"]
+- ["s12CaseIterableP", "Default_RawValue"]
+- ["s12CaseIterableP", "Element"]
+- ["s12CaseIterableP", "RawValue"]
+- ["s12CaseIterableP", ""]
+- ["s12CaseIterableP", "_Default_AllCases"]
+- ["s12CaseIterableP", "_Default_RawValue"]
+- ["s12CaseIterableP", "_rawHashValue"]
+- ["s12CaseIterableP", "allCases"]
+- ["s12CaseIterableP", "code"]
+- !private ["s12CaseIterableP", "codeMap"]
+- ["s12CaseIterableP", "hash"]
+- ["s12CaseIterableP", "hashValue"]
+- ["s12CaseIterableP", "init"]
+- ["s12CaseIterableP", "rawValue"]
+- ["s12CaseIterableP", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["s12CaseIterableP", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["s12CaseIterableP", "\u30EC\u30FC\u30B6\u30FC"]
+- ["s12CaseIterableP", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["s12CaseIterableP", "\u5148\u51FA\u3057"]
+- ["s12CaseIterableP", "\u534A\u7530"]
+- ["s12CaseIterableP", "\u5370\u5237"]
+- ["s12CaseIterableP", "\u5857\u88C5"]
+- ["s12CaseIterableP", "\u5916\u6CE8"]
+- ["s12CaseIterableP", "\u5DE5\u7A0B\u5199\u771F"]
+- ["s12CaseIterableP", "\u6EB6\u63A5"]
+- ["s12CaseIterableP", "\u770B\u677F"]
+- ["s12CaseIterableP", "\u7814\u78E8"]
+- ["s12CaseIterableP", "\u7D44\u8FBC"]
+- ["s12CaseIterableP", "\u8150\u98DF"]
+- ["s12CaseIterableP", "\u8272\u672A\u5B9A"]
+- ["s12CaseIterableP", "\u9001\u308A\u5148\u672A\u5B9A"]
+- !private ["Sl", ""]
+- ["Sl", "init"]
+- !private ["Sl", "insert"]
+- ["Sl", "subscript"]
+- ["SL", "<"]
+- ["SL", "<="]
+- ["SL", "=="]
+- ["SL", ">"]
+- ["SL", ">="]
+- ["SL", "AllCases"]
+- ["SL", "Default_AllCases"]
+- ["SL", "Default_RawValue"]
+- ["SL", "RawValue"]
+- ["SL", ""]
+- ["SL", "_Default_AllCases"]
+- ["SL", "_Default_RawValue"]
+- ["SL", "_rawHashValue"]
+- ["SL", "allCases"]
+- ["SL", "code"]
+- !private ["SL", "codeMap"]
+- ["SL", "hash"]
+- ["SL", "hashValue"]
+- ["SL", "init"]
+- ["SL", "rawValue"]
+- ["SL", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["SL", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["SL", "\u30EC\u30FC\u30B6\u30FC"]
+- ["SL", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["SL", "\u5148\u51FA\u3057"]
+- ["SL", "\u534A\u7530"]
+- ["SL", "\u5370\u5237"]
+- ["SL", "\u5857\u88C5"]
+- ["SL", "\u5916\u6CE8"]
+- ["SL", "\u5DE5\u7A0B\u5199\u771F"]
+- ["SL", "\u6EB6\u63A5"]
+- ["SL", "\u770B\u677F"]
+- ["SL", "\u7814\u78E8"]
+- ["SL", "\u7D44\u8FBC"]
+- ["SL", "\u8150\u98DF"]
+- ["SL", "\u8272\u672A\u5B9A"]
+- ["SL", "\u9001\u308A\u5148\u672A\u5B9A"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "insert"]
+- ["s28CustomDebugStringConvertibleP", "subscript"]
+- ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "insert"]
+- ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "insert"]
+- ["s23CustomStringConvertibleP", "subscript"]
+- ["Se", "init"]
+- !private ["Se", "insert"]
+- ["Se", "subscript"]
+- ["SD", "init"]
+- ["SD", "subscript"]
+- ["SE", "init"]
+- !private ["SE", "insert"]
+- ["SE", "subscript"]
+- ["SQ", "<"]
+- ["SQ", "<="]
+- ["SQ", "=="]
+- ["SQ", ">"]
+- ["SQ", ">="]
+- ["SQ", "AllCases"]
+- ["SQ", "Default_AllCases"]
+- ["SQ", "Default_RawValue"]
+- ["SQ", "RawValue"]
+- ["SQ", ""]
+- ["SQ", "_Default_AllCases"]
+- ["SQ", "_Default_RawValue"]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "allCases"]
+- ["SQ", "code"]
+- !private ["SQ", "codeMap"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- !private ["SQ", "insert"]
+- ["SQ", "rawValue"]
+- ["SQ", "subscript"]
+- ["SQ", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["SQ", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["SQ", "\u30EC\u30FC\u30B6\u30FC"]
+- ["SQ", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["SQ", "\u5148\u51FA\u3057"]
+- ["SQ", "\u534A\u7530"]
+- ["SQ", "\u5370\u5237"]
+- ["SQ", "\u5857\u88C5"]
+- ["SQ", "\u5916\u6CE8"]
+- ["SQ", "\u5DE5\u7A0B\u5199\u771F"]
+- ["SQ", "\u6EB6\u63A5"]
+- ["SQ", "\u770B\u677F"]
+- ["SQ", "\u7814\u78E8"]
+- ["SQ", "\u7D44\u8FBC"]
+- ["SQ", "\u8150\u98DF"]
+- ["SQ", "\u8272\u672A\u5B9A"]
+- ["SQ", "\u9001\u308A\u5148\u672A\u5B9A"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "insert"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- ["SH", "<"]
+- ["SH", "<="]
+- ["SH", "=="]
+- ["SH", ">"]
+- ["SH", ">="]
+- ["SH", "AllCases"]
+- ["SH", "Default_AllCases"]
+- ["SH", "Default_RawValue"]
+- ["SH", "RawValue"]
+- ["SH", ""]
+- ["SH", "_Default_AllCases"]
+- ["SH", "_Default_RawValue"]
+- ["SH", "_rawHashValue"]
+- ["SH", "allCases"]
+- ["SH", "code"]
+- !private ["SH", "codeMap"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- !private ["SH", "insert"]
+- ["SH", "rawValue"]
+- ["SH", "subscript"]
+- ["SH", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["SH", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["SH", "\u30EC\u30FC\u30B6\u30FC"]
+- ["SH", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["SH", "\u5148\u51FA\u3057"]
+- ["SH", "\u534A\u7530"]
+- ["SH", "\u5370\u5237"]
+- ["SH", "\u5857\u88C5"]
+- ["SH", "\u5916\u6CE8"]
+- ["SH", "\u5DE5\u7A0B\u5199\u771F"]
+- ["SH", "\u6EB6\u63A5"]
+- ["SH", "\u770B\u677F"]
+- ["SH", "\u7814\u78E8"]
+- ["SH", "\u7D44\u8FBC"]
+- ["SH", "\u8150\u98DF"]
+- ["SH", "\u8272\u672A\u5B9A"]
+- ["SH", "\u9001\u308A\u5148\u672A\u5B9A"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["Sm", "init"]
+- ["SY", "<"]
+- ["SY", "<="]
+- ["SY", "=="]
+- ["SY", ">"]
+- ["SY", ">="]
+- ["SY", "AllCases"]
+- ["SY", "Default_AllCases"]
+- ["SY", "Default_RawValue"]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_AllCases"]
+- ["SY", "_Default_RawValue"]
+- ["SY", "_rawHashValue"]
+- ["SY", "allCases"]
+- ["SY", "code"]
+- !private ["SY", "codeMap"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- ["SY", "init"]
+- ["SY", "rawValue"]
+- ["SY", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["SY", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["SY", "\u30EC\u30FC\u30B6\u30FC"]
+- ["SY", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["SY", "\u5148\u51FA\u3057"]
+- ["SY", "\u534A\u7530"]
+- ["SY", "\u5370\u5237"]
+- ["SY", "\u5857\u88C5"]
+- ["SY", "\u5916\u6CE8"]
+- ["SY", "\u5DE5\u7A0B\u5199\u771F"]
+- ["SY", "\u6EB6\u63A5"]
+- ["SY", "\u770B\u677F"]
+- ["SY", "\u7814\u78E8"]
+- ["SY", "\u7D44\u8FBC"]
+- ["SY", "\u8150\u98DF"]
+- ["SY", "\u8272\u672A\u5B9A"]
+- ["SY", "\u9001\u308A\u5148\u672A\u5B9A"]
+- ["ST", "Element"]
+- ["ST", "Iterator"]
+- ["ST", "String"]
+- ["ST", ""]
+- ["ST", "code"]
+- ["ST", "init"]
+- !private ["ST", "insert"]
+- !private ["ST", "reduce"]
+- ["ST", "subscript"]
+- ["ST", "\u7565\u53F7\u578B"]
+- ["Sh", "String"]
+- ["Sh", ""]
+- ["Sh", "code"]
+- !private ["Sh", "init"]
+- !private ["Sh", "insert"]
+- ["Sh", "\u7565\u53F7\u578B"]
+- !private ["s10SetAlgebraP", "init"]
+- !private ["s10SetAlgebraP", "insert"]
+- !private ["SS", "init"]
+- !private ["Sy", "init"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "init"]
+- ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "insert"]
+- ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "init"]
+- ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "insert"]
+- ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "insert"]
+- ["10Foundation13_NSBridgeableP", "subscript"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "insert"]
+- ["s21_ObjectiveCBridgeableP", "subscript"]
+- ["11DataManager0010rprCGfIyJaO", "<"]
+- ["11DataManager0010rprCGfIyJaO", "<="]
+- ["11DataManager0010rprCGfIyJaO", "=="]
+- ["11DataManager0010rprCGfIyJaO", ">"]
+- ["11DataManager0010rprCGfIyJaO", ">="]
+- ["11DataManager0010rprCGfIyJaO", "AllCases"]
+- ["11DataManager0010rprCGfIyJaO", "Bool"]
+- ["11DataManager0010rprCGfIyJaO", "Default_AllCases"]
+- ["11DataManager0010rprCGfIyJaO", "Default_RawValue"]
+- ["11DataManager0010rprCGfIyJaO", "RawValue"]
+- ["11DataManager0010rprCGfIyJaO", "String"]
+- ["11DataManager0010rprCGfIyJaO", ""]
+- ["11DataManager0010rprCGfIyJaO", "_Default_AllCases"]
+- ["11DataManager0010rprCGfIyJaO", "_Default_RawValue"]
+- ["11DataManager0010rprCGfIyJaO", "_rawHashValue"]
+- ["11DataManager0010rprCGfIyJaO", "allCases"]
+- ["11DataManager0010rprCGfIyJaO", "code"]
+- !private ["11DataManager0010rprCGfIyJaO", "codeMap"]
+- ["11DataManager0010rprCGfIyJaO", "hash"]
+- ["11DataManager0010rprCGfIyJaO", "hashValue"]
+- ["11DataManager0010rprCGfIyJaO", "init"]
+- ["11DataManager0010rprCGfIyJaO", "rawValue"]
+- ["11DataManager0010rprCGfIyJaO", "\u305D\u306E\u4ED6\u672A\u5B9A"]
+- ["11DataManager0010rprCGfIyJaO", "\u30D5\u30A9\u30FC\u30DF\u30F3\u30B0"]
+- ["11DataManager0010rprCGfIyJaO", "\u30EC\u30FC\u30B6\u30FC"]
+- ["11DataManager0010rprCGfIyJaO", "\u4E21\u9762\u30C6\u30FC\u30D7"]
+- ["11DataManager0010rprCGfIyJaO", "\u5148\u51FA\u3057"]
+- ["11DataManager0010rprCGfIyJaO", "\u534A\u7530"]
+- ["11DataManager0010rprCGfIyJaO", "\u5370\u5237"]
+- ["11DataManager0010rprCGfIyJaO", "\u5857\u88C5"]
+- ["11DataManager0010rprCGfIyJaO", "\u5916\u6CE8"]
+- ["11DataManager0010rprCGfIyJaO", "\u5DE5\u7A0B\u5199\u771F"]
+- ["11DataManager0010rprCGfIyJaO", "\u6EB6\u63A5"]
+- ["11DataManager0010rprCGfIyJaO", "\u7565\u53F7\u578B"]
+- ["11DataManager0010rprCGfIyJaO", "\u770B\u677F"]
+- ["11DataManager0010rprCGfIyJaO", "\u7814\u78E8"]
+- ["11DataManager0010rprCGfIyJaO", "\u7D44\u8FBC"]
+- ["11DataManager0010rprCGfIyJaO", "\u8150\u98DF"]
+- ["11DataManager0010rprCGfIyJaO", "\u8272\u672A\u5B9A"]
+- ["11DataManager0010rprCGfIyJaO", "\u9001\u308A\u5148\u672A\u5B9A"]
+depends-nominal:
+- !private "SK"
+- "s12CaseIterableP"
+- "Sl"
+- "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- "Se"
+- "SD"
+- "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "Sm"
+- "SY"
+- "ST"
+- "Sh"
+- !private "s10SetAlgebraP"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "10Foundation13_CFBridgeableP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- "10Foundation13_NSBridgeableP"
+- "s21_ObjectiveCBridgeableP"
+- "11DataManager0010rprCGfIyJaO"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "727910e7e016b9c6edb13076d7f09c18"

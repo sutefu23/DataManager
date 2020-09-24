@@ -1,0 +1,59 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u8CC7\u6E90\u30DE\u30B9\u30BF\u60C5\u5831\u578B"
+provides-nominal:
+- "11DataManager0024zckmFgCDBpyxapAJadqxIhJcV"
+provides-member:
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", ""]
+depends-top-level:
+- "AssignmentPrecedence"
+- "String"
+- "StringLiteralType"
+- "\u5DE5\u7A0B\u56F3\u30C7\u30FC\u30BF\u578B"
+- "\u5DE5\u7A0B\u56F3\u578B"
+- "\u8CC7\u6E90\u30DE\u30B9\u30BF\u60C5\u5831\u578B"
+depends-member:
+- !private ["SQ", ""]
+- !private ["SQ", "code"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["SH", "code"]
+- !private ["SY", "code"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["11DataManager0012lcssnqGntxGaC0027cbkEeteHcFFIvDegGpIczBbxBHcO", "code"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", ""]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "filename"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "header"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "makeColumns"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5C71\u7A4D\u307F\u30B0\u30E9\u30D5\u8868\u793A"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u8CC7\u6E90ID"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u8CC7\u6E90\u540D\u79F0"]
+- ["11DataManager0012lcssnqGntxGaC", "\u5C71\u7A4D\u307F\u30B0\u30E9\u30D5\u8868\u793A\u578B"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "String"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "filename"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "header"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "init"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "makeColumns"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "\u5C71\u7A4D\u307F\u30B0\u30E9\u30D5\u8868\u793A"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "\u5DE5\u7A0B\u56F3\u578B"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "\u8CC7\u6E90ID"]
+- ["11DataManager0024zckmFgCDBpyxapAJadqxIhJcV", "\u8CC7\u6E90\u540D\u79F0"]
+depends-nominal:
+- !private "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "SH"
+- !private "SY"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "11DataManager0012lcssnqGntxGaC0027cbkEeteHcFFIvDegGpIczBbxBHcO"
+- "11DataManager0020FckpDnEIAmCvavCzhuDcP"
+- "11DataManager0012lcssnqGntxGaC"
+- "11DataManager0024zckmFgCDBpyxapAJadqxIhJcV"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "97821596db6235fe3472ad7f38b423d6"

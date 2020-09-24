@@ -1,0 +1,464 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u8CC7\u6750\u8981\u6C42\u51FA\u529B\u578B"
+provides-nominal:
+- "11DataManager0021HJqCokGjkytEzfqJCctBeV"
+provides-member:
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", ""]
+- ["ST", ""]
+- ["ST", "exportToDB"]
+depends-top-level:
+- "!"
+- !private "&&"
+- !private "+"
+- !private "=="
+- !private ">"
+- !private ">="
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- "Day"
+- "Element"
+- !private "FileMakerDB"
+- !private "FileMakerError"
+- "FileMakerSession"
+- !private "FloatLiteralType"
+- "Int"
+- !private "IntegerLiteralType"
+- "Sequence"
+- !private "Set"
+- "String"
+- !private "StringLiteralType"
+- "Time"
+- "UUID"
+- !private "UnicodeScalarType"
+- "\u56F3\u756A\u578B"
+- "\u6CE8\u6587\u756A\u53F7\u578B"
+- "\u767A\u6CE8\u578B"
+- "\u793E\u54E1\u578B"
+- "\u8CC7\u6750\u578B"
+- !private "\u8CC7\u6750\u767A\u6CE8\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- "\u8CC7\u6750\u8981\u6C42\u51FA\u529B\u578B"
+depends-member:
+- !private ["Sa", "contains"]
+- !private ["Sa", "count"]
+- !private ["Sa", "exportToDB"]
+- !private ["Sa", "filter"]
+- !private ["Sa", "first"]
+- !private ["Sa", "init"]
+- !private ["Sa", "isEmpty"]
+- !private ["SK", ""]
+- !private ["SK", "contains"]
+- !private ["SK", "count"]
+- !private ["SK", "exportToDB"]
+- !private ["SK", "filter"]
+- !private ["SK", "first"]
+- !private ["SK", "init"]
+- !private ["SK", "isEmpty"]
+- !private ["Sl", ""]
+- !private ["Sl", "contains"]
+- !private ["Sl", "count"]
+- !private ["Sl", "exportToDB"]
+- !private ["Sl", "filter"]
+- !private ["Sl", "first"]
+- !private ["Sl", "forEach"]
+- !private ["Sl", "init"]
+- !private ["Sl", "isEmpty"]
+- !private ["Sl", "subscript"]
+- !private ["SL", ""]
+- !private ["SL", "fmImportString"]
+- !private ["SL", "fmString"]
+- !private ["SL", "init"]
+- !private ["SL", "\u56F3\u756A"]
+- !private ["10Foundation15ContiguousBytesP", "contains"]
+- !private ["10Foundation15ContiguousBytesP", "count"]
+- !private ["10Foundation15ContiguousBytesP", "exportToDB"]
+- !private ["10Foundation15ContiguousBytesP", "filter"]
+- !private ["10Foundation15ContiguousBytesP", "first"]
+- !private ["10Foundation15ContiguousBytesP", "init"]
+- !private ["10Foundation15ContiguousBytesP", "isEmpty"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "count"]
+- !private ["s28CustomDebugStringConvertibleP", "executeScript"]
+- !private ["s28CustomDebugStringConvertibleP", "exportToDB"]
+- !private ["s28CustomDebugStringConvertibleP", "filter"]
+- !private ["s28CustomDebugStringConvertibleP", "first"]
+- !private ["s28CustomDebugStringConvertibleP", "forEach"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "insert"]
+- !private ["s28CustomDebugStringConvertibleP", "isEmpty"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "uuidString"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s17CustomReflectableP", "count"]
+- !private ["s17CustomReflectableP", "exportToDB"]
+- !private ["s17CustomReflectableP", "filter"]
+- !private ["s17CustomReflectableP", "first"]
+- !private ["s17CustomReflectableP", "forEach"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "isEmpty"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "uuidString"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["s23CustomStringConvertibleP", "count"]
+- !private ["s23CustomStringConvertibleP", "executeScript"]
+- !private ["s23CustomStringConvertibleP", "exportToDB"]
+- !private ["s23CustomStringConvertibleP", "filter"]
+- !private ["s23CustomStringConvertibleP", "first"]
+- !private ["s23CustomStringConvertibleP", "fmImportString"]
+- !private ["s23CustomStringConvertibleP", "forEach"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "insert"]
+- !private ["s23CustomStringConvertibleP", "isEmpty"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "uuidString"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "contains"]
+- !private ["10Foundation12DataProtocolP", "count"]
+- !private ["10Foundation12DataProtocolP", "exportToDB"]
+- !private ["10Foundation12DataProtocolP", "filter"]
+- !private ["10Foundation12DataProtocolP", "first"]
+- !private ["10Foundation12DataProtocolP", "init"]
+- !private ["10Foundation12DataProtocolP", "isEmpty"]
+- ["11DataManager3DayV", ""]
+- !private ["11DataManager3DayV", "fmString"]
+- !private ["11DataManager3DayV", "init"]
+- !private ["Se", "H\u306A\u3057\u793E\u54E1\u30B3\u30FC\u30C9"]
+- !private ["Se", "contains"]
+- !private ["Se", "count"]
+- !private ["Se", "exportToDB"]
+- !private ["Se", "filter"]
+- !private ["Se", "first"]
+- !private ["Se", "fmImportString"]
+- !private ["Se", "fmString"]
+- !private ["Se", "forEach"]
+- !private ["Se", "init"]
+- !private ["Se", "isEmpty"]
+- !private ["Se", "subscript"]
+- !private ["Se", "uuidString"]
+- !private ["Se", "\u56F3\u756A"]
+- !private ["Se", "\u8A18\u53F7"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- !private ["SD", "subscript"]
+- !private ["SE", "H\u306A\u3057\u793E\u54E1\u30B3\u30FC\u30C9"]
+- !private ["SE", "contains"]
+- !private ["SE", "count"]
+- !private ["SE", "exportToDB"]
+- !private ["SE", "filter"]
+- !private ["SE", "first"]
+- !private ["SE", "fmImportString"]
+- !private ["SE", "fmString"]
+- !private ["SE", "forEach"]
+- !private ["SE", "init"]
+- !private ["SE", "isEmpty"]
+- !private ["SE", "subscript"]
+- !private ["SE", "uuidString"]
+- !private ["SE", "\u56F3\u756A"]
+- !private ["SE", "\u8A18\u53F7"]
+- !private ["SQ", "=="]
+- !private ["SQ", "H\u306A\u3057\u793E\u54E1\u30B3\u30FC\u30C9"]
+- !private ["SQ", ""]
+- !private ["SQ", "contains"]
+- !private ["SQ", "count"]
+- !private ["SQ", "executeScript"]
+- !private ["SQ", "exportToDB"]
+- !private ["SQ", "filter"]
+- !private ["SQ", "first"]
+- !private ["SQ", "fmImportString"]
+- !private ["SQ", "fmString"]
+- !private ["SQ", "forEach"]
+- !private ["SQ", "init"]
+- !private ["SQ", "insert"]
+- !private ["SQ", "isEmpty"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "uuidString"]
+- !private ["SQ", "\u56F3\u756A"]
+- !private ["SQ", "\u8A18\u53F7"]
+- !private ["s5ErrorP", ""]
+- !private ["s5ErrorP", "upload\u767A\u6CE8"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "contains"]
+- !private ["s25ExpressibleByArrayLiteralP", "count"]
+- !private ["s25ExpressibleByArrayLiteralP", "exportToDB"]
+- !private ["s25ExpressibleByArrayLiteralP", "filter"]
+- !private ["s25ExpressibleByArrayLiteralP", "first"]
+- !private ["s25ExpressibleByArrayLiteralP", "forEach"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "isEmpty"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["11DataManager11FileMakerDBC", "pm_osakaname"]
+- !private ["11DataManager11FileMakerDBC", "releaseSession"]
+- !private ["11DataManager11FileMakerDBC", "retainSession"]
+- !private ["11DataManager14FileMakerErrorO", ""]
+- !private ["11DataManager14FileMakerErrorO", "upload\u767A\u6CE8"]
+- !private ["11DataManager16FileMakerSessionC", "executeScript"]
+- !private ["11DataManager16FileMakerSessionC", "insert"]
+- !private ["SH", "H\u306A\u3057\u793E\u54E1\u30B3\u30FC\u30C9"]
+- !private ["SH", ""]
+- !private ["SH", "contains"]
+- !private ["SH", "count"]
+- !private ["SH", "executeScript"]
+- !private ["SH", "exportToDB"]
+- !private ["SH", "filter"]
+- !private ["SH", "first"]
+- !private ["SH", "fmImportString"]
+- !private ["SH", "fmString"]
+- !private ["SH", "forEach"]
+- !private ["SH", "init"]
+- !private ["SH", "insert"]
+- !private ["SH", "isEmpty"]
+- !private ["SH", "subscript"]
+- !private ["SH", "uuidString"]
+- !private ["SH", "\u56F3\u756A"]
+- !private ["SH", "\u8A18\u53F7"]
+- !private ["10Foundation14LocalizedErrorP", "upload\u767A\u6CE8"]
+- !private ["SM", ""]
+- !private ["SM", "contains"]
+- !private ["SM", "count"]
+- !private ["SM", "exportToDB"]
+- !private ["SM", "filter"]
+- !private ["SM", "first"]
+- !private ["SM", "init"]
+- !private ["SM", "isEmpty"]
+- !private ["10Foundation19MutableDataProtocolP", "contains"]
+- !private ["10Foundation19MutableDataProtocolP", "count"]
+- !private ["10Foundation19MutableDataProtocolP", "exportToDB"]
+- !private ["10Foundation19MutableDataProtocolP", "filter"]
+- !private ["10Foundation19MutableDataProtocolP", "first"]
+- !private ["10Foundation19MutableDataProtocolP", "init"]
+- !private ["10Foundation19MutableDataProtocolP", "isEmpty"]
+- !private ["10Foundation8NSObjectC", "executeScript"]
+- !private ["10Foundation8NSObjectC", "insert"]
+- !private ["10Foundation16NSObjectProtocolP", ""]
+- !private ["10Foundation16NSObjectProtocolP", "executeScript"]
+- !private ["10Foundation16NSObjectProtocolP", "insert"]
+- !private ["Sk", ""]
+- !private ["Sk", "contains"]
+- !private ["Sk", "count"]
+- !private ["Sk", "exportToDB"]
+- !private ["Sk", "filter"]
+- !private ["Sk", "first"]
+- !private ["Sk", "init"]
+- !private ["Sk", "isEmpty"]
+- !private ["Sm", ""]
+- !private ["Sm", "contains"]
+- !private ["Sm", "count"]
+- !private ["Sm", "exportToDB"]
+- !private ["Sm", "filter"]
+- !private ["Sm", "first"]
+- !private ["Sm", "init"]
+- !private ["Sm", "isEmpty"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "uuidString"]
+- !private ["ST", "Array"]
+- ["ST", "Element"]
+- !private ["ST", "FileMakerDB"]
+- !private ["ST", "FileMakerError"]
+- ["ST", "FileMakerSession"]
+- ["ST", "Int"]
+- !private ["ST", "Iterator"]
+- !private ["ST", "Set"]
+- !private ["ST", "UUID"]
+- ["ST", ""]
+- !private ["ST", "contains"]
+- !private ["ST", "count"]
+- ["ST", "exportToDB"]
+- !private ["ST", "filter"]
+- !private ["ST", "first"]
+- !private ["ST", "forEach"]
+- !private ["ST", "init"]
+- !private ["ST", "isEmpty"]
+- !private ["ST", "map"]
+- !private ["ST", "subscript"]
+- !private ["ST", "\u56F3\u756A\u578B"]
+- !private ["ST", "\u767A\u6CE8\u578B"]
+- !private ["ST", "\u8CC7\u6750\u767A\u6CE8\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- ["ST", "\u8CC7\u6750\u8981\u6C42\u51FA\u529B\u578B"]
+- !private ["Sh", "forEach"]
+- !private ["Sh", "init"]
+- !private ["s10SetAlgebraP", "forEach"]
+- !private ["s10SetAlgebraP", "init"]
+- !private ["Sx", "fmString"]
+- !private ["Sx", "init"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- ["11DataManager4TimeV", ""]
+- !private ["11DataManager4TimeV", "fmImportString"]
+- !private ["11DataManager4TimeV", "init"]
+- !private ["20FoundationNetworking18URLSessionDelegateP", "executeScript"]
+- !private ["20FoundationNetworking18URLSessionDelegateP", "insert"]
+- !private ["10Foundation4UUIDV", "init"]
+- !private ["10Foundation4UUIDV", "uuidString"]
+- !private ["s14_ArrayProtocolP", "contains"]
+- !private ["s14_ArrayProtocolP", "count"]
+- !private ["s14_ArrayProtocolP", "exportToDB"]
+- !private ["s14_ArrayProtocolP", "filter"]
+- !private ["s14_ArrayProtocolP", "first"]
+- !private ["s14_ArrayProtocolP", "init"]
+- !private ["s14_ArrayProtocolP", "isEmpty"]
+- !private ["10Foundation13_CFBridgeableP", "contains"]
+- !private ["10Foundation13_CFBridgeableP", "count"]
+- !private ["10Foundation13_CFBridgeableP", "exportToDB"]
+- !private ["10Foundation13_CFBridgeableP", "filter"]
+- !private ["10Foundation13_CFBridgeableP", "first"]
+- !private ["10Foundation13_CFBridgeableP", "forEach"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "isEmpty"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["s24_DestructorSafeContainerP", "contains"]
+- !private ["s24_DestructorSafeContainerP", "count"]
+- !private ["s24_DestructorSafeContainerP", "exportToDB"]
+- !private ["s24_DestructorSafeContainerP", "filter"]
+- !private ["s24_DestructorSafeContainerP", "first"]
+- !private ["s24_DestructorSafeContainerP", "init"]
+- !private ["s24_DestructorSafeContainerP", "isEmpty"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "contains"]
+- !private ["s19_HasContiguousBytesP", "count"]
+- !private ["s19_HasContiguousBytesP", "exportToDB"]
+- !private ["s19_HasContiguousBytesP", "filter"]
+- !private ["s19_HasContiguousBytesP", "first"]
+- !private ["s19_HasContiguousBytesP", "init"]
+- !private ["s19_HasContiguousBytesP", "isEmpty"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "contains"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "count"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "exportToDB"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "filter"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "first"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "forEach"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "isEmpty"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "contains"]
+- !private ["10Foundation13_NSBridgeableP", "count"]
+- !private ["10Foundation13_NSBridgeableP", "exportToDB"]
+- !private ["10Foundation13_NSBridgeableP", "filter"]
+- !private ["10Foundation13_NSBridgeableP", "first"]
+- !private ["10Foundation13_NSBridgeableP", "forEach"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "isEmpty"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "contains"]
+- !private ["s21_ObjectiveCBridgeableP", "count"]
+- !private ["s21_ObjectiveCBridgeableP", "exportToDB"]
+- !private ["s21_ObjectiveCBridgeableP", "filter"]
+- !private ["s21_ObjectiveCBridgeableP", "first"]
+- !private ["s21_ObjectiveCBridgeableP", "forEach"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "isEmpty"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "uuidString"]
+- !private ["11DataManager0015rprCGfCsqEJggFkC", "\u8A18\u53F7"]
+- !private ["11DataManager0010xgszABcIDgC", "find"]
+- !private ["11DataManager0010xgszABcIDgC", "\u4F9D\u983C\u793E\u54E1"]
+- !private ["11DataManager0010xgszABcIDgC", "\u5099\u8003"]
+- !private ["11DataManager0010xgszABcIDgC", "\u6CE8\u6587\u756A\u53F7"]
+- !private ["11DataManager0010xgszABcIDgC", "\u767A\u6CE8\u6570\u91CF"]
+- !private ["11DataManager0010xgszABcIDgC", "\u767B\u9332\u65E5"]
+- !private ["11DataManager0010xgszABcIDgC", "\u8CC7\u6750"]
+- !private ["11DataManager0010gwrwFdoIBcC", "H\u306A\u3057\u793E\u54E1\u30B3\u30FC\u30C9"]
+- !private ["11DataManager0010gwrwFdoIBcC", ""]
+- !private ["11DataManager0011xgsvAIackCaC", "\u56F3\u756A"]
+- !private ["11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC", "flushCache"]
+- !private ["11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC", "shared"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "Bool"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "Day"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "Int"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "String"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "Time"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "UUID"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "init"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "isEqual"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "makeRecord"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u5099\u8003"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u5E0C\u671B\u7D0D\u671F"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u6570\u91CF"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u6CE8\u6587\u756A\u53F7"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u6CE8\u6587\u756A\u53F7\u578B"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u767A\u6CE8\u578B"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u767B\u9332\u65E5"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u767B\u9332\u6642\u9593"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u793E\u54E1"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u793E\u54E1\u578B"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u8CC7\u6750"]
+- ["11DataManager0021HJqCokGjkytEzfqJCctBeV", "\u8CC7\u6750\u578B"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- "11DataManager3DayV"
+- !private "Se"
+- !private "s26DefaultStringInterpolationV"
+- !private "SD"
+- !private "SE"
+- !private "SQ"
+- !private "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "11DataManager11FileMakerDBC"
+- !private "11DataManager14FileMakerErrorO"
+- !private "11DataManager16FileMakerSessionC"
+- !private "SH"
+- !private "10Foundation14LocalizedErrorP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "10Foundation8NSObjectC"
+- !private "10Foundation16NSObjectProtocolP"
+- !private "Sk"
+- !private "Sm"
+- !private "10Foundation20ReferenceConvertibleP"
+- "ST"
+- !private "Sh"
+- !private "s10SetAlgebraP"
+- !private "Sx"
+- !private "s27StringInterpolationProtocolP"
+- !private "s16TextOutputStreamP"
+- "11DataManager4TimeV"
+- !private "20FoundationNetworking18URLSessionDelegateP"
+- !private "10Foundation4UUIDV"
+- !private "s14_ArrayProtocolP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "11DataManager0015rprCGfCsqEJggFkC"
+- !private "11DataManager0010xgszABcIDgC"
+- !private "11DataManager0010gwrwFdoIBcC"
+- !private "11DataManager0011xgsvAIackCaC"
+- !private "11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC"
+- "11DataManager0021HJqCokGjkytEzfqJCctBeV"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "5f204d942fcaf044090c795092afdcfb"

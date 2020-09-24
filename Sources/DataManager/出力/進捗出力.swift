@@ -219,7 +219,7 @@ extension Sequence where Element == 進捗出力型 {
         guard let data = outputLines.data(using: .utf8, allowLossyConversion: true) else {
             throw ProgressDBError.cantConvert
         }
-        try data.write(to: url, options: [.atomicWrite])
+        try data.write(to: url, options: [.atomic])
     }
 }
 

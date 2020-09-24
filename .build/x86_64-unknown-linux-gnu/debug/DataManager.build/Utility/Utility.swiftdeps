@@ -1,0 +1,83 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DataManagerController"
+- "dataManager"
+provides-nominal:
+- "11DataManager0aB10ControllerC"
+provides-member:
+- ["11DataManager0aB10ControllerC", ""]
+depends-top-level:
+- "DataManagerController"
+- !private "clear\u4F1D\u7968\u756A\u53F7Cache"
+- "dataManager"
+- !private "flush\u4F5C\u696D\u7CFB\u5217Cache"
+- !private "flush\u5DE5\u7A0B\u540D\u79F0DB"
+- !private "\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u51FA\u52E4\u65E5DB\u578B"
+- !private "\u53D6\u5F15\u5148\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u5728\u5EAB\u6570\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u6307\u793A\u66F8\u9032\u6357\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u6700\u7D42\u767A\u6CE8\u5358\u4FA1\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u7BB1\u6587\u5B57\u512A\u5148\u5EA6\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u8CC7\u6750\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u8CC7\u6750\u5165\u5EAB\u72B6\u6CC1\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- !private "\u8CC7\u6750\u767A\u6CE8\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+depends-member:
+- !private ["11DataManager0aB10ControllerC", "clear\u4F1D\u7968\u756A\u53F7Cache"]
+- ["11DataManager0aB10ControllerC", "deinit"]
+- ["11DataManager0aB10ControllerC", "flushAllCache"]
+- !private ["11DataManager0aB10ControllerC", "flush\u4F5C\u696D\u7CFB\u5217Cache"]
+- !private ["11DataManager0aB10ControllerC", "flush\u5DE5\u7A0B\u540D\u79F0DB"]
+- ["11DataManager0aB10ControllerC", "init"]
+- !private ["11DataManager0aB10ControllerC", "\u5165\u51FA\u5EAB\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u53D6\u5F15\u5148\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u5728\u5EAB\u6570\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u6307\u793A\u66F8\u9032\u6357\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u6700\u7D42\u767A\u6CE8\u5358\u4FA1\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u7BB1\u6587\u5B57\u512A\u5148\u5EA6\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u8CC7\u6750\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u8CC7\u6750\u5165\u5EAB\u72B6\u6CC1\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0aB10ControllerC", "\u8CC7\u6750\u767A\u6CE8\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- !private ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "flushAllCache"]
+- !private ["11DataManager0026nckuaJaximaJCABcCDaECBaEHpC", "shared"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "flushCache"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "shared"]
+- !private ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "flushAllCache"]
+- !private ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "shared"]
+- !private ["11DataManager0026nckuaJaximaJHIJcHtaAJGbwzoC", "flushAllCache"]
+- !private ["11DataManager0026nckuaJaximaJHIJcHtaAJGbwzoC", "shared"]
+- !private ["11DataManager0033nckuaJaximaIHEAdDBqksaiFxomDcbCCcC", "flushAllCache"]
+- !private ["11DataManager0033nckuaJaximaIHEAdDBqksaiFxomDcbCCcC", "shared"]
+- !private ["11DataManager0035nckuaJaximaHBDIbgpfFljkjAbJlmIzygIrC", "flushCache"]
+- !private ["11DataManager0035nckuaJaximaHBDIbgpfFljkjAbJlmIzygIrC", "shared"]
+- !private ["11DataManager0036nckuaJaximaFHGAcJfaFIIbzjicsimvtmxGdC", "removeAll"]
+- !private ["11DataManager0036nckuaJaximaFHGAcJfaFIIbzjicsimvtmxGdC", "shared"]
+- !private ["11DataManager0024nckuaJaximaIHEAdicxahwGdC", "flushCache"]
+- !private ["11DataManager0024nckuaJaximaIHEAdicxahwGdC", "shared"]
+- !private ["11DataManager0035nckuaJaximaJCABcHIiAkoJCscomjDpByHeC", "flushAllCache"]
+- !private ["11DataManager0035nckuaJaximaJCABcHIiAkoJCscomjDpByHeC", "shared"]
+- !private ["11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC", "flushAllCache"]
+- !private ["11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC", "shared"]
+depends-nominal:
+- "11DataManager0aB10ControllerC"
+- !private "11DataManager0026nckuaJaximaJCABcCDaECBaEHpC"
+- !private "11DataManager0016DB_DcFcsIahEoAFxC"
+- !private "11DataManager0025nckuaJaximaFFIAcBzddHidksC"
+- !private "11DataManager0026nckuaJaximaJHIJcHtaAJGbwzoC"
+- !private "11DataManager0033nckuaJaximaIHEAdDBqksaiFxomDcbCCcC"
+- !private "11DataManager0035nckuaJaximaHBDIbgpfFljkjAbJlmIzygIrC"
+- !private "11DataManager0036nckuaJaximaFHGAcJfaFIIbzjicsimvtmxGdC"
+- !private "11DataManager0024nckuaJaximaIHEAdicxahwGdC"
+- !private "11DataManager0035nckuaJaximaJCABcHIiAkoJCscomjDpByHeC"
+- !private "11DataManager0030nckuaJaximaIHEAdicxalmjIuvdFEcC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "b03df6552547b9e21b1928d5b67960fa"

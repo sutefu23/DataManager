@@ -404,7 +404,7 @@ public class DMBarCodePrintView: NSView {
 
 #endif
 
-#if os(tvOS)
+#if os(tvOS) || os(Linux)
 
 #else
 public extension DMBarCode {

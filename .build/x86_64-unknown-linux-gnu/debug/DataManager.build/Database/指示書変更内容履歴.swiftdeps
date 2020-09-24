@@ -1,0 +1,323 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u5909\u66F4\u5C65\u6B74\u7A2E\u985E\u578B"
+- "\u6307\u793A\u66F8\u5909\u66F4\u5185\u5BB9\u5C65\u6B74\u578B"
+provides-nominal:
+- "11DataManager0022xgspIazHeFCovofkvzvjCcO"
+- "11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC"
+provides-member:
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", ""]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", ""]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "dbName"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "find"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "find"]
+depends-top-level:
+- "=="
+- !private "Array"
+- "AssignmentPrecedence"
+- "Date"
+- "Day"
+- !private "FileMakerDB"
+- !private "FileMakerQuery"
+- "FileMakerRecord"
+- !private "FloatLiteralType"
+- "Hashable"
+- "Int"
+- !private "IntegerLiteralType"
+- "String"
+- "StringLiteralType"
+- "record"
+- "self"
+- !private "~="
+- "\u4F1D\u7968\u7A2E\u985E\u578B"
+- "\u5909\u66F4\u5C65\u6B74\u7A2E\u985E\u578B"
+- "\u6307\u793A\u66F8\u578B"
+- "\u6307\u793A\u66F8\u5909\u66F4\u5185\u5BB9\u5C65\u6B74\u578B"
+- "\u793E\u54E1\u578B"
+depends-member:
+- !private ["Sa", "compactMap"]
+- !private ["SK", ""]
+- !private ["SK", "compactMap"]
+- !private ["SK", "contains"]
+- !private ["Sl", ""]
+- !private ["Sl", "compactMap"]
+- !private ["Sl", "contains"]
+- !private ["Sl", "init"]
+- !private ["Sl", "subscript"]
+- !private ["SL", ""]
+- !private ["SL", "contains"]
+- !private ["SL", "fmString"]
+- !private ["10Foundation15ContiguousBytesP", "compactMap"]
+- !private ["s28CustomDebugStringConvertibleP", "compactMap"]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "compactMap"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "compactMap"]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["s23CustomStringConvertibleP", "fmString"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "compactMap"]
+- !private ["11DataManager3DayV", "fmString"]
+- !private ["Se", "compactMap"]
+- !private ["Se", "contains"]
+- !private ["Se", "fmString"]
+- ["Se", "init"]
+- !private ["Se", "subscript"]
+- !private ["SD", "init"]
+- !private ["SD", "subscript"]
+- !private ["SE", "compactMap"]
+- !private ["SE", "contains"]
+- !private ["SE", "fmString"]
+- ["SE", "init"]
+- !private ["SE", "subscript"]
+- ["SQ", "=="]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "compactMap"]
+- !private ["SQ", "contains"]
+- !private ["SQ", "fmString"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "\u305D\u306E\u4ED6"]
+- !private ["SQ", "\u30AD\u30E3\u30F3\u30BB\u30EB"]
+- !private ["SQ", "\u4FDD\u7559\u89E3\u9664"]
+- !private ["SQ", "\u4FDD\u7559\u958B\u59CB"]
+- !private ["SQ", "\u6307\u793A\u66F8\u627F\u8A8D"]
+- !private ["SQ", "\u6821\u6B63\u7D42\u4E86"]
+- !private ["SQ", "\u6821\u6B63\u958B\u59CB"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "compactMap"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "contains"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "contains"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "contains"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "contains"]
+- !private ["11DataManager11FileMakerDBC", "find"]
+- !private ["11DataManager11FileMakerDBC", "pm_osakaname"]
+- ["11DataManager15FileMakerRecordC", "date"]
+- ["11DataManager15FileMakerRecordC", "integer"]
+- ["11DataManager15FileMakerRecordC", "string"]
+- ["SH", "=="]
+- ["SH", ""]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "compactMap"]
+- !private ["SH", "contains"]
+- !private ["SH", "fmString"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- !private ["SH", "subscript"]
+- !private ["SH", "\u305D\u306E\u4ED6"]
+- !private ["SH", "\u30AD\u30E3\u30F3\u30BB\u30EB"]
+- !private ["SH", "\u4FDD\u7559\u89E3\u9664"]
+- !private ["SH", "\u4FDD\u7559\u958B\u59CB"]
+- !private ["SH", "\u6307\u793A\u66F8\u627F\u8A8D"]
+- !private ["SH", "\u6821\u6B63\u7D42\u4E86"]
+- !private ["SH", "\u6821\u6B63\u958B\u59CB"]
+- !private ["s6HasherV", "combine"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "contains"]
+- !private ["s10MirrorPathP", "contains"]
+- !private ["SM", ""]
+- !private ["SM", "compactMap"]
+- !private ["10Foundation19MutableDataProtocolP", "compactMap"]
+- !private ["10Foundation8NSCodingP", ""]
+- !private ["10Foundation8NSCodingP", "contains"]
+- !private ["10Foundation9NSCopyingP", "contains"]
+- !private ["10Foundation16NSMutableCopyingP", "contains"]
+- !private ["10Foundation8NSObjectC", "contains"]
+- !private ["10Foundation16NSObjectProtocolP", "contains"]
+- !private ["10Foundation14NSSecureCodingP", "contains"]
+- !private ["10Foundation8NSStringC", "contains"]
+- !private ["Sk", ""]
+- !private ["Sk", "compactMap"]
+- !private ["Sm", ""]
+- !private ["Sm", "compactMap"]
+- !private ["Sm", "contains"]
+- !private ["ST", ""]
+- !private ["ST", "compactMap"]
+- !private ["ST", "contains"]
+- !private ["ST", "init"]
+- !private ["ST", "subscript"]
+- !private ["Sx", "fmString"]
+- !private ["SS", "contains"]
+- !private ["Sy", "contains"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "contains"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "contains"]
+- !private ["s14_ArrayProtocolP", "compactMap"]
+- !private ["10Foundation13_CFBridgeableP", "compactMap"]
+- !private ["10Foundation13_CFBridgeableP", "contains"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "contains"]
+- !private ["s24_DestructorSafeContainerP", "compactMap"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "contains"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "contains"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "contains"]
+- !private ["s19_HasContiguousBytesP", "compactMap"]
+- !private ["s19_HasContiguousBytesP", "contains"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "compactMap"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "compactMap"]
+- !private ["10Foundation13_NSBridgeableP", "contains"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "_ObjectiveCType"]
+- !private ["s21_ObjectiveCBridgeableP", "compactMap"]
+- !private ["s21_ObjectiveCBridgeableP", "contains"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["10Foundation17_StructBridgeableP", ""]
+- !private ["10Foundation17_StructBridgeableP", "contains"]
+- !private ["10Foundation21_StructTypeBridgeableP", "contains"]
+- !private ["10Foundation16_SwiftBridgeableP", "contains"]
+- !private ["11DataManager0017JoqGIrbsDawwaJHBiO", "fmString"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "=="]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "String"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", ""]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "__derived_enum_equals"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "_rawHashValue"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "hash"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "hashValue"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "init"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u305D\u306E\u4ED6"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u30AD\u30E3\u30F3\u30BB\u30EB"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u4FDD\u7559\u89E3\u9664"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u4FDD\u7559\u958B\u59CB"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u6307\u793A\u66F8\u627F\u8A8D"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u6821\u6B63\u7D42\u4E86"]
+- ["11DataManager0022xgspIazHeFCovofkvzvjCcO", "\u6821\u6B63\u958B\u59CB"]
+- ["11DataManager0012xgsBAyrGcfEyC", "findDirect"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u4F5C\u696D\u8005"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u5185\u5BB9"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u6307\u793A\u66F8"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u6307\u793A\u66F8UUID"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u65E5\u6642"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u793E\u54E1\u540D\u79F0"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u793E\u54E1\u756A\u53F7"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "$__lazy_storage_$_\u7A2E\u985E"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "Date"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "Day"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "FileMakerDB"]
+- !private ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "FileMakerQuery"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "FileMakerRecord"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "Int"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "String"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", ""]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "dbName"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "deinit"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "find"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "init"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "record"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "self"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u4F1D\u7968\u7A2E\u985E\u578B"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u4F5C\u696D\u8005"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u5185\u5BB9"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u5909\u66F4\u5C65\u6B74\u7A2E\u985E\u578B"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u6307\u793A\u66F8"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u6307\u793A\u66F8UUID"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u6307\u793A\u66F8\u578B"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u6307\u793A\u66F8\u5909\u66F4\u5185\u5BB9\u5C65\u6B74\u578B"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u65E5\u6642"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u793E\u54E1\u540D\u79F0"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u793E\u54E1\u578B"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u793E\u54E1\u756A\u53F7"]
+- ["11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC", "\u7A2E\u985E"]
+- ["11DataManager0010gwrwFdoIBcC", ""]
+- ["11DataManager0010gwrwFdoIBcC", "init"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- !private "11DataManager3DayV"
+- "Se"
+- !private "SD"
+- "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "11DataManager11FileMakerDBC"
+- "11DataManager15FileMakerRecordC"
+- "SH"
+- !private "s6HasherV"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "10Foundation8NSCodingP"
+- !private "10Foundation9NSCopyingP"
+- !private "10Foundation16NSMutableCopyingP"
+- !private "10Foundation8NSObjectC"
+- !private "10Foundation16NSObjectProtocolP"
+- !private "10Foundation14NSSecureCodingP"
+- !private "10Foundation8NSStringC"
+- !private "Sk"
+- !private "Sm"
+- !private "ST"
+- !private "Sx"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "s14_ArrayProtocolP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "10Foundation17_StructBridgeableP"
+- !private "10Foundation21_StructTypeBridgeableP"
+- !private "10Foundation16_SwiftBridgeableP"
+- !private "11DataManager0017JoqGIrbsDawwaJHBiO"
+- "11DataManager0022xgspIazHeFCovofkvzvjCcO"
+- "11DataManager0012xgsBAyrGcfEyC"
+- "11DataManager0032vGqsAmyGaxEeuyaIEAabBgEaBFEhivIaC"
+- "11DataManager0010gwrwFdoIBcC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "4be9987f47c6e3e513bc9ce1c4bcb9b8"

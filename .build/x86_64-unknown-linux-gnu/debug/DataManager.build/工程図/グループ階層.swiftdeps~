@@ -1,0 +1,375 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u5DE5\u7A0B\u56F3\u5DE5\u7A0B\u578B"
+- "\u5DE5\u7A0B\u56F3\u30B0\u30EB\u30FC\u30D7\u578B"
+- "make\u5DE5\u7A0B\u5225\u9032\u6357\u30EA\u30B9\u30C8"
+- "=="
+provides-nominal:
+- "11DataManager0017lcssnqGnbaCEBHacaC"
+- "11DataManager0024qckBdrcGcCCBygAabJDadxAdC"
+provides-member:
+- ["11DataManager0017lcssnqGnbaCEBHacaC", ""]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", ""]
+- ["ST", ""]
+- ["ST", "make\u5DE5\u7A0B"]
+- ["ST", "make\u4F5C\u696D\u5225\u5DE5\u7A0B\u60C5\u5831"]
+depends-top-level:
+- !private "&&"
+- !private "+="
+- "<"
+- "=="
+- "??"
+- "AssignmentPrecedence"
+- "Bool"
+- "Date"
+- "Double"
+- "Element"
+- "FloatLiteralType"
+- "Hashable"
+- "Hasher"
+- "Int"
+- "IntegerLiteralType"
+- "Self"
+- "Sequence"
+- "String"
+- !private "StringLiteralType"
+- !private "makeID"
+- "make\u5DE5\u7A0B\u5225\u9032\u6357\u30EA\u30B9\u30C8"
+- !private "serial"
+- "\u4F5C\u696D\u5225\u5DE5\u7A0B\u60C5\u5831\u578B"
+- "\u5DE5\u7A0B\u56F3\u30B0\u30EB\u30FC\u30D7\u578B"
+- "\u5DE5\u7A0B\u56F3\u5DE5\u7A0B\u578B"
+- "\u6307\u793A\u66F8\u578B"
+- "\u9032\u6357\u578B"
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "description"]
+- !private ["Sa", "append"]
+- !private ["Sa", "findFirst"]
+- !private ["Sa", "init"]
+- !private ["Sa", "make\u5DE5\u7A0B"]
+- !private ["SK", ""]
+- !private ["SK", "append"]
+- !private ["SK", "findFirst"]
+- !private ["SK", "init"]
+- !private ["SK", "make\u5DE5\u7A0B"]
+- !private ["Sz", ""]
+- !private ["Sz", "description"]
+- !private ["s7CVarArgP", "description"]
+- !private ["s12CaseIterableP", "\u53D7\u53D6"]
+- !private ["s12CaseIterableP", "\u5B8C\u4E86"]
+- !private ["s12CaseIterableP", "\u958B\u59CB"]
+- !private ["Sl", ""]
+- !private ["Sl", "append"]
+- !private ["Sl", "findFirst"]
+- !private ["Sl", "init"]
+- !private ["Sl", "make\u5DE5\u7A0B"]
+- !private ["SL", ""]
+- !private ["SL", "description"]
+- !private ["SL", "\u5165\u529B"]
+- !private ["SL", "\u539F\u7A3F"]
+- !private ["SL", "\u53D7\u53D6"]
+- !private ["SL", "\u5B8C\u4E86"]
+- !private ["SL", "\u7BA1\u7406"]
+- !private ["SL", "\u958B\u59CB"]
+- !private ["10Foundation15ContiguousBytesP", "append"]
+- !private ["10Foundation15ContiguousBytesP", "findFirst"]
+- !private ["10Foundation15ContiguousBytesP", "init"]
+- !private ["10Foundation15ContiguousBytesP", "make\u5DE5\u7A0B"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s28CustomDebugStringConvertibleP", "findFirst"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "make\u5DE5\u7A0B"]
+- !private ["s17CustomReflectableP", "append"]
+- !private ["s17CustomReflectableP", "description"]
+- !private ["s17CustomReflectableP", "findFirst"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "make\u5DE5\u7A0B"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s23CustomStringConvertibleP", "description"]
+- !private ["s23CustomStringConvertibleP", "findFirst"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "make\u5DE5\u7A0B"]
+- !private ["s23CustomStringConvertibleP", "\u53D7\u53D6"]
+- !private ["s23CustomStringConvertibleP", "\u5B8C\u4E86"]
+- !private ["s23CustomStringConvertibleP", "\u958B\u59CB"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "append"]
+- !private ["10Foundation12DataProtocolP", "findFirst"]
+- !private ["10Foundation12DataProtocolP", "init"]
+- !private ["10Foundation12DataProtocolP", "make\u5DE5\u7A0B"]
+- !private ["Se", "append"]
+- !private ["Se", "description"]
+- !private ["Se", "findFirst"]
+- !private ["Se", "init"]
+- !private ["Se", "make\u5DE5\u7A0B"]
+- !private ["Se", "\u5165\u529B"]
+- !private ["Se", "\u539F\u7A3F"]
+- !private ["Se", "\u53D7\u53D6"]
+- !private ["Se", "\u5B8C\u4E86"]
+- !private ["Se", "\u7BA1\u7406"]
+- !private ["Se", "\u958B\u59CB"]
+- !private ["SE", "append"]
+- !private ["SE", "description"]
+- !private ["SE", "findFirst"]
+- !private ["SE", "init"]
+- !private ["SE", "make\u5DE5\u7A0B"]
+- !private ["SE", "\u5165\u529B"]
+- !private ["SE", "\u539F\u7A3F"]
+- !private ["SE", "\u53D7\u53D6"]
+- !private ["SE", "\u5B8C\u4E86"]
+- !private ["SE", "\u7BA1\u7406"]
+- !private ["SE", "\u958B\u59CB"]
+- ["SQ", "=="]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "append"]
+- !private ["SQ", "description"]
+- !private ["SQ", "findFirst"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "init"]
+- !private ["SQ", "makeID"]
+- !private ["SQ", "make\u5DE5\u7A0B"]
+- !private ["SQ", "order"]
+- !private ["SQ", "\u30B0\u30EB\u30FC\u30D7ID"]
+- !private ["SQ", "\u5165\u529B"]
+- !private ["SQ", "\u539F\u7A3F"]
+- !private ["SQ", "\u53D7\u53D6"]
+- !private ["SQ", "\u540D\u79F0"]
+- !private ["SQ", "\u5B8C\u4E86"]
+- !private ["SQ", "\u767B\u9332\u65E5\u6642"]
+- !private ["SQ", "\u7BA1\u7406"]
+- !private ["SQ", "\u958B\u59CB"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "append"]
+- !private ["s25ExpressibleByArrayLiteralP", "findFirst"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "make\u5DE5\u7A0B"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "description"]
+- !private ["s17FixedWidthIntegerP", "description"]
+- ["SH", "=="]
+- ["SH", ""]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "append"]
+- !private ["SH", "description"]
+- !private ["SH", "findFirst"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "init"]
+- !private ["SH", "makeID"]
+- !private ["SH", "make\u5DE5\u7A0B"]
+- !private ["SH", "order"]
+- !private ["SH", "\u30B0\u30EB\u30FC\u30D7ID"]
+- !private ["SH", "\u5165\u529B"]
+- !private ["SH", "\u539F\u7A3F"]
+- !private ["SH", "\u53D7\u53D6"]
+- !private ["SH", "\u540D\u79F0"]
+- !private ["SH", "\u5B8C\u4E86"]
+- !private ["SH", "\u7BA1\u7406"]
+- !private ["SH", "\u958B\u59CB"]
+- !private ["s6HasherV", "combine"]
+- !private ["s12IdentifiableP", "\u767B\u9332\u65E5\u6642"]
+- !private ["Si", "description"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "description"]
+- !private ["s10MirrorPathP", "description"]
+- !private ["SM", ""]
+- !private ["SM", "append"]
+- !private ["SM", "findFirst"]
+- !private ["SM", "init"]
+- !private ["SM", "make\u5DE5\u7A0B"]
+- !private ["10Foundation19MutableDataProtocolP", "append"]
+- !private ["10Foundation19MutableDataProtocolP", "findFirst"]
+- !private ["10Foundation19MutableDataProtocolP", "init"]
+- !private ["10Foundation19MutableDataProtocolP", "make\u5DE5\u7A0B"]
+- !private ["Sj", ""]
+- !private ["Sj", "description"]
+- !private ["Sk", ""]
+- !private ["Sk", "append"]
+- !private ["Sk", "findFirst"]
+- !private ["Sk", "init"]
+- !private ["Sk", "make\u5DE5\u7A0B"]
+- !private ["Sm", ""]
+- !private ["Sm", "append"]
+- !private ["Sm", "findFirst"]
+- !private ["Sm", "init"]
+- !private ["Sm", "make\u5DE5\u7A0B"]
+- !private ["SY", "\u53D7\u53D6"]
+- !private ["SY", "\u5B8C\u4E86"]
+- !private ["SY", "\u958B\u59CB"]
+- !private ["s10SIMDScalarP", "description"]
+- ["ST", "Date"]
+- ["ST", "Element"]
+- !private ["ST", "Iterator"]
+- ["ST", "String"]
+- ["ST", ""]
+- !private ["ST", "append"]
+- !private ["ST", "findFirst"]
+- !private ["ST", "init"]
+- ["ST", "make\u4F5C\u696D\u5225\u5DE5\u7A0B\u60C5\u5831"]
+- ["ST", "make\u5DE5\u7A0B"]
+- !private ["ST", "sorted"]
+- ["ST", "\u4F5C\u696D\u5225\u5DE5\u7A0B\u60C5\u5831\u578B"]
+- ["ST", "\u5DE5\u7A0B\u56F3\u30B0\u30EB\u30FC\u30D7\u578B"]
+- ["ST", "\u5DE5\u7A0B\u56F3\u5DE5\u7A0B\u578B"]
+- ["ST", "\u9032\u6357\u578B"]
+- !private ["SZ", "description"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "description"]
+- !private ["Sx", ""]
+- !private ["Sx", "description"]
+- !private ["s14_ArrayProtocolP", "append"]
+- !private ["s14_ArrayProtocolP", "findFirst"]
+- !private ["s14_ArrayProtocolP", "init"]
+- !private ["s14_ArrayProtocolP", "make\u5DE5\u7A0B"]
+- !private ["10Foundation13_CFBridgeableP", "append"]
+- !private ["10Foundation13_CFBridgeableP", "findFirst"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "make\u5DE5\u7A0B"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "description"]
+- !private ["s24_DestructorSafeContainerP", "append"]
+- !private ["s24_DestructorSafeContainerP", "findFirst"]
+- !private ["s24_DestructorSafeContainerP", "init"]
+- !private ["s24_DestructorSafeContainerP", "make\u5DE5\u7A0B"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "description"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "append"]
+- !private ["s19_HasContiguousBytesP", "findFirst"]
+- !private ["s19_HasContiguousBytesP", "init"]
+- !private ["s19_HasContiguousBytesP", "make\u5DE5\u7A0B"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "append"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "description"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "findFirst"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "make\u5DE5\u7A0B"]
+- !private ["10Foundation13_NSBridgeableP", "append"]
+- !private ["10Foundation13_NSBridgeableP", "findFirst"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "make\u5DE5\u7A0B"]
+- !private ["s21_ObjectiveCBridgeableP", "append"]
+- !private ["s21_ObjectiveCBridgeableP", "description"]
+- !private ["s21_ObjectiveCBridgeableP", "findFirst"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "make\u5DE5\u7A0B"]
+- !private ["11DataManager0015CqqJFcgCijwedvuO", "\u53D7\u53D6"]
+- !private ["11DataManager0015CqqJFcgCijwedvuO", "\u5B8C\u4E86"]
+- !private ["11DataManager0015CqqJFcgCijwedvuO", "\u958B\u59CB"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "init"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "\u5DE5\u7A0BID"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "\u5DE5\u7A0B\u540D\u79F0"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "\u5DE5\u7A0B\u7D42\u4E86\u65E5"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "\u5DE5\u7A0B\u958B\u59CB\u65E5"]
+- !private ["11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV", "\u7B2C1\u968E\u5C64\u30B0\u30EB\u30FC\u30D7ID"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "=="]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "Bool"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "Double"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "Hasher"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "String"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", ""]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "_rawHashValue"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "deinit"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "hash"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "hashValue"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "init"]
+- !private ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "makeID"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "order"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "\u30B0\u30EB\u30FC\u30D7ID"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "\u540D\u79F0"]
+- ["11DataManager0024qckBdrcGcCCBygAabJDadxAdC", "\u5DE5\u7A0B\u56F3\u30B0\u30EB\u30FC\u30D7\u578B"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "init"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5DE5\u7A0BID"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5DE5\u7A0B\u540D\u79F0"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5DE5\u7A0B\u7D42\u4E86\u65E5"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5DE5\u7A0B\u958B\u59CB\u65E5"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u7B2C1\u968E\u5C64\u30B0\u30EB\u30FC\u30D7ID"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "Date"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "Int"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "String"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "clone"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "deinit"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "init"]
+- !private ["11DataManager0017lcssnqGnbaCEBHacaC", "makeID"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u5099\u80031"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u540D\u79F0"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u5DE5\u7A0BID"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u5DE5\u7A0B\u56F3\u5DE5\u7A0B\u578B"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u7D42\u4E86\u65E5\u6642"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u884C\u756A\u53F7"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u9032\u6357\u5EA6"]
+- ["11DataManager0017lcssnqGnbaCEBHacaC", "\u958B\u59CB\u65E5\u6642"]
+- !private ["11DataManager0010xgsrBmxtAaV", "\u5165\u529B"]
+- !private ["11DataManager0010xgsrBmxtAaV", "\u539F\u7A3F"]
+- !private ["11DataManager0010xgsrBmxtAaV", "\u7BA1\u7406"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u767B\u9332\u65E5\u6642"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u8868\u793A\u7528\u4F1D\u7968\u756A\u53F7"]
+- !private ["11DataManager0012xgsBAyrGcfEyC", "\u9032\u6357\u4E00\u89A7"]
+- !private ["11DataManager0010xgsHHyimAbC", "\u767B\u9332\u65E5\u6642"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "Sa"
+- !private "SK"
+- !private "Sz"
+- !private "s7CVarArgP"
+- !private "s12CaseIterableP"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- !private "Se"
+- !private "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s17FixedWidthIntegerP"
+- "SH"
+- !private "s6HasherV"
+- !private "s12IdentifiableP"
+- !private "Si"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "Sj"
+- !private "Sk"
+- !private "Sm"
+- !private "SY"
+- !private "s10SIMDScalarP"
+- "ST"
+- !private "SZ"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "s14_ArrayProtocolP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s24_DestructorSafeContainerP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "11DataManager0015CqqJFcgCijwedvuO"
+- !private "11DataManager0025CqqtBeqCgHsaJBugseeDsolFaV"
+- "11DataManager0024qckBdrcGcCCBygAabJDadxAdC"
+- !private "11DataManager0020FckpDnEIAmCvavCzhuDcP"
+- "11DataManager0017lcssnqGnbaCEBHacaC"
+- !private "11DataManager0010xgsrBmxtAaV"
+- !private "11DataManager0012xgsBAyrGcfEyC"
+- !private "11DataManager0010xgsHHyimAbC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "318bda08406ac279690d47306aa23325"

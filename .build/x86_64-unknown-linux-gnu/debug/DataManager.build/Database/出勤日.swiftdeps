@@ -1,0 +1,551 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u51FA\u52E4\u65E5DB\u578B"
+provides-nominal:
+- "11DataManager0016DB_DcFcsIahEoAFxC"
+provides-member:
+- ["10Foundation4DateV", ""]
+- ["11DataManager3DayV", ""]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", ""]
+- ["10Foundation4DateV", "nextDay"]
+- ["10Foundation4DateV", "prevDay"]
+- ["10Foundation4DateV", "date"]
+- ["10Foundation4DateV", "dayNumber"]
+- ["10Foundation4DateV", "monthNumber"]
+- ["10Foundation4DateV", "yearNumber"]
+- ["10Foundation4DateV", "monthDayWeekString"]
+- ["10Foundation4DateV", "dayWeekString"]
+- ["10Foundation4DateV", "monthDayHourMinuteString"]
+- ["10Foundation4DateV", "dayWeekToMinuteString"]
+- ["10Foundation4DateV", "yearToMinuteString"]
+- ["11DataManager3DayV", "dayWeekString"]
+- ["11DataManager3DayV", "isWorkday"]
+- ["11DataManager3DayV", "isHoliday"]
+- ["11DataManager3DayV", "dynamicIsHoliday"]
+depends-top-level:
+- !private "!"
+- !private "<"
+- !private "<="
+- "=="
+- !private "??"
+- "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- "Date"
+- "Day"
+- "FloatLiteralType"
+- "Int"
+- "IntegerLiteralType"
+- "NSLock"
+- "Set"
+- "String"
+- !private "StringLiteralType"
+- !private "UnicodeScalarType"
+- !private "baseline"
+- !private "cal"
+- !private "day"
+- !private "dayNumber"
+- !private "dynamicIsHoliday"
+- !private "fatalError"
+- !private "holidays"
+- !private "isHoidayCacheData"
+- !private "isHoliday"
+- !private "isHolidayCache"
+- !private "lock"
+- !private "max"
+- !private "min"
+- !private "monthNumber"
+- !private "oldline"
+- !private "setIsHolidayCacheData"
+- !private "week"
+- !private "workdays"
+- "\u30B9\u30B1\u30B8\u30E5\u30FC\u30EB\u578B"
+- "\u51FA\u52E4\u65E5DB\u578B"
+depends-member:
+- !private ["Sa", "contains"]
+- !private ["SK", ""]
+- !private ["SK", "contains"]
+- !private ["10Foundation8CalendarV", "component"]
+- !private ["10Foundation8CalendarV", "date"]
+- !private ["10Foundation8CalendarV", "dateComponents"]
+- !private ["Sl", ""]
+- !private ["Sl", "contains"]
+- !private ["Sl", "max"]
+- !private ["Sl", "min"]
+- !private ["Sl", "removeAll"]
+- !private ["Sl", "subscript"]
+- ["SL", ""]
+- !private ["SL", "cal"]
+- !private ["SL", "day"]
+- !private ["SL", "dayNumber"]
+- !private ["SL", "dayWeekString"]
+- !private ["SL", "hourMinuteString"]
+- ["SL", "init"]
+- !private ["SL", "isHoliday"]
+- !private ["SL", "monthDayString"]
+- !private ["SL", "monthNumber"]
+- !private ["SL", "time"]
+- !private ["SL", "week"]
+- !private ["SL", "yearMonthDayString"]
+- !private ["SL", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["10Foundation8CalendarV9ComponentO", "day"]
+- !private ["10Foundation8CalendarV9ComponentO", "hour"]
+- !private ["10Foundation8CalendarV9ComponentO", "minute"]
+- !private ["10Foundation8CalendarV9ComponentO", "month"]
+- !private ["10Foundation8CalendarV9ComponentO", "year"]
+- !private ["10Foundation15ContiguousBytesP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "cal"]
+- !private ["s28CustomDebugStringConvertibleP", "component"]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "date"]
+- !private ["s28CustomDebugStringConvertibleP", "dateComponents"]
+- !private ["s28CustomDebugStringConvertibleP", "day"]
+- !private ["s28CustomDebugStringConvertibleP", "dayNumber"]
+- !private ["s28CustomDebugStringConvertibleP", "dayWeekString"]
+- !private ["s28CustomDebugStringConvertibleP", "hour"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "lock"]
+- !private ["s28CustomDebugStringConvertibleP", "max"]
+- !private ["s28CustomDebugStringConvertibleP", "min"]
+- !private ["s28CustomDebugStringConvertibleP", "minute"]
+- !private ["s28CustomDebugStringConvertibleP", "monthNumber"]
+- !private ["s28CustomDebugStringConvertibleP", "removeAll"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "time"]
+- !private ["s28CustomDebugStringConvertibleP", "unlock"]
+- !private ["s28CustomDebugStringConvertibleP", "week"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "cal"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "day"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "dayNumber"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "dayWeekString"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "monthNumber"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "time"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "week"]
+- !private ["s17CustomReflectableP", "cal"]
+- !private ["s17CustomReflectableP", "component"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s17CustomReflectableP", "date"]
+- !private ["s17CustomReflectableP", "dateComponents"]
+- !private ["s17CustomReflectableP", "day"]
+- !private ["s17CustomReflectableP", "dayNumber"]
+- !private ["s17CustomReflectableP", "dayWeekString"]
+- !private ["s17CustomReflectableP", "hour"]
+- !private ["s17CustomReflectableP", "max"]
+- !private ["s17CustomReflectableP", "min"]
+- !private ["s17CustomReflectableP", "minute"]
+- !private ["s17CustomReflectableP", "monthNumber"]
+- !private ["s17CustomReflectableP", "removeAll"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "time"]
+- !private ["s17CustomReflectableP", "week"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "cal"]
+- !private ["s23CustomStringConvertibleP", "component"]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["s23CustomStringConvertibleP", "date"]
+- !private ["s23CustomStringConvertibleP", "dateComponents"]
+- !private ["s23CustomStringConvertibleP", "day"]
+- !private ["s23CustomStringConvertibleP", "dayNumber"]
+- !private ["s23CustomStringConvertibleP", "dayWeekString"]
+- !private ["s23CustomStringConvertibleP", "hour"]
+- !private ["s23CustomStringConvertibleP", "hourMinuteString"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lock"]
+- !private ["s23CustomStringConvertibleP", "max"]
+- !private ["s23CustomStringConvertibleP", "min"]
+- !private ["s23CustomStringConvertibleP", "minute"]
+- !private ["s23CustomStringConvertibleP", "monthNumber"]
+- !private ["s23CustomStringConvertibleP", "removeAll"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "time"]
+- !private ["s23CustomStringConvertibleP", "unlock"]
+- !private ["s23CustomStringConvertibleP", "week"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "contains"]
+- ["10Foundation4DateV", "Date"]
+- ["10Foundation4DateV", "Int"]
+- ["10Foundation4DateV", "String"]
+- ["10Foundation4DateV", ""]
+- !private ["10Foundation4DateV", "cal"]
+- ["10Foundation4DateV", "date"]
+- !private ["10Foundation4DateV", "day"]
+- ["10Foundation4DateV", "dayNumber"]
+- ["10Foundation4DateV", "dayWeekString"]
+- ["10Foundation4DateV", "dayWeekToMinuteString"]
+- ["10Foundation4DateV", "monthDayHourMinuteString"]
+- ["10Foundation4DateV", "monthDayWeekString"]
+- ["10Foundation4DateV", "monthNumber"]
+- ["10Foundation4DateV", "nextDay"]
+- ["10Foundation4DateV", "prevDay"]
+- !private ["10Foundation4DateV", "time"]
+- !private ["10Foundation4DateV", "week"]
+- ["10Foundation4DateV", "yearNumber"]
+- ["10Foundation4DateV", "yearToMinuteString"]
+- !private ["10Foundation14DateComponentsV", "hour"]
+- !private ["10Foundation14DateComponentsV", "minute"]
+- ["11DataManager3DayV", "Bool"]
+- ["11DataManager3DayV", "String"]
+- ["11DataManager3DayV", ""]
+- !private ["11DataManager3DayV", "day"]
+- ["11DataManager3DayV", "dayWeekString"]
+- ["11DataManager3DayV", "dynamicIsHoliday"]
+- ["11DataManager3DayV", "init"]
+- ["11DataManager3DayV", "isHoliday"]
+- ["11DataManager3DayV", "isWorkday"]
+- !private ["11DataManager3DayV", "monthDayString"]
+- !private ["11DataManager3DayV", "week"]
+- !private ["11DataManager3DayV", "yearMonthDayString"]
+- !private ["11DataManager3DayV", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["Se", "cal"]
+- !private ["Se", "component"]
+- !private ["Se", "contains"]
+- !private ["Se", "date"]
+- !private ["Se", "dateComponents"]
+- !private ["Se", "day"]
+- !private ["Se", "dayNumber"]
+- !private ["Se", "dayWeekString"]
+- !private ["Se", "hour"]
+- !private ["Se", "hourMinuteString"]
+- ["Se", "init"]
+- !private ["Se", "isHoliday"]
+- !private ["Se", "max"]
+- !private ["Se", "min"]
+- !private ["Se", "minute"]
+- !private ["Se", "monthDayString"]
+- !private ["Se", "monthNumber"]
+- !private ["Se", "removeAll"]
+- !private ["Se", "subscript"]
+- !private ["Se", "time"]
+- !private ["Se", "week"]
+- !private ["Se", "yearMonthDayString"]
+- !private ["Se", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- !private ["SD", "removeAll"]
+- !private ["SD", "subscript"]
+- !private ["SE", "cal"]
+- !private ["SE", "component"]
+- !private ["SE", "contains"]
+- !private ["SE", "date"]
+- !private ["SE", "dateComponents"]
+- !private ["SE", "day"]
+- !private ["SE", "dayNumber"]
+- !private ["SE", "dayWeekString"]
+- !private ["SE", "hour"]
+- !private ["SE", "hourMinuteString"]
+- ["SE", "init"]
+- !private ["SE", "isHoliday"]
+- !private ["SE", "max"]
+- !private ["SE", "min"]
+- !private ["SE", "minute"]
+- !private ["SE", "monthDayString"]
+- !private ["SE", "monthNumber"]
+- !private ["SE", "removeAll"]
+- !private ["SE", "subscript"]
+- !private ["SE", "time"]
+- !private ["SE", "week"]
+- !private ["SE", "yearMonthDayString"]
+- !private ["SE", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["SQ", "=="]
+- ["SQ", ""]
+- !private ["SQ", "cal"]
+- !private ["SQ", "component"]
+- !private ["SQ", "contains"]
+- !private ["SQ", "date"]
+- !private ["SQ", "dateComponents"]
+- !private ["SQ", "day"]
+- !private ["SQ", "dayNumber"]
+- !private ["SQ", "dayWeekString"]
+- !private ["SQ", "description"]
+- !private ["SQ", "hour"]
+- !private ["SQ", "hourMinuteString"]
+- ["SQ", "init"]
+- !private ["SQ", "isHoliday"]
+- !private ["SQ", "lock"]
+- !private ["SQ", "max"]
+- !private ["SQ", "min"]
+- !private ["SQ", "minute"]
+- !private ["SQ", "month"]
+- !private ["SQ", "monthDayString"]
+- !private ["SQ", "monthNumber"]
+- !private ["SQ", "removeAll"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "time"]
+- !private ["SQ", "unlock"]
+- !private ["SQ", "week"]
+- !private ["SQ", "year"]
+- !private ["SQ", "yearMonthDayString"]
+- !private ["SQ", "\u51FA\u52E4\u65E5DB\u578B"]
+- ["SQ", "\u571F"]
+- ["SQ", "\u65E5"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "contains"]
+- ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "max"]
+- !private ["s25ExpressibleByArrayLiteralP", "min"]
+- ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "removeAll"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["SH", ""]
+- !private ["SH", "cal"]
+- !private ["SH", "component"]
+- !private ["SH", "contains"]
+- !private ["SH", "date"]
+- !private ["SH", "dateComponents"]
+- !private ["SH", "day"]
+- !private ["SH", "dayNumber"]
+- !private ["SH", "dayWeekString"]
+- !private ["SH", "description"]
+- !private ["SH", "hour"]
+- !private ["SH", "hourMinuteString"]
+- ["SH", "init"]
+- !private ["SH", "isHoliday"]
+- !private ["SH", "lock"]
+- !private ["SH", "max"]
+- !private ["SH", "min"]
+- !private ["SH", "minute"]
+- !private ["SH", "month"]
+- !private ["SH", "monthDayString"]
+- !private ["SH", "monthNumber"]
+- !private ["SH", "removeAll"]
+- !private ["SH", "subscript"]
+- !private ["SH", "time"]
+- !private ["SH", "unlock"]
+- !private ["SH", "week"]
+- !private ["SH", "year"]
+- !private ["SH", "yearMonthDayString"]
+- !private ["SH", "\u51FA\u52E4\u65E5DB\u578B"]
+- ["SH", "\u571F"]
+- ["SH", "\u65E5"]
+- !private ["SM", ""]
+- !private ["SM", "contains"]
+- !private ["10Foundation19MutableDataProtocolP", "contains"]
+- ["10Foundation6NSLockC", "init"]
+- !private ["10Foundation6NSLockC", "lock"]
+- !private ["10Foundation6NSLockC", "unlock"]
+- ["10Foundation9NSLockingP", "init"]
+- !private ["10Foundation9NSLockingP", "lock"]
+- !private ["10Foundation9NSLockingP", "unlock"]
+- ["10Foundation8NSObjectC", ""]
+- ["10Foundation8NSObjectC", "init"]
+- !private ["10Foundation8NSObjectC", "lock"]
+- !private ["10Foundation8NSObjectC", "unlock"]
+- ["10Foundation16NSObjectProtocolP", "init"]
+- !private ["10Foundation16NSObjectProtocolP", "lock"]
+- !private ["10Foundation16NSObjectProtocolP", "unlock"]
+- !private ["Sk", ""]
+- !private ["Sk", "contains"]
+- !private ["Sm", ""]
+- !private ["Sm", "contains"]
+- !private ["SY", "description"]
+- ["SY", "\u571F"]
+- ["SY", "\u65E5"]
+- !private ["10Foundation20ReferenceConvertibleP", ""]
+- !private ["10Foundation20ReferenceConvertibleP", "cal"]
+- !private ["10Foundation20ReferenceConvertibleP", "component"]
+- !private ["10Foundation20ReferenceConvertibleP", "date"]
+- !private ["10Foundation20ReferenceConvertibleP", "dateComponents"]
+- !private ["10Foundation20ReferenceConvertibleP", "day"]
+- !private ["10Foundation20ReferenceConvertibleP", "dayNumber"]
+- !private ["10Foundation20ReferenceConvertibleP", "dayWeekString"]
+- !private ["10Foundation20ReferenceConvertibleP", "hour"]
+- !private ["10Foundation20ReferenceConvertibleP", "minute"]
+- !private ["10Foundation20ReferenceConvertibleP", "monthNumber"]
+- !private ["10Foundation20ReferenceConvertibleP", "time"]
+- !private ["10Foundation20ReferenceConvertibleP", "week"]
+- !private ["ST", "Element"]
+- !private ["ST", ""]
+- !private ["ST", "contains"]
+- !private ["ST", "max"]
+- !private ["ST", "min"]
+- !private ["ST", "removeAll"]
+- !private ["ST", "subscript"]
+- !private ["Sh", "contains"]
+- !private ["Sh", "max"]
+- !private ["Sh", "min"]
+- !private ["s10SetAlgebraP", "contains"]
+- !private ["s10SetAlgebraP", "max"]
+- !private ["s10SetAlgebraP", "min"]
+- !private ["Sx", "day"]
+- !private ["Sx", "dayWeekString"]
+- ["Sx", "init"]
+- !private ["Sx", "isHoliday"]
+- !private ["Sx", "monthDayString"]
+- !private ["Sx", "week"]
+- !private ["Sx", "yearMonthDayString"]
+- !private ["Sx", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["11DataManager4TimeV", "hourMinuteString"]
+- !private ["s14_ArrayProtocolP", "contains"]
+- !private ["10Foundation13_CFBridgeableP", "cal"]
+- !private ["10Foundation13_CFBridgeableP", "component"]
+- !private ["10Foundation13_CFBridgeableP", "contains"]
+- !private ["10Foundation13_CFBridgeableP", "date"]
+- !private ["10Foundation13_CFBridgeableP", "dateComponents"]
+- !private ["10Foundation13_CFBridgeableP", "day"]
+- !private ["10Foundation13_CFBridgeableP", "dayNumber"]
+- !private ["10Foundation13_CFBridgeableP", "dayWeekString"]
+- !private ["10Foundation13_CFBridgeableP", "max"]
+- !private ["10Foundation13_CFBridgeableP", "min"]
+- !private ["10Foundation13_CFBridgeableP", "monthNumber"]
+- !private ["10Foundation13_CFBridgeableP", "removeAll"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "time"]
+- !private ["10Foundation13_CFBridgeableP", "week"]
+- !private ["s24_DestructorSafeContainerP", "contains"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "contains"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "contains"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "max"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "min"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "removeAll"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation14_MutableBoxingP", "component"]
+- !private ["10Foundation14_MutableBoxingP", "date"]
+- !private ["10Foundation14_MutableBoxingP", "dateComponents"]
+- !private ["10Foundation14_MutableBoxingP", "hour"]
+- !private ["10Foundation14_MutableBoxingP", "minute"]
+- !private ["10Foundation13_NSBridgeableP", "cal"]
+- !private ["10Foundation13_NSBridgeableP", "component"]
+- !private ["10Foundation13_NSBridgeableP", "contains"]
+- !private ["10Foundation13_NSBridgeableP", "date"]
+- !private ["10Foundation13_NSBridgeableP", "dateComponents"]
+- !private ["10Foundation13_NSBridgeableP", "day"]
+- !private ["10Foundation13_NSBridgeableP", "dayNumber"]
+- !private ["10Foundation13_NSBridgeableP", "dayWeekString"]
+- !private ["10Foundation13_NSBridgeableP", "hour"]
+- !private ["10Foundation13_NSBridgeableP", "max"]
+- !private ["10Foundation13_NSBridgeableP", "min"]
+- !private ["10Foundation13_NSBridgeableP", "minute"]
+- !private ["10Foundation13_NSBridgeableP", "monthNumber"]
+- !private ["10Foundation13_NSBridgeableP", "removeAll"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "time"]
+- !private ["10Foundation13_NSBridgeableP", "week"]
+- !private ["s21_ObjectiveCBridgeableP", "cal"]
+- !private ["s21_ObjectiveCBridgeableP", "component"]
+- !private ["s21_ObjectiveCBridgeableP", "contains"]
+- !private ["s21_ObjectiveCBridgeableP", "date"]
+- !private ["s21_ObjectiveCBridgeableP", "dateComponents"]
+- !private ["s21_ObjectiveCBridgeableP", "day"]
+- !private ["s21_ObjectiveCBridgeableP", "dayNumber"]
+- !private ["s21_ObjectiveCBridgeableP", "dayWeekString"]
+- !private ["s21_ObjectiveCBridgeableP", "hour"]
+- !private ["s21_ObjectiveCBridgeableP", "max"]
+- !private ["s21_ObjectiveCBridgeableP", "min"]
+- !private ["s21_ObjectiveCBridgeableP", "minute"]
+- !private ["s21_ObjectiveCBridgeableP", "monthNumber"]
+- !private ["s21_ObjectiveCBridgeableP", "removeAll"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "time"]
+- !private ["s21_ObjectiveCBridgeableP", "week"]
+- !private ["11DataManager0016rckobCpEaJgDDAEaC", "find"]
+- !private ["11DataManager0016rckobCpEaJgDDAEaC", "\u7A2E\u985E"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "Bool"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "Day"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "NSLock"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "Set"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "baseline"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "deinit"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "dynamicIsHoliday"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "fatalError"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "flushCache"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "holidays"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "init"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "isHoidayCacheData"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "isHoliday"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "isHolidayCache"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "lock"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "max"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "min"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "oldline"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "setIsHolidayCacheData"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "shared"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "workdays"]
+- !private ["11DataManager0016DB_DcFcsIahEoAFxC", "\u30B9\u30B1\u30B8\u30E5\u30FC\u30EB\u578B"]
+- ["11DataManager0016DB_DcFcsIahEoAFxC", "\u51FA\u52E4\u65E5DB\u578B"]
+- !private ["11DataManager007xgsDBDkO", "RawValue"]
+- !private ["11DataManager007xgsDBDkO", ""]
+- !private ["11DataManager007xgsDBDkO", "description"]
+- ["11DataManager007xgsDBDkO", "\u571F"]
+- ["11DataManager007xgsDBDkO", "\u65E5"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- !private "10Foundation8CalendarV"
+- !private "Sl"
+- "SL"
+- !private "10Foundation8CalendarV9ComponentO"
+- !private "10Foundation15ContiguousBytesP"
+- "s28CustomDebugStringConvertibleP"
+- !private "s34CustomPlaygroundDisplayConvertibleP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- "10Foundation4DateV"
+- !private "10Foundation14DateComponentsV"
+- "11DataManager3DayV"
+- "Se"
+- !private "s26DefaultStringInterpolationV"
+- !private "SD"
+- "SE"
+- "SQ"
+- "s25ExpressibleByArrayLiteralP"
+- "s30ExpressibleByDictionaryLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- "SH"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- "10Foundation6NSLockC"
+- "10Foundation9NSLockingP"
+- "10Foundation8NSObjectC"
+- "10Foundation16NSObjectProtocolP"
+- !private "Sk"
+- !private "Sm"
+- "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "ST"
+- !private "Sh"
+- !private "s10SetAlgebraP"
+- "Sx"
+- !private "s27StringInterpolationProtocolP"
+- !private "s16TextOutputStreamP"
+- !private "11DataManager4TimeV"
+- !private "s14_ArrayProtocolP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation14_MutableBoxingP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "11DataManager0016rckobCpEaJgDDAEaC"
+- "11DataManager0016DB_DcFcsIahEoAFxC"
+- "11DataManager007xgsDBDkO"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "1c602bdb043f936618c752ac0e66ec52"

@@ -42,6 +42,7 @@ public enum 伝票種類型: CustomStringConvertible {
         }
     }
     
+    #if !os(Linux)
     public var color: DMColor {
         switch self{
         case .箱文字:
@@ -57,6 +58,7 @@ public enum 伝票種類型: CustomStringConvertible {
         }
 
     }
+    #endif
 }
 
 extension FileMakerRecord {

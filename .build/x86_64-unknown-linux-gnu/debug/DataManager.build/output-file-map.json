@@ -1,0 +1,719 @@
+{
+  "": {
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/master.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/インシデント.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/インシデント.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/インシデント.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/インシデント~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/インシデント.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/カレンダー.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/カレンダー.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/カレンダー.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/カレンダー~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/カレンダー.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/スケジュール.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/スケジュール.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/スケジュール.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/スケジュール~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/スケジュール.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/作業種別.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業種別.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業種別.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業種別~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業種別.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/作業系列.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業系列.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業系列.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業系列~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/作業系列.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/出勤日.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/出勤日.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/出勤日.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/出勤日~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/出勤日.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/指示書.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/指示書ボルト欄.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書ボルト欄.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書ボルト欄.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書ボルト欄~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書ボルト欄.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/指示書変更内容履歴.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書変更内容履歴.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書変更内容履歴.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書変更内容履歴~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/指示書変更内容履歴.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/発注.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/発注.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/発注.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/発注~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/発注.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/社員.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/社員.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/社員.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/社員~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/社員.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/製造グループ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/製造グループ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/製造グループ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/製造グループ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/製造グループ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/資材.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/資材入出庫.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材入出庫.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材入出庫.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材入出庫~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/資材入出庫.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/進捗.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/進捗.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/進捗.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/進捗~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/進捗.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/部署.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部署.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部署.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部署~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部署.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Database/部門.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部門.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部門.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部門~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Database/部門.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/FileMaker/FileMakerDB.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerDB.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerDB.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerDB~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerDB.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/FileMaker/FileMakerError.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerError.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerError.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerError~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerError.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/FileMaker/FileMakerRecord.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerRecord.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerRecord.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerRecord~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerRecord.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/FileMaker/FileMakerSession.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerSession.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerSession.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerSession~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/FileMaker/FileMakerSession.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Alert.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Alert.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Alert.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Alert~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Alert.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Bundle.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Bundle.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Bundle.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Bundle~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Bundle.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/ChangeLog.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/ChangeLog.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/ChangeLog.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/ChangeLog~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/ChangeLog.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Concurrent.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Concurrent.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Concurrent.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Concurrent~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Concurrent.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Date/Date.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Date.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Date.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Date~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Date.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Date/Day.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Day.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Day.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Day~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Day.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Date/Month.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Month.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Month.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Month~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Month.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Date/Time.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Time.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Time.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Time~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Date/Time.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/File.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/File.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/File.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/File~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/File.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Future.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Future.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Future.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Future~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Future.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Int.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Int.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Int.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Int~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Int.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/PropertyWrapper.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/PropertyWrapper.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/PropertyWrapper.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/PropertyWrapper~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/PropertyWrapper.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/RunLoop.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/RunLoop.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/RunLoop.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/RunLoop~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/RunLoop.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Sequence.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Sequence.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Sequence.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Sequence~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Sequence.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/SerialCache.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialCache.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialCache.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialCache~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialCache.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/SerialNumber.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialNumber.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialNumber.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialNumber~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/SerialNumber.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Set.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Set.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Set.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Set~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Set.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/DMFormula.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMFormula.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMFormula.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMFormula~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMFormula.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/DMScanner.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMScanner.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMScanner.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMScanner~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/DMScanner.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/NSAttributedString.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/NSAttributedString.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/NSAttributedString.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/NSAttributedString~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/NSAttributedString.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/String.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/String.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/String.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/String~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/String.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/TextReader.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextReader.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextReader.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextReader~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextReader.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Text/TextWriter.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextWriter.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextWriter.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextWriter~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Text/TextWriter.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/TwoElementCache.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/TwoElementCache.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/TwoElementCache.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/TwoElementCache~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/TwoElementCache.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/URL.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/URL.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/URL.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/URL~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/URL.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/UserDefaults.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaults.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaults.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaults~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaults.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/UserDefaultsUtility.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaultsUtility.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaultsUtility.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaultsUtility~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/UserDefaultsUtility.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Utility.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Utility.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Utility.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Utility~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Utility.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/Utility/Version.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Version.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Version.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Version~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/Utility/Version.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/レーザー加工機.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/レーザー加工機.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/レーザー加工機.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/レーザー加工機~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/レーザー加工機.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/伝票状態.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票状態.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票状態.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票状態~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票状態.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/伝票番号.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票番号.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票番号.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票番号~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票番号.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/伝票種別.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種別.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種別.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種別~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種別.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/伝票種類.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種類.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種類.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種類~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/伝票種類.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/作業内容.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/作業内容.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/作業内容.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/作業内容~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/作業内容.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/入力区分.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/入力区分.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/入力区分.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/入力区分~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/入力区分.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/分量.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/分量.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/分量.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/分量~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/分量.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/取引先.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/取引先.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/取引先.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/取引先~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/取引先.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/工程.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/工程状態.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程状態.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程状態.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程状態~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/工程状態.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/承認状態.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/承認状態.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/承認状態.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/承認状態~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/承認状態.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/指定注文番号型.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/指定注文番号型.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/指定注文番号型.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/指定注文番号型~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/指定注文番号型.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/注文番号.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/注文番号.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/注文番号.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/注文番号~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/注文番号.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/略号.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/略号.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/略号.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/略号~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/略号.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/発注状態.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/発注状態.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/発注状態.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/発注状態~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/発注状態.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/pm_osakaname/経理状態.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/経理状態.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/経理状態.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/経理状態~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/pm_osakaname/経理状態.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/ラベル印刷/BarCode.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/ラベル印刷/BarCode.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/ラベル印刷/BarCode.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/ラベル印刷/BarCode~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/ラベル印刷/BarCode.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/互換性/Cocoa.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/Cocoa.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/Cocoa.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/Cocoa~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/Cocoa.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/互換性/KeyModifiers.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/KeyModifiers.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/KeyModifiers.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/KeyModifiers~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/KeyModifiers.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/互換性/NCtoDM.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/NCtoDM.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/NCtoDM.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/NCtoDM~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/NCtoDM.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/互換性/UIKit.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/UIKit.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/UIKit.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/UIKit~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/互換性/UIKit.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/作業ツリー/作業.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/作業ツリー/作業ステージ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業ステージ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業ステージ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業ステージ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/作業ステージ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/作業ツリー/指示書分析.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/指示書分析.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/指示書分析.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/指示書分析~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/指示書分析.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/作業ツリー/部署作業者分析.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/部署作業者分析.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/部署作業者分析.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/部署作業者分析~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/作業ツリー/部署作業者分析.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/共通ロジック/ProgressTVData.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/ProgressTVData.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/ProgressTVData.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/ProgressTVData~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/ProgressTVData.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/共通ロジック/TargetMode.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/TargetMode.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/TargetMode.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/TargetMode~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/共通ロジック/TargetMode.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/TableGenerator.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/TableGenerator.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/TableGenerator.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/TableGenerator~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/TableGenerator.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/管理資材.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/管理資材（パイプ）.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（パイプ）.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（パイプ）.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（パイプ）~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（パイプ）.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/管理資材（板）.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（板）.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（板）.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（板）~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/管理資材（板）.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/資材入出庫出力.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材入出庫出力.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材入出庫出力.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材入出庫出力~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材入出庫出力.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/資材要求出力.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材要求出力.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材要求出力.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材要求出力~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/資材要求出力.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/出力/進捗出力.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/進捗出力.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/進捗出力.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/進捗出力~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/出力/進捗出力.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程分析/作業パターン.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/作業パターン.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/作業パターン.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/作業パターン~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/作業パターン.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程分析/工程必要チェック.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/工程必要チェック.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/工程必要チェック.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/工程必要チェック~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/工程必要チェック.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程分析/箱文字工程優先度.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/箱文字工程優先度.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/箱文字工程優先度.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/箱文字工程優先度~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程分析/箱文字工程優先度.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/カレンダ情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/カレンダ情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/カレンダ情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/カレンダ情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/カレンダ情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/グループ階層.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/グループ階層.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/グループ階層.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/グループ階層~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/グループ階層.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/コンストレイン情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/コンストレイン情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/コンストレイン情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/コンストレイン情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/コンストレイン情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/マイルストーン情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/マイルストーン情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/マイルストーン情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/マイルストーン情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/マイルストーン情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/作業別工程情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/作業別工程情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/作業別工程情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/作業別工程情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/作業別工程情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/供給資源情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/供給資源情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/供給資源情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/供給資源情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/供給資源情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/区分情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/区分情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/区分情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/区分情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/区分情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/工程図.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/工程図.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/工程図.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/工程図~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/工程図.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/必要資源情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/必要資源情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/必要資源情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/必要資源情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/必要資源情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/工程図/資源マスタ情報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/資源マスタ情報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/資源マスタ情報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/資源マスタ情報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/工程図/資源マスタ情報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/入出庫キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/入出庫キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/入出庫キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/入出庫キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/入出庫キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/取引先キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/取引先キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/取引先キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/取引先キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/取引先キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/在庫キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/在庫キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/在庫キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/在庫キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/在庫キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/指示書キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/指示書進捗キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書進捗キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書進捗キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書進捗キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/指示書進捗キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/最終発注単価キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/最終発注単価キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/最終発注単価キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/最終発注単価キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/最終発注単価キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/箱文字優先度キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/箱文字優先度キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/箱文字優先度キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/箱文字優先度キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/箱文字優先度キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/資材キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/状況キャッシュ/資材発注キャッシュ.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材発注キャッシュ.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材発注キャッシュ.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材発注キャッシュ~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/状況キャッシュ/資材発注キャッシュ.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/指示書文字数.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/指示書文字数.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/指示書文字数.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/指示書文字数~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/指示書文字数.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/箱文字優先度.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字優先度.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字優先度.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字優先度~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字優先度.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/箱文字日報.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字日報.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字日報.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字日報~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/箱文字日報.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/記録.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/記録.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/記録.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/記録~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/記録.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/資材使用記録.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材使用記録.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材使用記録.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材使用記録~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材使用記録.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/記録/資材入庫状況.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材入庫状況.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材入庫状況.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材入庫状況~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/記録/資材入庫状況.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/資材使用記録/板加工在庫.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/板加工在庫.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/板加工在庫.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/板加工在庫~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/板加工在庫.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/資材使用記録/資材(コイル情報).swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(コイル情報).d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(コイル情報).swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(コイル情報)~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(コイル情報).swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/資材使用記録/資材(板情報).swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(板情報).d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(板情報).swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(板情報)~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材(板情報).swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/資材使用記録/資材（パイプ情報）.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（パイプ情報）.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（パイプ情報）.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（パイプ情報）~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（パイプ情報）.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/Sources/DataManager/資材使用記録/資材（ボルト情報）.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（ボルト情報）.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（ボルト情報）.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（ボルト情報）~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/資材使用記録/資材（ボルト情報）.swiftdeps"
+  },
+  "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/DerivedSources/resource_bundle_accessor.swift": {
+    "dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/resource_bundle_accessor.d",
+    "object": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/resource_bundle_accessor.swift.o",
+    "swiftmodule": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/resource_bundle_accessor~partial.swiftmodule",
+    "swift-dependencies": "/home/manager/prog/DataManager/.build/x86_64-unknown-linux-gnu/debug/DataManager.build/resource_bundle_accessor.swiftdeps"
+  }
+}

@@ -46,6 +46,7 @@ public final class 工程図型 {
         self.マイルストーン情報 = []
     }
     
+    #if !os(Linux)
     public func makeFile() -> FileWrapper {
         let file = FileWrapper(directoryWithFileWrappers: [
             資源マスタ情報型.filename: 資源マスタ情報.makeFile(),
@@ -68,6 +69,7 @@ public final class 工程図型 {
         let file = makeFile()
         try file.write(to: url, options: .atomic, originalContentsURL: nil)
     }
+    #endif
 }
 
 public extension 工程図型 {
@@ -149,6 +151,7 @@ public protocol 工程図データ型 {
     static var filename : String { get }
 }
 
+#if !os(Linux)
 public extension Sequence where Element : 工程図データ型 {
     func makeFile() -> FileWrapper {
         let columnsCount = Element.header.split(separator: "\t").count
@@ -164,6 +167,7 @@ public extension Sequence where Element : 工程図データ型 {
         return file
     }
 }
+#endif
 
 public extension Day {
     var 工程図年月日 : String {

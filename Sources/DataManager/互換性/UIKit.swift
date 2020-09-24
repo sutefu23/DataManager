@@ -18,7 +18,8 @@ public extension DMPrintInfo {
 }
 #endif
 
-#if os(iOS) || os(tvOS)
+#if os(Linux)
+#elseif os(iOS) || os(tvOS)
 import UIKit
 
 public typealias DMColor = UIColor
@@ -107,7 +108,7 @@ public extension UIView {
         return self.searchView(blockName) as? UIImageView
     }
     
-    #if os(tvOS)
+    #if os(tvOS) || os(Linux)
     #else
     private func searchSwitch(_ blockName: String) -> UISwitch? {
         return self.searchView(blockName) as? UISwitch
@@ -130,7 +131,7 @@ public extension UIView {
         view.text = text
         return view
     }
-    
+
     @discardableResult func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
         if let attr = text as? NSAttributedString {
@@ -176,7 +177,6 @@ public extension UIView {
     
 }
 
-#endif
 
 public extension DMColor {
     func dark(brightnessRatio: CGFloat = 0.8) -> DMColor {
@@ -189,7 +189,7 @@ public extension DMColor {
         return DMColor(hue: hue, saturation: saturation, brightness: brightness * brightnessRatio, alpha: alpha)
     }
 }
-
+#endif
 
 #if os(iOS)
 extension UIResponder {

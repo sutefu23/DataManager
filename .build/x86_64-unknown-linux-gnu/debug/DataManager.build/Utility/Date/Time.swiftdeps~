@@ -1,0 +1,677 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Time"
+- "-"
+- "time0400"
+- "time0830"
+- "time1000"
+- "time1010"
+- "time1200"
+- "time1300"
+- "time1500"
+- "time1510"
+- "time1730"
+- "time1740"
+- "time2200"
+- "<"
+provides-nominal:
+- "11DataManager4TimeV"
+- "11DataManager4TimeV10CodingKeysO"
+provides-member:
+- ["11DataManager4TimeV", ""]
+- ["11DataManager4TimeV10CodingKeysO", ""]
+- ["10Foundation4DateV", ""]
+- ["10Foundation4DateV", "time"]
+depends-top-level:
+- !private "!="
+- !private "*"
+- !private "+"
+- "-"
+- !private "..."
+- "<"
+- "<="
+- "=="
+- ">"
+- ">="
+- !private "??"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- "Codable"
+- "CodingKey"
+- !private "CodingKeys"
+- "Comparable"
+- "CustomStringConvertible"
+- "Date"
+- "Decoder"
+- "Encoder"
+- !private "ExtendedGraphemeClusterType"
+- "FloatLiteralType"
+- "Hashable"
+- "Int"
+- "IntegerLiteralType"
+- "String"
+- "StringLiteralType"
+- "StringProtocol"
+- "Time"
+- "TimeInterval"
+- !private "UnicodeScalarType"
+- !private "_findStringSwitchCase"
+- !private "cal"
+- !private "hour"
+- !private "hourMinuteSecondString"
+- !private "make2dig"
+- !private "minute"
+- !private "second"
+- "time0400"
+- "time0830"
+- "time1000"
+- "time1010"
+- "time1200"
+- "time1300"
+- "time1500"
+- "time1510"
+- "time1730"
+- "time1740"
+- "time2200"
+- !private "~="
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "init"]
+- !private ["Sa", "count"]
+- !private ["Sa", "subscript"]
+- !private ["SK", ""]
+- !private ["SK", "contains"]
+- !private ["SK", "count"]
+- !private ["SK", "split"]
+- !private ["SK", "subscript"]
+- !private ["SB", "init"]
+- !private ["Sz", ""]
+- !private ["Sz", "init"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "init"]
+- !private ["10Foundation8CalendarV", "dateComponents"]
+- !private ["SN", "contains"]
+- ["s9CodingKeyP", "=="]
+- ["s9CodingKeyP", "Default_RawValue"]
+- ["s9CodingKeyP", "RawValue"]
+- ["s9CodingKeyP", ""]
+- ["s9CodingKeyP", "_Default_RawValue"]
+- !private ["s9CodingKeyP", "_findStringSwitchCase"]
+- ["s9CodingKeyP", "_rawHashValue"]
+- ["s9CodingKeyP", "debugDescription"]
+- ["s9CodingKeyP", "description"]
+- !private ["s9CodingKeyP", "findStringSwitchCase"]
+- ["s9CodingKeyP", "hash"]
+- ["s9CodingKeyP", "hashValue"]
+- !private ["s9CodingKeyP", "hour"]
+- ["s9CodingKeyP", "init"]
+- ["s9CodingKeyP", "intValue"]
+- !private ["s9CodingKeyP", "minute"]
+- ["s9CodingKeyP", "rawValue"]
+- !private ["s9CodingKeyP", "second"]
+- ["s9CodingKeyP", "stringValue"]
+- ["11DataManager4TimeV10CodingKeysO", "=="]
+- ["11DataManager4TimeV10CodingKeysO", "Default_RawValue"]
+- ["11DataManager4TimeV10CodingKeysO", "RawValue"]
+- ["11DataManager4TimeV10CodingKeysO", ""]
+- ["11DataManager4TimeV10CodingKeysO", "_Default_RawValue"]
+- !private ["11DataManager4TimeV10CodingKeysO", "_findStringSwitchCase"]
+- ["11DataManager4TimeV10CodingKeysO", "_rawHashValue"]
+- ["11DataManager4TimeV10CodingKeysO", "debugDescription"]
+- ["11DataManager4TimeV10CodingKeysO", "description"]
+- !private ["11DataManager4TimeV10CodingKeysO", "findStringSwitchCase"]
+- ["11DataManager4TimeV10CodingKeysO", "hash"]
+- ["11DataManager4TimeV10CodingKeysO", "hashValue"]
+- ["11DataManager4TimeV10CodingKeysO", "hour"]
+- ["11DataManager4TimeV10CodingKeysO", "init"]
+- ["11DataManager4TimeV10CodingKeysO", "intValue"]
+- ["11DataManager4TimeV10CodingKeysO", "minute"]
+- ["11DataManager4TimeV10CodingKeysO", "rawValue"]
+- ["11DataManager4TimeV10CodingKeysO", "second"]
+- ["11DataManager4TimeV10CodingKeysO", "stringValue"]
+- !private ["Sl", ""]
+- !private ["Sl", "contains"]
+- !private ["Sl", "count"]
+- !private ["Sl", "split"]
+- !private ["Sl", "subscript"]
+- ["SL", "<"]
+- ["SL", "<="]
+- ["SL", "=="]
+- ["SL", ">"]
+- ["SL", ">="]
+- !private ["SL", "CodingKeys"]
+- !private ["SL", "Date"]
+- !private ["SL", "Int"]
+- !private ["SL", "Time"]
+- ["SL", ""]
+- !private ["SL", "__derived_struct_equals"]
+- !private ["SL", "_findStringSwitchCase"]
+- ["SL", "_rawHashValue"]
+- !private ["SL", "allSeconds"]
+- !private ["SL", "cal"]
+- ["SL", "description"]
+- ["SL", "encode"]
+- !private ["SL", "findStringSwitchCase"]
+- ["SL", "hash"]
+- ["SL", "hashValue"]
+- !private ["SL", "hour"]
+- !private ["SL", "hourMinuteSecondString"]
+- ["SL", "init"]
+- !private ["SL", "make2dig"]
+- !private ["SL", "minute"]
+- !private ["SL", "second"]
+- !private ["SL", "split"]
+- !private ["SL", "time"]
+- !private ["10Foundation8CalendarV9ComponentO", "hour"]
+- !private ["10Foundation8CalendarV9ComponentO", "minute"]
+- !private ["10Foundation8CalendarV9ComponentO", "second"]
+- !private ["10Foundation15ContiguousBytesP", "count"]
+- !private ["10Foundation15ContiguousBytesP", "subscript"]
+- ["s28CustomDebugStringConvertibleP", "=="]
+- ["s28CustomDebugStringConvertibleP", "Default_RawValue"]
+- ["s28CustomDebugStringConvertibleP", "RawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "Time"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "_Default_RawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "_findStringSwitchCase"]
+- ["s28CustomDebugStringConvertibleP", "_rawHashValue"]
+- !private ["s28CustomDebugStringConvertibleP", "cal"]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "count"]
+- !private ["s28CustomDebugStringConvertibleP", "dateComponents"]
+- ["s28CustomDebugStringConvertibleP", "debugDescription"]
+- ["s28CustomDebugStringConvertibleP", "description"]
+- !private ["s28CustomDebugStringConvertibleP", "findStringSwitchCase"]
+- ["s28CustomDebugStringConvertibleP", "hash"]
+- ["s28CustomDebugStringConvertibleP", "hashValue"]
+- !private ["s28CustomDebugStringConvertibleP", "hour"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "intValue"]
+- !private ["s28CustomDebugStringConvertibleP", "minute"]
+- ["s28CustomDebugStringConvertibleP", "rawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "second"]
+- ["s28CustomDebugStringConvertibleP", "stringValue"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "time"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "Time"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "cal"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "init"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "time"]
+- !private ["s17CustomReflectableP", "Time"]
+- !private ["s17CustomReflectableP", "cal"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s17CustomReflectableP", "count"]
+- !private ["s17CustomReflectableP", "dateComponents"]
+- !private ["s17CustomReflectableP", "hour"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "minute"]
+- !private ["s17CustomReflectableP", "second"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "time"]
+- ["s23CustomStringConvertibleP", "<"]
+- ["s23CustomStringConvertibleP", "<="]
+- ["s23CustomStringConvertibleP", "=="]
+- ["s23CustomStringConvertibleP", ">"]
+- ["s23CustomStringConvertibleP", ">="]
+- !private ["s23CustomStringConvertibleP", "CodingKeys"]
+- !private ["s23CustomStringConvertibleP", "Date"]
+- ["s23CustomStringConvertibleP", "Default_RawValue"]
+- !private ["s23CustomStringConvertibleP", "Int"]
+- ["s23CustomStringConvertibleP", "RawValue"]
+- !private ["s23CustomStringConvertibleP", "Time"]
+- ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "_Default_RawValue"]
+- !private ["s23CustomStringConvertibleP", "__derived_struct_equals"]
+- !private ["s23CustomStringConvertibleP", "_findStringSwitchCase"]
+- ["s23CustomStringConvertibleP", "_rawHashValue"]
+- !private ["s23CustomStringConvertibleP", "allSeconds"]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "cal"]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["s23CustomStringConvertibleP", "count"]
+- !private ["s23CustomStringConvertibleP", "dateComponents"]
+- ["s23CustomStringConvertibleP", "debugDescription"]
+- ["s23CustomStringConvertibleP", "description"]
+- ["s23CustomStringConvertibleP", "encode"]
+- !private ["s23CustomStringConvertibleP", "findStringSwitchCase"]
+- ["s23CustomStringConvertibleP", "hash"]
+- ["s23CustomStringConvertibleP", "hashValue"]
+- !private ["s23CustomStringConvertibleP", "hour"]
+- !private ["s23CustomStringConvertibleP", "hourMinuteSecondString"]
+- ["s23CustomStringConvertibleP", "init"]
+- ["s23CustomStringConvertibleP", "intValue"]
+- !private ["s23CustomStringConvertibleP", "make2dig"]
+- !private ["s23CustomStringConvertibleP", "minute"]
+- ["s23CustomStringConvertibleP", "rawValue"]
+- !private ["s23CustomStringConvertibleP", "second"]
+- !private ["s23CustomStringConvertibleP", "split"]
+- ["s23CustomStringConvertibleP", "stringValue"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "time"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "count"]
+- !private ["10Foundation12DataProtocolP", "subscript"]
+- ["10Foundation4DateV", "Time"]
+- ["10Foundation4DateV", ""]
+- !private ["10Foundation4DateV", "cal"]
+- !private ["10Foundation4DateV", "init"]
+- ["10Foundation4DateV", "time"]
+- !private ["10Foundation14DateComponentsV", "hour"]
+- !private ["10Foundation14DateComponentsV", "minute"]
+- !private ["10Foundation14DateComponentsV", "second"]
+- ["Se", "<"]
+- ["Se", "<="]
+- ["Se", "=="]
+- ["Se", ">"]
+- ["Se", ">="]
+- !private ["Se", "CodingKeys"]
+- !private ["Se", "Date"]
+- !private ["Se", "Int"]
+- !private ["Se", "Time"]
+- ["Se", ""]
+- !private ["Se", "__derived_struct_equals"]
+- !private ["Se", "_findStringSwitchCase"]
+- ["Se", "_rawHashValue"]
+- !private ["Se", "allSeconds"]
+- !private ["Se", "cal"]
+- !private ["Se", "contains"]
+- !private ["Se", "count"]
+- !private ["Se", "dateComponents"]
+- ["Se", "description"]
+- ["Se", "encode"]
+- !private ["Se", "findStringSwitchCase"]
+- ["Se", "hash"]
+- ["Se", "hashValue"]
+- !private ["Se", "hour"]
+- !private ["Se", "hourMinuteSecondString"]
+- ["Se", "init"]
+- !private ["Se", "make2dig"]
+- !private ["Se", "minute"]
+- !private ["Se", "second"]
+- !private ["Se", "subscript"]
+- !private ["Se", "time"]
+- !private ["s7DecoderP", "container"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- !private ["Sd", "init"]
+- ["SE", "<"]
+- ["SE", "<="]
+- ["SE", "=="]
+- ["SE", ">"]
+- ["SE", ">="]
+- !private ["SE", "CodingKeys"]
+- !private ["SE", "Date"]
+- !private ["SE", "Int"]
+- !private ["SE", "Time"]
+- ["SE", ""]
+- !private ["SE", "__derived_struct_equals"]
+- !private ["SE", "_findStringSwitchCase"]
+- ["SE", "_rawHashValue"]
+- !private ["SE", "allSeconds"]
+- !private ["SE", "cal"]
+- !private ["SE", "contains"]
+- !private ["SE", "count"]
+- !private ["SE", "dateComponents"]
+- ["SE", "description"]
+- ["SE", "encode"]
+- !private ["SE", "findStringSwitchCase"]
+- ["SE", "hash"]
+- ["SE", "hashValue"]
+- !private ["SE", "hour"]
+- !private ["SE", "hourMinuteSecondString"]
+- ["SE", "init"]
+- !private ["SE", "make2dig"]
+- !private ["SE", "minute"]
+- !private ["SE", "second"]
+- !private ["SE", "subscript"]
+- !private ["SE", "time"]
+- !private ["s7EncoderP", "container"]
+- ["SQ", "<"]
+- ["SQ", "<="]
+- ["SQ", "=="]
+- ["SQ", ">"]
+- ["SQ", ">="]
+- !private ["SQ", "CodingKeys"]
+- !private ["SQ", "Date"]
+- ["SQ", "Default_RawValue"]
+- !private ["SQ", "Int"]
+- ["SQ", "RawValue"]
+- !private ["SQ", "Time"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- !private ["SQ", "__derived_struct_equals"]
+- !private ["SQ", "_findStringSwitchCase"]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "allSeconds"]
+- !private ["SQ", "cal"]
+- !private ["SQ", "contains"]
+- !private ["SQ", "count"]
+- !private ["SQ", "dateComponents"]
+- ["SQ", "debugDescription"]
+- ["SQ", "description"]
+- ["SQ", "encode"]
+- !private ["SQ", "findStringSwitchCase"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "hour"]
+- !private ["SQ", "hourMinuteSecondString"]
+- ["SQ", "init"]
+- ["SQ", "intValue"]
+- !private ["SQ", "make2dig"]
+- !private ["SQ", "minute"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "second"]
+- !private ["SQ", "split"]
+- ["SQ", "stringValue"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "time"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "count"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "subscript"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "split"]
+- !private ["s25ExpressibleByFloatLiteralP", ""]
+- !private ["s25ExpressibleByFloatLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "split"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "split"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "split"]
+- !private ["s17FixedWidthIntegerP", "init"]
+- !private ["SF", ""]
+- !private ["SF", "init"]
+- ["SH", "<"]
+- ["SH", "<="]
+- ["SH", "=="]
+- ["SH", ">"]
+- ["SH", ">="]
+- !private ["SH", "CodingKeys"]
+- !private ["SH", "Date"]
+- ["SH", "Default_RawValue"]
+- !private ["SH", "Int"]
+- ["SH", "RawValue"]
+- !private ["SH", "Time"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- !private ["SH", "__derived_struct_equals"]
+- !private ["SH", "_findStringSwitchCase"]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "allSeconds"]
+- !private ["SH", "cal"]
+- !private ["SH", "contains"]
+- !private ["SH", "count"]
+- !private ["SH", "dateComponents"]
+- ["SH", "debugDescription"]
+- ["SH", "description"]
+- ["SH", "encode"]
+- !private ["SH", "findStringSwitchCase"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "hour"]
+- !private ["SH", "hourMinuteSecondString"]
+- ["SH", "init"]
+- ["SH", "intValue"]
+- !private ["SH", "make2dig"]
+- !private ["SH", "minute"]
+- ["SH", "rawValue"]
+- !private ["SH", "second"]
+- !private ["SH", "split"]
+- ["SH", "stringValue"]
+- !private ["SH", "subscript"]
+- !private ["SH", "time"]
+- !private ["s6HasherV", "combine"]
+- !private ["Si", "init"]
+- !private ["s22KeyedDecodingContainerV", "decodeIfPresent"]
+- !private ["s30KeyedDecodingContainerProtocolP", "decodeIfPresent"]
+- !private ["s22KeyedEncodingContainerV", "encode"]
+- !private ["s30KeyedEncodingContainerProtocolP", "encode"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "split"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["SM", ""]
+- !private ["SM", "count"]
+- !private ["SM", "subscript"]
+- !private ["10Foundation19MutableDataProtocolP", "count"]
+- !private ["10Foundation19MutableDataProtocolP", "subscript"]
+- !private ["Sj", ""]
+- !private ["Sj", "init"]
+- !private ["Sk", ""]
+- !private ["Sk", "contains"]
+- !private ["Sk", "count"]
+- !private ["Sk", "subscript"]
+- !private ["SX", "contains"]
+- !private ["Sm", ""]
+- !private ["Sm", "count"]
+- !private ["Sm", "subscript"]
+- ["SY", "=="]
+- ["SY", "Default_RawValue"]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- !private ["SY", "_findStringSwitchCase"]
+- ["SY", "_rawHashValue"]
+- ["SY", "debugDescription"]
+- ["SY", "description"]
+- !private ["SY", "findStringSwitchCase"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- !private ["SY", "hour"]
+- ["SY", "init"]
+- ["SY", "intValue"]
+- !private ["SY", "minute"]
+- ["SY", "rawValue"]
+- !private ["SY", "second"]
+- ["SY", "stringValue"]
+- !private ["10Foundation20ReferenceConvertibleP", "Time"]
+- !private ["10Foundation20ReferenceConvertibleP", ""]
+- !private ["10Foundation20ReferenceConvertibleP", "cal"]
+- !private ["10Foundation20ReferenceConvertibleP", "dateComponents"]
+- !private ["10Foundation20ReferenceConvertibleP", "hour"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "minute"]
+- !private ["10Foundation20ReferenceConvertibleP", "second"]
+- !private ["10Foundation20ReferenceConvertibleP", "time"]
+- !private ["s10SIMDScalarP", "init"]
+- !private ["ST", ""]
+- !private ["ST", "contains"]
+- !private ["ST", "count"]
+- !private ["ST", "split"]
+- !private ["ST", "subscript"]
+- !private ["SZ", "init"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "init"]
+- !private ["Sx", ""]
+- !private ["Sx", "init"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["Sy", "split"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["s16TextOutputStreamP", "split"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "split"]
+- ["11DataManager4TimeV", "<"]
+- ["11DataManager4TimeV", "<="]
+- ["11DataManager4TimeV", "=="]
+- ["11DataManager4TimeV", ">"]
+- ["11DataManager4TimeV", ">="]
+- ["11DataManager4TimeV", "Bool"]
+- ["11DataManager4TimeV", "CodingKey"]
+- ["11DataManager4TimeV", "CodingKeys"]
+- !private ["11DataManager4TimeV", "Date"]
+- ["11DataManager4TimeV", "Decoder"]
+- ["11DataManager4TimeV", "Encoder"]
+- ["11DataManager4TimeV", "Int"]
+- ["11DataManager4TimeV", "String"]
+- ["11DataManager4TimeV", "StringProtocol"]
+- ["11DataManager4TimeV", "Time"]
+- ["11DataManager4TimeV", ""]
+- ["11DataManager4TimeV", "__derived_struct_equals"]
+- !private ["11DataManager4TimeV", "_findStringSwitchCase"]
+- ["11DataManager4TimeV", "_rawHashValue"]
+- ["11DataManager4TimeV", "allSeconds"]
+- ["11DataManager4TimeV", "description"]
+- ["11DataManager4TimeV", "encode"]
+- !private ["11DataManager4TimeV", "findStringSwitchCase"]
+- ["11DataManager4TimeV", "fmImportString"]
+- ["11DataManager4TimeV", "hash"]
+- ["11DataManager4TimeV", "hashValue"]
+- ["11DataManager4TimeV", "hour"]
+- ["11DataManager4TimeV", "hourMinuteSecondString"]
+- ["11DataManager4TimeV", "hourMinuteString"]
+- ["11DataManager4TimeV", "init"]
+- !private ["11DataManager4TimeV", "make2dig"]
+- ["11DataManager4TimeV", "minute"]
+- ["11DataManager4TimeV", "second"]
+- !private ["s14_ArrayProtocolP", "count"]
+- !private ["s14_ArrayProtocolP", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "Time"]
+- !private ["10Foundation13_CFBridgeableP", "cal"]
+- !private ["10Foundation13_CFBridgeableP", "count"]
+- !private ["10Foundation13_CFBridgeableP", "dateComponents"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "time"]
+- !private ["s15_CVarArgAlignedP", "init"]
+- !private ["s22_CVarArgPassedAsDoubleP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s24_DestructorSafeContainerP", "count"]
+- !private ["s24_DestructorSafeContainerP", "subscript"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "count"]
+- !private ["s19_HasContiguousBytesP", "subscript"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "count"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation14_MutableBoxingP", "dateComponents"]
+- !private ["10Foundation14_MutableBoxingP", "hour"]
+- !private ["10Foundation14_MutableBoxingP", "minute"]
+- !private ["10Foundation14_MutableBoxingP", "second"]
+- !private ["10Foundation13_NSBridgeableP", "Time"]
+- !private ["10Foundation13_NSBridgeableP", "cal"]
+- !private ["10Foundation13_NSBridgeableP", "count"]
+- !private ["10Foundation13_NSBridgeableP", "dateComponents"]
+- !private ["10Foundation13_NSBridgeableP", "hour"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "minute"]
+- !private ["10Foundation13_NSBridgeableP", "second"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "time"]
+- !private ["s21_ObjectiveCBridgeableP", "Time"]
+- !private ["s21_ObjectiveCBridgeableP", "cal"]
+- !private ["s21_ObjectiveCBridgeableP", "count"]
+- !private ["s21_ObjectiveCBridgeableP", "dateComponents"]
+- !private ["s21_ObjectiveCBridgeableP", "hour"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "minute"]
+- !private ["s21_ObjectiveCBridgeableP", "second"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "time"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "Sa"
+- !private "SK"
+- !private "SB"
+- !private "Sz"
+- !private "s7CVarArgP"
+- !private "10Foundation8CalendarV"
+- !private "SN"
+- "s9CodingKeyP"
+- "11DataManager4TimeV10CodingKeysO"
+- !private "Sl"
+- "SL"
+- !private "10Foundation8CalendarV9ComponentO"
+- !private "10Foundation15ContiguousBytesP"
+- "s28CustomDebugStringConvertibleP"
+- !private "s34CustomPlaygroundDisplayConvertibleP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- "10Foundation4DateV"
+- !private "10Foundation14DateComponentsV"
+- "Se"
+- !private "s7DecoderP"
+- !private "s26DefaultStringInterpolationV"
+- !private "Sd"
+- "SE"
+- !private "s7EncoderP"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "s17FixedWidthIntegerP"
+- !private "SF"
+- "SH"
+- !private "s6HasherV"
+- !private "Si"
+- !private "s22KeyedDecodingContainerV"
+- !private "s30KeyedDecodingContainerProtocolP"
+- !private "s22KeyedEncodingContainerV"
+- !private "s30KeyedEncodingContainerProtocolP"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "Sj"
+- !private "Sk"
+- !private "SX"
+- !private "Sm"
+- "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "s10SIMDScalarP"
+- !private "ST"
+- !private "SZ"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "s27StringInterpolationProtocolP"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "11DataManager4TimeV"
+- !private "s14_ArrayProtocolP"
+- !private "10Foundation13_CFBridgeableP"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation14_MutableBoxingP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "f7aff10ce0bd7e7b7c355a6847bb738a"

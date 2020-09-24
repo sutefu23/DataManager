@@ -31,6 +31,7 @@ public extension Bundle {
 //    }
 }
 
+#if !os(Linux)
 extension DMApplication {
     public var currentVersion: Version {
         let bundle = Bundle.main
@@ -71,3 +72,4 @@ extension DMApplication {
         return history.history(from: currentVersion)
     }
 }
+#endif

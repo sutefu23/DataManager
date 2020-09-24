@@ -10,11 +10,13 @@ import Foundation
 
 #if os(iOS) || os(tvOS)
 import UIKit
-#endif
-#if os(macOS)
+#elseif os(macOS)
 import Cocoa
+#else
+import Foundation
 #endif
 
+#if !os(Linux)
 /// 表示モード
 public enum ProgressTVMode: Int {
     case 箱文字 = 1
@@ -473,6 +475,7 @@ public final class ProgressTVCore {
     }
     #endif
 }
+#endif
 
 #if os(iOS) || os(tvOS)
 extension ProgressTVCore{

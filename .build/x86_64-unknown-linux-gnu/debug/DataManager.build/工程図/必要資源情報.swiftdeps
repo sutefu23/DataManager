@@ -1,0 +1,128 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u5FC5\u8981\u8CC7\u6E90\u60C5\u5831\u578B"
+provides-nominal:
+- "11DataManager0022xgsxowBqjDaoFHblJBbvBeV"
+provides-member:
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", ""]
+depends-top-level:
+- "AssignmentPrecedence"
+- "Double"
+- "String"
+- "StringLiteralType"
+- "\u5DE5\u7A0B\u56F3\u30C7\u30FC\u30BF\u578B"
+- "\u5DE5\u7A0B\u56F3\u578B"
+- "\u5FC5\u8981\u8CC7\u6E90\u60C5\u5831\u578B"
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "description"]
+- !private ["SB", "description"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "description"]
+- !private ["SL", ""]
+- !private ["SL", "description"]
+- !private ["s28CustomDebugStringConvertibleP", "description"]
+- !private ["s17CustomReflectableP", "description"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "description"]
+- !private ["Se", "description"]
+- !private ["Sd", "description"]
+- !private ["SE", "description"]
+- !private ["SQ", ""]
+- !private ["SQ", "code"]
+- !private ["SQ", "description"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByFloatLiteralP", ""]
+- !private ["s25ExpressibleByFloatLiteralP", "description"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "description"]
+- !private ["SF", ""]
+- !private ["SF", "description"]
+- !private ["SH", ""]
+- !private ["SH", "code"]
+- !private ["SH", "description"]
+- !private ["s25LosslessStringConvertibleP", "description"]
+- !private ["Sj", ""]
+- !private ["Sj", "description"]
+- !private ["SY", "code"]
+- !private ["s10SIMDScalarP", "description"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "description"]
+- !private ["Sx", ""]
+- !private ["Sx", "description"]
+- !private ["s20TextOutputStreamableP", "description"]
+- !private ["s15_CVarArgAlignedP", "description"]
+- !private ["s22_CVarArgPassedAsDoubleP", "description"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "description"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "description"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "description"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "description"]
+- !private ["s21_ObjectiveCBridgeableP", "description"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", ""]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "filename"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "header"]
+- ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "makeColumns"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u30BF\u30A4\u30D7"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5DE5\u7A0BID"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u5FC5\u8981\u91CF"]
+- !private ["11DataManager0020FckpDnEIAmCvavCzhuDcP", "\u8CC7\u6E90ID"]
+- ["11DataManager0012lcssnqGntxGaC", "\u5FC5\u8981\u8CC7\u6E90\u60C5\u5831\u30BF\u30A4\u30D7\u578B"]
+- !private ["11DataManager0012lcssnqGntxGaC0032ecktctdGEJqvxatGEahvbcBGcryHcpDgO", "code"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "Double"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "String"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "filename"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "header"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "init"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "makeColumns"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "\u30BF\u30A4\u30D7"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "\u5DE5\u7A0BID"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "\u5DE5\u7A0B\u56F3\u578B"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "\u5FC5\u8981\u91CF"]
+- ["11DataManager0022xgsxowBqjDaoFHblJBbvBeV", "\u8CC7\u6E90ID"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "SB"
+- !private "s7CVarArgP"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "Sd"
+- !private "SE"
+- !private "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "SF"
+- !private "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "Sj"
+- !private "SY"
+- !private "s10SIMDScalarP"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "s20TextOutputStreamableP"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+- "11DataManager0020FckpDnEIAmCvavCzhuDcP"
+- "11DataManager0012lcssnqGntxGaC"
+- !private "11DataManager0012lcssnqGntxGaC0032ecktctdGEJqvxatGEahvbcBGcryHcpDgO"
+- "11DataManager0022xgsxowBqjDaoFHblJBbvBeV"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "860809db916d40767f537e6f8d0602ad"

@@ -1,0 +1,153 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "\u53D6\u5F15\u5148\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+provides-nominal:
+- "11DataManager0025nckuaJaximaFFIAcBzddHidksC"
+provides-member:
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", ""]
+depends-top-level:
+- "*"
+- !private "<="
+- "AssignmentPrecedence"
+- "Date"
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "NSLock"
+- "TimeInterval"
+- !private "cache"
+- !private "lock"
+- "\u4F1A\u793E\u30B3\u30FC\u30C9\u578B"
+- "\u53D6\u5F15\u5148\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"
+- "\u53D6\u5F15\u5148\u578B"
+depends-member:
+- !private ["Sl", "removeAll"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "<"]
+- !private ["SL", "<="]
+- !private ["SL", ">"]
+- !private ["SL", ">="]
+- !private ["SL", "init"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "lock"]
+- !private ["s28CustomDebugStringConvertibleP", "removeAll"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "unlock"]
+- !private ["s34CustomPlaygroundDisplayConvertibleP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "removeAll"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lock"]
+- !private ["s23CustomStringConvertibleP", "removeAll"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "unlock"]
+- !private ["10Foundation4DateV", "init"]
+- !private ["Se", "init"]
+- !private ["Se", "removeAll"]
+- !private ["Se", "subscript"]
+- !private ["SD", "removeAll"]
+- !private ["SD", "subscript"]
+- !private ["SE", "init"]
+- !private ["SE", "removeAll"]
+- !private ["SE", "subscript"]
+- ["SQ", ""]
+- ["SQ", "init"]
+- !private ["SQ", "lock"]
+- !private ["SQ", "removeAll"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "unlock"]
+- ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "removeAll"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["SH", ""]
+- ["SH", "init"]
+- !private ["SH", "lock"]
+- !private ["SH", "removeAll"]
+- !private ["SH", "subscript"]
+- !private ["SH", "unlock"]
+- ["10Foundation6NSLockC", "init"]
+- !private ["10Foundation6NSLockC", "lock"]
+- !private ["10Foundation6NSLockC", "unlock"]
+- ["10Foundation9NSLockingP", "init"]
+- !private ["10Foundation9NSLockingP", "lock"]
+- !private ["10Foundation9NSLockingP", "unlock"]
+- ["10Foundation8NSObjectC", ""]
+- ["10Foundation8NSObjectC", "init"]
+- !private ["10Foundation8NSObjectC", "lock"]
+- !private ["10Foundation8NSObjectC", "unlock"]
+- ["10Foundation16NSObjectProtocolP", "init"]
+- !private ["10Foundation16NSObjectProtocolP", "lock"]
+- !private ["10Foundation16NSObjectProtocolP", "unlock"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["ST", ""]
+- !private ["ST", "removeAll"]
+- !private ["ST", "subscript"]
+- !private ["10Foundation13_CFBridgeableP", "init"]
+- !private ["10Foundation13_CFBridgeableP", "removeAll"]
+- !private ["10Foundation13_CFBridgeableP", "subscript"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "removeAll"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation13_NSBridgeableP", "init"]
+- !private ["10Foundation13_NSBridgeableP", "removeAll"]
+- !private ["10Foundation13_NSBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "removeAll"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "Date"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "NSLock"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "TimeInterval"]
+- !private ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "cache"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "deinit"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "expireTime"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "flushAllCache"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "init"]
+- !private ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "lock"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "shared"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "\u30AD\u30E3\u30C3\u30B7\u30E5\u53D6\u5F15\u5148"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "\u4F1A\u793E\u30B3\u30FC\u30C9\u578B"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "\u53D6\u5F15\u5148\u30AD\u30E3\u30C3\u30B7\u30E5\u578B"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "\u53D6\u5F15\u5148\u578B"]
+- ["11DataManager0025nckuaJaximaFFIAcBzddHidksC", "\u73FE\u5728\u53D6\u5F15\u5148"]
+- !private ["11DataManager0012EEqAFdnzesFjC", "find"]
+depends-nominal:
+- !private "Sl"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- !private "s34CustomPlaygroundDisplayConvertibleP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation4DateV"
+- !private "Se"
+- !private "SD"
+- !private "SE"
+- "SQ"
+- "s30ExpressibleByDictionaryLiteralP"
+- "SH"
+- "10Foundation6NSLockC"
+- "10Foundation9NSLockingP"
+- "10Foundation8NSObjectC"
+- "10Foundation16NSObjectProtocolP"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "ST"
+- !private "10Foundation13_CFBridgeableP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation13_NSBridgeableP"
+- !private "s21_ObjectiveCBridgeableP"
+- "11DataManager0025nckuaJaximaFFIAcBzddHidksC"
+- !private "11DataManager0012EEqAFdnzesFjC"
+depends-dynamic-lookup:
+depends-external:
+- "/home/manager/usr/lib/swift/linux/x86_64/Glibc.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/FoundationNetworking.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Dispatch.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Foundation.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/Swift.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/home/manager/usr/lib/swift/linux/x86_64/glibc.modulemap"
+interface-hash: "e3fabb0345675446bfa64f6f993d8887"
