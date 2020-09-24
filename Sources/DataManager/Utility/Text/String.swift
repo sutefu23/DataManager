@@ -354,3 +354,33 @@ extension Array where Element == String {
         return false
     }
 }
+
+// MARK: - 全角半角変換
+
+let 半角to全角: [Character: Character] = {
+    var map: [Character: Character] = [:]
+    for (han, zen) in hanZenList {
+        map[han] = zen
+    }
+    return map
+}()
+let 全角to半角: [Character: Character] = {
+    var map: [Character: Character] = [:]
+    for (han, zen) in hanZenList {
+        map[zen] = han
+    }
+    return map
+}()
+
+private let hanZenList: [(半角: Character, 全角: Character)] = [
+    ("1", "１"),
+    ("2", "２"),
+    ("3", "３"),
+    ("4", "４"),
+    ("5", "５"),
+    ("6", "６"),
+    ("7", "７"),
+    ("8", "８"),
+    ("9", "９"),
+    ("0", "０"),
+]

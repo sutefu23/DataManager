@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
+		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
+		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		OBJ_188 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* インシデント.swift */; };
 		OBJ_189 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* カレンダー.swift */; };
 		OBJ_190 /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* スケジュール.swift */; };
@@ -193,7 +196,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1476712B251D5CE600429C17 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		14767117251D577A00429C17 /* DMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DMColor.swift; sourceTree = "<group>"; };
+		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
+		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
 		"DataManager::DataManager::Product" /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"DataManager::DataManagerTests::Product" /* DataManagerTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DataManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
@@ -371,6 +390,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14767125251D5CA600429C17 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				14767126251D5CA600429C17 /* 板加工在庫一覧.csv */,
+				14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		14767132251D5D2C00429C17 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_145 /* maru.ita */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		OBJ_105 /* 工程分析 */ = {
 			isa = PBXGroup;
 			children = (
@@ -450,7 +486,7 @@
 		OBJ_144 /* DataManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_145 /* maru.ita */,
+				14767132251D5D2C00429C17 /* Resources */,
 				OBJ_146 /* DataManagerTests.swift */,
 				OBJ_147 /* TestDMScanner.swift */,
 				OBJ_148 /* TestDate.swift */,
@@ -607,12 +643,8 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* Database */,
-				OBJ_27 /* FileMaker */,
-				OBJ_32 /* Utility */,
-				OBJ_64 /* pm_osakaname */,
+				14767125251D5CA600429C17 /* Resources */,
 				OBJ_82 /* ラベル印刷 */,
-				OBJ_84 /* 互換性 */,
 				OBJ_89 /* 作業ツリー */,
 				OBJ_94 /* 共通ロジック */,
 				OBJ_97 /* 出力 */,
@@ -621,6 +653,11 @@
 				OBJ_120 /* 状況キャッシュ */,
 				OBJ_130 /* 記録 */,
 				OBJ_137 /* 資材使用記録 */,
+				OBJ_9 /* Database */,
+				OBJ_64 /* pm_osakaname */,
+				OBJ_27 /* FileMaker */,
+				OBJ_84 /* 互換性 */,
+				OBJ_32 /* Utility */,
 			);
 			name = DataManager;
 			path = Sources/DataManager;
@@ -641,6 +678,7 @@
 				OBJ_86 /* KeyModifiers.swift */,
 				OBJ_87 /* NCtoDM.swift */,
 				OBJ_88 /* UIKit.swift */,
+				14767117251D577A00429C17 /* DMColor.swift */,
 			);
 			path = "互換性";
 			sourceTree = "<group>";
@@ -712,6 +750,7 @@
 			buildPhases = (
 				OBJ_187 /* Sources */,
 				OBJ_306 /* Frameworks */,
+				1476712B251D5CE600429C17 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -728,6 +767,7 @@
 			buildPhases = (
 				OBJ_322 /* Sources */,
 				OBJ_356 /* Frameworks */,
+				14767131251D5D1700429C17 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -781,6 +821,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		14767131251D5D1700429C17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14767133251D5D5000429C17 /* maru.ita in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_187 /* Sources */ = {
@@ -845,6 +896,7 @@
 				OBJ_243 /* 作業内容.swift in Sources */,
 				OBJ_244 /* 入力区分.swift in Sources */,
 				OBJ_245 /* 分量.swift in Sources */,
+				14767118251D577A00429C17 /* DMColor.swift in Sources */,
 				OBJ_246 /* 取引先.swift in Sources */,
 				OBJ_247 /* 工程.swift in Sources */,
 				OBJ_248 /* 工程状態.swift in Sources */,

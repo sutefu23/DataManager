@@ -12,8 +12,12 @@ import XCTest
 
 class TestTextReader: XCTestCase {
 
+    #if os(Linux)
     let bundle = Bundle.module
-
+    #else
+    let bundle = Bundle(for: TestTextReader.self)
+    #endif
+    
     func testInit() {
         let reader = TextReader()
         XCTAssertNil(reader.url)

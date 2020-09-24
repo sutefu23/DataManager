@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if os(Linux)
 import FoundationNetworking
+#endif
 
 struct FileMakerPortal {
     let name : String

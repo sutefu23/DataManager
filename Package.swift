@@ -27,7 +27,7 @@ let package = Package(
             name: "DataManagerTests",
             dependencies: ["DataManager"],
             resources: [
-                .process("maru.ita")
+                .process("Resources")
             ]
         ),
     ]
