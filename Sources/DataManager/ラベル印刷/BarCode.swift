@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if !os(Linux)
 import CoreGraphics
+#endif
 
 /// 二次元バーコード
 public struct DMBarCode {

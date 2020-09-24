@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if !os(Linux)
 import CoreGraphics
+#endif
 
 // MARK: - 数値変換
 /// 数式文字列 -> Double
@@ -25,6 +27,7 @@ public extension Double {
     }
 }
 
+#if !os(Linux)
 public extension CGFloat {
     init(formula: String) throws {
         let result = try Double(formula: formula)
@@ -37,6 +40,7 @@ public extension CGFloat {
     }
     
 }
+#endif
 
 public extension Int {
     init(formula: String) throws {

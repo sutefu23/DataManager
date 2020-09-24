@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if !os(Linux)
 import CoreGraphics
+#endif
 
 #if os(tvOS)
 import UIKit
