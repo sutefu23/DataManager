@@ -24,6 +24,7 @@
 		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
 		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
+		14767166251D630C00429C17 /* DMCharacterMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* DMCharacterMap.swift */; };
 		OBJ_188 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* インシデント.swift */; };
 		OBJ_189 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* カレンダー.swift */; };
 		OBJ_190 /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* スケジュール.swift */; };
@@ -213,6 +214,7 @@
 		14767117251D577A00429C17 /* DMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DMColor.swift; sourceTree = "<group>"; };
 		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
 		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
+		14767165251D630C00429C17 /* DMCharacterMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMCharacterMap.swift; sourceTree = "<group>"; };
 		"DataManager::DataManager::Product" /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"DataManager::DataManagerTests::Product" /* DataManagerTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DataManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 				OBJ_55 /* String.swift */,
 				OBJ_56 /* TextReader.swift */,
 				OBJ_57 /* TextWriter.swift */,
+				14767165251D630C00429C17 /* DMCharacterMap.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -857,6 +860,7 @@
 				OBJ_204 /* 部門.swift in Sources */,
 				OBJ_205 /* FileMakerDB.swift in Sources */,
 				OBJ_206 /* FileMakerError.swift in Sources */,
+				14767166251D630C00429C17 /* DMCharacterMap.swift in Sources */,
 				OBJ_207 /* FileMakerRecord.swift in Sources */,
 				OBJ_208 /* FileMakerSession.swift in Sources */,
 				OBJ_209 /* Alert.swift in Sources */,

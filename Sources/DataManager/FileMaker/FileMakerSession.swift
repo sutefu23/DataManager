@@ -128,7 +128,7 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let credential: URLCredential?
     #if os(Linux)
-    credential = nil
+        credential = URLCredential(user: self.user, password: self.password, persistence: .permanent)
     #else
         if let trust = challenge.protectionSpace.serverTrust {
             credential = URLCredential(trust:trust)
