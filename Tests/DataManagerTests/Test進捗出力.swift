@@ -11,12 +11,12 @@ import XCTest
 
 
 class TestOutputProgress: XCTestCase {
-    let execDBTest = false
+    let execDBTest = true
 
     func testOutputProgress() {
         if self.execDBTest == false { return }
         
-        let num = 伝票番号型(validNumber: 2002_0852)
+        let num = 伝票番号型(validNumber: 20020852)
         let day = Day(2020, 2, 13)
         let time = Time(16, 45)
         let date = Date(day, time)

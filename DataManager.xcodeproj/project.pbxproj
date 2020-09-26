@@ -25,6 +25,10 @@
 		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		14767166251D630C00429C17 /* DMCharacterMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* DMCharacterMap.swift */; };
+		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
+		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
+		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
+		8E9E604D251E439B00B4858E /* 食事要求型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E604C251E439B00B4858E /* 食事要求型.swift */; };
 		OBJ_188 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* インシデント.swift */; };
 		OBJ_189 /* カレンダー.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* カレンダー.swift */; };
 		OBJ_190 /* スケジュール.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* スケジュール.swift */; };
@@ -215,6 +219,11 @@
 		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
 		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
 		14767165251D630C00429C17 /* DMCharacterMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMCharacterMap.swift; sourceTree = "<group>"; };
+		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
+		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
+		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
+		8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事メニュー.swift"; sourceTree = "<group>"; };
+		8E9E604C251E439B00B4858E /* 食事要求型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事要求型.swift"; sourceTree = "<group>"; };
 		"DataManager::DataManager::Product" /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"DataManager::DataManagerTests::Product" /* DataManagerTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DataManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* インシデント.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "インシデント.swift"; sourceTree = "<group>"; };
@@ -461,6 +470,8 @@
 				OBJ_134 /* 記録.swift */,
 				OBJ_135 /* 資材使用記録.swift */,
 				OBJ_136 /* 資材入庫状況.swift */,
+				8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */,
+				8E9E604C251E439B00B4858E /* 食事要求型.swift */,
 			);
 			path = "記録";
 			sourceTree = "<group>";
@@ -480,6 +491,7 @@
 		OBJ_143 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				14F3DFE1251D810F003D4BCA /* LinuxMain.swift */,
 				OBJ_144 /* DataManagerTests */,
 			);
 			name = Tests;
@@ -522,6 +534,7 @@
 				OBJ_176 /* Test進捗.swift */,
 				OBJ_177 /* Test進捗出力.swift */,
 				OBJ_178 /* Test部署.swift */,
+				14F3DFE6251DAEA0003D4BCA /* TestSession.swift */,
 			);
 			name = DataManagerTests;
 			path = Tests/DataManagerTests;
@@ -540,9 +553,9 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_28 /* FileMakerDB.swift */,
-				OBJ_29 /* FileMakerError.swift */,
 				OBJ_30 /* FileMakerRecord.swift */,
 				OBJ_31 /* FileMakerSession.swift */,
+				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = FileMaker;
 			sourceTree = "<group>";
@@ -677,10 +690,11 @@
 		OBJ_84 /* 互換性 */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_88 /* UIKit.swift */,
 				OBJ_85 /* Cocoa.swift */,
+				8E106DB0251E1E8C00FB059D /* Linux.swift */,
 				OBJ_86 /* KeyModifiers.swift */,
 				OBJ_87 /* NCtoDM.swift */,
-				OBJ_88 /* UIKit.swift */,
 				14767117251D577A00429C17 /* DMColor.swift */,
 			);
 			path = "互換性";
@@ -804,6 +818,11 @@
 			attributes = {
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"DataManager::DataManagerPackageTests::ProductTarget" = {
+						LastSwiftMigration = 1200;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "DataManager" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -896,6 +915,7 @@
 				OBJ_239 /* 伝票状態.swift in Sources */,
 				OBJ_240 /* 伝票番号.swift in Sources */,
 				OBJ_241 /* 伝票種別.swift in Sources */,
+				8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */,
 				OBJ_242 /* 伝票種類.swift in Sources */,
 				OBJ_243 /* 作業内容.swift in Sources */,
 				OBJ_244 /* 入力区分.swift in Sources */,
@@ -938,9 +958,11 @@
 				OBJ_280 /* 作業別工程情報.swift in Sources */,
 				OBJ_281 /* 供給資源情報.swift in Sources */,
 				OBJ_282 /* 区分情報.swift in Sources */,
+				8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */,
 				OBJ_283 /* 工程図.swift in Sources */,
 				OBJ_284 /* 必要資源情報.swift in Sources */,
 				OBJ_285 /* 資源マスタ情報.swift in Sources */,
+				8E9E604D251E439B00B4858E /* 食事要求型.swift in Sources */,
 				OBJ_286 /* 入出庫キャッシュ.swift in Sources */,
 				OBJ_287 /* 取引先キャッシュ.swift in Sources */,
 				OBJ_288 /* 在庫キャッシュ.swift in Sources */,
@@ -980,6 +1002,7 @@
 				OBJ_324 /* TestDMScanner.swift in Sources */,
 				OBJ_325 /* TestDate.swift in Sources */,
 				OBJ_326 /* TestDay.swift in Sources */,
+				14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */,
 				OBJ_327 /* TestEtc.swift in Sources */,
 				OBJ_328 /* TestMonth.swift in Sources */,
 				OBJ_329 /* TestSerialCache.swift in Sources */,
@@ -1136,12 +1159,19 @@
 		OBJ_315 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		OBJ_316 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

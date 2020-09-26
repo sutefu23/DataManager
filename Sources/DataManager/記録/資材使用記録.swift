@@ -214,6 +214,7 @@ public final class 資材使用記録型 {
     
     public var isChanged: Bool { original != data }
     
+    // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordID else { return }
         var result: Error? = nil
@@ -265,6 +266,7 @@ public final class 資材使用記録型 {
         self.recordID = try result.get()
     }
 
+    // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [資材使用記録型] {
         if query.isEmpty { return [] }
         var result: Result<[FileMakerRecord], Error>!
