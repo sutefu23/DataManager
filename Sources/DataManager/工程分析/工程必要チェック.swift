@@ -22,6 +22,11 @@ extension 指示書型 {
         if (伝票種別 == .再製 || 伝票種別 == .クレーム) && 工程別進捗一覧[.レーザー（アクリル）] != nil && 工程別進捗一覧[.レーザー]?.contains(工程: .レーザー, 作業内容: .開始) != nil { return false } // アクリの再製は原稿がない場合、直接品質管理に持っていく
         return 工程別進捗一覧[.レーザー] != nil
     }
+    
+    public var is原稿出力のみ: Bool {
+        let name = 品名.toJapaneseNormal
+        return name == "EXILE出力"
+    }
 }
 
 // MARK: - フィルム関係
