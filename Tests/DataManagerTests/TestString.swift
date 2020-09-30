@@ -31,4 +31,12 @@ class TestString: XCTestCase {
         XCTAssertEqual("㈱ 菊浜　九州支店".remove㈱㈲, "菊浜　九州支店")
     }
     
+    func testToJaoaneseNormal() {
+        XCTAssertEqual("abcde".toJapaneseNormal, "abcde")
+        XCTAssertEqual("aｂcde".toJapaneseNormal, "abcde")
+        XCTAssertEqual("あいうえお".toJapaneseNormal, "あいうえお")
+        XCTAssertEqual("アイウエオ".toJapaneseNormal, "アイウエオ")
+        XCTAssertEqual("アイウエｵ".toJapaneseNormal, "アイウエオ")
+    }
+    
 }

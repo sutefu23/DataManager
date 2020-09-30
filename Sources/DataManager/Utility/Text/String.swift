@@ -48,7 +48,7 @@ extension StringProtocol {
     }
 
     /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
-    public var toJapaneseNormal: String {
+    public var toJapaneseNormal2: String {
     	#if os(Linux)
     	return String(self)
     	#else
@@ -75,7 +75,30 @@ extension StringProtocol {
         return result
         #endif
     }
-    
+    public var toJapaneseNormal: String {
+        var result = ""
+        var halfMode = true
+        for ch in self {
+            if !halfMode && (ch == "ー" || ch == "-" || ch == "ｰ") {
+                result.append("ー")
+            } else {
+                switch ch.文字種類 {
+                case .通常:
+                    result.append(ch)
+                    halfMode = ch.isASCII
+                case .全角ASCII:
+                    let ch2 = convertTo半角ASCII(全角ASCII: ch)
+                    result.append(ch2)
+                    halfMode = true
+                case .半角カナ:
+                    let ch2 = convertTo全角仮名(半角カナ文字: ch)
+                    result.append(ch2)
+                    halfMode = false
+                }
+            }
+        }
+        return result
+    }
     public var remove㈱㈲: String {
         var result = String(self)
         if let ch = result.first, ch == "㈱" || ch == "㈲" {
@@ -354,33 +377,3 @@ extension Array where Element == String {
         return false
     }
 }
-
-// MARK: - 全角半角変換
-
-let 半角to全角: [Character: Character] = {
-    var map: [Character: Character] = [:]
-    for (han, zen) in hanZenList {
-        map[han] = zen
-    }
-    return map
-}()
-let 全角to半角: [Character: Character] = {
-    var map: [Character: Character] = [:]
-    for (han, zen) in hanZenList {
-        map[zen] = han
-    }
-    return map
-}()
-
-private let hanZenList: [(半角: Character, 全角: Character)] = [
-    ("1", "１"),
-    ("2", "２"),
-    ("3", "３"),
-    ("4", "４"),
-    ("5", "５"),
-    ("6", "６"),
-    ("7", "７"),
-    ("8", "８"),
-    ("9", "９"),
-    ("0", "０"),
-]

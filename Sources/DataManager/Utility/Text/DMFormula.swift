@@ -191,7 +191,7 @@ public struct DMFormula: ExpressibleByStringLiteral {
     }
     
     public init(_ formula: String, variables: [String: Double] = [:]) {
-        self.scanner = DMScanner(formula, normalizedFullHalf: false, upperCased: true, skipSpaces: true)
+        self.scanner = DMScanner(formula, normalizedFullHalf: true, upperCased: true, skipSpaces: true)
         for (key, value) in variables { self[key] = value }
         scanner.dropTailSpaces()
     }

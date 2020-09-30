@@ -92,7 +92,7 @@ public class 食事メニュー型 {
     var original: 食事メニューData型?
     var data: 食事メニューData型
     
-    public internal(set) var recordID: String?
+    public internal(set) var recordId: String?
     var メニューID: メニューID型 {
         get { data.メニューID }
         set { data.メニューID = newValue }
@@ -142,20 +142,20 @@ public class 食事メニュー型 {
         guard let data = 食事メニューData型(record) else { return nil }
         self.data = data
         self.original = data
-        self.recordID = record.recordID
+        self.recordId = record.recordID
     }
 
     public var isChanged: Bool { original != data }
 
     // MARK: - DB操作
     public func delete() throws {
-        guard let recordID = self.recordID else { return }
+        guard let recordID = self.recordId else { return }
         var result: Error? = nil
         let operation = BlockOperation {
             do {
                 let db = FileMakerDB.system
                 try db.delete(layout: 食事メニューData型.dbName, recordId: recordID)
-                self.recordID = nil
+                self.recordId = nil
                 //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
             } catch {
                 result = error
@@ -182,7 +182,7 @@ public class 食事メニュー型 {
         let operation = BlockOperation {
             let db = FileMakerDB.system
             do {
-                if let recordID = self.recordID {
+                if let recordID = self.recordId {
                     try db.update(layout: 食事メニューData型.dbName, recordId: recordID, fields: data)
                     result = .success(recordID)
                 } else {
@@ -196,7 +196,7 @@ public class 食事メニュー型 {
         }
         serialQueue.addOperation(operation)
         operation.waitUntilFinished()
-        self.recordID = try result.get()
+        self.recordId = try result.get()
     }
 
     // MARK: - DB検索
