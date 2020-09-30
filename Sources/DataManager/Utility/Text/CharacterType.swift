@@ -7,12 +7,35 @@
 
 import Foundation
 
-enum 文字種類型 {
-    case 通常
-    case 全角ASCII
-    case 半角カナ
+extension StringProtocol {
+    /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
+    public var toJapaneseNormal: String {
+        var result = ""
+        var halfMode = true
+        for ch in self {
+            if ch == "ー" || ch == "-" { // 全角横棒・半角ASCIIハイフン
+                if halfMode {
+                    result.append("-")
+                } else {
+                    result.append("ー")
+                }
+            } else if ch.isASCII {
+                result.append(ch)
+                halfMode = true
+            } else if let ch = 全角ASCIIto半角ASCIIMap[ch] {
+                result.append(ch)
+                halfMode = true
+            } else if let ch = 半角カナto全角仮名Map[ch] {
+                result.append(ch)
+                halfMode = false
+            } else {
+                result.append(ch)
+                halfMode = false
+            }
+        }
+        return result
+    }
 }
-
 let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
     var map: [Character: Character] = [:]
     let bundle = Bundle(for: TextReader.self)
@@ -42,22 +65,3 @@ let 半角カナto全角仮名Map: [Character: Character] = {
     }
     return map
 }()
-
-let 全角ASCIISet = Set<Character>(全角ASCIIto半角ASCIIMap.keys)
-let 半角カナSet = Set<Character>(半角カナto全角仮名Map.keys)
-
-func convertTo半角ASCII(全角ASCII from: Character) -> Character {
-    return 全角ASCIIto半角ASCIIMap[from] ?? from
-}
-
-func convertTo全角仮名(半角カナ文字 from: Character) -> Character {
-    return 半角カナto全角仮名Map[from] ?? from
-}
-
-extension Character {
-    var 文字種類: 文字種類型 {
-        if 全角ASCIISet.contains(self) { return .全角ASCII }
-        if 半角カナSet.contains(self) { return .半角カナ }
-        return .通常
-    }
-}

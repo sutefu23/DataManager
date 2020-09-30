@@ -37,6 +37,9 @@ class TestString: XCTestCase {
         XCTAssertEqual("あいうえお".toJapaneseNormal, "あいうえお")
         XCTAssertEqual("アイウエオ".toJapaneseNormal, "アイウエオ")
         XCTAssertEqual("アイウエｵ".toJapaneseNormal, "アイウエオ")
+        XCTAssertEqual("ｱﾙｺｰﾙ".toJapaneseNormal, "アルコール")
+        XCTAssertEqual("A-10".toJapaneseNormal, "A-10")
+        XCTAssertEqual("ＢＣーＤ".toJapaneseNormal, "BC-D")
     }
     
 }

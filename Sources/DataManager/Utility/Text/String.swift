@@ -47,58 +47,6 @@ extension StringProtocol {
         return result.toJapaneseNormal.spaceStripped
     }
 
-    /// 記号英数半角、仮名全角に揃える（横棒は直前の文字が全角なら全角、半角なら半角になる）
-    public var toJapaneseNormal2: String {
-    	#if os(Linux)
-    	return String(self)
-    	#else
-        var result = ""
-        var halfMode = true
-        for ch in self {
-            if !halfMode && (ch == "ー" || ch == "-" || ch == "ｰ") {
-                result.append("ー")
-            } else if ch.isASCII {
-                result.append(ch)
-                halfMode = true
-            } else if let half = String(ch).applyingTransform(.fullwidthToHalfwidth, reverse: false)?.first, half.isASCII {
-                result.append(half)
-                halfMode = true
-            } else {
-                if let full = String(ch).applyingTransform(.fullwidthToHalfwidth, reverse: true) {
-                    result.append(full)
-                } else {
-                    result.append(ch)
-                }
-                halfMode = false
-            }
-        }
-        return result
-        #endif
-    }
-    public var toJapaneseNormal: String {
-        var result = ""
-        var halfMode = true
-        for ch in self {
-            if !halfMode && (ch == "ー" || ch == "-" || ch == "ｰ") {
-                result.append("ー")
-            } else {
-                switch ch.文字種類 {
-                case .通常:
-                    result.append(ch)
-                    halfMode = ch.isASCII
-                case .全角ASCII:
-                    let ch2 = convertTo半角ASCII(全角ASCII: ch)
-                    result.append(ch2)
-                    halfMode = true
-                case .半角カナ:
-                    let ch2 = convertTo全角仮名(半角カナ文字: ch)
-                    result.append(ch2)
-                    halfMode = false
-                }
-            }
-        }
-        return result
-    }
     public var remove㈱㈲: String {
         var result = String(self)
         if let ch = result.first, ch == "㈱" || ch == "㈲" {
