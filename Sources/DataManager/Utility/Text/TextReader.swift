@@ -146,10 +146,14 @@ extension Data {
         if count == 0 { return "" }
         if let str = String(data: self, encoding: encoding) { return str }
         if encoding == .shiftJIS {
+            var data = self
             for (key, value) in collectMap {
-                guard key.count <= count && key == self[..<key.count] else { continue }
-                let data = value + self[key.count...]
-                return data.decodeLossy(encoding: encoding)
+                if let range = data.searchRange(of: key) {
+                    data.replaceSubrange(range, with: value)
+                }
+            }
+            if let str = String(data: data, encoding: encoding) {
+                return str
             }
         }
         return self[1..<count].decodeLossy(encoding: encoding)
@@ -159,28 +163,28 @@ extension Data {
         let datas = self.splitLn()
         return datas.map { $0.decodeLossy(encoding: encoding) }
     }
-    
-    func hasNoPatchError() -> Bool {
-        let count = self.count
-        if count == 0 { return true }
-        if String(data: self, encoding: .shiftJIS) != nil { return true }
-        for (key, value) in collectMap {
-            guard key.count <= count && key == self[..<key.count] else { continue }
-            let data = value + self[key.count...]
-            return String(data: data, encoding: .shiftJIS) != nil
+
+    private func searchRange(of data: Data) -> Range<Int>? {
+        let firstByte = data[0] // nilだとロジックエラー
+        let endIndex = self.count - data.count
+        if endIndex < 0 { return nil }
+        for index in 0...endIndex {
+            if self[index] != firstByte { continue }
+            let range = index..<index+data.count
+            if self[range] == data {
+                return range
+            }
         }
-        return false
+        return nil
     }
-
-    /// 手当出来ないShiftJISのエラーがある
-    public var hasUnknownShiftJIS: Bool {
-        if String(data: self, encoding: .shiftJIS) != nil { return true }
-        let datas = self.splitLn()
-        return datas.contains { $0.hasNoPatchError() }
-    }
-
 }
 /// 壊れたコード->修正後のコード
 private let collectMap: [Data: Data] = [
-    Data([131, 37, 37, 100, 91]) : Data([131, 125, 129, 91])
+    Data([131, 37, 37, 100, 91, 131]) : Data([131, 125, 129, 91, 131]), // マーク-[78]
+    Data([131, 37, 37, 100, 98, 131]) : Data([131, 125, 131, 98, 131]), // マット-[103
+    Data([147, 37, 37, 100, 148]) : Data([147, 251, 148]), // 乳半-[188]
 ]
+/*
+let errorData2 = Data([131, 65, 131, 78, 131, 138, 131, 139, 32, 141, 149, 131, 37, 37, 100, 98, 131, 103, 32, 51, 46, 48, 116, 32]) // アクリル黒マット 3.0t
+let errorData3 = Data([131, 65, 131, 78, 131, 138, 131, 139, 32, 51, 46, 48, 116, 32, 147, 37, 37, 100, 148, 188]) // アクリル xt 乳半
+*/

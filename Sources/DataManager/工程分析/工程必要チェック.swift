@@ -24,8 +24,9 @@ extension 指示書型 {
     }
     
     public var is原稿出力のみ: Bool {
-        let name = 品名.toJapaneseNormal
-        return name == "EXILE出力"
+        if 品名.hasPrefix("原稿制作") || 品名.hasPrefix("原稿製作") { return true }
+        if 仕様.toJapaneseNormal.hasPrefix("EXILE出力") { return true }
+        return false
     }
 }
 

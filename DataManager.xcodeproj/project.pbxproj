@@ -24,7 +24,7 @@
 		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
 		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
-		14767166251D630C00429C17 /* DMCharacterMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* DMCharacterMap.swift */; };
+		14767166251D630C00429C17 /* CharacterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* CharacterType.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
@@ -218,7 +218,8 @@
 		14767117251D577A00429C17 /* DMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DMColor.swift; sourceTree = "<group>"; };
 		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
 		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
-		14767165251D630C00429C17 /* DMCharacterMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMCharacterMap.swift; sourceTree = "<group>"; };
+		14767165251D630C00429C17 /* CharacterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterType.swift; sourceTree = "<group>"; };
+		1498B052252413FA001698DF /* 全角カナto半角カナ.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "全角カナto半角カナ.txt"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
@@ -406,6 +407,7 @@
 			children = (
 				14767126251D5CA600429C17 /* 板加工在庫一覧.csv */,
 				14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */,
+				1498B052252413FA001698DF /* 全角カナto半角カナ.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -563,11 +565,12 @@
 		OBJ_32 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_37 /* Date */,
+				OBJ_51 /* Text */,
 				OBJ_33 /* Alert.swift */,
 				OBJ_34 /* Bundle.swift */,
 				OBJ_35 /* ChangeLog.swift */,
 				OBJ_36 /* Concurrent.swift */,
-				OBJ_37 /* Date */,
 				OBJ_42 /* File.swift */,
 				OBJ_43 /* Future.swift */,
 				OBJ_44 /* Int.swift */,
@@ -577,7 +580,6 @@
 				OBJ_48 /* SerialCache.swift */,
 				OBJ_49 /* SerialNumber.swift */,
 				OBJ_50 /* Set.swift */,
-				OBJ_51 /* Text */,
 				OBJ_58 /* TwoElementCache.swift */,
 				OBJ_59 /* URL.swift */,
 				OBJ_60 /* UserDefaults.swift */,
@@ -619,7 +621,7 @@
 				OBJ_55 /* String.swift */,
 				OBJ_56 /* TextReader.swift */,
 				OBJ_57 /* TextWriter.swift */,
-				14767165251D630C00429C17 /* DMCharacterMap.swift */,
+				14767165251D630C00429C17 /* CharacterType.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -879,7 +881,7 @@
 				OBJ_204 /* 部門.swift in Sources */,
 				OBJ_205 /* FileMakerDB.swift in Sources */,
 				OBJ_206 /* FileMakerError.swift in Sources */,
-				14767166251D630C00429C17 /* DMCharacterMap.swift in Sources */,
+				14767166251D630C00429C17 /* CharacterType.swift in Sources */,
 				OBJ_207 /* FileMakerRecord.swift in Sources */,
 				OBJ_208 /* FileMakerSession.swift in Sources */,
 				OBJ_209 /* Alert.swift in Sources */,
