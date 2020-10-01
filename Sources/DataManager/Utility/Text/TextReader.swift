@@ -103,44 +103,6 @@ public final class TextReader {
 }
 
 extension Data {
-    private func splitLn() -> [Data] {
-        var result: [Data] = []
-        var current = Data()
-        var hasPrev10 = false
-        var hasPrev13 = false
-        
-        for ch in self {
-            if ch == 13 {
-                if hasPrev13 {
-                    result.append(current)
-                    current = Data()
-                    hasPrev10 = false
-                } else if hasPrev10 {
-                    hasPrev13 = false
-                } else {
-                    result.append(current)
-                    current = Data()
-                    hasPrev13 = true
-                }
-            } else if ch == 10 {
-                if hasPrev10 {
-                    result.append(Data())
-                    hasPrev13 = false
-                } else if hasPrev13 {
-                    hasPrev10 = false
-                } else {
-                    result.append(current)
-                    current = Data()
-                    hasPrev10 = true
-                }
-            } else {
-                current.append(ch)
-            }
-        }
-        if !current.isEmpty || !result.isEmpty { current.append(current) }
-        return result
-    }
-    
     private func decodeLossy(encoding: String.Encoding) -> String {
         let count = self.count
         if count == 0 { return "" }
@@ -160,8 +122,34 @@ extension Data {
     }
     
     func lossyStrings(encoding: String.Encoding) -> [String] {
-        let datas = self.splitLn()
-        return datas.map { $0.decodeLossy(encoding: encoding) }
+        var result: [String] = []
+
+        var lineData = Data()
+        var tailCode: UInt8? = nil
+        
+        for ch in self {
+            if ch == 13 || ch == 10 {
+                if let prev = tailCode {
+                    if ch != prev { // crlf or lfcr完成
+                        tailCode = nil
+                    } else { // crcrまたはlflf。間に空行が入る
+                        assert(lineData.isEmpty)
+                        result.append("")
+                    }
+                } else {
+                    tailCode = ch
+                    result.append(lineData.decodeLossy(encoding: encoding))
+                    lineData = Data()
+                }
+            } else {
+                lineData.append(ch)
+                tailCode = nil
+            }
+        }
+        if !lineData.isEmpty {
+            result.append(lineData.decodeLossy(encoding: encoding))
+        }
+        return result
     }
 
     private func searchRange(of data: Data) -> Range<Int>? {

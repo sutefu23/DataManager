@@ -28,6 +28,7 @@
 		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
 		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
 		1498B067252429CB001698DF /* IDカード型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B066252429CB001698DF /* IDカード型.swift */; };
+		1498B07B25254743001698DF /* 13939.dxf in Resources */ = {isa = PBXBuildFile; fileRef = 1498B07A25254743001698DF /* 13939.dxf */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
@@ -227,6 +228,7 @@
 		1498B052252413FA001698DF /* 全角カナto半角カナ.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "全角カナto半角カナ.txt"; sourceTree = "<group>"; };
 		1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "全角ASCIIto半角ASCII.txt"; sourceTree = "<group>"; };
 		1498B066252429CB001698DF /* IDカード型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDカード型.swift"; sourceTree = "<group>"; };
+		1498B07A25254743001698DF /* 13939.dxf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 13939.dxf; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 		14767132251D5D2C00429C17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1498B07A25254743001698DF /* 13939.dxf */,
 				OBJ_145 /* maru.ita */,
 			);
 			path = Resources;
@@ -860,6 +863,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1498B07B25254743001698DF /* 13939.dxf in Resources */,
 				14767133251D5D5000429C17 /* maru.ita in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
