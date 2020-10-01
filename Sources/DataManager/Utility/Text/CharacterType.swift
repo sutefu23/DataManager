@@ -51,11 +51,15 @@ let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
     let url = bundle.url(forResource: "全角ASCIIto半角ASCII", withExtension: "txt")!
     let reader = try! TextReader(url: url, encoding: .utf8)
      while let line = reader.nextLine() {
+        if line.isEmpty { continue }
         let digs = line.split(separator: "\t")
-        if digs.count != 2 { continue }
+        assert(digs.count == 2)
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[zenkaku] = hankaku
+        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
+        let str2 = String(hankaku)
+        assert(str1 == str2)
     }
     return map
 }()
@@ -65,11 +69,15 @@ let 半角カナto全角仮名Map: [Character: Character] = {
     let url = bundle.url(forResource: "全角カナto半角カナ", withExtension: "txt")!
     let reader = try! TextReader(url: url, encoding: .utf8)
      while let line = reader.nextLine() {
+        if line.isEmpty { continue }
         let digs = line.split(separator: "\t")
-        if digs.count != 2 { continue }
+        assert(digs.count == 2)
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[hankaku] = zenkaku
+        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
+        let str2 = String(hankaku)
+        assert(str1 == str2)
     }
     return map
 }()

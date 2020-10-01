@@ -41,5 +41,4 @@ class TestString: XCTestCase {
         XCTAssertEqual("A-10".toJapaneseNormal, "A-10")
         XCTAssertEqual("ＢＣーＤ".toJapaneseNormal, "BC-D")
     }
-    
 }
