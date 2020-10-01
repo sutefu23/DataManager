@@ -5,11 +5,8 @@
 //  Created by manager on 2019/02/08.
 //  Copyright © 2019 四熊泰之. All rights reserved.
 //
-
+#if os(macOS) || os(iOS) || os(tvOS)
 import Foundation
-#if os(Linux)
-import FoundationNetworking
-#endif
 
 struct FileMakerPortal {
     let name : String
@@ -29,8 +26,21 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
     let dbURL: URL
     let user: String
     let password: String
+    
+//    private let connection = DMHttpConnection()
+//    private func callJSON(url: URL, method: DMHttpMethod, authorization: String?, contentType: String? = "application/json", content: Data?) throws -> (codeNum: Int, message: String, response:[String: Any])? {
+//        guard let data = try connection.connect(url: url, method: method, authorization: authorization, contentType: contentType, content: content),
+//              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+//              let messages = json["messages"] as? [[String: Any]],
+//              let code = messages[0]["code"] as? String,
+//              let codeNum = Int(code) else { return nil }
+//        let response = (json["response"] as? [String: Any]) ?? [:]
+//        let message = (messages[0]["message"] as? String) ?? ""
+//        return (codeNum, message, response)
+//    }
+
     private let sem = DispatchSemaphore(value: 0)
-    lazy var session: URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
+    private(set) lazy var session: URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
     
     init(url: URL, user: String, password: String) {
         self.dbURL = url
@@ -46,11 +56,8 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
         guard let ticket = self.ticket else { return nil }
         let now = Date()
         if now < ticket.expire {
-//            let expire: Date = Date(timeIntervalSinceNow: expireSeconds) // 寿命更新
-//            self.ticket?.expire = expire
             return ticket.token
         }
-//        self.logout(with: ticket.token) だいたい無効だろうし、解放処理はしない
         return nil
     }
     
@@ -127,15 +134,11 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
     // MARK: - <URLSessionDelegate>
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let credential: URLCredential?
-    #if os(Linux)
-        credential = URLCredential(user: self.user, password: self.password, persistence: .permanent)
-    #else
         if let trust = challenge.protectionSpace.serverTrust {
             credential = URLCredential(trust:trust)
         } else {
             credential = nil
         }
-        #endif
         completionHandler(.useCredential, credential)
     }
     
@@ -409,13 +412,4 @@ final class FileMakerSession: NSObject, URLSessionDelegate {
     }
 }
 
-func makeQueryDayString(_ range: ClosedRange<Day>?) -> String? {
-    guard let range = range else { return nil }
-    let from = range.lowerBound
-    let to = range.upperBound
-    if from == to {
-        return "\(from.fmString)"
-    } else {
-        return "\(from.fmString)...\(to.fmString)"
-    }
-}
+#endif

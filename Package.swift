@@ -14,11 +14,14 @@ let package = Package(
             targets: ["DataManager"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-server/async-http-client", from: "1.2.1"), // Linuxで必要
     ],
     targets: [
         .target(
             name: "DataManager",
-            dependencies: [],
+            dependencies: [
+                .product(name: "AsyncHTTPClient", package: "async-http-client")
+            ],
             resources: [
                 .process("Resources"),
             ]
