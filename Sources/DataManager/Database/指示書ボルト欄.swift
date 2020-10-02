@@ -73,32 +73,39 @@ public enum ボルト数調整モード型 {
             if (101...).contains(count) { return offset[7] + count }
             return count
         case .切文字式:
-            let offset: [Double]
-            switch 資材種類 {
-            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
-                offset = [1, 2, 3, 3, 3, 5, 10, 10]
-            case .丸パイプ, .浮かしパイプ:
-                offset = [1, 2, 3, 3, 3, 5, 10, 10]
-            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ, .木ねじ:
-                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .ナット, .鏡止めナット, .袋ナット, .高ナット:
-                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
-                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-            case .定番FB, .FB, .外注, .三角コーナー:
-                return count
-            case nil:
-                return count
-            }
-            assert(offset.count == 8)
-            if (1...5).contains(count) { return offset[0] + count }
-            if (6...10).contains(count) { return offset[1] + count }
-            if (11...15).contains(count) { return offset[2] + count }
-            if (16...30).contains(count) { return offset[3] + count }
-            if (31...40).contains(count) { return offset[4] + count }
-            if (41...50).contains(count) { return offset[5] + count }
-            if (51...100).contains(count) { return offset[6] + count }
-            if (101...).contains(count) { return offset[7] + count }
+            let offset: [Double] = [2, 3, 4, 5, 6, 8, 10]
+            if (1...10).contains(count) { return offset[0] + count }
+            if (11...20).contains(count) { return offset[1] + count }
+            if (21...30).contains(count) { return offset[2] + count }
+            if (31...40).contains(count) { return offset[3] + count }
+            if (41...50).contains(count) { return offset[4] + count }
+            if (51...70).contains(count) { return offset[5] + count }
+            if (71...).contains(count) { return offset[6] + count }
+//            switch 資材種類 {
+//            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
+//                offset = [1, 2, 3, 3, 3, 5, 10, 10]
+//            case .丸パイプ, .浮かしパイプ:
+//                offset = [1, 2, 3, 3, 3, 5, 10, 10]
+//            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ, .木ねじ:
+//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+//            case .ナット, .鏡止めナット, .袋ナット, .高ナット:
+//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+//            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
+//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
+//            case .定番FB, .FB, .外注, .三角コーナー:
+//                return count
+//            case nil:
+//                return count
+//            }
+//            assert(offset.count == 8)
+//            if (1...5).contains(count) { return offset[0] + count }
+//            if (6...10).contains(count) { return offset[1] + count }
+//            if (11...15).contains(count) { return offset[2] + count }
+//            if (16...30).contains(count) { return offset[3] + count }
+//            if (31...40).contains(count) { return offset[4] + count }
+//            if (41...50).contains(count) { return offset[5] + count }
+//            if (51...100).contains(count) { return offset[6] + count }
+//            if (101...).contains(count) { return offset[7] + count }
             return count
         default:
             return count
