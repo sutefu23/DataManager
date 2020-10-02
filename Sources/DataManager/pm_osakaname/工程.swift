@@ -178,7 +178,8 @@ public extension 工程型 {
     static let 裏加工_溶接 = 工程型(code: "P013C")!
     static let 立ち上がり = 工程型(code: "P014")!
     static let 半田 = 工程型(code: "P015")!
-    static let レーザー溶接 = 工程型(code: "P015B")!
+    static let レーザー溶接 = 工程型(code: "P015A")!
+    static let ボンド = 工程型(code: "P015B")!
     static let 裏加工 = 工程型(code: "P015C")!
     static let 研磨 = 工程型(code: "P016")!
     static let ルーター = 工程型(code: "P017")!
@@ -224,5 +225,5 @@ public let 第3製造グループ2: [工程型] = [
     .半田, .溶接
 ]
 public let 第3製造グループ3: [工程型] = [
-    .裏加工, .裏加工_溶接
+    .ボンド, .裏加工, .裏加工_溶接
 ]
