@@ -25,7 +25,8 @@ public final class 取引先型 {
     public var 印字会社名: String { return record.string(forKey: "印字会社名")! }
     public var 分類: String { return record.string(forKey: "分類")! }
     
-    public var is原稿社名不要: Bool { 原稿社名不要会社コードSet.contains(self.会社コード) }
+    public var is原稿社名不要: Bool { self.会社コード.is原稿社名不要会社コード }
+    public var is管理用: Bool { self.会社コード.is管理用会社コード }
     
     public func is社名マッチ(to name: String) -> Bool {
         let name = name.比較用文字列
@@ -45,6 +46,36 @@ extension 取引先型 {
     }
 }
 
+// MARK: - 管理用
+extension 会社コード型 {
+    public var is管理用会社コード: Bool {
+        管理用会社コードSet.contains(self)
+    }
+    
+    public var is原稿社名不要会社コード: Bool {
+        原稿社名不要会社コード一覧.contains(self)
+    }
+}
+
+var 管理用会社コードSet: Set<会社コード型> = {
+    Set<会社コード型>(管理用会社コード一覧)
+}()
+
+var 管理用会社コード一覧: [会社コード型] = [
+    "0333", // 宮下部長
+    "0334", // 山本副部長
+    "0337", // 業務
+    "0338", // 棚木
+    "0339", // 東京
+    "0340", // 大阪
+    "0342", // 末松
+    "0344", // 古賀
+    "0345", // 佐々木
+    "0346", // 平野
+    "0347", // 大里
+    "0348", // 山内
+]
+// MARK: - 原稿名不要
 var 原稿社名不要会社コードSet: Set<会社コード型> = {
     Set<会社コード型>(原稿社名不要会社コード一覧)
 }()
