@@ -194,13 +194,26 @@ extension Array where Element == 進捗出力型 {
             var convertError: Error? = nil
             source.enumerateLines { (line, stop) in
                 do {
-                    if let pl = try 進捗出力型(csvLine: line), !(重複排除 && pl.isDBに重複あり) {
+                    if let pl = try 進捗出力型(csvLine: line) {
                         targets.append(pl)
                     }
                 } catch {
                     convertError = error
                     stop = true
                 }
+            }
+            if 重複排除 {
+                let lock = NSLock()
+                var tmp: [進捗出力型] = []
+                DispatchQueue.concurrentPerform(iterations: targets.count) {
+                    let object = targets[$0]
+                    if !object.isDBに重複あり {
+                        lock.lock()
+                        tmp.append(object)
+                        lock.unlock()
+                    }
+                }
+                targets = tmp
             }
             if let error = convertError { throw error }
         }
