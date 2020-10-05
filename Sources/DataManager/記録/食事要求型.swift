@@ -156,14 +156,24 @@ public class 食事要求型 {
     }
 
     public static func find(社員ID: String? = nil, メニューID: String? = nil) throws -> [食事要求型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         if let menuID = メニューID {
             query["メニューID"] = "==\(menuID)"
         }
         if let staffID = 社員ID {
             query["社員番号"] = "==\(staffID)"
         }
+        assert(!query.isEmpty)
+        return try find(query: query)
+    }
+    
+    public static func find(提供日: Day, 種類: 食事種類型) throws -> [食事要求型] {
+        let query: FileMakerQuery = ["提供日": 提供日.fmString, "種類": 種類.rawValue]
         return try find(query: query)
     }
 
+    public static func find(提供開始日: Day) throws -> [食事要求型] {
+        let query: FileMakerQuery = ["提供日": ">=\(提供開始日.fmString)"]
+        return try find(query: query)
+    }
 }

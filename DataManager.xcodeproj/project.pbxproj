@@ -31,7 +31,7 @@
 		1498B07B25254743001698DF /* 13939.dxf in Resources */ = {isa = PBXBuildFile; fileRef = 1498B07A25254743001698DF /* 13939.dxf */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
-		8E9A4E532526045600476B2E /* FileMakerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* FileMakerConnection.swift */; };
+		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
 		8E9E604D251E439B00B4858E /* 食事要求型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E604C251E439B00B4858E /* 食事要求型.swift */; };
 		OBJ_188 /* インシデント.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* インシデント.swift */; };
@@ -233,7 +233,7 @@
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
-		8E9A4E522526045600476B2E /* FileMakerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerConnection.swift; sourceTree = "<group>"; };
+		8E9A4E522526045600476B2E /* DMHttpConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMHttpConnection.swift; sourceTree = "<group>"; };
 		8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事メニュー.swift"; sourceTree = "<group>"; };
 		8E9E604C251E439B00B4858E /* 食事要求型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事要求型.swift"; sourceTree = "<group>"; };
 		"DataManager::DataManager::Product" /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -571,7 +571,7 @@
 				OBJ_28 /* FileMakerDB.swift */,
 				OBJ_30 /* FileMakerRecord.swift */,
 				OBJ_31 /* FileMakerSession.swift */,
-				8E9A4E522526045600476B2E /* FileMakerConnection.swift */,
+				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
 				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = FileMaker;
@@ -996,7 +996,7 @@
 				OBJ_291 /* 最終発注単価キャッシュ.swift in Sources */,
 				OBJ_292 /* 箱文字優先度キャッシュ.swift in Sources */,
 				OBJ_293 /* 資材キャッシュ.swift in Sources */,
-				8E9A4E532526045600476B2E /* FileMakerConnection.swift in Sources */,
+				8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */,
 				OBJ_294 /* 資材発注キャッシュ.swift in Sources */,
 				OBJ_295 /* 指示書文字数.swift in Sources */,
 				OBJ_296 /* 箱文字優先度.swift in Sources */,

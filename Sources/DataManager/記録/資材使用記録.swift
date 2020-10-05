@@ -237,8 +237,12 @@ public final class 資材使用記録型 {
         let data = self.data.fieldData
         serialQueue.addOperation {
             let db = FileMakerDB.system
-            let _ = try? db.insert(layout: 資材使用記録Data型.dbName, fields: data)
-            資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
+            do {
+                let _ = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
+                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
+            } catch {
+                NSLog(error.localizedDescription)
+            }
         }
     }
     

@@ -131,3 +131,15 @@ final class FileMakerRecord {
         return data
     }
 }
+
+// MARK: -
+func makeQueryDayString(_ range: ClosedRange<Day>?) -> String? {
+    guard let range = range else { return nil }
+    let from = range.lowerBound
+    let to = range.upperBound
+    if from == to {
+        return "\(from.fmString)"
+    } else {
+        return "\(from.fmString)...\(to.fmString)"
+    }
+}

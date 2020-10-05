@@ -53,7 +53,7 @@ let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
      while let line = reader.nextLine() {
         if line.isEmpty { continue }
         let digs = line.split(separator: "\t")
-        assert(digs.count == 2)
+        assert(digs.count == 2 && digs[0].count == 1 && digs[1].count == 1)
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[zenkaku] = hankaku
@@ -71,7 +71,7 @@ let 半角カナto全角仮名Map: [Character: Character] = {
      while let line = reader.nextLine() {
         if line.isEmpty { continue }
         let digs = line.split(separator: "\t")
-        assert(digs.count == 2)
+        assert(digs.count == 2 && digs[0].count == 1 && digs[1].count == 1)
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[hankaku] = zenkaku

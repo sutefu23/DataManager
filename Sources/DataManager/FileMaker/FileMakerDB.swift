@@ -99,7 +99,7 @@ final class FileMakerServer: Hashable {
         lock.lock()
         defer { lock.unlock() }
         for (index, session) in pool.enumerated().reversed() {
-            if session.dbURL == url {
+            if session.url == url {
                 pool.remove(at: index)
                 return session
             }

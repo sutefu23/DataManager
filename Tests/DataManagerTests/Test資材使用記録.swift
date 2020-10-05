@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import DataManager
+let execDBTest = false
 
 private let item1 = 資材型(図番: "992133B")! // 1.2t 2B 4x8
 private let worker1 = 社員型(社員コード: "023")! // 四熊
@@ -31,6 +32,8 @@ class TestUseItemRecord: XCTestCase {
         XCTAssertEqual(use.金額, 782)
         XCTAssertEqual(use.印刷対象, .全て)
         
+        guard execDBTest else { return }
+        use.upload()
     }
 }
 

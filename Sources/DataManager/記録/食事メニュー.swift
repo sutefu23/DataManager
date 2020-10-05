@@ -14,7 +14,7 @@ private let serialQueue: OperationQueue = {
     return queue
 }()
 
-enum 食事種類型: String {
+public enum 食事種類型: String {
     case 朝食
     case 夕食
 }
@@ -93,43 +93,43 @@ public class 食事メニュー型 {
     var data: 食事メニューData型
     
     public internal(set) var recordId: String?
-    var メニューID: メニューID型 {
+    public var メニューID: メニューID型 {
         get { data.メニューID }
         set { data.メニューID = newValue }
     }
-    var 図番: 図番型 {
+    public var 図番: 図番型 {
         get { data.図番 }
         set { data.図番 = newValue }
     }
-    var 提供日: Day {
+    public var 提供日: Day {
         get { data.提供日 }
         set { data.提供日 = newValue }
     }
-    var 発注日: Day {
+    public var 発注日: Day {
         get { data.発注日 }
         set { data.発注日 = newValue }
     }
-    var 種類: 食事種類型 {
+    public var 種類: 食事種類型 {
         get { data.種類 }
         set { data.種類 = newValue }
     }
-    var 内容: String {
+    public var 内容: String {
         get { data.内容 }
         set { data.内容 = newValue }
     }
-    var カロリー: String {
+    public var カロリー: String {
         get { data.カロリー }
         set { data.カロリー = newValue }
     }
-    var 食塩: String {
+    public var 食塩: String {
         get { data.食塩 }
         set { data.食塩 = newValue }
     }
-    var 最大提供数: Int {
+    public var 最大提供数: Int {
         get { data.最大提供数 }
         set { data.最大提供数 = newValue }
     }
-    var 金額: Int {
+    public var 金額: Int {
         get { data.金額 }
         set { data.金額 = newValue }
     }
