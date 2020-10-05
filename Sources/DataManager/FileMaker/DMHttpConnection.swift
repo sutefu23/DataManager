@@ -43,7 +43,7 @@ struct DMHttpContentType {
 }
 
 // MARK: - FileMaker専用処理
-extension DMHttpConnection {
+extension DMHttpConnectionProtocol {
     func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
         guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -77,7 +77,6 @@ struct FileMakerResponse {
         return dataArray.compactMap { FileMakerRecord(json: $0) }
     }
 }
-
 
 // MARK: - Apple系OSへの対応
 #if os(macOS) || os(iOS) || os(tvOS)
