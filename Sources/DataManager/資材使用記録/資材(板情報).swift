@@ -325,6 +325,11 @@ public struct 選択板型 {
             self.社名先頭1文字 = ""
         }
     }
+
+    public var 資材登録あり: Bool {
+        let item: 資材型? = 資材型(図番: self.図番)
+        return item != nil
+    }
 }
 
 public let フォーミング板リスト: [選択板型] = [

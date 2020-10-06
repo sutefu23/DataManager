@@ -95,6 +95,11 @@ public struct 選択ボルト等型 {
             self.社名先頭1文字 = "?"
         }
     }
+    
+    public var 資材登録あり: Bool {
+        let item: 資材型? = 資材型(図番: self.図番)
+        return item != nil
+    }
 }
 
 func searchボルト等(種類: 選択ボルト等種類型, サイズ: String, 長さ: Double?) -> 選択ボルト等型? {
