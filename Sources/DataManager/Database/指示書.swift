@@ -126,6 +126,12 @@ public final class 指示書型 {
     public var ボルト本数14: String { record.string(forKey: "ボルト本数14")! }
     public var ボルト本数15: String { record.string(forKey: "ボルト本数15")! }
 
+    public var 付属品1: String { record.string(forKey: "付属品1")! }
+    public var 付属品2: String { record.string(forKey: "付属品2")! }
+    public var 付属品3: String { record.string(forKey: "付属品3")! }
+    public var 付属品4: String { record.string(forKey: "付属品4")! }
+    public var 付属品5: String { record.string(forKey: "付属品5")! }
+    
     public var その他1: String { record.string(forKey: "その他1")! }
     public var その他2: String { record.string(forKey: "その他2")! }
 
@@ -452,6 +458,16 @@ public final class 指示書型 {
             }
         }
         return map
+    }()
+    
+    public lazy var 付属品: Set<String> = {
+        var set = Set<String>()
+        for str in [付属品1, 付属品2, 付属品3, 付属品4, 付属品5] {
+            if !str.isEmpty {
+                set.insert(str)
+            }
+        }
+        return set
     }()
 }
 

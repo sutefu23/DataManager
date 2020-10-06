@@ -24,7 +24,7 @@ typealias FileMakerQuery = [String: String]
 
 // MARK: -
 /// FileMaker Serverとの通信
-final class FileMakerSession: NSObject, URLSessionDelegate {
+final class FileMakerSession {
     /// ベースとなるURL
     let url: URL
     /// 接続ユーザー名

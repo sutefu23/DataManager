@@ -149,5 +149,4 @@ public class IDカード型 {
         }
         return try find(query: query)
     }
-
 }
