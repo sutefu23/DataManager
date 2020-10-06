@@ -140,13 +140,14 @@ extension Sequence where Element == 進捗出力型 {
         defer { db2.releaseSession(session) }
         var target = self.filter { !重複チェック || $0.isDBに重複あり == false }
         if target.isEmpty { return }
-        var loopCount = 0
+        var loopCount = 1
         repeat {
             let uuid = UUID()
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
+            Thread.sleep(forTimeInterval: 0.1)
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
             Thread.sleep(forTimeInterval: 0.1)
             let checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
@@ -157,10 +158,10 @@ extension Sequence where Element == 進捗出力型 {
                 }
                 return true
             }
+            if target.isEmpty { return }
+            if loopCount.isMultiple(of: 2) { FileMakerDB.logputAll() }
             loopCount += 1
-            if (loopCount % 3) == 0 { FileMakerDB.logputAll() }
-
-        } while !target.isEmpty || loopCount > 3
+        } while loopCount > 3
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")
     }
     
