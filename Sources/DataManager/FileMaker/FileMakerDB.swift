@@ -62,7 +62,7 @@ enum FileMakerSortType: String, Encodable {
 }
 
 /// １台のサーバーへの最大同時接続数
-var maxConnection = 3
+private var maxConnection = 4
 
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: Hashable {

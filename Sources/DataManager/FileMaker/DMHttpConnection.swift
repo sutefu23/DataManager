@@ -121,6 +121,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
 #elseif os(Linux) || os(Windows)
 import AsyncHTTPClient
 import NIO
+import NIOHTTP1
 import NIOSSL
 
 typealias DMHttpConnection = DMHttpNIOConnection
@@ -130,7 +131,6 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
         let tlsc = TLSConfiguration.forClient(certificateVerification: .none)
         config.tlsConfiguration = tlsc
         let client = HTTPClient(eventLoopGroupProvider: .shared(eventLoopGroup), configuration: config)
-        self.isActiveSession = true
         return client
     }()
 
@@ -149,7 +149,8 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
         let response = try future.wait()
         switch response.status {
         case .ok:
-            break
+            guard let body = response.body else { return nil }
+            return Data(buffer: body)
         default:
             return nil
         }
