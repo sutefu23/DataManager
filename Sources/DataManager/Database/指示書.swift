@@ -642,14 +642,16 @@ extension 指示書型 {
         let first = list[0].登録日時
         let last = list.last!.登録日時
         var isOk = true
-        let test = source.filter { $0.登録日時 > last }
         let state0 = list[0].工程
-        for progress in test {
-            let state = progress.工程
-            if state == state0 || state == .発送 { break }
-            if state < state0 {
-                isOk = false
-                break
+        if list.last!.工程 != state0 {
+            let test = source.filter { $0.登録日時 > last }
+            for progress in test {
+                let state = progress.工程
+                if state == state0 || state == .発送 { break }
+                if state < state0 {
+                    isOk = false
+                    break
+                }
             }
         }
         return (isOk, TimeInterval(工程: nil, 作業開始: first, 作業完了: last))

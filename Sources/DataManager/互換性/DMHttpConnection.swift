@@ -42,42 +42,6 @@ struct DMHttpContentType {
     var string: String
 }
 
-// MARK: - FileMaker専用処理
-extension DMHttpConnectionProtocol {
-    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
-        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let messages = json["messages"] as? [[String: Any]],
-              let codeString = messages[0]["code"] as? String else { return FileMakerResponse(code: nil, message: "", response: [:]) }
-        let response = (json["response"] as? [String: Any]) ?? [:]
-        let message = (messages[0]["message"] as? String) ?? ""
-        return FileMakerResponse(code: Int(codeString), message: message, response: response)
-    }
-
-    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, string: String) throws -> FileMakerResponse {
-        let data = string.data(using: .utf8)!
-        return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
-    }
-
-    func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(object)
-        return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
-    }
-}
-
-struct FileMakerResponse {
-    let code: Int?
-    let message: String
-    let response: [String: Any]
-    
-    subscript(key: String) -> Any? { response[key] }
-    var records: [FileMakerRecord]? {
-        guard let dataArray = self["data"] as? [Any] else { return nil }
-        return dataArray.compactMap { FileMakerRecord(json: $0) }
-    }
-}
-
 // MARK: - Apple系OSへの対応
 #if os(macOS) || os(iOS) || os(tvOS)
 typealias DMHttpConnection = DMHttpAppleConnection

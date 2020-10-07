@@ -104,7 +104,6 @@
 		OBJ_255 /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_83 /* BarCode.swift */; };
 		OBJ_256 /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* Cocoa.swift */; };
 		OBJ_257 /* KeyModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* KeyModifiers.swift */; };
-		OBJ_258 /* NCtoDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_87 /* NCtoDM.swift */; };
 		OBJ_259 /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_88 /* UIKit.swift */; };
 		OBJ_260 /* 作業.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* 作業.swift */; };
 		OBJ_261 /* 作業ステージ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_91 /* 作業ステージ.swift */; };
@@ -382,7 +381,6 @@
 		OBJ_83 /* BarCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		OBJ_85 /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
 		OBJ_86 /* KeyModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifiers.swift; sourceTree = "<group>"; };
-		OBJ_87 /* NCtoDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCtoDM.swift; sourceTree = "<group>"; };
 		OBJ_88 /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
 		OBJ_90 /* 作業.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業.swift"; sourceTree = "<group>"; };
 		OBJ_91 /* 作業ステージ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業ステージ.swift"; sourceTree = "<group>"; };
@@ -571,7 +569,6 @@
 				OBJ_28 /* FileMakerDB.swift */,
 				OBJ_30 /* FileMakerRecord.swift */,
 				OBJ_31 /* FileMakerSession.swift */,
-				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
 				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = FileMaker;
@@ -711,7 +708,7 @@
 				OBJ_85 /* Cocoa.swift */,
 				8E106DB0251E1E8C00FB059D /* Linux.swift */,
 				OBJ_86 /* KeyModifiers.swift */,
-				OBJ_87 /* NCtoDM.swift */,
+				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
 				14767117251D577A00429C17 /* DMColor.swift */,
 			);
 			path = "互換性";
@@ -957,7 +954,6 @@
 				OBJ_255 /* BarCode.swift in Sources */,
 				OBJ_256 /* Cocoa.swift in Sources */,
 				OBJ_257 /* KeyModifiers.swift in Sources */,
-				OBJ_258 /* NCtoDM.swift in Sources */,
 				OBJ_259 /* UIKit.swift in Sources */,
 				OBJ_260 /* 作業.swift in Sources */,
 				OBJ_261 /* 作業ステージ.swift in Sources */,
