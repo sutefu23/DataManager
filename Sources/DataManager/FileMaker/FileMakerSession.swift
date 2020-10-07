@@ -209,8 +209,8 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components") }
         components.queryItems = [
-        URLQueryItem(name: "script", value: script),
-        URLQueryItem(name: "script.param", value: param)
+            URLQueryItem(name: "script", value: script),
+            URLQueryItem(name: "script.param", value: param)
         ]
         let response = try connection.callFileMaker(url: components.url!, method: .GET, authorization: .Bearer(token: token))
         if response.code != 0 { throw FileMakerError.execute(message: response.message) }
