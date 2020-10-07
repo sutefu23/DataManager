@@ -207,9 +207,9 @@ public extension UIColor {
         if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
             return (red, green, blue, alpha)
         }
-        var white : CGFloat = 0
-        if self.getWhite(&white, alpha: &alpha) {
-            return (white, white, white, alpha)
+        var light : CGFloat = 0
+        if self.getWhite(&light, alpha: &alpha) {
+            return (light, light, light, alpha)
         }
         fatalError("UIColor.rgbaでrgbaが取得できなかった")
     }
