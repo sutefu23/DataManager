@@ -626,6 +626,34 @@ extension 指示書型 {
         }
         return result
     }
+    
+    public var 作り直しリードタイム: (isOk: Bool, interval: TimeInterval)? {
+        let source = self.進捗一覧.sorted { $0.登録日時 < $1.登録日時 }
+        var list = source.filter { $0.作業種別 == .作直 }
+        guard let list0 = list.first else { return nil }
+        let head = source.filter { $0.作業内容 == .仕掛 }.reversed()
+        for progress in head {
+            if progress.登録日時 < list0.登録日時 {
+                list.insert(progress, at: 0)
+                break
+            }
+        }
+        if list.count <= 1 { return nil }
+        let first = list[0].登録日時
+        let last = list.last!.登録日時
+        var isOk = true
+        let test = source.filter { $0.登録日時 > last }
+        let state0 = list[0].工程
+        for progress in test {
+            let state = progress.工程
+            if state == state0 || state == .発送 { break }
+            if state < state0 {
+                isOk = false
+                break
+            }
+        }
+        return (isOk, TimeInterval(工程: nil, 作業開始: first, 作業完了: last))
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {

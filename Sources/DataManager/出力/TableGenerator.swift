@@ -189,7 +189,9 @@ public extension TableGenerator {
         case hourMinuteSecond
     }
     enum TimeIntervalFormat {
+        /// 小数点以下は切り捨て
         case minute0
+        /// 小数点以下１桁まで
         case minute1
     }
 

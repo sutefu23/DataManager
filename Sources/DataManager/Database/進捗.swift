@@ -169,7 +169,7 @@ public extension 進捗型 {
         return try self.find(query: query)
     }
     
-    static func find(登録期間 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil) throws -> [進捗型] {
+    static func find(登録期間 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil, 作業種別: 作業種別型? = nil) throws -> [進捗型] {
         var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(range)
         if let type = type {
@@ -180,6 +180,9 @@ public extension 進捗型 {
         }
         if let work = work {
             query["進捗コード"] = "\(work.code)"
+        }
+        if let code = 作業種別?.code {
+            query["作業種別コード"] = code
         }
         return try self.find(query: query)
     }
