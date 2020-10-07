@@ -30,7 +30,14 @@ public final class 取引先型 {
     
     public func is社名マッチ(to name: String) -> Bool {
         let name = name.比較用文字列
-        return name == 会社名.比較用文字列 || name == 印字会社名.比較用文字列
+        let name1 = 会社名.比較用文字列
+        let name2 = 印字会社名.比較用文字列
+        if name == name1 || name == name2 { return true }
+        let dig1 = name1.split(separator: " ")
+        if dig1.count >= 2 && dig1[0] == name { return true }
+        let dig2 = name2.split(separator: " ")
+        if dig2.count >= 2 && dig2[0] == name { return true }
+        return false
     }
 }
 
