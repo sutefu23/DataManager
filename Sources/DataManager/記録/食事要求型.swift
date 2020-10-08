@@ -16,8 +16,8 @@ private let serialQueue: OperationQueue = {
 
 public enum 食事要求状態型: String {
     case 未処理
-    case 受取待ち
-    case 受渡済み
+    case 受取待
+    case 受渡済
 }
 
 struct 食事要求Data型: Equatable {
@@ -178,7 +178,7 @@ public class 食事要求型 {
     }
     
     public static func find(提供日: Day, 種類: 食事種類型) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["提供日": 提供日.fmString, "種類": 種類.rawValue]
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 提供日.fmString, "DataAPI_食事メニュー::種類": 種類.rawValue]
         return try find(query: query)
     }
 

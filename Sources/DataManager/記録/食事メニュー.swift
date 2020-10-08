@@ -14,9 +14,24 @@ private let serialQueue: OperationQueue = {
     return queue
 }()
 
-public enum 食事種類型: String {
+public enum 食事種類型: String, Comparable {
     case 朝食
     case 昼食
+    
+    public static func ==(left: 食事種類型, right: 食事種類型) -> Bool {
+        left.rawValue == right.rawValue
+    }
+    
+    var code: Int {
+        switch self {
+        case .朝食: return 0
+        case .昼食: return 1
+        }
+    }
+    
+    public static func <(left: 食事種類型, right: 食事種類型) -> Bool {
+        left.code < right.code
+    }
 }
 extension FileMakerRecord {
     func 食事種類(forKey key: String) -> 食事種類型? {
@@ -56,10 +71,10 @@ struct 食事メニューData型: Equatable {
               let 図番 = record.string(forKey: "図番"),
               let 提供日 = record.day(forKey: "提供日"),
               let 発注日 = record.day(forKey: "発注日"),
-              let 種類 = record.食事種類(forKey: "種類"),
-              let 最大提供数 = record.integer(forKey: "最大提供数"),
-              let 金額 = record.integer(forKey: "金額")
+              let 種類 = record.食事種類(forKey: "種類")
         else { return nil }
+        let 最大提供数 = record.integer(forKey: "最大提供数") ?? 999
+        let 金額 = record.integer(forKey: "金額") ?? 0
         self.メニューID = メニューID
         self.図番 = 図番
         self.提供日 = 提供日
@@ -226,6 +241,12 @@ public class 食事メニュー型 {
         if let item = 図番 {
             query["図番"] = "==\(item)"
         }
+        return try find(query: query)
+    }
+
+    public static func find(from day: Day) throws -> [食事メニュー型] {
+        var query = [String: String]()
+        query["提供日"] = ">=\(day.fmString)"
         return try find(query: query)
     }
 
