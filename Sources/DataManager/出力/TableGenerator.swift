@@ -11,6 +11,7 @@ import Foundation
 public enum ExportType {
     case numbers(header: Bool = true)
     case excel(header: Bool = true)
+    case excel_utf8(header: Bool = true)
     case html(header: Bool = true)
     case filemaker
     case utf8
@@ -18,7 +19,7 @@ public enum ExportType {
     
     func header(title: String) -> String {
         switch self {
-        case .numbers, .excel, .filemaker, .libreoffice, .utf8:
+        case .numbers, .excel, .filemaker, .libreoffice, .utf8, .excel_utf8:
             return ""
         case .html:
             var line: String = ""
@@ -35,7 +36,7 @@ public enum ExportType {
     
     func footer() -> String {
         switch self {
-        case .numbers, .excel, .filemaker, .libreoffice, .utf8:
+        case .numbers, .excel, .filemaker, .libreoffice, .utf8, .excel_utf8:
             return ""
         case .html:
             var line : String = ""
@@ -68,7 +69,7 @@ public enum ExportType {
             return cols.joined() + "\n"
         case .filemaker:
             return cols.map { clamp($0) }.joined(separator: ",") + "\n"
-        case .excel, .libreoffice:
+        case .excel, .libreoffice, .excel_utf8:
             return cols.map { "\"\(clamp($0))\"" }.joined(separator: ",") + "\n"
         case .numbers:
             return cols.map { clamp($0) }.joined(separator: "\t") + "\n"
@@ -85,7 +86,7 @@ public enum ExportType {
     
     func encode(text: String) -> Data {
         switch self {
-        case .numbers, .html, .libreoffice, .utf8:
+        case .numbers, .html, .libreoffice, .utf8, .excel_utf8:
             return text.data(using: .utf8, allowLossyConversion: true) ?? Data()
         case .excel, .filemaker:
             return text.data(using: .shiftJIS, allowLossyConversion: true) ?? Data()
@@ -120,7 +121,7 @@ public final class TableGenerator<S> {
     public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
         var text = format.header(title: title)
         switch format {
-        case .excel(header: let header), .html(header: let header), .libreoffice(header: let header), .numbers(header: let header):
+        case .excel(header: let header), .excel_utf8(header: let header), .html(header: let header), .libreoffice(header: let header), .numbers(header: let header):
             if header {
                 let titles = columns.map  { $0.title }
                 text += format.makeLine(titles)

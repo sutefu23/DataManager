@@ -16,7 +16,7 @@ private let serialQueue: OperationQueue = {
 
 public enum 食事種類型: String {
     case 朝食
-    case 夕食
+    case 昼食
 }
 extension FileMakerRecord {
     func 食事種類(forKey key: String) -> 食事種類型? {

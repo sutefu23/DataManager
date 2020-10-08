@@ -23,7 +23,17 @@ public struct Day: Hashable, Strideable, Codable {
     public init(year: Int, month: Int, day: Int) {
         self.init(year, month, day)
     }
-    
+
+    public init(month: Int, day: Int) {
+        self.init(month, day)
+    }
+
+    public init(_ month: Int, _ day: Int) {
+        let date = Date()
+        let year = date.yearNumber
+        self.init(year, month, day)
+    }
+
     public init(_ year: Int, _ month: Int, _ day: Int) {
         self.year = year
         self.month = month

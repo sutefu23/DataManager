@@ -27,10 +27,13 @@ struct 食事要求Data型: Equatable {
     var メニューID: メニューID型
     var 要求状態: 食事要求状態型
     
+    var 修正情報タイムスタンプ: Date
+    
     init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
         self.社員番号 = 社員番号
         self.メニューID = メニューID
         self.要求状態 = 要求状態
+        self.修正情報タイムスタンプ = Date().rounded()
     }
     
     init?(_ record: FileMakerRecord) {
@@ -41,6 +44,7 @@ struct 食事要求Data型: Equatable {
         self.社員番号 = 社員番号
         self.メニューID = メニューID
         self.要求状態 = 要求状態
+        self.修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ") ?? Date().rounded()
     }
     
     var fieldData: FileMakerQuery {
@@ -70,6 +74,8 @@ public class 食事要求型 {
         get { data.要求状態 }
         set { data.要求状態 = newValue }
     }
+    
+    public var 修正情報タイムスタンプ: Date { data.修正情報タイムスタンプ }
     
     init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
         self.data = 食事要求Data型(社員番号: 社員番号, メニューID: メニューID, 要求状態: 要求状態)
