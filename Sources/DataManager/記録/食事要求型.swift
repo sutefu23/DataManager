@@ -89,6 +89,10 @@ public class 食事要求型 {
     }
 
     public var isChanged: Bool { original != data }
+    
+    public var メニュー: 食事メニュー型? {
+        return try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
+    }
 
     // MARK: - DB操作
     public func delete() throws {

@@ -236,18 +236,18 @@ class 食事メニューキャッシュ型 {
     static let shared = 食事メニューキャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()
-    private var cache: [メニューID型: (有効期限: Date, 食事メニュー: [食事メニュー型])] = [:]
+    private var cache: [メニューID型: (有効期限: Date, 食事メニュー: 食事メニュー型)] = [:]
 
-    func 現在メニュー(メニューID: メニューID型) throws -> [食事メニュー型]? {
-        let list = try 食事メニュー型.find(メニューID: メニューID)
+    func 現在メニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
+        guard let object = try 食事メニュー型.find(メニューID: メニューID).first else { return nil }
         let expire = Date(timeIntervalSinceNow: self.expireTime)
         lock.lock()
-        cache[メニューID] = (expire, list)
+        cache[メニューID] = (expire, object)
         lock.unlock()
-        return list
+        return object
     }
 
-    func キャッシュメニュー(メニューID: メニューID型) throws -> [食事メニュー型]? {
+    func キャッシュメニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
         lock.lock()
         let data = self.cache[メニューID]
         lock.unlock()
