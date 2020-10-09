@@ -176,7 +176,12 @@ public class 食事要求型 {
         assert(!query.isEmpty)
         return try find(query: query)
     }
-    
+
+    public static func find(発注日: Day) throws -> [食事要求型] {
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::発注日": 発注日.fmString]
+        return try find(query: query)
+    }
+
     public static func find(提供日: Day, 種類: 食事種類型? = nil) throws -> [食事要求型] {
         var query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 提供日.fmString]
         if let type = 種類 {
