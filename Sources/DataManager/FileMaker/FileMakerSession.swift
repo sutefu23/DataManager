@@ -235,15 +235,19 @@ typealias FileMakerQuery = [String: String]
 extension DMHttpConnectionProtocol {
     /// FileMakerSeverと通信する
     func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
-        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let messages = json["messages"] as? [[String: Any]],
-              let codeString = messages[0]["code"] as? String else { return FileMakerResponse(code: nil, message: "", response: [:]) }
+        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data)
+            else { return FileMakerResponse(code: nil, message: "レスポンスがない", response: [:]) }
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+            else { return FileMakerResponse(code: nil, message: "レスポンスをJSONに変換できない", response: [:]) }
+        guard let messages = json["messages"] as? [[String: Any]]
+            else { return FileMakerResponse(code: nil, message: "レスポンスにmessagesが存在しない", response: [:]) }
+        guard let codeString = messages[0]["code"] as? String
+            else { return FileMakerResponse(code: nil, message: "レスポンスにcodeが存在しない", response: [:]) }
         let response = (json["response"] as? [String: Any]) ?? [:]
         let message = (messages[0]["message"] as? String) ?? ""
         return FileMakerResponse(code: Int(codeString), message: message, response: response)
     }
-
+    
     func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, string: String) throws -> FileMakerResponse {
         let data = string.data(using: .utf8)!
         return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)

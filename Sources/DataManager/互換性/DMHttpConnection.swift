@@ -111,13 +111,8 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
         }
         let future = self.session.execute(request: request)
         let response = try future.wait()
-        switch response.status {
-        case .ok:
-            guard let body = response.body else { return nil }
-            return Data(buffer: body)
-        default:
-            return nil
-        }
+        guard let body = response.body else { return nil }
+        return Data(buffer: body)
     }
 }
 extension DMHttpMethod {

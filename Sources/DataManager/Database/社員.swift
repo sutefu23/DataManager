@@ -138,6 +138,7 @@ public extension 社員型 {
     static let 川原_夏彦: 社員型 = 社員番号マップ[017]!
     static let 室中_哲郎: 社員型 = 社員番号マップ[019]!
     static let 関_雄也: 社員型 = 社員番号マップ[034]!
+    static let 井手_法昭: 社員型 = 社員番号マップ[102]!
     static let 岸原_秀昌: 社員型 = 社員番号マップ[112]!
     static let 葏口_徹: 社員型 = 社員番号マップ[125]!
     static let 森藤_年栄: 社員型 = 社員番号マップ[717]!
