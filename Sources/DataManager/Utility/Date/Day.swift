@@ -67,19 +67,20 @@ public struct Day: Hashable, Strideable, Codable {
     public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")
-        if digs.count != 3 {
-            let now = Date().day.year
-            if let date = Day(fmDate: "\(now)/\(fmDate)") {
-                self = date
-                return
-            } else {
-                return nil
-            }
+        switch digs.count {
+        case 2:
+            guard let month = Int(digs[0]), let day = Int(digs[1]) else { return nil }
+            self.year = Day().year
+            self.month = month
+            self.day = day
+        case 3:
+            guard let year = Int(digs[0]), let month = Int(digs[1]), let day = Int(digs[2]) else { return nil }
+            self.year = year
+            self.month = month
+            self.day = day
+        default:
+            return nil
         }
-        guard let year = Int(digs[0]), let month = Int(digs[1]), let day = Int(digs[2]) else { return nil }
-        self.year = year
-        self.month = month
-        self.day = day
     }
     // MARK: - <Codable>
     enum CodingKeys: String, CodingKey {
@@ -217,6 +218,10 @@ public struct Day: Hashable, Strideable, Codable {
         return day
     }
     
+    public mutating func normalize() {
+        self = Date(self).day
+    }
+    
     // MARK: - <Strideable>
     public func distance(to other: Day) -> Int {
         if self > other { return -other.distance(to: self) }
@@ -286,6 +291,46 @@ extension Date {
 }
 
 public extension ClosedRange where Bound == Day {
+    init?<S: StringProtocol>(_ string: S) {
+        let string = string.toJapaneseNormal
+        let digs = string.split(separator: "-")
+        switch digs.count {
+        case 1: // day...day
+            guard let day = Day(fmDate: digs[0]) else { return nil }
+            self = day...day
+        case 2: // from-to
+            guard let from = Day(fmDate: digs[0]) else { return nil }
+            let digs2 = digs[1].split(separator: "/")
+            switch digs2.count {
+            case 1:
+                guard let day = Int(digs2[0]) else { return nil }
+                var to = from
+                if day < from.day {
+                    to.month += 1
+                }
+                to.day = day
+                to.normalize()
+                self = from...to
+            case 2:
+                guard let month = Int(digs2[0]), let day = Int(digs2[1]) else { return nil }
+                var to = Day(from.year, month, day)
+                if to < from {
+                    to.year += 1
+                }
+                self = from...to
+            case 3:
+                guard let year = Int(digs2[0]), let month = Int(digs2[1]), let day = Int(digs2[2]) else { return nil }
+                let to = Day(year, month, day)
+                if from > to { return nil }
+                self = from...to
+            default:
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
+    
     var prevWeekDays: ClosedRange<Day> {
         let week = self.lowerBound.weekDays
         let to = week.lowerBound.prevDay

@@ -45,4 +45,14 @@ class TestDay: XCTestCase {
         XCTAssertEqual(day.appendWorkDays(-5), day.prevWorkDay.prevWorkDay.prevWorkDay.prevWorkDay.prevWorkDay)
         XCTAssertEqual(day.appendWorkDays(5), day.nextWorkDay.nextWorkDay.nextWorkDay.nextWorkDay.nextWorkDay)
     }
+    
+    func testRange() {
+        let day = Day()
+        let year = day.year
+        XCTAssertEqual(ClosedRange<Day>("2020/10/11"), Day(2020,10,11)...Day(2020,10,11))
+        XCTAssertEqual(ClosedRange<Day>("2020/10/11-2020/10/13"), Day(2020,10,11)...Day(2020,10,13))
+        XCTAssertEqual(ClosedRange<Day>("2020/10/11-11/13"), Day(2020,10,11)...Day(2020,11,13))
+        XCTAssertEqual(ClosedRange<Day>("10/11-13"), Day(year,10,11)...Day(year,10,13))
+        XCTAssertEqual(ClosedRange<Day>("10/21-5"), Day(year,10,21)...Day(year,11,5))
+    }
 }
