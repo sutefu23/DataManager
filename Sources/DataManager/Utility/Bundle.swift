@@ -18,6 +18,10 @@ public let mainBundleName: String = {
 
 // MARK: - バージョン管理
 public extension Bundle {
+    static var dataManagerBundle: Bundle {
+        return Bundle(for: TextReader.self)
+    }
+    
     var bundleVersion: Version? {
         guard let dic = self.infoDictionary else { return nil }
         guard let string = dic["CFBundleShortVersionString"] as? String, !string.isEmpty else { return nil }

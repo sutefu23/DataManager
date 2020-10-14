@@ -25,6 +25,11 @@
 		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		14767166251D630C00429C17 /* CharacterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* CharacterType.swift */; };
+		148CA55225367D98002CE1D4 /* ICCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55125367D98002CE1D4 /* ICCard.swift */; };
+		148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55B25367E50002CE1D4 /* TestICCardID.swift */; };
+		148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
+		148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */; };
+		148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */; };
 		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
 		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
 		1498B067252429CB001698DF /* IDカード型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B066252429CB001698DF /* IDカード型.swift */; };
@@ -212,6 +217,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */,
+				148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */,
 				1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */,
 				1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */,
 				1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */,
@@ -225,6 +232,11 @@
 		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
 		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
 		14767165251D630C00429C17 /* CharacterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterType.swift; sourceTree = "<group>"; };
+		148CA55025367D73002CE1D4 /* scanICCard.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanICCard.py; sourceTree = "<group>"; };
+		148CA55125367D98002CE1D4 /* ICCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICCard.swift; sourceTree = "<group>"; };
+		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
+		148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "角パイプ一覧.csv"; sourceTree = "<group>"; };
+		148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材パイプ情報.swift"; sourceTree = "<group>"; };
 		1498B052252413FA001698DF /* 全角カナto半角カナ.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角カナto半角カナ.txt"; sourceTree = "<group>"; };
 		1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角ASCIIto半角ASCII.txt"; sourceTree = "<group>"; };
 		1498B066252429CB001698DF /* IDカード型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDカード型.swift"; sourceTree = "<group>"; };
@@ -418,6 +430,8 @@
 				14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */,
 				1498B052252413FA001698DF /* 全角カナto半角カナ.txt */,
 				1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */,
+				148CA55025367D73002CE1D4 /* scanICCard.py */,
+				148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -540,6 +554,7 @@
 				OBJ_168 /* Test管理資材型.swift */,
 				OBJ_169 /* Test資材.swift */,
 				OBJ_170 /* Test資材コイル情報.swift */,
+				148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */,
 				OBJ_171 /* Test資材使用記録.swift */,
 				OBJ_172 /* Test資材入出庫.swift */,
 				OBJ_173 /* Test資材板情報.swift */,
@@ -549,6 +564,7 @@
 				OBJ_177 /* Test進捗出力.swift */,
 				OBJ_178 /* Test部署.swift */,
 				14F3DFE6251DAEA0003D4BCA /* TestSession.swift */,
+				148CA55B25367E50002CE1D4 /* TestICCardID.swift */,
 			);
 			name = DataManagerTests;
 			path = Tests/DataManagerTests;
@@ -583,6 +599,7 @@
 				OBJ_34 /* Bundle.swift */,
 				OBJ_35 /* ChangeLog.swift */,
 				OBJ_36 /* Concurrent.swift */,
+				148CA55125367D98002CE1D4 /* ICCard.swift */,
 				OBJ_42 /* File.swift */,
 				OBJ_43 /* Future.swift */,
 				OBJ_44 /* Int.swift */,
@@ -926,6 +943,7 @@
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
 				OBJ_231 /* TextWriter.swift in Sources */,
+				148CA55225367D98002CE1D4 /* ICCard.swift in Sources */,
 				OBJ_232 /* TwoElementCache.swift in Sources */,
 				OBJ_233 /* URL.swift in Sources */,
 				OBJ_234 /* UserDefaults.swift in Sources */,
@@ -1031,8 +1049,10 @@
 				OBJ_330 /* TestString.swift in Sources */,
 				OBJ_331 /* TestTextReader.swift in Sources */,
 				OBJ_332 /* TestTextWriter.swift in Sources */,
+				148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */,
 				OBJ_333 /* TestVersion.swift in Sources */,
 				OBJ_334 /* Test伝票番号.swift in Sources */,
+				148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */,
 				OBJ_335 /* Test出勤日.swift in Sources */,
 				OBJ_336 /* Test工程.swift in Sources */,
 				OBJ_337 /* Test指定注文番号.swift in Sources */,
