@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "DataManager",
     platforms: [
-          .macOS(.v10_12), .iOS(.v12), .tvOS(.v13)
-      ],
+        .macOS(.v10_12), .iOS(.v12), .tvOS(.v13)
+    ],
     products: [
         .library(
             name: "DataManager",

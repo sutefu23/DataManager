@@ -10,6 +10,7 @@ import Foundation
 
 public enum 資材パイプ種類型: String {
     case 角
+    case 丸
 }
 
 public enum 資材パイプ仕上型: String {
@@ -58,6 +59,10 @@ public struct 資材パイプ情報型 {
             self.種類 = .角
             self.サイズ = size
             self.長さ = scanner.string
+        } else if let size = scanner.scanUpTo("Φ") {
+            self.種類 = .丸
+            self.サイズ = size
+            self.長さ = scanner.string
         } else {
             let digs = scanner.string.split(separator: "X")
             if digs.count == 3 {
@@ -89,7 +94,9 @@ public let 資材パイプリスト: [資材パイプ情報型] = {
     let bundle = Bundle.dataManagerBundle
     let url = bundle.url(forResource: "角パイプ一覧", withExtension: "csv")!
     let text = try! TextReader(url: url, encoding: .utf8)
-    let list: [資材パイプ情報型] = text.lines.compactMap {
+    let url2 = bundle.url(forResource: "丸パイプ一覧", withExtension: "csv")!
+    let text2 = try! TextReader(url: url2, encoding: .utf8)
+    let list: [資材パイプ情報型] = (text.lines + text2.lines).compactMap {
         let cols = $0.split(separator: ",")
         if cols.isEmpty { return nil }
         assert(cols.count == 2)
