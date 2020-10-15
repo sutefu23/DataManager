@@ -8,7 +8,7 @@
 
 import Foundation
 
-private let 箱文字Set = Set<工程型>([.立ち上がり, .半田, .裏加工, .立ち上がり_溶接, .溶接, .裏加工_溶接])
+private let 箱文字Set = Set<工程型>([.立ち上がり, .半田, .ボンド, .裏加工, .立ち上がり_溶接, .溶接, .裏加工_溶接])
 private let 切文字Set = Set<工程型>([.切文字])
 
 public enum ボルト数調整モード型 {
@@ -17,24 +17,21 @@ public enum ボルト数調整モード型 {
     case 切文字式
     
     public init(_ process: 工程型, 伝票種類: 伝票種類型) {
+        switch 伝票種類 {
+        case .箱文字:
+            self = .箱文字式
+        case .切文字:
+            self = .切文字式
+        default:
+            break
+        }
+
         if 箱文字Set.contains(process) {
             self = .箱文字式
         } else if 切文字Set.contains(process) {
             self = .切文字式
         } else {
-            switch process {
-            case .付属品準備:
-                switch 伝票種類 {
-                case .箱文字:
-                    self = .箱文字式
-                case .切文字:
-                    self = .切文字式
-                default:
-                    self = .調整なし
-                }
-            default:
-                self = .調整なし
-            }
+            self = .調整なし
         }
     }
     
@@ -81,31 +78,6 @@ public enum ボルト数調整モード型 {
             if (41...50).contains(count) { return offset[4] + count }
             if (51...70).contains(count) { return offset[5] + count }
             if (71...).contains(count) { return offset[6] + count }
-//            switch 資材種類 {
-//            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
-//                offset = [1, 2, 3, 3, 3, 5, 10, 10]
-//            case .丸パイプ, .浮かしパイプ:
-//                offset = [1, 2, 3, 3, 3, 5, 10, 10]
-//            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ, .木ねじ:
-//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-//            case .ナット, .鏡止めナット, .袋ナット, .高ナット:
-//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-//            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
-//                offset = [2, 3, 3, 5, 10, 10, 10, 10]
-//            case .定番FB, .FB, .外注, .三角コーナー:
-//                return count
-//            case nil:
-//                return count
-//            }
-//            assert(offset.count == 8)
-//            if (1...5).contains(count) { return offset[0] + count }
-//            if (6...10).contains(count) { return offset[1] + count }
-//            if (11...15).contains(count) { return offset[2] + count }
-//            if (16...30).contains(count) { return offset[3] + count }
-//            if (31...40).contains(count) { return offset[4] + count }
-//            if (41...50).contains(count) { return offset[5] + count }
-//            if (51...100).contains(count) { return offset[6] + count }
-//            if (101...).contains(count) { return offset[7] + count }
             return count
         default:
             return count
@@ -267,8 +239,13 @@ public struct 資材要求情報型 {
         guard let item = self.資材 else { return nil }
         return 金額計算タイプ?.金額(資材: item, count: self.単位数)
     }
+    var 調整前数: Double? = nil
     
-    public var 使用量: String? { 金額計算タイプ?.使用量表示(count: self.単位数) }
+    public var 使用量: String? {
+        guard let base = 金額計算タイプ?.使用量表示(count: self.単位数) else { return nil }
+        guard let old = self.調整前数 else { return base }
+        return "\(base)(\(Int(old))"
+    }
     public var 単価テキスト: String { self.資材?.単価?.金額テキスト ?? "" }
     public var 金額テキスト: String { self.金額?.金額テキスト ?? "" }
     
@@ -312,6 +289,7 @@ public struct 資材要求情報型 {
         case .箱文字式, .切文字式:
             if self.is附属品 != true { return }
             guard let count = self.単位数 else { return }
+            self.調整前数 = count
             self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: self.資材種類, 表示名: self.表示名)
         }
     }
@@ -330,6 +308,17 @@ public struct 資材要求情報型 {
         self.is附属品 = is附属品
         let set = (セット数 >= 1) ? セット数 : 1
         let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
+        if let pipe = searchボルト等パイプ(ボルト欄: text) {
+            self.ソート順 = 75
+            self.分割表示名1 = pipe.分割表示名1
+            self.分割表示名2 = pipe.分割表示名2
+            self.資材種類 = nil
+            self.ボルト数量 = numbers
+            self.単位数 = numbers?.総数
+            self.金額計算タイプ = 金額計算タイプ型.個数物
+            self.図番 = pipe.図番
+            return
+        }
         guard let (title, size, type, priority) = scanSource(ボルト欄: text, 伝票種類: 伝票種類) else {
             guard let object = 板加工在庫マップ[text] else { return nil }
             self.ソート順 = object.ソート順
