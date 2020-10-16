@@ -35,6 +35,19 @@ extension StringProtocol {
         }
         return result
     }
+    
+    /// 全角英数記号を半角に変換する。カナは変化させない
+    public var toHalfCharacters: String {
+        var result = ""
+        for ch in self {
+            if let ch = 全角ASCIIto半角ASCIIMap[ch] {
+                result.append(ch)
+            } else {
+                result.append(ch)
+            }
+        }
+        return result
+    }
 }
 
 private var bundle: Bundle {

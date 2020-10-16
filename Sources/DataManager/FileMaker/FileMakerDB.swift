@@ -257,6 +257,7 @@ public final class FileMakerDB {
         return pm_osakaname.execute2 { $0.checkDBAccess() }
     }
     
+    /// 現在使用していないアイドル状態のセッションを閉じる
     public static func logputAll() {
         serverCache.logoutAll()
     }

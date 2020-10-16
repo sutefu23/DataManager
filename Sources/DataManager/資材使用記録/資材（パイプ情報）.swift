@@ -67,7 +67,7 @@ public struct 資材パイプ情報型 {
             let digs = scanner.string.split(separator: "X")
             if digs.count == 3 {
                 self.種類 = .角
-                self.サイズ = "\(digs[0])×\(digs[1])"
+                self.サイズ = "\(digs[0])x\(digs[1])"
                 self.長さ = "\(digs[2])"
             } else {
                 fatalError()

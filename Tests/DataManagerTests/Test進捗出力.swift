@@ -11,7 +11,7 @@ import XCTest
 
 
 class TestOutputProgress: XCTestCase {
-    let execDBTest = true
+    let execDBTest = false
 
     func testOutputProgress() {
         if self.execDBTest == false { return }

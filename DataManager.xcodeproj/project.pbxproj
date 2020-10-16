@@ -429,13 +429,13 @@
 		14767125251D5CA600429C17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				14767126251D5CA600429C17 /* 板加工在庫一覧.csv */,
 				14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */,
 				1498B052252413FA001698DF /* 全角カナto半角カナ.txt */,
 				1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */,
-				148CA55025367D73002CE1D4 /* scanICCard.py */,
+				14767126251D5CA600429C17 /* 板加工在庫一覧.csv */,
 				148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */,
 				14788CCA2538266F00995762 /* 丸パイプ一覧.csv */,
+				148CA55025367D73002CE1D4 /* scanICCard.py */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
