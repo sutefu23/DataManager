@@ -83,7 +83,8 @@ public enum 略号型: Int, CaseIterable, Comparable {
         }
     }
  
-#if !os(Linux)
+    #if os(Linux) || os(Windows)
+    #else
     public var 表示色: DMColor {
         switch self {
         case .外注,. 腐食, .印刷, .看板, .組込, .工程写真, .先出し: return .black

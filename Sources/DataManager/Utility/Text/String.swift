@@ -149,11 +149,7 @@ extension StringProtocol {
     }
     
     public func 全文字半角変換() -> String {
-    	#if os(Linux)
-    	return String(self)
-    	#else
-        return self.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? String(self)
-        #endif
+        return self.toHalfCharacters
     }
     
     @inlinable public func 全角半角日本語規格化() -> String {

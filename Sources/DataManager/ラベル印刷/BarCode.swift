@@ -7,7 +7,9 @@
 //
 
 import Foundation
-#if !os(Linux)
+
+#if os(Linux) || os(Windows)
+#else
 import CoreGraphics
 #endif
 
@@ -404,7 +406,7 @@ public class DMBarCodePrintView: NSView {
 
 #endif
 
-#if os(tvOS) || os(Linux)
+#if os(tvOS) || os(Linux) || os(Windows)
 
 #else
 public extension DMBarCode {

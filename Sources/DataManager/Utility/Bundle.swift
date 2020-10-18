@@ -19,7 +19,11 @@ public let mainBundleName: String = {
 // MARK: - バージョン管理
 public extension Bundle {
     static var dataManagerBundle: Bundle {
+        #if os(Linux) || os(Windows)
+        return Bundle.module
+        #else
         return Bundle(for: TextReader.self)
+        #endif
     }
     
     var bundleVersion: Version? {
@@ -35,7 +39,8 @@ public extension Bundle {
 //    }
 }
 
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 extension DMApplication {
     public var currentVersion: Version {
         let bundle = Bundle.main

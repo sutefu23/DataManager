@@ -50,18 +50,9 @@ extension StringProtocol {
     }
 }
 
-private var bundle: Bundle {
-    #if os(Linux)
-    let bundle = Bundle.module
-    #else
-    let bundle = Bundle(for: TextReader.self)
-    #endif
-    return bundle
-}
-
 let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
     var map: [Character: Character] = [:]
-    let url = bundle.url(forResource: "全角ASCIIto半角ASCII", withExtension: "txt")!
+    let url = Bundle.dataManagerBundle.url(forResource: "全角ASCIIto半角ASCII", withExtension: "txt")!
     let reader = try! TextReader(url: url, encoding: .utf8)
      while let line = reader.nextLine() {
         if line.isEmpty { continue }
@@ -79,7 +70,7 @@ let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
 
 let 半角カナto全角仮名Map: [Character: Character] = {
     var map: [Character: Character] = [:]
-    let url = bundle.url(forResource: "全角カナto半角カナ", withExtension: "txt")!
+    let url = Bundle.dataManagerBundle.url(forResource: "全角カナto半角カナ", withExtension: "txt")!
     let reader = try! TextReader(url: url, encoding: .utf8)
      while let line = reader.nextLine() {
         if line.isEmpty { continue }

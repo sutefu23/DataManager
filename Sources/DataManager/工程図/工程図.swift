@@ -46,7 +46,8 @@ public final class 工程図型 {
         self.マイルストーン情報 = []
     }
     
-    #if !os(Linux)
+    #if os(Linux) || os(Windows)
+    #else
     public func makeFile() -> FileWrapper {
         let file = FileWrapper(directoryWithFileWrappers: [
             資源マスタ情報型.filename: 資源マスタ情報.makeFile(),
@@ -151,7 +152,8 @@ public protocol 工程図データ型 {
     static var filename : String { get }
 }
 
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 public extension Sequence where Element : 工程図データ型 {
     func makeFile() -> FileWrapper {
         let columnsCount = Element.header.split(separator: "\t").count

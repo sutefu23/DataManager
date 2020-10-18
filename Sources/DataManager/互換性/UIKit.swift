@@ -18,7 +18,7 @@ public extension DMPrintInfo {
 }
 #endif
 
-#if os(Linux)
+#if os(Linux) || os(Windows)
 #elseif os(iOS) || os(tvOS)
 import UIKit
 
@@ -108,7 +108,7 @@ public extension UIView {
         return self.searchView(blockName) as? UIImageView
     }
     
-    #if os(tvOS) || os(Linux)
+    #if os(tvOS) || os(Linux) || os(Windows)
     #else
     private func searchSwitch(_ blockName: String) -> UISwitch? {
         return self.searchView(blockName) as? UISwitch

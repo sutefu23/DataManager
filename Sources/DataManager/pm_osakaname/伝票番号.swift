@@ -8,7 +8,7 @@
 
 #if os(macOS)
 import Cocoa
-#elseif os(Linux)
+#elseif os(Linux) || os(Windows)
 import Foundation
 #else
 import UIKit

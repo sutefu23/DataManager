@@ -7,7 +7,8 @@
 //
 
 import Foundation
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 import CoreGraphics
 #endif
 
@@ -29,7 +30,8 @@ public typealias FMFont = UIFont
 
 #endif
 
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 extension String {
     public func makeAttributedString(color: FMColor = FMColor.black, size: CGFloat = 12, fontName: String?) -> NSAttributedString {
         let font: FMFont

@@ -146,7 +146,8 @@ public final class 指示書型 {
     }()
     
     var 図URL: URL? { record.url(forKey: "図") }
-    #if !os(Linux)
+    #if os(Linux) || os(Windows)
+    #else
     public lazy var 図: DMImage? = {
         lock.lock()
         defer { lock.unlock() }
@@ -522,7 +523,8 @@ extension 指示書型 {
         return check(側面仕上1) || check(側面仕上2)
     }
     
-    #if !os(Linux)
+    #if os(Linux) || os(Windows)
+    #else
     public func 色付き略号(fontSize: CGFloat = 12, colorMapper:(略号型) -> DMColor = { $0.表示色 } ) -> NSMutableAttributedString {
         let result = NSMutableAttributedString()
         for mark in self.略号.sorted() {

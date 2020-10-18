@@ -7,7 +7,8 @@
 //
 
 import Foundation
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 import CoreGraphics
 #endif
 
@@ -27,7 +28,8 @@ public extension Double {
     }
 }
 
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 public extension CGFloat {
     init(formula: String) throws {
         let result = try Double(formula: formula)

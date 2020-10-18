@@ -42,7 +42,8 @@ public enum 伝票種類型: CustomStringConvertible {
         }
     }
     
-    #if !os(Linux)
+    #if os(Linux) || os(Windows)
+    #else
     public var color: DMColor {
         switch self{
         case .箱文字:

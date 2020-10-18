@@ -23,10 +23,10 @@ public struct DMCardReader {
     /// カードリーダーからカードIDを読み取る
     @available(OSX 10.13, *)
     public func scanCardID() throws -> String? {
-        #if os(macOS) || os(Linux)
+        #if os(macOS) || os(Linux) 
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-        let bundle = Bundle(for: TextReader.self)
+        let bundle = Bundle.dataManagerBundle
         let test = bundle.url(forResource: "scanICCard", withExtension: "py")!
         process.arguments = [test.path]
         let pipe = Pipe()

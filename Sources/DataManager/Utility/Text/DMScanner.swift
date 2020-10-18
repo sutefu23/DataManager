@@ -11,7 +11,7 @@ import Foundation
 /// 文字列を解析する
 public struct DMScanner: RandomAccessCollection {
     /// スキャン対象(調整済み)
-    public let source: String
+    private let source: String
     /// スキャン開始時にスペースを除外するならtrue
     public var skipSpaces: Bool {
         didSet { needsSpaceCheck = skipSpaces }
@@ -70,6 +70,8 @@ public struct DMScanner: RandomAccessCollection {
     ///   - skipSpaces: 自動的に空欄を読み飛ばす
     ///   - newlineToSpace: 改行コードをスペースに置き換える
     public init<S: StringProtocol>(_ string: S, normalizedFullHalf: Bool = false, upperCased:Bool = false, skipSpaces: Bool = false, newlineToSpace: Bool = false) {
+        self.skipSpaces = skipSpaces
+        self.needsSpaceCheck = skipSpaces
         var str: String
         if normalizedFullHalf {
             str = string.toJapaneseNormal
@@ -86,8 +88,6 @@ public struct DMScanner: RandomAccessCollection {
         self.source = str
         self.startIndex = source.startIndex
         self.endIndex = source.endIndex
-        self.skipSpaces = skipSpaces
-        self.needsSpaceCheck = skipSpaces
     }
 
     /// 末尾に指定文字列を含むとtrue

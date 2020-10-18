@@ -33,7 +33,9 @@ public final class 取引先型 {
         let name1 = 会社名.比較用文字列
         let name2 = 印字会社名.比較用文字列
         if name == name1 || name == name2 { return true }
-        if name1.hasPrefix(name) || name2.hasPrefix(name) { return true }
+        if name.count <= 1 { return false }
+        if name1.count > 1 && (name1.hasPrefix(name) || name.hasPrefix(name1)) { return true }
+        if name2.count > 1 && (name2.hasPrefix(name) || name.hasPrefix(name2)) { return true }
         return false
     }
 }

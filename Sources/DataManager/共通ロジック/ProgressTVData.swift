@@ -16,7 +16,8 @@ import Cocoa
 import Foundation
 #endif
 
-#if !os(Linux)
+#if os(Linux) || os(Windows)
+#else
 /// 表示モード
 public enum ProgressTVMode: Int {
     case 箱文字 = 1
