@@ -40,7 +40,7 @@ public enum ボルト数調整モード型 {
         case .箱文字式:
             let offset: [Double]
             switch 資材種類 {
-            case .ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
+            case .ボルト, .アイボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
             case .丸パイプ, .浮かしパイプ:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
@@ -418,6 +418,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     }
     
     if let data = scanner.scanボルト() { return makeTail(data) }
+    if let data = scanner.scanアイボルト() { return makeTail(data) }
     if let data = scanner.scanオールアンカー() { return makeTail(data) }
     if let data = scanner.scanFB() { return makeTail(data) }
     if let data = scanner.scanワッシャー() { return makeTail(data) }
@@ -456,6 +457,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
 
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
+    case アイボルト(サイズ: String, 長さ: Double)
     case オールアンカー(サイズ: String, 長さ: Double)
     case FB(板厚: String, 高さ: Double)
     case 定番FB(板厚: String)
@@ -536,6 +538,13 @@ public enum 資材種類型 {
                 return nil
             }
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
+        case .アイボルト(サイズ: let size, 長さ: let length):
+            if let object = searchボルト等(種類: .アイボルト, サイズ: size, 長さ: length) {
+                図番 = object.図番
+            } else {
+                return nil
+            }
+            金額計算タイプ = .個数物
         case .オールアンカー(サイズ: let size, 長さ: let length):
             if let object = searchボルト等(種類: .オールアンカー, サイズ: size, 長さ: length) {
                 図番 = object.図番
@@ -729,6 +738,21 @@ extension DMScanner {
             return nil
         }
         return ("ボルト", .ボルト(サイズ: size, 長さ: length), 140)
+    }
+    mutating func scanアイボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        if let (size, length) = scanSizeXLength("IBM") {
+            return ("アイボルト", .アイボルト(サイズ: size, 長さ: length), 140)
+        }
+        self.reset()
+        if let (size, length) = scanSizeXLength("LTKM") {
+            return ("ロングアイボルト", .アイボルト(サイズ: size, 長さ: length), 140)
+        }
+        self.reset()
+        if let (size, length) = scanSizeXLength("LTK M") {
+            return ("ロングアイボルト", .アイボルト(サイズ: size, 長さ: length), 140)
+        }
+        self.reset()
+        return nil
     }
 
     mutating func scanオールアンカー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -1006,19 +1030,24 @@ extension DMScanner {
 
     mutating func scan単品個数物() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         let type: 選択ボルト等型
-        switch self.string.spaceStripped {
-        case "三角コーナー":
-            type = searchボルト等(種類: .三角コーナー, サイズ: "")!
-        case "SUSヒートン":
-            type = searchボルト等(種類: .SUSヒートン, サイズ: "")!
-        case "BSPヒートン":
-            type = searchボルト等(種類: .BSPヒートン, サイズ: "")!
-        case "メッキヒートン":
-            type = searchボルト等(種類: .メッキヒートン, サイズ: "")!
-        case "ブラインドリベット":
-            type = searchボルト等(種類: .ブラインドリベット, サイズ: "")!
-        default:
-            return nil
+        let str = self.string.spaceStripped
+        if str.hasPrefix(oneOf: "アングル") {
+            type = searchボルト等(種類: .アングル, サイズ: nil)!
+        } else {
+            switch str {
+            case "三角コーナー":
+                type = searchボルト等(種類: .三角コーナー, サイズ: "")!
+            case "SUSヒートン":
+                type = searchボルト等(種類: .SUSヒートン, サイズ: "")!
+            case "BSPヒートン":
+                type = searchボルト等(種類: .BSPヒートン, サイズ: "")!
+            case "メッキヒートン":
+                type = searchボルト等(種類: .メッキヒートン, サイズ: "")!
+            case "ブラインドリベット":
+                type = searchボルト等(種類: .ブラインドリベット, サイズ: "")!
+            default:
+                return nil
+            }
         }
         return (type.表示名, .単品個数物(種類: type), 0)
     }

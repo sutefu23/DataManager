@@ -11,18 +11,30 @@ import Foundation
 public enum 資材パイプ種類型: String {
     case 角
     case 丸
+    case FB
 }
 
 public enum 資材パイプ仕上型: String {
     case D
     case HL
     case F
+    case CO
+    case HO
+    case 仕上げなし
+}
+
+public enum 資材パイプ材質型: String {
+    case SUS
+    case BSP
+    case CUP
+    case アルミ
 }
 
 public struct 資材パイプ情報型 {
     public let 図番: 図番型
     public let 社名先頭1文字: String
     public let 仕上: 資材パイプ仕上型 // F
+    public let 材質: 資材パイプ材質型
     public let 種類: 資材パイプ種類型
     public let 板厚: String // 0.8t
     public let サイズ: String // "13角"
@@ -41,36 +53,83 @@ public struct 資材パイプ情報型 {
         let str = 規格.toJapaneseNormal.replacingOccurrences(of: "×", with: "x")
         self.ボルト等表示 = str
         var scanner = DMScanner(str, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: false)
-        // 仕上げ
-        if scanner.scanString("D") {
-            self.仕上 = .D
-        } else if scanner.scanString("HL") {
-            self.仕上 = .HL
-        } else if scanner.scanString("F") {
-            self.仕上 = .F
-        } else {
-            fatalError()
-        }
-        // 板厚
-        guard let thin = scanner.scanUpTo("T"), Double(thin) != nil else { fatalError() }
-        self.板厚 = thin
-        // サイズ
-        if let size = scanner.scanUpTo("角") {
-            self.種類 = .角
-            self.サイズ = size
-            self.長さ = scanner.string
-        } else if let size = scanner.scanUpTo("Φ") {
-            self.種類 = .丸
-            self.サイズ = size
-            self.長さ = scanner.string
-        } else {
-            let digs = scanner.string.split(separator: "X")
-            if digs.count == 3 {
-                self.種類 = .角
-                self.サイズ = "\(digs[0])x\(digs[1])"
-                self.長さ = "\(digs[2])"
+        if scanner.scanString("FB") { // FB
+            // 種類
+            self.種類 = .FB
+            // 材質
+            if scanner.scanString("SUS") {
+                self.材質 = .SUS
+            } else if scanner.scanString("BSP") {
+                self.材質 = .BSP
+            } else if scanner.scanString("CUP") {
+                self.材質 = .CUP
+            } else if scanner.scanString("アルミ") {
+                self.材質 = .アルミ
             } else {
                 fatalError()
+            }
+            // 仕上げ
+            if scanner.scanString("D") {
+                self.仕上 = .D
+            } else if scanner.scanString("HL") {
+                self.仕上 = .HL
+            } else if scanner.scanString("F") {
+                self.仕上 = .F
+            } else if scanner.scanString("CO") {
+                self.仕上 = .CO
+            } else if scanner.scanString("HO") {
+                self.仕上 = .HO
+            } else {
+                self.仕上 = .仕上げなし
+            }
+            // 板厚
+            guard let thin = scanner.scanUpTo("T"), Double(thin) != nil else { fatalError() }
+            self.板厚 = thin
+            let digs = scanner.string.split(separator: "X")
+            switch digs.count {
+            case 2:
+                self.サイズ = "\(digs[0])"
+                self.長さ = "\(digs[1])"
+            case 3:
+                self.サイズ = "\(digs[0])x\(digs[1])"
+                self.長さ = "\(digs[2])"
+            default:
+                fatalError()
+            }
+        } else { // 角・丸
+            // 仕上げ
+            if scanner.scanString("D") {
+                self.仕上 = .D
+            } else if scanner.scanString("HL") {
+                self.仕上 = .HL
+            } else if scanner.scanString("F") {
+                self.仕上 = .F
+            } else {
+                fatalError()
+            }
+            // 材質
+            self.材質 = .SUS
+            // 板厚
+            guard let thin = scanner.scanUpTo("T"), Double(thin) != nil else { fatalError() }
+            self.板厚 = thin
+            // サイズ
+            if let size = scanner.scanUpTo("角") {
+                self.種類 = .角
+                self.サイズ = size
+                self.長さ = scanner.string
+            } else if let size = scanner.scanUpTo("Φ") {
+                self.種類 = .丸
+                self.サイズ = size
+                self.長さ = scanner.string
+            } else {
+                let digs = scanner.string.split(separator: "X")
+                if digs.count == 3 {
+                    self.種類 = .角
+                    self.サイズ = "\(digs[0])x\(digs[1])"
+                    self.長さ = "\(digs[2])"
+                } else {
+                    fatalError()
+                }
             }
         }
         // 先頭１文字社名
@@ -96,7 +155,9 @@ public let 資材パイプリスト: [資材パイプ情報型] = {
     let text = try! TextReader(url: url, encoding: .utf8)
     let url2 = bundle.url(forResource: "丸パイプ一覧", withExtension: "csv")!
     let text2 = try! TextReader(url: url2, encoding: .utf8)
-    let list: [資材パイプ情報型] = (text.lines + text2.lines).compactMap {
+    let url3 = bundle.url(forResource: "FB一覧", withExtension: "csv")!
+    let text3 = try! TextReader(url: url3, encoding: .utf8)
+    let list: [資材パイプ情報型] = (text.lines + text2.lines + text3.lines).compactMap {
         let cols = $0.split(separator: ",")
         if cols.isEmpty { return nil }
         assert(cols.count == 2)
