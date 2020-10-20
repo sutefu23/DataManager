@@ -21,6 +21,15 @@ public enum 資材パイプ仕上型: String {
     case CO
     case HO
     case 仕上げなし
+    
+    public var caption: String {
+        switch self {
+        case .仕上げなし:
+            return ""
+        default:
+            return self.rawValue
+        }
+    }
 }
 
 public enum 資材パイプ材質型: String {
@@ -40,6 +49,15 @@ public struct 資材パイプ情報型 {
     public let サイズ: String // "13角"
     public let 長さ: String // "4"
     public let ボルト等表示: String
+    
+    public var 仕上げ材質表示: String {
+        switch self.仕上 {
+        case .仕上げなし:
+            return self.材質.rawValue
+        default:
+            return self.仕上.rawValue
+        }
+    }
     
     public var 分割表示名1: String {
         return ボルト等表示 // TODO: 仮設定により、表示内容確認
@@ -150,14 +168,17 @@ func searchボルト等パイプ(ボルト欄: String) -> 資材パイプ情報�
 }
 
 public let 資材パイプリスト: [資材パイプ情報型] = {
+    let list = ["FB一覧", "角パイプ一覧", "丸パイプ一覧"].concurrentMap {
+        makeList($0)
+    }.flatMap { $0 }
+    return list
+}()
+
+private func makeList(_ name: String) -> [資材パイプ情報型] {
     let bundle = Bundle.dataManagerBundle
-    let url = bundle.url(forResource: "角パイプ一覧", withExtension: "csv")!
+    let url = bundle.url(forResource: name, withExtension: "csv")!
     let text = try! TextReader(url: url, encoding: .utf8)
-    let url2 = bundle.url(forResource: "丸パイプ一覧", withExtension: "csv")!
-    let text2 = try! TextReader(url: url2, encoding: .utf8)
-    let url3 = bundle.url(forResource: "FB一覧", withExtension: "csv")!
-    let text3 = try! TextReader(url: url3, encoding: .utf8)
-    let list: [資材パイプ情報型] = (text.lines + text2.lines + text3.lines).compactMap {
+    let list: [資材パイプ情報型] = text.lines.concurrentCompactMap {
         let cols = $0.split(separator: ",")
         if cols.isEmpty { return nil }
         assert(cols.count == 2)
@@ -165,4 +186,4 @@ public let 資材パイプリスト: [資材パイプ情報型] = {
         return info
     }
     return list
-}()
+}

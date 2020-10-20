@@ -14,28 +14,50 @@ private let serialQueue: OperationQueue = {
     return queue
 }()
 
+public enum IDカード種類型: String, Hashable {
+    case マスタ
+    case 予備
+    case その他
+}
+
+extension FileMakerRecord {
+    func IDカード種類(forKey key: String) -> IDカード種類型? {
+        guard let str = self.string(forKey: key) else { return nil }
+        return IDカード種類型(rawValue: str)
+    }
+}
+
 struct IDカードData型: Equatable {
     static let dbName = "DataAPI_8"
     
     var 社員番号: String
     var カードID: String
+    var 種類: IDカード種類型
+    var 備考: String
     
-    init(社員番号: String, カードID: String) {
+    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String) {
         self.社員番号 = 社員番号
         self.カードID = カードID
+        self.種類 = 種類
+        self.備考 = 備考
     }
     
     init?(_ record: FileMakerRecord) {
         guard let 社員番号 = record.string(forKey: "社員番号"),
-              let カードID = record.string(forKey: "カードID") else { return nil }
+              let カードID = record.string(forKey: "カードID"),
+              let 種類 = record.IDカード種類(forKey: "種類") else { return nil }
         self.社員番号 = 社員番号
         self.カードID = カードID
+        self.種類 = 種類
+        self.備考 = record.string(forKey: "備考") ?? ""
     }
     
     var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         data["社員番号"] = 社員番号
         data["カードID"] = カードID
+        data["種類"] = 種類.rawValue
+        data["備考"] = 備考
         return data
     }
 }
@@ -55,8 +77,18 @@ public class IDカード型 {
         set { data.カードID = newValue }
     }
 
-    init(社員番号: String, カードID: String) {
-        self.data = IDカードData型(社員番号: 社員番号, カードID: カードID)
+    public var 種類: IDカード種類型 {
+        get { data.種類 }
+        set { data.種類 = newValue }
+    }
+    
+    public var 備考: String {
+        get { data.備考 }
+        set { data.備考 = newValue }
+    }
+    
+    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String) {
+        self.data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考)
     }
     
     init?(_ record: FileMakerRecord) {

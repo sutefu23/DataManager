@@ -19,6 +19,8 @@ private func calc社員番号<S: StringProtocol>(_ code: S) -> Int? {
     return num
 }
 
+private var 全社員一覧cache: [社員型]? = nil
+
 public final class 社員型: Hashable, Codable {
     static let 社員番号マップ: [Int: 社員型] = {
         var map = [Int: 社員型]()
@@ -30,7 +32,10 @@ public final class 社員型: Hashable, Codable {
     
     public static let 全社員一覧: [社員型] = {
         do {
-            return try 社員型.fetchAll()
+            if let cache = 全社員一覧cache { return cache }
+            let cache = try 社員型.fetchAll()
+            全社員一覧cache = cache
+            return cache
         } catch {
             NSLog(error.localizedDescription)
             return []
@@ -64,11 +69,13 @@ public final class 社員型: Hashable, Codable {
         self.部署Data = mem?.部署Data
         return mem?.部署Data
     }
+    public var 旧社員番号: String? = nil
 
     public init?(社員番号: Int?) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
         self.社員名称 = member.社員名称
+        self.旧社員番号 = member.旧社員番号
     }
 
     init(社員番号: Int, 社員名称: String) {
@@ -91,7 +98,8 @@ public final class 社員型: Hashable, Codable {
         guard let 社員名称 = record.string(forKey: "社員名称") else { return nil }
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称
-        self.部署Data = record.キャッシュ部署(forKey: "部署記号") 
+        self.部署Data = record.キャッシュ部署(forKey: "部署記号")
+        self.旧社員番号 = record.string(forKey: "アマダ社員番号")
     }
     
     public convenience init?<S: StringProtocol>(社員コード: S) {
@@ -131,6 +139,7 @@ public final class 社員型: Hashable, Codable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.社員番号)
     }
+    
 }
 
 public extension 社員型 {
