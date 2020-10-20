@@ -62,7 +62,7 @@ enum FileMakerSortType: String, Encodable {
 }
 
 /// １台のサーバーへの最大同時接続数
-private var maxConnection = 4
+private var maxConnection = 3
 
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: Hashable {
@@ -174,7 +174,7 @@ public final class FileMakerDB {
         do {
             try work(session)
         } catch {
-            if let error = error as? FileMakerError, error.canRetry {
+            if case let error as FileMakerError = error, error.canRetry {
                 session.logout()
                 try work(session)
             } else {
@@ -192,7 +192,7 @@ public final class FileMakerDB {
         do {
             return try work(session)
         } catch {
-            if let error = error as? FileMakerError, error.canRetry {
+            if case let error as FileMakerError = error, error.canRetry {
                 session.logout()
                 return try work(session)
             } else {

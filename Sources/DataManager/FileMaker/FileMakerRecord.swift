@@ -27,10 +27,10 @@ final class FileMakerRecord {
     }
 
     init?(json data: Any) {
-        guard let dic = data as? [String: Any] else { return nil }
+        guard case let dic as [String: Any] = data else { return nil }
         self.recordID = dic["recordId"] as? String
         self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
-        if let data = dic["portalData"] as? [String: [[String: Any]]] {
+        if case let data as [String: [[String: Any]]] = dic["portalData"] {
             var portalData = [String: [FileMakerRecord]]()
             for (key, array) in data {
                 let source = array.map { FileMakerRecord(portal: key, fieldData: $0) }
@@ -71,13 +71,18 @@ final class FileMakerRecord {
     
     func string(forKey key: String) -> String? {
         guard let object = self[key] else { return nil }
-        if let str = object as? String { return str }
-        if let value = object as? Int { return "\(value)" }
-        return nil
+        switch object {
+        case let str as String:
+            return str
+        case let value as Int:
+            return "\(value)"
+        default:
+            return nil
+        }
     }
     
     func integer(forKey key: String) -> Int? {
-        if let value = self[key] as? Int { return value }
+        if case let value as Int = self[key] { return value }
         guard let str = string(forKey: key) else { return nil }
         if let value = Int(str) { return value }
         if str.last == "\r" {
@@ -88,7 +93,7 @@ final class FileMakerRecord {
     }
 
     func double(forKey key: String) -> Double? {
-        if let value = self[key] as? Double { return value }
+        if case let value as Double = self[key] { return value }
         guard let str = string(forKey: key) else { return nil }
         if let value = Double(str) { return value }
         if str.last == "\r" {

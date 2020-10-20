@@ -30,7 +30,7 @@ public extension Encodable {
 public extension UserDefaults {
     // MARK: - JSON
     func json<T>(forKey key: String) -> T? where T: Codable {
-        guard let data = self.object(forKey: key) as? Data else { return nil }
+        guard case let data as Data = self.object(forKey: key) else { return nil }
         return T.decodeJson(data)
     }
     func setJson<T>(object: T?, forKey key: String) where T: Codable {
@@ -51,7 +51,7 @@ public extension UserDefaults {
     
     // MARK: - nil拡張
     func nullable<T>(forKey key: String) -> T? {
-        return self.object(forKey: key) as? T
+        self.object(forKey: key) as? T
     }
     func optionalDouble(forKey key: String) -> Double? {
         if self.object(forKey: key) == nil {

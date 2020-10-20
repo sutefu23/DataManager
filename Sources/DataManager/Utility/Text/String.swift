@@ -118,13 +118,14 @@ public extension String {
     }
     
     init?(any data: Any?) {
-        if let str = data as? String {
+        switch data {
+        case let str as String:
             self = str
-        } else if let astr = data as? NSAttributedString {
+        case let astr as NSAttributedString:
             self = astr.string
-        } else if let num = data as? CustomStringConvertible {
+        case let num as CustomStringConvertible:
             self = num.description
-        } else {
+        default:
             return nil
         }
     }

@@ -93,19 +93,19 @@ public extension UIView {
     }
     
     func searchLabel(_ blockName: String) -> UILabel? {
-        return self.searchView(blockName) as? UILabel
+        self.searchView(blockName) as? UILabel
     }
     
     func searchButton(_ blockName: String) -> UIButton? {
-        return self.searchView(blockName) as? UIButton
+        self.searchView(blockName) as? UIButton
     }
 
     func searchTextField(_ blockName: String) -> UITextField? {
-        return self.searchView(blockName) as? UITextField
+        self.searchView(blockName) as? UITextField
     }
 
     private func searchImage(_ blockName: String) -> UIImageView? {
-        return self.searchView(blockName) as? UIImageView
+        self.searchView(blockName) as? UIImageView
     }
     
     #if os(tvOS) || os(Linux) || os(Windows)
@@ -134,15 +134,16 @@ public extension UIView {
 
     @discardableResult func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
-        if let attr = text as? NSAttributedString {
+        switch text {
+        case let attr as NSAttributedString:
             view.attributedText = attr
-        } else if let text = text as? String {
+        case let text as String:
             if let tcolor = tcolor {
                 view.attributedText = text.makeAttributedString(color: tcolor, font: view.font)
             } else {
                 view.text = text.isEmpty == false ? text : " "
             }
-        } else {
+        default:
             view.text = nil
         }
         if let bgColor = bgColor {
@@ -185,7 +186,7 @@ extension UIButton {
 
 extension UIViewController {
     public func searchViewController<T: UIViewController>() -> T? {
-        if let vc: T = self as? T { return vc }
+        if case let vc as T = self { return vc }
         for child in self.children {
             if let vc: T = child.searchViewController() { return vc }
         }

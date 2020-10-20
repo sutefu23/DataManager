@@ -52,7 +52,7 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("sessions")
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), string: "{}")
-        guard response.code == 0, let token = response["token"] as? String else { throw FileMakerError.tokenCreate(message: response.message) }
+        guard response.code == 0, case let token as String = response["token"] else { throw FileMakerError.tokenCreate(message: response.message) }
         self.ticket = (token: token, expire: expire)
         return token
     }
@@ -194,7 +194,7 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         let request = ["fieldData": fields]
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Bearer(token: token), object: request)
-        guard response.code == 0, let recordId = response["recordId"] as? String else { throw FileMakerError.insert(message: response.message) }
+        guard response.code == 0, case let recordId as String = response["recordId"] else { throw FileMakerError.insert(message: response.message) }
         return recordId
     }
     
@@ -237,11 +237,11 @@ extension DMHttpConnectionProtocol {
     func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
         guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data)
             else { return FileMakerResponse(code: nil, message: "レスポンスがない", response: [:]) }
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data)
             else { return FileMakerResponse(code: nil, message: "レスポンスをJSONに変換できない", response: [:]) }
-        guard let messages = json["messages"] as? [[String: Any]]
+        guard case let messages as [[String: Any]] = json["messages"]
             else { return FileMakerResponse(code: nil, message: "レスポンスにmessagesが存在しない", response: [:]) }
-        guard let codeString = messages[0]["code"] as? String
+        guard case let codeString as String = messages[0]["code"]
             else { return FileMakerResponse(code: nil, message: "レスポンスにcodeが存在しない", response: [:]) }
         let response = (json["response"] as? [String: Any]) ?? [:]
         let message = (messages[0]["message"] as? String) ?? ""
@@ -267,7 +267,7 @@ struct FileMakerResponse {
     
     subscript(key: String) -> Any? { response[key] }
     var records: [FileMakerRecord]? {
-        guard let dataArray = self["data"] as? [Any] else { return nil }
+        guard case let dataArray as [Any] = self["data"] else { return nil }
         return dataArray.compactMap { FileMakerRecord(json: $0) }
     }
 }

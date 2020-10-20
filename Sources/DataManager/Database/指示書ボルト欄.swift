@@ -740,7 +740,7 @@ extension DMScanner {
         return ("ボルト", .ボルト(サイズ: size, 長さ: length), 140)
     }
     mutating func scanアイボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        if let (size, length) = scanSizeXLength("IBM") {
+        if let (size, length) = scanSizeXLength("IB", unit1: "M") {
             return ("アイボルト", .アイボルト(サイズ: size, 長さ: length), 140)
         }
         self.reset()

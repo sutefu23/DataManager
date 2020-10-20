@@ -9,7 +9,7 @@
 import Foundation
 
 public let mainBundleName: String = {
-    if let name = Bundle.main.infoDictionary?["CFBundleName"] as? String {
+    if case let name as String = Bundle.main.infoDictionary?["CFBundleName"] {
         return name
     } else {
         return "NCEngine"
@@ -26,17 +26,11 @@ public extension Bundle {
         #endif
     }
     
-    var bundleVersion: Version? {
-        guard let dic = self.infoDictionary else { return nil }
-        guard let string = dic["CFBundleShortVersionString"] as? String, !string.isEmpty else { return nil }
-        guard let string2 = dic["CFBundleVersion"] as? String, !string.isEmpty else { return nil }
-        return Version(string, string2)
-    }
-    
-//    var bundleIdentifier: String? {
+    var bundleVersion: Version? { Version(self) }
 //        guard let dic = self.infoDictionary else { return nil }
-//        return dic["CFBundleIdentifier"] as? String
-//    }
+//        guard case let string as String = dic["CFBundleShortVersionString"], !string.isEmpty else { return nil }
+//        guard case let string2 as String = dic["CFBundleVersion"], !string.isEmpty else { return nil }
+//        return Version(string, string2)
 }
 
 #if os(Linux) || os(Windows)

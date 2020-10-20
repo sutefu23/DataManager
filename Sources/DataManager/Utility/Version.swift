@@ -26,8 +26,8 @@ public final class Version: Comparable, Hashable, Codable {
 
     public convenience init?(_ bundle: Bundle = Bundle.main) {
         guard let dic = bundle.infoDictionary else { return nil }
-        guard let string = dic["CFBundleShortVersionString"] as? String, !string.isEmpty else { return nil }
-        guard let string2 = dic["CFBundleVersion"] as? String, !string.isEmpty else { return nil }
+        guard case let string as String = dic["CFBundleShortVersionString"], !string.isEmpty else { return nil }
+        guard case let string2 as String = dic["CFBundleVersion"], !string.isEmpty else { return nil }
         self.init(string, string2)
     }
 

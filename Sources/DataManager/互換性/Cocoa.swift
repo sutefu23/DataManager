@@ -87,11 +87,11 @@ public extension NSView {
     }
     
     func searchButton(_ blockName: String) -> NSButton? {
-        return self.searchView(blockName) as? NSButton
+        self.searchView(blockName) as? NSButton
     }
 
     func searchTextField(_ blockName: String) -> NSTextField? {
-        return self.searchView(blockName) as? NSTextField
+        self.searchView(blockName) as? NSTextField
     }
 }
 
@@ -159,7 +159,7 @@ public extension NSViewController {
     // MARK: ツリー検索
     /// 自身とその子に特定の型のViewControllerがないか検索し、最初に見つけた者を返す
     func searchSpecificViewController<T: NSViewController> () -> T? {
-        if let vc = self as? T {
+        if case let vc as T = self {
             return vc
         }
         for childViewController in self.children {
@@ -172,11 +172,11 @@ public extension NSViewController {
 
     /// 親をたどっていき最初に見つけた特定の型のViewControllerを返す
     func searchSpecificParentViewController<T: NSViewController> () -> T? {
-        if let vc = self as? T {
+        if case let vc as T = self {
             return vc
         }
         if let parent = self.parent {
-            if let vc = parent as? T {
+            if case let vc as T = parent {
                 return vc
             } else {
                 return parent.searchSpecificParentViewController()
