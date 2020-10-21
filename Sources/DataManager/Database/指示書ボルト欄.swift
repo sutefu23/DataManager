@@ -42,7 +42,7 @@ public enum ボルト数調整モード型 {
         case .箱文字式:
             let offset: [Double]
             switch 資材種類 {
-            case .ボルト, .アイボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
+            case .ボルト, .アイボルト, .真鍮ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
             case .丸パイプ, .浮かしパイプ:
                 offset = [1, 2, 3, 3, 3, 5, 5, 6]
@@ -421,6 +421,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     
     if let data = scanner.scanボルト() { return makeTail(data) }
     if let data = scanner.scanアイボルト() { return makeTail(data) }
+    if let data = scanner.scan真鍮ボルト() { return makeTail(data) }
     if let data = scanner.scanオールアンカー() { return makeTail(data) }
     if let data = scanner.scanFB() { return makeTail(data) }
     if let data = scanner.scanワッシャー() { return makeTail(data) }
@@ -460,6 +461,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
 public enum 資材種類型 {
     case ボルト(サイズ: String, 長さ: Double)
     case アイボルト(サイズ: String, 長さ: Double)
+    case 真鍮ボルト(サイズ: String, 長さ: Double)
     case オールアンカー(サイズ: String, 長さ: Double)
     case FB(板厚: String, 高さ: Double)
     case 定番FB(板厚: String)
@@ -542,6 +544,13 @@ public enum 資材種類型 {
             金額計算タイプ = .カット棒(itemLength: itemLength, length: length)
         case .アイボルト(サイズ: let size, 長さ: let length):
             if let object = searchボルト等(種類: .アイボルト, サイズ: size, 長さ: length) {
+                図番 = object.図番
+            } else {
+                return nil
+            }
+            金額計算タイプ = .個数物
+        case .真鍮ボルト(サイズ: let size, 長さ: let length):
+            if let object = searchボルト等(種類: .真鍮ボルト, サイズ: size, 長さ: length) {
                 図番 = object.図番
             } else {
                 return nil
@@ -734,6 +743,17 @@ extension DMScanner {
         return (size.string, r1, r2)
     }
     
+    mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard scanString("ナット") else { return nil }
+        guard let size = scanStringAsDouble(), size.value > 0 else {
+            self.reset()
+            return nil
+        }
+        return ("ナット", .ナット(サイズ: size.string), 90)
+    }
+}
+
+private extension DMScanner {
     mutating func scanボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard let (size, length) = scanSizeXLength("M") else {
             self.reset()
@@ -755,6 +775,14 @@ extension DMScanner {
         }
         self.reset()
         return nil
+    }
+
+    mutating func scan真鍮ボルト() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+        guard let (size, length) = scanSizeXLength("真鍮M") else {
+            self.reset()
+            return nil
+        }
+        return ("真鍮ボルト", .真鍮ボルト(サイズ: size, 長さ: length), 140)
     }
 
     mutating func scanオールアンカー() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -805,15 +833,6 @@ extension DMScanner {
         return ("特寸ワッシャー", 資材種類型.特寸ワッシャー(サイズ: result.size, 外径: result.r1, 内径: result.r2), 71)
     }
     
-    mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard scanString("ナット") else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else {
-            self.reset()
-            return nil
-        }
-        return ("ナット", .ナット(サイズ: size.string), 90)
-    }
-
     mutating func scan鏡止めナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard scanString("C-") || scanString("鏡止めナットC-")  else { return nil }
         guard let size = scanStringAsDouble(), size.value > 0 else {
