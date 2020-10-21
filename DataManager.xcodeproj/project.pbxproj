@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
+		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
 		146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
 		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
 		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
@@ -219,6 +221,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */,
 				146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */,
 				14788CCB2538267900995762 /* 丸パイプ一覧.csv in CopyFiles */,
 				148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */,
@@ -232,6 +235,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
+		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
 		146F88A8253E7019001F8AF1 /* FB一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "FB一覧.csv"; sourceTree = "<group>"; };
 		14767117251D577A00429C17 /* DMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DMColor.swift; sourceTree = "<group>"; };
 		14767126251D5CA600429C17 /* 板加工在庫一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "板加工在庫一覧.csv"; sourceTree = "<group>"; };
@@ -438,6 +443,7 @@
 				14767126251D5CA600429C17 /* 板加工在庫一覧.csv */,
 				148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */,
 				14788CCA2538266F00995762 /* 丸パイプ一覧.csv */,
+				141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */,
 				146F88A8253E7019001F8AF1 /* FB一覧.csv */,
 				148CA55025367D73002CE1D4 /* scanICCard.py */,
 			);
@@ -518,6 +524,7 @@
 				OBJ_138 /* 板加工在庫.swift */,
 				OBJ_139 /* 資材(コイル情報).swift */,
 				OBJ_140 /* 資材(板情報).swift */,
+				141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */,
 				OBJ_141 /* 資材（パイプ情報）.swift */,
 				OBJ_142 /* 資材（ボルト情報）.swift */,
 			);
@@ -950,6 +957,7 @@
 				OBJ_228 /* NSAttributedString.swift in Sources */,
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
+				141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */,
 				OBJ_231 /* TextWriter.swift in Sources */,
 				148CA55225367D98002CE1D4 /* ICCard.swift in Sources */,
 				OBJ_232 /* TwoElementCache.swift in Sources */,

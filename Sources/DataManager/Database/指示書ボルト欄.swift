@@ -20,8 +20,10 @@ public enum ボルト数調整モード型 {
         switch 伝票種類 {
         case .箱文字:
             self = .箱文字式
+            return
         case .切文字:
             self = .切文字式
+            return
         default:
             break
         }
