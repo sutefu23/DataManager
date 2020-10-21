@@ -87,8 +87,10 @@ public final class 指示書型 {
     public var 部門: 部門型 { record.部門(forKey: "部門コード")! }
     public var 会社コード: String { record.string(forKey: "会社コード") ?? "" }
     
-    public var 単価1: Int { record.integer(forKey: "単価1") ?? 0 }
+    public var 単価1: Double { record.double(forKey: "単価1") ?? 0 }
     public var 数量1: Int { record.integer(forKey: "数量1") ?? 0 }
+    public var 単価4: Double { record.double(forKey: "単価4") ?? 0 }
+    public var 単価5: Double { record.double(forKey: "単価5") ?? 0 }
     public lazy var 伝票種別: 伝票種別型 = { 伝票種別型(self.record.string(forKey: "伝票種別")!)! }()
     public var 経理状態: 経理状態型 {
         if let state = record.経理状態(forKey: "経理状態") { return state }
@@ -139,7 +141,7 @@ public final class 指示書型 {
     public var 台板材質: String { record.string(forKey: "台板材質")! }
     public var 裏仕様: String { record.string(forKey: "裏仕様")! }
 
-    public var 合計金額: Int { record.integer(forKey: "合計金額") ?? 0}
+    public var 合計金額: Double { record.double(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }
         return list.sorted { $0.日時 < $1.日時 }
@@ -282,7 +284,7 @@ public final class 指示書型 {
         return self.伝票種類 == .加工 && self.仕様.applyingTransform(.fullwidthToHalfwidth, reverse: true)?.contains("オブジェ") == true
     }
     
-    public var 金額: Int {
+    public var 金額: Double {
         var value = self.合計金額
         if value <= 0 {
             value = self.単価1

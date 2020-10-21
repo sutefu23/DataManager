@@ -55,7 +55,13 @@ extension NSAttributedString {
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
         self.init(string: string, attributes: attributes)
     }
-    
+
+
+    public convenience init(string: String, font: DMFont, color: DMColor) {
+        let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
+            self.init(string: string, attributes: attributes)
+        }
+
     public static func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString {
         let str = NSMutableAttributedString(attributedString: left)
         str.append(right)
