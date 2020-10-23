@@ -228,7 +228,7 @@ public extension UIColor {
 
 public extension UIView {
     func updateAll() { self.setNeedsDisplay() }
-    func updateRect(_ frame:CGRect) { self.setNeedsDisplay(frame) }
+    func updateRect(_ checkFrame:CGRect) { self.setNeedsDisplay(checkFrame) }
 //    var screen : NCScreen? { return self.window?.screen }
 }
 

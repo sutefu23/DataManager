@@ -340,7 +340,7 @@ public extension TableGenerator {
 //        controller.excludedActivityTypes = [.airDrop, .mail]
         controller.popoverPresentationController?.sourceView = source.view
         if let button = shareButton {
-                controller.popoverPresentationController?.sourceRect = button.frame
+                controller.popoverPresentationController?.sourceRect = button.checkFrame
         }
         source.present(controller, animated: true, completion: nil)
     }
