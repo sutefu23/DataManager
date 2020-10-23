@@ -177,12 +177,31 @@ public struct DMScanner: RandomAccessCollection {
         }
     }
 
-    /// 先頭が指定文字ならtrue。indexは次に移動する
+    /// 先頭が指定文字ならtrue。indexは次に移動しない
     @discardableResult public mutating func testCharacter(_ character: Character) -> Bool {
-        dropHeadSpacesIfNeeds()
-        if isAtEnd { return false }
-        let first = source[startIndex]
-        return first == character
+        if needsSpaceCheck {
+            var index = startIndex
+            while true {
+                guard index < endIndex else {
+                    startIndex = index
+                    self.needsSpaceCheck = false
+                    return false
+                }
+                let ch = source[index]
+                if ch.isWhitespace {
+                    index = source.index(after: index)
+                    startIndex = index
+                    continue
+                } else {
+                    self.needsSpaceCheck = false
+                    return ch == character
+                }
+            }
+        } else {
+            if isAtEnd { return false }
+            let first = source[startIndex]
+            return first == character
+        }
     }
 
     /// 先頭が文字か調べる
@@ -215,22 +234,21 @@ public struct DMScanner: RandomAccessCollection {
         return !ch.isNumber
     }
     
-    /// 1文字取り出す
-    public mutating func scan1Character() -> Character? {
-        dropHeadSpacesIfNeeds()
-        if self.isAtEnd { return nil }
-        let ch = source[startIndex]
-        startIndex = source.index(after: startIndex)
-        return ch
-    }
     
     /// 指定文字まで走査して途中の文字を返す
     public mutating func scanUpTo(_ character: Character) -> String? {
-        dropHeadSpacesIfNeeds()
         var index = startIndex
         var result: String = ""
         while index < endIndex {
             let ch = source[index]
+            if needsSpaceCheck {
+                if ch.isWhitespace {
+                    index = source.index(after: index)
+                    continue
+                }
+                self.startIndex = index
+                self.needsSpaceCheck = false
+            }
             index = source.index(after: index)
             if ch == character {
                 startIndex = index
@@ -282,13 +300,20 @@ public struct DMScanner: RandomAccessCollection {
     }
 
     public mutating func scanIntegerString() -> String {
-        dropHeadSpacesIfNeeds()
         var hasSign: Bool = false
         var hasNumber: Bool = false
         var numberString = "" // 最後にまとめてsubstringを作るよりappendを繰り返す方が高速
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
+            if needsSpaceCheck {
+                if ch.isWhitespace {
+                    index = source.index(after: index)
+                    continue
+                }
+                self.startIndex = index
+                self.needsSpaceCheck = false
+            }
             if ch.isNumber {
                 numberString.append(ch)
                 hasNumber = true
@@ -324,7 +349,6 @@ public struct DMScanner: RandomAccessCollection {
 
     /// 実数文字列を取り出す
     private mutating func scanDecimalString() -> String? {
-        dropHeadSpacesIfNeeds()
         var hasSign: Bool = false
         var hasNumber: Bool = false
         var hasDot: Bool = false
@@ -333,6 +357,14 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
+            if needsSpaceCheck {
+                if ch.isWhitespace {
+                    index = source.index(after: index)
+                    continue
+                }
+                self.startIndex = index
+                self.needsSpaceCheck = false
+            }
             if ch.isNumber {
                 numberString.append(ch)
                 hasNumber = true
@@ -541,11 +573,27 @@ public struct DMScanner: RandomAccessCollection {
     }
     
     // MARK: - NCEngineより
+    /// 1文字取り出す
+    public mutating func scan1Character() -> Character? { fetchCharacter() }
     public mutating func fetchCharacter() -> Character? {
-        dropHeadSpacesIfNeeds()
-        if isAtEnd { return nil }
-        defer { startIndex = source.index(after: startIndex) }
-        return source[startIndex]
+        if needsSpaceCheck {
+            var index = startIndex
+            while index < endIndex {
+                let ch = source[index]
+                index = source.index(after: index)
+                if !ch.isWhitespace {
+                    startIndex = index
+                    return ch
+                }
+            }
+            startIndex = index
+            return nil
+        } else {
+            if isAtEnd { return nil }
+            let ch = source[startIndex]
+            startIndex = source.index(after: startIndex)
+            return ch
+        }
     }
     
     /// Gコード用10進数の取り出し。小数点がない場合defaultPrecisionが小数点位置となる
