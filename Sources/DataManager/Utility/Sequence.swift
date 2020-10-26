@@ -30,50 +30,50 @@ extension Sequence {
 extension Sequence {
     /// 値が１種類なら取り出す。２種類以上ならnilを返す
     public func reduceUnique<T : Equatable>(_ getter : (Element) -> T?) -> T? {
-        var currentValue : T? = nil
-        for object in self {
-            guard let value = getter(object) else { continue }
-            if let currentValue = currentValue {
-                if value != currentValue {
+        var itr = self.makeIterator()
+        while let object = itr.next() {
+            guard let uniqueValue = getter(object) else { continue }
+            while let object2 = itr.next() {
+                guard let value = getter(object2) else { continue }
+                if uniqueValue != value {
                     return nil
                 }
-            } else {
-                currentValue = value
             }
+            return uniqueValue
         }
-        return currentValue
+        return nil
     }
 
     // MARK: - 値の取り出し
     /// 最大値を取り出す
     public func maxValue<T : Comparable>(_ getter: (Element) -> T?) -> T? {
-        var currentValue: T? = nil
-        for object in self {
-            guard let value = getter(object) else { continue }
-            if let currentValue2 = currentValue {
-                if value > currentValue2 {
-                    currentValue = value
+        var itr = self.makeIterator()
+        while let object = itr.next() {
+            guard var maxValue = getter(object) else { continue }
+            while let object2 = itr.next() {
+                guard let value = getter(object2) else { continue }
+                if maxValue < value {
+                    maxValue = value
                 }
-            } else {
-                currentValue = value
             }
+            return maxValue
         }
-        return currentValue
+        return nil
     }
     
     /// 最小値を取り出す
     public func minValue<T : Comparable>(_ getter: (Element) -> T?) -> T? {
-        var currentValue: T? = nil
-        for object in self {
-            guard let value = getter(object) else { continue }
-            if let currentValue2 = currentValue {
-                if value < currentValue2 {
-                    currentValue = value
+        var itr = self.makeIterator()
+        while let object = itr.next() {
+            guard var minValue = getter(object) else { continue }
+            while let object2 = itr.next() {
+                guard let value = getter(object2) else { continue }
+                if value < minValue {
+                    minValue = value
                 }
-            } else {
-                currentValue = value
             }
+            return minValue
         }
-        return currentValue
+        return nil
     }
 }
