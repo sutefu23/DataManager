@@ -11,7 +11,7 @@ import Foundation
 private func calc社員番号<S: StringProtocol>(_ code: S) -> Int? {
     var code = code.uppercased()
     guard let firstCode = code.first else { return nil }
-    if firstCode.isNumber == false {
+    if firstCode.isAsciiNumber == false {
         guard firstCode == "H" else { return nil }
         code.remove(at: code.startIndex)
     }

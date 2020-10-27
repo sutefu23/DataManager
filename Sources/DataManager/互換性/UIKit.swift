@@ -87,7 +87,7 @@ public extension UIView {
     func searchView(_ blockName: String) -> UIView? {
         if self.accessibilityIdentifier == blockName { return self }
         for view in subviews {
-            if let result = view.searchView(blockName) { return result }
+            if let aggregator = view.searchView(blockName) { return aggregator }
         }
         return nil
     }

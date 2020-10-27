@@ -81,7 +81,7 @@ import Cocoa
 
 /// 標準的な更新履歴コントローラー
 public class HistoryViewController: NSViewController {
-    @IBOutlet public weak var textView: NSTextView!
+    @IBOutlet public var textView: NSTextView!
     
     public override func viewDidLoad() {
         let bundle = Bundle.main

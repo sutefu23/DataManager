@@ -217,7 +217,7 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if ch.isNumber {
+            if ch.isAsciiNumber {
                 self.startIndex = index
                 return
             }
@@ -231,9 +231,8 @@ public struct DMScanner: RandomAccessCollection {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return true }
         let ch = source[startIndex]
-        return !ch.isNumber
+        return !ch.isAsciiNumber
     }
-    
     
     /// 指定文字まで走査して途中の文字を返す
     public mutating func scanUpTo(_ character: Character) -> String? {
@@ -314,7 +313,7 @@ public struct DMScanner: RandomAccessCollection {
                 self.startIndex = index
                 self.needsSpaceCheck = false
             }
-            if ch.isNumber {
+            if ch.isAsciiNumber {
                 numberString.append(ch)
                 hasNumber = true
             } else if ch == "+" || ch == "-" {
@@ -365,7 +364,7 @@ public struct DMScanner: RandomAccessCollection {
                 self.startIndex = index
                 self.needsSpaceCheck = false
             }
-            if ch.isNumber {
+            if ch.isAsciiNumber {
                 numberString.append(ch)
                 hasNumber = true
             } else if ch == "+" || ch == "-" {

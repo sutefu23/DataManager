@@ -32,6 +32,7 @@ extension URL {
     /// - Parameters:
     ///   - ext: 拡張子
     ///   - maxCount: この回数試して一時ファイルが作れないと失敗とする
+    @available(OSX 10.12, *)
     public init?(temporaryFileWithExtension ext: String, maxCount: Int = 1000) {
         var serial = 0
         let dir = FileManager.default.temporaryDirectory

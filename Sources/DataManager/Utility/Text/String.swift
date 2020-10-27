@@ -78,11 +78,13 @@ extension Substring {
     }
 }
 
-private var numberSet: CharacterSet = {
-    var set = CharacterSet()
-    set.insert(charactersIn: "0123456789")
-    return set
-}()
+private let numbersSet = Set<Character>("0123456789")
+
+extension Character {
+    public var isAsciiNumber: Bool {
+        numbersSet.contains(self)
+    }
+}
 
 public extension StringProtocol {
     var newlineToSpace: String {
@@ -90,13 +92,7 @@ public extension StringProtocol {
     }
     
     var headNumber: String {
-        var string: String = ""
-        for ch in self {
-            guard let sc = ch.unicodeScalars.first else { break }
-            guard numberSet.contains(sc) else { break }
-            string.append(ch)
-        }
-        return string
+        String(self.prefix { numbersSet.contains($0) })
     }
 }
 

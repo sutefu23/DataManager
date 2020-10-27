@@ -97,6 +97,7 @@ public enum ExportType {
 final class TableColumn<S> {
     let title: String
     let getter: (S) -> String?
+    var aggregator:  ColumnAggregator<S>?
     
     init(title: String, getter: @escaping (S) -> String?) {
         self.title = title
@@ -119,6 +120,7 @@ public final class TableGenerator<S> {
     }
     
     public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
+        // ヘッダー
         var text = format.header(title: title)
         switch format {
         case .excel(header: let header), .excel_utf8(header: let header), .html(header: let header), .libreoffice(header: let header), .numbers(header: let header):
@@ -129,13 +131,22 @@ public final class TableGenerator<S> {
         case .filemaker, .utf8:
             text = ""
         }
+        // 本体
         for rowSource in source {
-            let cols = columns.map { $0.value(for: rowSource) }
+            let cols: [String] = columns.map {
+                $0.aggregator?.sum(rowSource) // 集計
+                return $0.value(for: rowSource) // セルの表示内容の生成
+            }
             text += format.makeLine(cols)
         }
+        // 集計結果
+        if columns.contains(where: { $0.aggregator != nil }) { // 全く集計項目がない場合出力なし
+            let cols = columns.map { $0.aggregator?.result ?? "" }
+            text += format.makeLine(cols)
+        }
+        // フッター
         text += format.footer()
         return text
-            
     }
     
     public func makeData<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
@@ -195,13 +206,18 @@ public extension TableGenerator {
         /// 小数点以下１桁まで
         case minute1
     }
+    /// 集計の種類
+    enum ResultType {
+        /// 平均値
+        case average
+    }
 
     func string(_ title: String, _ getter: @escaping (S) -> String?) -> TableGenerator<S> {
         let col = TableColumn(title: title, getter: getter)
         return appending(col)
     }
 
-    func integer(_ title: String, _ format: IntFormat = .native, _ getter: @escaping (S) -> Int?) -> TableGenerator<S> {
+    func integer(_ title: String, _ format: IntFormat = .native, _ resultType: ResultType? = nil, _ resultFormat: DoubleFormat? = nil, getter: @escaping (S) -> Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
                 switch format {
@@ -216,10 +232,19 @@ public extension TableGenerator {
                 return ""
             }
         }
+        func resultFormat2() -> DoubleFormat {
+            switch format {
+            case .currency:
+                return .currency
+            case .native:
+                return .round0
+            }
+        }
+        col.aggregator = IntegerColumnAggregator(type: resultType, format: resultFormat ?? resultFormat2(), getter: getter)
         return appending(col)
     }
     
-    func double(_ title: String, _ format: DoubleFormat = .native, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
+    func double(_ title: String, _ format: DoubleFormat = .native, _ resultType: ResultType? = nil, _ resultFormat: DoubleFormat? = nil, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
@@ -235,6 +260,7 @@ public extension TableGenerator {
                 return formatter.string(from: NSNumber(value: value)) ?? ""
             }
         }
+        col.aggregator = DoubleColumnAggregator(type: resultType, format: resultFormat ?? format, getter: getter)
         return appending(col)
     }
     
@@ -299,7 +325,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func timeInterval(_ title: String, _ format: TimeIntervalFormat = .minute0, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
+    func timeInterval(_ title: String, _ format: TimeIntervalFormat = .minute0, _ resultType: ResultType? = nil, _ resultFormat: TimeIntervalFormat, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
@@ -313,6 +339,7 @@ public extension TableGenerator {
                 return String(format: "%.1f", value/60)
             }
         }
+        col.aggregator = TimeIntervalColumnAggregator(type: resultType, format: format, getter: getter)
         return appending(col)
     }
 }
@@ -357,3 +384,120 @@ public extension TableGenerator {
 
 #endif
 
+// MARK: - 集計
+class ColumnAggregator<S> {
+    func sum(_ object: S) {}
+    var result: String?  { return nil }
+}
+
+final class IntegerColumnAggregator<S>: ColumnAggregator<S> {
+    var count = 0
+    var sum: Double = 0
+    var format: TableGenerator<S>.DoubleFormat
+    var type: TableGenerator<S>.ResultType
+    var getter: (S) -> Int?
+    
+    init?(type: TableGenerator<S>.ResultType?, format: TableGenerator<S>.DoubleFormat = .round0, getter: @escaping (S) -> Int?) {
+        guard let type = type else { return nil }
+        self.type = type
+        self.format = format
+        self.getter = getter
+    }
+    
+    override func sum(_ object: S) {
+        guard let value = getter(object) else { return }
+        count += 1
+        sum += Double(value)
+    }
+    
+    override var result: String? {
+        if count == 0 { return nil }
+        let value = sum / Double(count)
+        switch format {
+        case .native:
+            return String(value)
+        case .round0:
+            return String(format: "%.0f", value)
+        case .round1:
+            return String(format: "%.1f", value)
+        case .currency:
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            return formatter.string(from: NSNumber(value: value)) ?? ""
+        }
+    }
+}
+
+final class DoubleColumnAggregator<S>: ColumnAggregator<S> {
+    var count = 0
+    var sum: Double = 0
+    var format: TableGenerator<S>.DoubleFormat
+    var type: TableGenerator<S>.ResultType
+    var getter: (S) -> Double?
+    
+    init?(type: TableGenerator<S>.ResultType?, format: TableGenerator<S>.DoubleFormat = .round0, getter: @escaping (S) -> Double?) {
+        guard let type = type else { return nil }
+        self.type = type
+        self.format = format
+        self.getter = getter
+    }
+    
+    override func sum(_ object: S) {
+        guard let value = getter(object) else { return }
+        count += 1
+        sum += value
+    }
+    
+    override var result: String? {
+        if count == 0 { return nil }
+        let value = sum / Double(count)
+        switch format {
+        case .native:
+            return String(value)
+        case .round0:
+            return String(format: "%.0f", value)
+        case .round1:
+            return String(format: "%.1f", value)
+        case .currency:
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            return formatter.string(from: NSNumber(value: value)) ?? ""
+        }
+    }
+}
+
+final class TimeIntervalColumnAggregator<S>: ColumnAggregator<S> {
+    var count = 0
+    var sum: TimeInterval = 0
+    var format: TableGenerator<S>.TimeIntervalFormat
+    var type: TableGenerator<S>.ResultType
+    var getter: (S) -> TimeInterval?
+    
+    init?(type: TableGenerator<S>.ResultType?, format: TableGenerator<S>.TimeIntervalFormat = .minute0, getter: @escaping (S) -> TimeInterval?) {
+        guard let type = type else { return nil }
+        self.type = type
+        self.format = format
+        self.getter = getter
+    }
+    
+    override func sum(_ object: S) {
+        guard let value = getter(object) else { return }
+        count += 1
+        sum += value
+    }
+    
+    override var result: String? {
+        if count == 0 { return nil }
+        let value = sum / Double(count)
+        switch format {
+        case .minute0:
+            //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
+            let value = Int(value/60)
+            //結果が０以下の時はnilを返す
+            if value <= 0 { return nil }
+            return String(value)
+        case .minute1:
+            return String(format: "%.1f", value/60)
+        }
+    }
+}

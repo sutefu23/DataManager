@@ -41,4 +41,12 @@ class TestString: XCTestCase {
         XCTAssertEqual("A-10".toJapaneseNormal, "A-10")
         XCTAssertEqual("ＢＣーＤ".toJapaneseNormal, "BC-D")
     }
+    
+    func testHeadNumber() {
+        XCTAssertEqual("".headNumber, "")
+        XCTAssertEqual("012".headNumber, "012")
+        XCTAssertEqual("345a".headNumber, "345")
+        XCTAssertEqual("a".headNumber, "")
+        XCTAssertEqual("a55".headNumber, "")
+    }
 }

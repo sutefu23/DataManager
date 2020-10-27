@@ -281,7 +281,7 @@ public final class 指示書型 {
     }
     
     public var isオブジェ: Bool {
-        return self.伝票種類 == .加工 && self.仕様.applyingTransform(.fullwidthToHalfwidth, reverse: true)?.contains("オブジェ") == true
+        return self.伝票種類 == .加工 && self.仕様.toJapaneseNormal.contains("オブジェ") == true
     }
     
     public var 金額: Double {

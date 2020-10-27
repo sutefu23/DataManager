@@ -61,9 +61,9 @@ let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[zenkaku] = hankaku
-        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
-        let str2 = String(hankaku)
-        assert(str1 == str2)
+//        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
+//        let str2 = String(hankaku)
+//        assert(str1 == str2)
     }
     return map
 }()
@@ -79,9 +79,9 @@ let 半角カナto全角仮名Map: [Character: Character] = {
         let zenkaku = digs[0].first!
         let hankaku = digs[1].first!
         map[hankaku] = zenkaku
-        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
-        let str2 = String(hankaku)
-        assert(str1 == str2)
+//        let str1 = String(zenkaku).applyingTransform(.fullwidthToHalfwidth, reverse: false)
+//        let str2 = String(hankaku)
+//        assert(str1 == str2)
     }
     return map
 }()
