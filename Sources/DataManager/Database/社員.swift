@@ -69,13 +69,13 @@ public final class 社員型: Hashable, Codable {
         self.部署Data = mem?.部署Data
         return mem?.部署Data
     }
-    public var 旧社員番号: String? = nil
+    public var 補足情報: String? = nil
 
     public init?(社員番号: Int?) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
         self.社員名称 = member.社員名称
-        self.旧社員番号 = member.旧社員番号
+        self.補足情報 = member.補足情報
     }
 
     init(社員番号: Int, 社員名称: String) {
@@ -99,7 +99,7 @@ public final class 社員型: Hashable, Codable {
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称
         self.部署Data = record.キャッシュ部署(forKey: "部署記号")
-        self.旧社員番号 = record.string(forKey: "アマダ社員番号")
+        self.補足情報 = record.string(forKey: "アマダ社員番号")
     }
     
     public convenience init?<S: StringProtocol>(社員コード: S) {
@@ -140,6 +140,15 @@ public final class 社員型: Hashable, Codable {
         hasher.combine(self.社員番号)
     }
     
+    // MARK: -
+    public var 給与計算社員番号: Int? {
+        guard let number = self.補足情報, let value = Int(number) else { return nil }
+        return value
+    }
+    
+    public var is食堂現金払い: Bool {
+        self.給与計算社員番号 == nil
+    }
 }
 
 public extension 社員型 {

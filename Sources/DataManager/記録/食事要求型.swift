@@ -91,11 +91,13 @@ public class 食事要求型 {
     public var isChanged: Bool { original != data }
     
     public var メニュー: 食事メニュー型? {
-        return try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
+        try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
     }
     public var IDカード: IDカード型? {
         try? IDカード型.find(社員番号: self.社員番号).last
     }
+    
+    public var 社員: 社員型? { 社員型(社員コード: self.社員番号) }
 
     // MARK: - DB操作
     public func delete() throws {

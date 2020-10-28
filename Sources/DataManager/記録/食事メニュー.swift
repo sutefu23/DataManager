@@ -262,8 +262,8 @@ public class 食事メニュー型 {
 }
 
 // MARK: - キャッシュ
-class 食事メニューキャッシュ型 {
-    static let shared = 食事メニューキャッシュ型()
+public class 食事メニューキャッシュ型 {
+    public static let shared = 食事メニューキャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
     private let lock = NSLock()
     private var cache: [メニューID型: (有効期限: Date, 食事メニュー: 食事メニュー型)] = [:]
@@ -277,7 +277,7 @@ class 食事メニューキャッシュ型 {
         return object
     }
 
-    func キャッシュメニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
+    public func キャッシュメニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
         lock.lock()
         let data = self.cache[メニューID]
         lock.unlock()
