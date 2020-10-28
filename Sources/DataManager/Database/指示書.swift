@@ -432,8 +432,13 @@ public final class 指示書型 {
         var sizeSet = Set<String>()
         let set = self.セット数値
         for index in 1...15 {
-            let name = self.ボルト等(index) ?? ""
+            var name = self.ボルト等(index) ?? ""
             let count = self.ボルト本数(index) ?? ""
+            if name.hasPrefix("+") {
+                name.remove(at: name.startIndex)
+            } else if name.hasPrefix("新規") {
+                name.removeFirst(2)
+            }
             if let info = 資材要求情報型(ボルト欄: name, 数量欄: count, セット数: set, 伝票種類: self.伝票種類) {
                 map[index] = info
                 if case .ボルト(let size, _) = info.資材種類 {
