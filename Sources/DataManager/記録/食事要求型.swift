@@ -18,6 +18,7 @@ public enum 食事要求状態型: String {
     case 未処理
     case 受取待
     case 受渡済
+    case 追加発注
 }
 
 struct 食事要求Data型: Equatable {
@@ -191,6 +192,11 @@ public class 食事要求型 {
 
     public static func find(発注日: Day) throws -> [食事要求型] {
         let query: FileMakerQuery = ["DataAPI_食事メニュー::発注日": 発注日.fmString]
+        return try find(query: query)
+    }
+
+    public static func find追加発注(発注日: Day) throws -> [食事要求型] {
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::発注日": "<\(発注日.fmString)"]
         return try find(query: query)
     }
 

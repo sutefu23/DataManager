@@ -63,7 +63,7 @@ public final class 進捗型: Equatable, Identifiable {
 public extension 進捗型 {
     var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "伝票種類") }
     var 社員番号: Int? { record.integer(forKey: "社員番号") }
-    var 作業者: 社員型 { 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称) }
+    var 作業者: 社員型 { 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称)! }
     var 製作納期: Day? { record.day(forKey: "製作納期") }
     var 指示書: 指示書型? { (try? 指示書型.find(伝票番号: self.伝票番号))?.first }
     

@@ -69,24 +69,26 @@ public final class 社員型: Hashable, Codable {
         self.部署Data = mem?.部署Data
         return mem?.部署Data
     }
-    public var 補足情報: String? = nil
+    public let 補足情報: String
 
-    public init?(社員番号: Int?) {
+    init(_ source: 社員型) {
+        self.社員番号 = source.社員番号
+        self.社員名称 = source.社員名称
+        self.部署Data = source.部署Data
+        self.補足情報 = source.補足情報
+    }
+    
+    public init?(社員番号: Int?, 社員名称: String? = nil) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
-        self.社員名称 = member.社員名称
+        self.社員名称 = 社員名称 ?? member.社員名称
         self.補足情報 = member.補足情報
     }
 
-    init(社員番号: Int, 社員名称: String) {
-        self.社員番号 = 社員番号
-        self.社員名称 = 社員名称
-    }
-    
     convenience init?(社員名称: String) {
         for member in 社員型.全社員一覧 {
             if member.社員名称 == 社員名称 {
-                self.init(社員番号: member.社員番号, 社員名称: 社員名称)
+                self.init(member)
                 return
             }
         }
@@ -99,7 +101,7 @@ public final class 社員型: Hashable, Codable {
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称
         self.部署Data = record.キャッシュ部署(forKey: "部署記号")
-        self.補足情報 = record.string(forKey: "アマダ社員番号")
+        self.補足情報 = record.string(forKey: "アマダ社員番号") ?? ""
     }
     
     public convenience init?<S: StringProtocol>(社員コード: S) {
@@ -121,7 +123,7 @@ public final class 社員型: Hashable, Codable {
         } else {
             name = try values.decode(String.self, forKey: .社員名称)
         }
-        self.init(社員番号: num, 社員名称: name)
+        self.init(社員番号: num, 社員名称: name)!
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -142,7 +144,8 @@ public final class 社員型: Hashable, Codable {
     
     // MARK: -
     public var 給与計算社員番号: Int? {
-        guard let number = self.補足情報, let value = Int(number) else { return nil }
+        let number = self.補足情報
+        guard let value = Int(number) else { return nil }
         return value
     }
     
