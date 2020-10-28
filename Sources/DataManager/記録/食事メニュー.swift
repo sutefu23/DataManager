@@ -52,8 +52,9 @@ struct 食事メニューData型: Equatable {
     var 食塩: String
     var 最大提供数: Int
     var 金額: Int
+    var 提供パターン: String
     
-    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int) {
+    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
         self.メニューID = メニューID
         self.図番 = 図番
         self.提供日 = 提供日
@@ -64,6 +65,7 @@ struct 食事メニューData型: Equatable {
         self.食塩 = 食塩
         self.最大提供数 = 最大提供数
         self.金額 = 金額
+        self.提供パターン = 提供パターン
     }
     
     init?(_ record: FileMakerRecord) {
@@ -71,7 +73,8 @@ struct 食事メニューData型: Equatable {
               let 図番 = record.string(forKey: "図番"),
               let 提供日 = record.day(forKey: "提供日"),
               let 発注日 = record.day(forKey: "発注日"),
-              let 種類 = record.食事種類(forKey: "種類")
+              let 種類 = record.食事種類(forKey: "種類"),
+              let 提供パターン = record.string(forKey: "提供パターン")
         else { return nil }
         let 最大提供数 = record.integer(forKey: "最大提供数") ?? 999
         let 金額 = record.integer(forKey: "金額") ?? 0
@@ -85,6 +88,7 @@ struct 食事メニューData型: Equatable {
         self.食塩 = record.string(forKey: "食塩") ?? ""
         self.最大提供数 = 最大提供数
         self.金額 = 金額
+        self.提供パターン = 提供パターン
     }
     
     var fieldData: FileMakerQuery {
@@ -99,6 +103,7 @@ struct 食事メニューData型: Equatable {
         data["食塩"] = 食塩
         data["最大提供数"] = "\(最大提供数)"
         data["金額"] = "\(金額)"
+        data["提供パターン"] = 提供パターン
         return data
     }
 }
@@ -148,9 +153,13 @@ public class 食事メニュー型 {
         get { data.金額 }
         set { data.金額 = newValue }
     }
+    public var 提供パターン: String {
+        get { data.提供パターン }
+        set { data.提供パターン = newValue }
+    }
 
-    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int) {
-        self.data = 食事メニューData型(メニューID: メニューID, 図番: 図番, 提供日: 提供日, 発注日: 発注日, 種類: 種類, 内容: 内容, カロリー: カロリー, 食塩: 食塩, 最大提供数: 最大提供数, 金額: 金額)
+    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
+        self.data = 食事メニューData型(メニューID: メニューID, 図番: 図番, 提供日: 提供日, 発注日: 発注日, 種類: 種類, 内容: 内容, カロリー: カロリー, 食塩: 食塩, 最大提供数: 最大提供数, 金額: 金額, 提供パターン: 提供パターン)
     }
     
     init?(_ record: FileMakerRecord) {

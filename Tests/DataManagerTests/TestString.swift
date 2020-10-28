@@ -49,4 +49,35 @@ class TestString: XCTestCase {
         XCTAssertEqual("a".headNumber, "")
         XCTAssertEqual("a55".headNumber, "")
     }
+    
+    func testIsASCIIXXX() {
+        XCTAssertEqual(isASCIINumberValue(Character("/").asciiValue!), false)
+        XCTAssertEqual(isASCIINumberValue(Character("0").asciiValue!), true)
+        XCTAssertEqual(isASCIINumberValue(Character("5").asciiValue!), true)
+        XCTAssertEqual(isASCIINumberValue(Character("9").asciiValue!), true)
+        XCTAssertEqual(isASCIINumberValue(Character(":").asciiValue!), false)
+        
+        XCTAssertEqual(isASCIISpaceValue(Character(" ").asciiValue!), true)
+        XCTAssertEqual(isASCIISpaceValue(Character("\t").asciiValue!), true)
+
+        XCTAssertEqual(isASCIISignValue(Character("+").asciiValue!), true)
+        XCTAssertEqual(isASCIISignValue(Character("-").asciiValue!), true)
+
+        XCTAssertEqual(isASCIIDotValue(Character(".").asciiValue!), true)
+
+        XCTAssertEqual(isASCIIExpValue(Character("e").asciiValue!), true)
+        XCTAssertEqual(isASCIIExpValue(Character("E").asciiValue!), true)
+        
+        XCTAssertEqual(isASCIIAlphabetValue(Character("@").asciiValue!), false)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("A").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("K").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("Z").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("[").asciiValue!), false)
+
+        XCTAssertEqual(isASCIIAlphabetValue(Character("`").asciiValue!), false)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("a").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("l").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("z").asciiValue!), true)
+        XCTAssertEqual(isASCIIAlphabetValue(Character("{").asciiValue!), false)
+    }
 }

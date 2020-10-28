@@ -78,11 +78,15 @@ extension Substring {
     }
 }
 
-private let numbersSet = Set<Character>("0123456789")
-
 extension Character {
-    public var isAsciiNumber: Bool {
-        numbersSet.contains(self)
+    public var isASCIINumber: Bool {
+        guard let ascii = self.asciiValue else { return false }
+        return isASCIINumberValue(ascii)
+    }
+    
+    public var isASCIIAlphabet: Bool {
+        guard let ascii = self.asciiValue else { return false }
+        return isASCIIAlphabetValue(ascii)
     }
 }
 
@@ -92,7 +96,7 @@ public extension StringProtocol {
     }
     
     var headNumber: String {
-        String(self.prefix { numbersSet.contains($0) })
+        String(self.prefix { $0.isASCIINumber })
     }
 }
 

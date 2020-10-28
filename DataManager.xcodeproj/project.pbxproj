@@ -38,6 +38,7 @@
 		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
 		1498B067252429CB001698DF /* IDカード型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B066252429CB001698DF /* IDカード型.swift */; };
 		1498B07B25254743001698DF /* 13939.dxf in Resources */ = {isa = PBXBuildFile; fileRef = 1498B07A25254743001698DF /* 13939.dxf */; };
+		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
@@ -252,6 +253,7 @@
 		1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角ASCIIto半角ASCII.txt"; sourceTree = "<group>"; };
 		1498B066252429CB001698DF /* IDカード型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDカード型.swift"; sourceTree = "<group>"; };
 		1498B07A25254743001698DF /* 13939.dxf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 13939.dxf; sourceTree = "<group>"; };
+		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 				8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */,
 				8E9E604C251E439B00B4858E /* 食事要求型.swift */,
 				1498B066252429CB001698DF /* IDカード型.swift */,
+				14EF40362548170300DA8FF9 /* 食事時間帯.swift */,
 			);
 			path = "記録";
 			sourceTree = "<group>";
@@ -969,6 +972,7 @@
 				OBJ_238 /* レーザー加工機.swift in Sources */,
 				OBJ_239 /* 伝票状態.swift in Sources */,
 				OBJ_240 /* 伝票番号.swift in Sources */,
+				14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */,
 				OBJ_241 /* 伝票種別.swift in Sources */,
 				8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */,
 				OBJ_242 /* 伝票種類.swift in Sources */,

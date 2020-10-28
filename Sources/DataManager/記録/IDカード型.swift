@@ -34,22 +34,26 @@ struct IDカードData型: Equatable {
     var カードID: String
     var 種類: IDカード種類型
     var 備考: String
+    var 食事グループ: String
     
-    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String) {
+    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
         self.社員番号 = 社員番号
         self.カードID = カードID
         self.種類 = 種類
         self.備考 = 備考
+        self.食事グループ = 食事グループ
     }
     
     init?(_ record: FileMakerRecord) {
         guard let 社員番号 = record.string(forKey: "社員番号"),
               let カードID = record.string(forKey: "カードID"),
+              let 食事グループ = record.string(forKey: "食事グループ"),
               let 種類 = record.IDカード種類(forKey: "種類") else { return nil }
         self.社員番号 = 社員番号
         self.カードID = カードID
         self.種類 = 種類
         self.備考 = record.string(forKey: "備考") ?? ""
+        self.食事グループ = 食事グループ
     }
     
     var fieldData: FileMakerQuery {
@@ -87,8 +91,13 @@ public class IDカード型 {
         set { data.備考 = newValue }
     }
     
-    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String) {
-        self.data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考)
+    public var 食事グループ: String {
+        get { data.食事グループ }
+        set { data.食事グループ = newValue }
+    }
+    
+    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
+        self.data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考, 食事グループ: 食事グループ)
     }
     
     init?(_ record: FileMakerRecord) {

@@ -35,7 +35,7 @@ public struct 工程型: Hashable, Comparable, Codable {
         var main: Int = 0
         var sub: Int = 0
         for (index, ch) in code.uppercased().enumerated() {
-            if ch.isAsciiNumber {
+            if ch.isASCIINumber {
                 guard let ascii = ch.asciiValue else { return nil }
                 main = main*10 + Int(ascii) - 48
             } else {

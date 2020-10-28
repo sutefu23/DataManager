@@ -217,7 +217,7 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
-            if ch.isAsciiNumber {
+            if ch.isASCIINumber {
                 self.startIndex = index
                 return
             }
@@ -231,7 +231,7 @@ public struct DMScanner: RandomAccessCollection {
         dropHeadSpacesIfNeeds()
         if self.isAtEnd { return true }
         let ch = source[startIndex]
-        return !ch.isAsciiNumber
+        return !ch.isASCIINumber
     }
     
     /// 指定文字まで走査して途中の文字を返す
@@ -305,18 +305,19 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
+            guard let ascii = ch.asciiValue else { break }
             if needsSpaceCheck {
-                if ch.isWhitespace {
+                if isASCIISpaceValue(ascii) {
                     index = source.index(after: index)
                     continue
                 }
                 self.startIndex = index
                 self.needsSpaceCheck = false
             }
-            if ch.isAsciiNumber {
+            if isASCIINumberValue(ascii) {
                 numberString.append(ch)
                 hasNumber = true
-            } else if ch == "+" || ch == "-" {
+            } else if isASCIISignValue(ascii) {
                 if hasSign || hasNumber { break }
                 numberString.append(ch)
                 hasSign = true
@@ -356,27 +357,27 @@ public struct DMScanner: RandomAccessCollection {
         var index = startIndex
         while index < endIndex {
             let ch = source[index]
+            guard let ascii = ch.asciiValue else { break }
             if needsSpaceCheck {
-                if ch.isWhitespace {
+                if isASCIISpaceValue(ascii) {
                     index = source.index(after: index)
                     continue
                 }
                 self.startIndex = index
                 self.needsSpaceCheck = false
             }
-            if ch.isAsciiNumber {
+            if isASCIINumberValue(ascii) {
                 numberString.append(ch)
                 hasNumber = true
-            } else if ch == "+" || ch == "-" {
+            } else if isASCIISignValue(ascii) {
                 if hasSign || hasNumber { break }
                 numberString.append(ch)
                 hasSign = true
-            } else if ch == "." {
+            } else if isASCIIDotValue(ascii) {
                 if hasDot || hasE { break }
-                numberString += "."
+                numberString.append(ch)
                 hasDot = true
-                
-            } else if ch == "E" || ch == "e" {
+            } else if isASCIIExpValue(ascii) {
                 if hasE || !hasNumber { break }
                 numberString.append(ch)
                 hasE = true
@@ -665,3 +666,16 @@ public extension StringProtocol {
         self.contains { ngCharacters.contains($0) }
     }
 }
+
+/// '0'~'9'
+func isASCIINumberValue(_ ascii: UInt8) -> Bool { ascii >= 48 && ascii <= 57 }
+/// SPACE or TAB
+func isASCIISpaceValue(_ ascii: UInt8) -> Bool { ascii == 32 || ascii == 9 }
+/// '+' or '-'
+func isASCIISignValue(_ ascii: UInt8) -> Bool { ascii == 43 || ascii == 45 }
+/// '.'
+func isASCIIDotValue(_ ascii: UInt8) -> Bool { ascii == 46 }
+/// 'E' or 'e'
+func isASCIIExpValue(_ ascii: UInt8) -> Bool { ascii == 69 || ascii == 101 }
+/// 'A'~'Z' or 'a'~'z'
+func isASCIIAlphabetValue(_ ascii: UInt8) -> Bool { ascii >= 65 && ascii <= 90 || ascii >= 97 && ascii <= 122 }

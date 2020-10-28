@@ -95,7 +95,7 @@ extension UITableView {
     private func isEndOfTheScroll() -> Bool  {
         let contentYoffset = contentOffset.y
         let distanceFromBottom = contentSize.height - contentYoffset
-        return distanceFromBottom < checkFrame.size.height
+        return distanceFromBottom < frame.size.height
     }
 }
 

@@ -93,6 +93,9 @@ public class 食事要求型 {
     public var メニュー: 食事メニュー型? {
         return try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
     }
+    public var IDカード: IDカード型? {
+        try? IDカード型.find(社員番号: self.社員番号).last
+    }
 
     // MARK: - DB操作
     public func delete() throws {
@@ -145,6 +148,13 @@ public class 食事要求型 {
         operation.waitUntilFinished()
         self.recordId = try result.get()
     }
+    
+    public var 食事時間帯: 食事時間帯型? {
+        guard let menu = self.メニュー, menu.種類 == .昼食,
+              let group = self.IDカード?.食事グループ else { return nil }
+        let pattern = menu.提供パターン
+        return try? 食事時間帯キャッシュ型.shared.キャッシュ食事時間帯(提供パターン: pattern, 食事グループ: group)
+    }
 
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [食事要求型] {
@@ -193,5 +203,13 @@ public class 食事要求型 {
     public static func find(提供開始日: Day) throws -> [食事要求型] {
         let query: FileMakerQuery = ["提供日": ">=\(提供開始日.fmString)"]
         return try find(query: query)
+    }
+}
+
+public extension Sequence where Element == 食事要求型 {
+    /// 要求を時間帯ごとに分割する
+    var 時間帯リスト: [(開始時間: Time, list: [食事要求型])] {
+        let dic = Dictionary(grouping: self) { $0.食事時間帯?.開始時間 ?? Time(0, 0) }
+        return dic.sorted { $0.key < $1.key }.map { ($0.key, $0.value) }
     }
 }
