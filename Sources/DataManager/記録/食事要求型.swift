@@ -218,6 +218,17 @@ public class 食事要求型: Identifiable {
         query["DataAPI_食事メニュー::提供日"] = makeQueryDayString(提供期間)
         return try find(query: query)
     }
+    
+    public static func backup(from day: Day) throws {
+        let list = try 食事要求型.find(提供開始日: day)
+        let gen = TableGenerator<食事要求型>()
+            .string("社員番号") { $0.社員番号 }
+            .string("メニューID") { $0.メニューID }
+            .string("要求状態") { $0.要求状態.rawValue }
+            .date("修正情報タイムスタンプ", .yearToMinute) { $0.修正情報タイムスタンプ }
+        try gen.share(list, format: .excel(header: true), title: "backup食事要求\(day.monthDayJString).csv")
+    }
+
 }
 
 public extension Sequence where Element == 食事要求型 {

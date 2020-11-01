@@ -274,6 +274,22 @@ public class 食事メニュー型 {
         return try find(query: query)
     }
 
+    public static func backup(from day: Day) throws {
+        let list = try 食事メニュー型.find(from: day)
+        let gen = TableGenerator<食事メニュー型>()
+            .string("メニューID") { $0.メニューID }
+            .string("図番") { $0.図番 }
+            .day("提供日") { $0.提供日 }
+            .day("発注日") { $0.発注日 }
+            .string("種類") { $0.種類.rawValue }
+            .string("内容") { $0.内容 }
+            .string("食塩") { $0.食塩 }
+            .string("カロリー") { $0.カロリー }
+            .integer("最大提供数") { $0.最大提供数 }
+            .integer("金額") { $0.金額 }
+            .string("提供パターン") { $0.提供パターン }
+        try gen.share(list, format: .excel(header: true), title: "backup食事メニュー\(day.monthDayJString).csv")
+    }
 }
 
 // MARK: - キャッシュ

@@ -163,12 +163,16 @@ public class IDカード型 {
 
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [IDカード型] {
-        if query.isEmpty { return [] }
         var result: Result<[FileMakerRecord], Error>!
         let operation = BlockOperation {
             let db = FileMakerDB.system
             do {
-                let list: [FileMakerRecord] = try db.find(layout: IDカードData型.dbName, query: [query])
+                let list: [FileMakerRecord]
+                if query.isEmpty {
+                    list = try db.fetch(layout: IDカードData型.dbName)
+                } else {
+                    list = try db.find(layout: IDカードData型.dbName, query: [query])
+                }
                 result = .success(list)
             } catch {
                 result = .failure(error)
@@ -190,4 +194,16 @@ public class IDカード型 {
         }
         return try find(query: query)
     }
+        
+    public static func backup(from: Day) throws {
+        let list = try IDカード型.find(query: [:])
+        let gen = TableGenerator<IDカード型>()
+            .string("社員番号") { $0.社員番号 }
+            .string("食事グループ") { $0.食事グループ }
+            .string("カードID") { $0.カードID }
+            .string("種類") { $0.種類.rawValue }
+            .string("備考") { $0.備考 }
+        try gen.share(list, format: .excel(header: true), title: "backup食事IDカード.csv")
+    }
+
 }

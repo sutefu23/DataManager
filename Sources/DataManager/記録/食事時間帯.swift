@@ -139,12 +139,16 @@ public class 食事時間帯型 {
 
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [食事時間帯型] {
-        if query.isEmpty { return [] }
         var result: Result<[FileMakerRecord], Error>!
         let operation = BlockOperation {
             let db = FileMakerDB.system
             do {
-                let list: [FileMakerRecord] = try db.find(layout: 食事時間帯Data型.dbName, query: [query])
+                let list: [FileMakerRecord]
+                if query.isEmpty {
+                    list = try db.fetch(layout: 食事時間帯Data型.dbName)
+                } else {
+                    list = try db.find(layout: 食事時間帯Data型.dbName, query: [query])
+                }
                 result = .success(list)
             } catch {
                 result = .failure(error)
@@ -165,6 +169,16 @@ public class 食事時間帯型 {
             query["食事グループ"] = "==\(number)"
         }
         return try find(query: query)
+    }
+
+    public static func backup(from: Day) throws {
+        let list = try 食事時間帯型.find(query: [:])
+        let gen = TableGenerator<食事時間帯型>()
+            .string("提供パターン") { $0.提供パターン }
+            .string("食事グループ") { $0.食事グループ }
+            .time("開始時間") { $0.開始時間 }
+            .time("終了時間") { $0.終了時間 }
+        try gen.share(list, format: .excel(header: true), title: "backup食事時間帯.csv")
     }
 }
 
