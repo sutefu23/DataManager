@@ -36,6 +36,8 @@ public final class 取引先型 {
         if name.count <= 1 { return false }
         if name1.count > 1 && (name1.hasPrefix(name) || name.hasPrefix(name1)) { return true }
         if name2.count > 1 && (name2.hasPrefix(name) || name.hasPrefix(name2)) { return true }
+        // 特殊ケース
+        if self.会社コード == "4836" && name1 == "VOICEDESIGN" && name == "ボイスデザイン" { return true }
         return false
     }
 }
