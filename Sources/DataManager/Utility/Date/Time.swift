@@ -94,6 +94,18 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
     var allSeconds: Int {
         return hour * 60 * 60 + minute * 60 + second
     }
+    
+    public func appendMinutes(_ minutes: Int) -> Time {
+        var hour = self.hour
+        var minute = self.minute + minutes
+        while minute >= 60 {
+            minute -= 60
+            hour += 1
+            if hour >= 24 { hour -= 24 }
+        }
+        let second = self.second
+        return Time(hour, minute, second)
+    }
 }
 public func -(left: Time, right: Time) -> TimeInterval {
     return TimeInterval(left.allSeconds - right.allSeconds)

@@ -20,6 +20,7 @@ extension 指示書型 {
         if 表面仕上1.contains("タタキ") && 備考.contains("オブジェ") { return false }
         if 社名.contains("月虎金属") && 板厚1.contains("0.5t") { return false }
         if (伝票種別 == .再製 || 伝票種別 == .クレーム) && 工程別進捗一覧[.レーザー（アクリル）] != nil && 工程別進捗一覧[.レーザー]?.contains(工程: .レーザー, 作業内容: .開始) != nil { return false } // アクリの再製は原稿がない場合、直接品質管理に持っていく
+        if 伝票種類 == .加工 && 品名.hasPrefix("色見本") && 材質1.toJapaneseNormal.hasPrefix("アクリル") && (材質2.isEmpty || 材質2.toJapaneseNormal.hasPrefix("アクリル")) { return false } // アクリル色見本
         return 工程別進捗一覧[.レーザー] != nil
     }
     

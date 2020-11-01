@@ -171,6 +171,21 @@ public class 食事メニュー型 {
 
     public var isChanged: Bool { original != data }
 
+    public var 略称: String {
+        switch self.図番 {
+        case "10000": return "朝"
+        case "10001": return "A"
+        case "10002": return "B"
+        case "10003": return "C"
+        default: 
+            if let item = 資材型(図番: self.図番), let 略号 = item.規格.first {
+                return String(略号)
+            } else {
+                return "?"
+            }
+        }
+    }
+    
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordId else { return }

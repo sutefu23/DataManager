@@ -57,7 +57,7 @@ struct 食事要求Data型: Equatable {
     }
 }
 
-public class 食事要求型 {
+public class 食事要求型: Identifiable {
     var original: 食事要求Data型?
     var data: 食事要求Data型
     
@@ -91,14 +91,14 @@ public class 食事要求型 {
 
     public var isChanged: Bool { original != data }
     
-    public var メニュー: 食事メニュー型? {
+    public lazy var メニュー: 食事メニュー型? = {
         try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
-    }
-    public var IDカード: IDカード型? {
+    }()
+    public lazy var IDカード: IDカード型? = {
         try? IDカード型.find(社員番号: self.社員番号).last
-    }
+    }()
     
-    public var 社員: 社員型? { 社員型(社員コード: self.社員番号) }
+    public lazy var 社員: 社員型? = { 社員型(社員コード: self.社員番号) }()
 
     // MARK: - DB操作
     public func delete() throws {
@@ -196,7 +196,7 @@ public class 食事要求型 {
     }
 
     public static func find追加発注(発注日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["DataAPI_食事メニュー::発注日": "<\(発注日.fmString)"]
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 発注日.fmString, "要求状態": "追加発注"]
         return try find(query: query)
     }
 
@@ -209,7 +209,13 @@ public class 食事要求型 {
     }
 
     public static func find(提供開始日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["提供日": ">=\(提供開始日.fmString)"]
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": ">=\(提供開始日.fmString)"]
+        return try find(query: query)
+    }
+    
+    public static func find(提供期間: ClosedRange<Day>) throws -> [食事要求型] {
+        var query = FileMakerQuery()
+        query["DataAPI_食事メニュー::提供日"] = makeQueryDayString(提供期間)
         return try find(query: query)
     }
 }

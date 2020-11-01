@@ -46,6 +46,14 @@ public final class 進捗型: Equatable, Identifiable {
         self.登録時間 = time
         self.登録日時 = Date(day, time)
     }
+    public lazy var 作業者: 社員型 = {
+        if let number = self.社員番号 {
+            return 社員型(社員番号: number, 社員名称:self.社員名称)!
+        } else {
+            return 社員型(社員名称:self.社員名称)!
+        }
+    }()
+
     
     public static func ==(left: 進捗型, right: 進捗型) -> Bool {
         return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.作業者 == right.作業者 && left.登録日時 == right.登録日時 && left.作業種別 == right.作業種別 && left.作業系列 == right.作業系列
@@ -63,7 +71,6 @@ public final class 進捗型: Equatable, Identifiable {
 public extension 進捗型 {
     var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "伝票種類") }
     var 社員番号: Int? { record.integer(forKey: "社員番号") }
-    var 作業者: 社員型 { 社員型(社員番号: self.社員番号 ?? 0, 社員名称:self.社員名称)! }
     var 製作納期: Day? { record.day(forKey: "製作納期") }
     var 指示書: 指示書型? { (try? 指示書型.find(伝票番号: self.伝票番号))?.first }
     
