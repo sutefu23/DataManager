@@ -310,6 +310,7 @@ public struct 資材要求情報型 {
         self.is附属品 = is附属品
         let set = (セット数 >= 1) ? セット数 : 1
         let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
+        // パイプ
         if let pipe = searchボルト等パイプ(ボルト欄: text) {
             self.ソート順 = 75
             self.分割表示名1 = pipe.分割表示名1
@@ -321,6 +322,18 @@ public struct 資材要求情報型 {
             self.図番 = pipe.図番
             return
         }
+        if let (pipe, itemLength, length) = searcボルト欄パイプ等カット(ボルト欄: text) {
+            self.ソート順 = 75
+            self.分割表示名1 = pipe.分割表示名1
+            self.分割表示名2 = pipe.分割表示名2
+            self.資材種類 = nil
+            self.ボルト数量 = numbers
+            self.単位数 = numbers?.総数
+            self.金額計算タイプ = 金額計算タイプ型.カット棒(itemLength: itemLength, length: length)
+            self.図番 = pipe.図番
+            return
+        }
+        // 板
         guard let (title, size, type, priority) = scanSource(ボルト欄: text, 伝票種類: 伝票種類) else {
             guard let object = 板加工在庫マップ[text] else { return nil }
             self.ソート順 = object.ソート順
@@ -333,6 +346,7 @@ public struct 資材要求情報型 {
             self.図番 = object.資材.図番
             return
         }
+        // ボルト等
         self.ソート順 = priority
         self.分割表示名1 = title
         self.分割表示名2 = size
@@ -1073,6 +1087,7 @@ private extension DMScanner {
         return (type.表示名, .単品個数物(種類: type), 0)
     }
 
+    
 }
 
 private let lengthMap: [図番型: Double] = [

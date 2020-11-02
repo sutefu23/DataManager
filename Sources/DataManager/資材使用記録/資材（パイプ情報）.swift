@@ -49,6 +49,7 @@ public struct 資材パイプ情報型 {
     public let サイズ: String // "13角"
     public let 長さ: String // "4"
     public let ボルト等表示: String
+    let カット用チェック名: String?
     
     public var 仕上げ材質表示: String {
         switch self.仕上 {
@@ -68,7 +69,12 @@ public struct 資材パイプ情報型 {
 
     public init(図番: 図番型, 規格: String) {
         self.図番 = 図番
-        let str = 規格.toJapaneseNormal.replacingOccurrences(of: "×", with: "x")
+        let str = 規格.toJapaneseNormal.replacingOccurrences(of: "×", with: "x").spaceStripped
+        if let index = str.lastIndex(where: {$0 == "x" }) {
+            self.カット用チェック名 = str[...index].toJapaneseNormal.spaceStripped.uppercased()
+        } else {
+            self.カット用チェック名 = nil
+        }
         self.ボルト等表示 = str
         var scanner = DMScanner(str, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: false)
         if scanner.scanString("FB") { // FB
@@ -167,10 +173,27 @@ func searchボルト等パイプ(ボルト欄: String) -> 資材パイプ情報�
     資材パイプリスト.first { $0.ボルト等表示 == ボルト欄 }
 }
 
+func searcボルト欄パイプ等カット(ボルト欄: String) -> (info: 資材パイプ情報型, 全長: Double, 長さ: Double)? {
+    for info in カット可能資材パイプリスト {
+        guard let header = info.カット用チェック名, !header.isEmpty, let itemLength = Double(info.長さ), itemLength > 0 else { continue }
+        var scanner = DMScanner(ボルト欄, upperCased: true)
+        if scanner.scanString(header) && scanner.scanCharacter("X"), let length = scanner.scanDouble(), scanner.isAtEnd {
+            return (info, itemLength * 1000, length)
+        }
+    }
+    return nil
+}
+
 public let 資材パイプリスト: [資材パイプ情報型] = {
     let list = ["FB一覧", "角パイプ一覧", "丸パイプ一覧"].concurrentMap {
         makeList($0)
     }.flatMap { $0 }
+    return list
+}()
+
+let カット可能資材パイプリスト: [資材パイプ情報型] = {
+    let 図番Set: Set<String> = ["991689", "991226", "991228", "991690", "991351", "883428", "883563", "991366", "883430"]
+    let list = 資材パイプリスト.filter { 図番Set.contains($0.図番) && $0.カット用チェック名?.isEmpty == false }
     return list
 }()
 
