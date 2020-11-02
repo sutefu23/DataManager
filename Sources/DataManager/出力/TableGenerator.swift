@@ -141,7 +141,9 @@ public final class TableGenerator<S> {
         }
         // 集計結果
         if columns.contains(where: { $0.aggregator != nil }) { // 全く集計項目がない場合出力なし
-            let cols = columns.map { $0.aggregator?.result ?? "" }
+            let cols: [String] = columns.map {
+                return $0.aggregator?.result ?? ""
+            }
             text += format.makeLine(cols)
         }
         // フッター
@@ -217,7 +219,7 @@ public extension TableGenerator {
         return appending(col)
     }
 
-    func integer(_ title: String, _ format: IntFormat = .native, _ resultType: ResultType? = nil, _ resultFormat: DoubleFormat? = nil, getter: @escaping (S) -> Int?) -> TableGenerator<S> {
+    func integer(_ title: String, _ format: IntFormat = .native, resultType: ResultType? = nil, resultFormat: DoubleFormat? = nil, getter: @escaping (S) -> Int?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             if let value = getter($0) {
                 switch format {
@@ -244,7 +246,7 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func double(_ title: String, _ format: DoubleFormat = .native, _ resultType: ResultType? = nil, _ resultFormat: DoubleFormat? = nil, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
+    func double(_ title: String, _ format: DoubleFormat = .native, resultType: ResultType? = nil, resultFormat: DoubleFormat? = nil, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
@@ -325,21 +327,23 @@ public extension TableGenerator {
         return appending(col)
     }
     
-    func timeInterval(_ title: String, _ format: TimeIntervalFormat = .minute0, _ resultType: ResultType? = nil, _ resultFormat: TimeIntervalFormat, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
+    func timeInterval(_ title: String, _ format: TimeIntervalFormat = .minute0, resultType: ResultType? = nil, resultFormat: TimeIntervalFormat? = nil, _ getter: @escaping (S) -> TimeInterval?) -> TableGenerator<S> {
+        let resultFormat = resultFormat ?? .minute1
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }
             switch format {
             case .minute0:
-                //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
-                let value = Int(value/60)
                 //結果が０以下の時はnilを返す
                 if value <= 0 { return nil }
-                return String(value)
+                //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
+                let tmp = round(value/60)
+                if tmp < 0.95 { fallthrough }
+                return String(Int(round(tmp)))
             case .minute1:
                 return String(format: "%.1f", value/60)
             }
         }
-        col.aggregator = TimeIntervalColumnAggregator(type: resultType, format: format, getter: getter)
+        col.aggregator = TimeIntervalColumnAggregator(type: resultType, format: resultFormat, getter: getter)
         return appending(col)
     }
 }

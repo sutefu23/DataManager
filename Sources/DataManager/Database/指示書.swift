@@ -665,6 +665,22 @@ extension 指示書型 {
         }
         return (isOk, TimeInterval(工程: nil, 作業開始: first, 作業完了: last))
     }
+    
+    public var アクリル開始時間: Date? {
+        guard let source = self.工程別進捗一覧[.レーザー（アクリル）] else { return nil }
+        return source.filter { $0.作業系列 == .hp && $0.作業内容 == .開始 && $0.作業種別 == .通常 }.last?.登録日時
+
+    }
+    
+    public var アクリル完了時間: Date? {
+        guard let source0 = self.工程別進捗一覧[.レーザー（アクリル）] else { return nil }
+        guard let from = source0.filter({ $0.作業系列 == .hp && $0.作業内容 == .開始 && $0.作業種別 == .通常 }).last else { return nil }
+        let source2 = self.工程別進捗一覧[.レーザー] ?? []
+        let source = self.工程別進捗一覧[.レーザー（アクリル）] ?? []
+        let target = (source+source2).filter { ($0.作業系列 == .hp || $0.作業系列 == nil) && $0.作業内容 == .完了 && $0.作業種別 == .通常 && $0.登録日時 > from.登録日時 }.sorted { $0.登録日時 < $1.登録日時 }
+        if let result = target.filter({ $0.作業系列 == .hp || $0.作業者 == from.作業者 }).last { return result.登録日時 }
+        return target.last?.登録日時
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {

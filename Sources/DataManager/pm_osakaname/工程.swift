@@ -56,8 +56,11 @@ public struct 工程型: Hashable, Comparable, Codable {
         return 工程名称DB[self] ?? ""
     }
 
+    public func 作業時間(from: Date?, to: Date?) -> TimeInterval? {
+        guard let from = from, let to = to else { return nil }
+        return TimeInterval(工程: self, 作業開始: from, 作業完了: to)
+    }
     public func 作業時間(from: Date, to: Date) -> TimeInterval {
-        
         return TimeInterval(工程: self, 作業開始: from, 作業完了: to)
     }
     public func 推定始業時間(of day: Day) -> Time {
