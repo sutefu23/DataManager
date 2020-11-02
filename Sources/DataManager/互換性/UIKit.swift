@@ -151,8 +151,8 @@ public extension UIView {
         }
         if let target = target, let action = action {
             let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
-            self.isUserInteractionEnabled = true
-            self.addGestureRecognizer(myTap)
+            view.isUserInteractionEnabled = true
+            view.addGestureRecognizer(myTap)
         }
         if let tag = tag { view.tag = tag }
         return view
