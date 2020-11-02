@@ -7,12 +7,7 @@
 
 import Foundation
 
-private let serialQueue: OperationQueue = {
-   let queue = OperationQueue()
-    queue.maxConcurrentOperationCount = 1
-    queue.qualityOfService = .utility
-    return queue
-}()
+private let lock = NSRecursiveLock()
 
 public enum 食事種類型: String, Comparable {
     case 朝食
@@ -189,72 +184,41 @@ public class 食事メニュー型 {
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordId else { return }
-        var result: Error? = nil
-        let operation = BlockOperation {
-            do {
-                let db = FileMakerDB.system
-                try db.delete(layout: 食事メニューData型.dbName, recordId: recordID)
-                self.recordId = nil
-                //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = error
-            }
-        }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        if let error = result { throw error }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        try db.delete(layout: 食事メニューData型.dbName, recordId: recordID)
+        self.recordId = nil
+        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
     }
 
     public func upload() {
         let data = self.data.fieldData
-        serialQueue.addOperation {
-            let db = FileMakerDB.system
-            let _ = try? db.insert(layout: 食事メニューData型.dbName, fields: data)
-            //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-        }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let _ = try? db.insert(layout: 食事メニューData型.dbName, fields: data)
+        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
     }
-
+    
     public func synchronize() throws {
         if !isChanged { return }
         let data = self.data.fieldData
-        var result: Result<String, Error>!
-        let operation = BlockOperation {
-            let db = FileMakerDB.system
-            do {
-                if let recordID = self.recordId {
-                    try db.update(layout: 食事メニューData型.dbName, recordId: recordID, fields: data)
-                    result = .success(recordID)
-                } else {
-                    let recordID = try db.insert(layout: 食事メニューData型.dbName, fields: data)
-                    result = .success(recordID)
-                }
-//                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = .failure(error)
-            }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        if let recordID = self.recordId {
+            try db.update(layout: 食事メニューData型.dbName, recordId: recordID, fields: data)
+        } else {
+            self.recordId = try db.insert(layout: 食事メニューData型.dbName, fields: data)
         }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        self.recordId = try result.get()
+        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
     }
-
+    
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [食事メニュー型] {
         if query.isEmpty { return [] }
-        var result: Result<[FileMakerRecord], Error>!
-        let operation = BlockOperation {
-            let db = FileMakerDB.system
-            do {
-                let list: [FileMakerRecord] = try db.find(layout: 食事メニューData型.dbName, query: [query])
-                result = .success(list)
-            } catch {
-                result = .failure(error)
-            }
-        }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        let list = try result.get().compactMap { 食事メニュー型($0) }
-        return list
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let list: [FileMakerRecord] = try db.find(layout: 食事メニューData型.dbName, query: [query])
+        return list.compactMap { 食事メニュー型($0) }
     }
 
     public static func find(メニューID: String? = nil, 図番: 図番型? = nil) throws -> [食事メニュー型] {

@@ -8,12 +8,7 @@
 
 import Foundation
 
-private let serialQueue: OperationQueue = {
-   let queue = OperationQueue()
-    queue.maxConcurrentOperationCount = 1
-    queue.qualityOfService = .utility
-    return queue
-}()
+private let lock = NSRecursiveLock()
 
 public enum 印刷対象型: String {
     public static let 仮印刷対象工程: Set<工程型> = [.裏加工, .裏加工_溶接]
@@ -37,7 +32,6 @@ extension FileMakerRecord {
         return 印刷対象型(rawValue: str)
     }
 }
-
 
 struct 資材使用記録Data型: Equatable {
     static let dbName = "DataAPI_5"
@@ -217,76 +211,41 @@ public final class 資材使用記録型 {
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordID else { return }
-        var result: Error? = nil
-        let operation = BlockOperation {
-            do {
-                let db = FileMakerDB.system
-                try db.delete(layout: 資材使用記録Data型.dbName, recordId: recordID)
-                self.recordID = nil
-                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = error
-            }
-        }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        if let error = result { throw error }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        try db.delete(layout: 資材使用記録Data型.dbName, recordId: recordID)
+        self.recordID = nil
+        資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
     }
 
-    public func upload() {
+    public func upload() throws {
         let data = self.data.fieldData
-        serialQueue.addOperation {
-            let db = FileMakerDB.system
-            do {
-                let _ = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
-                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                NSLog(error.localizedDescription)
-            }
-        }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let _ = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
+        資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
     }
     
     public func synchronize() throws {
         if !isChanged { return }
         let data = self.data.fieldData
-        var result: Result<String, Error>!
-        let operation = BlockOperation {
+        lock.lock(); defer { lock.unlock() }
             let db = FileMakerDB.system
-            do {
-                if let recordID = self.recordID {
-                    try db.update(layout: 資材使用記録Data型.dbName, recordId: recordID, fields: data)
-                    result = .success(recordID)
-                } else {
-                    let recordID = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
-                    result = .success(recordID)
-                }
-                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = .failure(error)
-            }
+        if let recordID = self.recordID {
+            try db.update(layout: 資材使用記録Data型.dbName, recordId: recordID, fields: data)
+        } else {
+            self.recordID = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
         }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        self.recordID = try result.get()
+        資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
     }
-
+    
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [資材使用記録型] {
         if query.isEmpty { return [] }
-        var result: Result<[FileMakerRecord], Error>!
-        let operation = BlockOperation {
-            let db = FileMakerDB.system
-            do {
-                let list: [FileMakerRecord] = try db.find(layout: 資材使用記録Data型.dbName, query: [query])
-                result = .success(list)
-            } catch {
-                result = .failure(error)
-            }
-        }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        let list = try result.get().compactMap { 資材使用記録型($0) }
-        return list
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let list: [FileMakerRecord] = try db.find(layout: 資材使用記録Data型.dbName, query: [query])
+        return list.compactMap { 資材使用記録型($0) }
     }
     public static func find(登録日:ClosedRange<Day>) throws -> [資材使用記録型] {
         var query = [String: String]()

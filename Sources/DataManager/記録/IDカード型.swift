@@ -7,12 +7,7 @@
 
 import Foundation
 
-private let serialQueue: OperationQueue = {
-   let queue = OperationQueue()
-    queue.maxConcurrentOperationCount = 1
-    queue.qualityOfService = .utility
-    return queue
-}()
+private let lock = NSRecursiveLock()
 
 public enum IDカード種類型: String, Hashable {
     case マスタ
@@ -112,76 +107,45 @@ public class IDカード型 {
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordId else { return }
-        var result: Error? = nil
-        let operation = BlockOperation {
-            do {
-                let db = FileMakerDB.system
-                try db.delete(layout: IDカードData型.dbName, recordId: recordID)
-                self.recordId = nil
-                //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = error
-            }
-        }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        if let error = result { throw error }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        try db.delete(layout: IDカードData型.dbName, recordId: recordID)
+        self.recordId = nil
+        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
     }
 
     public func upload() {
         let data = self.data.fieldData
-        serialQueue.addOperation {
-            let db = FileMakerDB.system
-            let _ = try? db.insert(layout: IDカードData型.dbName, fields: data)
-            //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-        }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let _ = try? db.insert(layout: IDカードData型.dbName, fields: data)
+        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
     }
-
+    
     public func synchronize() throws {
         if !isChanged { return }
         let data = self.data.fieldData
-        var result: Result<String, Error>!
-        let operation = BlockOperation {
-            let db = FileMakerDB.system
-            do {
-                if let recordID = self.recordId {
-                    try db.update(layout: IDカードData型.dbName, recordId: recordID, fields: data)
-                    result = .success(recordID)
-                } else {
-                    let recordID = try db.insert(layout: IDカードData型.dbName, fields: data)
-                    result = .success(recordID)
-                }
-//                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
-            } catch {
-                result = .failure(error)
-            }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        if let recordID = self.recordId {
+            try db.update(layout: IDカードData型.dbName, recordId: recordID, fields: data)
+        } else {
+            self.recordId = try db.insert(layout: IDカードData型.dbName, fields: data)
         }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        self.recordId = try result.get()
+        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
     }
-
+    
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [IDカード型] {
-        var result: Result<[FileMakerRecord], Error>!
-        let operation = BlockOperation {
-            let db = FileMakerDB.system
-            do {
-                let list: [FileMakerRecord]
-                if query.isEmpty {
-                    list = try db.fetch(layout: IDカードData型.dbName)
-                } else {
-                    list = try db.find(layout: IDカードData型.dbName, query: [query])
-                }
-                result = .success(list)
-            } catch {
-                result = .failure(error)
-            }
+        lock.lock(); defer { lock.unlock() }
+        let db = FileMakerDB.system
+        let list: [FileMakerRecord]
+        if query.isEmpty {
+            list = try db.fetch(layout: IDカードData型.dbName)
+        } else {
+            list = try db.find(layout: IDカードData型.dbName, query: [query])
         }
-        serialQueue.addOperation(operation)
-        operation.waitUntilFinished()
-        let list = try result.get().compactMap { IDカード型($0) }
-        return list
+        return list.compactMap { IDカード型($0) }
     }
     
     public static func find(社員番号: String? = nil, カードID: String? = nil) throws -> [IDカード型] {
@@ -206,4 +170,50 @@ public class IDカード型 {
         try gen.share(list, format: .excel(header: true), title: "backup食事IDカード.csv")
     }
 
+}
+
+// MARK: - キャッシュ
+class IDカードキャッシュ型 {
+    struct IDカードキャッシュKey: Hashable {
+        let 社員番号: String
+    }
+    
+    static let shared = IDカードキャッシュ型()
+    var expireTime: TimeInterval = 1*60*60 // 1時間
+    private let lock = NSLock()
+    private var cache: [IDカードキャッシュKey: (有効期限: Date, IDカード: IDカード型)] = [:]
+
+    func 現在IDカード(社員番号: String) throws -> IDカード型? {
+        let key = IDカードキャッシュKey(社員番号: 社員番号)
+        guard let object = try IDカード型.find(社員番号: 社員番号).first else { return nil }
+        let expire = Date(timeIntervalSinceNow: self.expireTime)
+        lock.lock()
+        cache[key] = (expire, object)
+        lock.unlock()
+        return object
+    }
+
+    func キャッシュIDカード(社員番号: String) throws -> IDカード型? {
+        let key = IDカードキャッシュKey(社員番号: 社員番号)
+        lock.lock()
+        let data = self.cache[key]
+        lock.unlock()
+        if let data = data, Date() <= data.有効期限 {
+            return data.IDカード
+        }
+        return try self.現在IDカード(社員番号: 社員番号)
+    }
+
+    func flush(社員番号: String) {
+        let key = IDカードキャッシュKey(社員番号: 社員番号)
+        lock.lock()
+        cache[key] = nil
+        lock.unlock()
+    }
+    
+    func flushAllCache() {
+        lock.lock()
+        self.cache.removeAll()
+        lock.unlock()
+    }
 }
