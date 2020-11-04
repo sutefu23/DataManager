@@ -44,6 +44,14 @@ public final class 社員型: Hashable, Codable {
 
     public let 社員番号: Int
     public let 社員名称: String
+    public var 社員_姓ふりがな: String = ""
+    public var 社員_名ふりがな: String = ""
+    public var ふりがな: String {
+        if 社員_姓ふりがな.isEmpty { return 社員_名ふりがな }
+        if 社員_名ふりがな.isEmpty { return 社員_姓ふりがな }
+        return "\(社員_姓ふりがな)　\(社員_名ふりがな)"
+    }
+    
     public var 社員コード: String {
         if 社員番号 < 10 { return "H00\(社員番号)" }
         if 社員番号 < 100 { return "H0\(社員番号)" }
@@ -76,13 +84,18 @@ public final class 社員型: Hashable, Codable {
         self.社員名称 = source.社員名称
         self.部署Data = source.部署Data
         self.補足情報 = source.補足情報
+        self.社員_姓ふりがな = source.社員_姓ふりがな
+        self.社員_名ふりがな = source.社員_名ふりがな
     }
     
     public init?(社員番号: Int?, 社員名称: String? = nil) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
         self.社員名称 = 社員名称 ?? member.社員名称
+        self.部署Data = member.部署Data
         self.補足情報 = member.補足情報
+        self.社員_姓ふりがな = member.社員_姓ふりがな
+        self.社員_名ふりがな = member.社員_名ふりがな
     }
 
     convenience init?(社員名称: String) {
@@ -102,6 +115,8 @@ public final class 社員型: Hashable, Codable {
         self.社員名称 = 社員名称
         self.部署Data = record.キャッシュ部署(forKey: "部署記号")
         self.補足情報 = record.string(forKey: "アマダ社員番号") ?? ""
+        self.社員_姓ふりがな = record.string(forKey: "社員_姓ふりがな") ?? ""
+        self.社員_名ふりがな = record.string(forKey: "社員_名ふりがな") ?? ""
     }
     
     public convenience init?<S: StringProtocol>(社員コード: S) {
