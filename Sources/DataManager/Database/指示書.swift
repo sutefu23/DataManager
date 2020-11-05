@@ -781,7 +781,17 @@ public extension 指示書型 {
         query["伝票種類"] = type?.fmString
         return try find(query)
     }
-    
+
+    static func find(有効日: Day, 伝票種類: 伝票種類型? = nil) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["受注日"] = "<=\(有効日.fmString)"
+        query["出荷納期"] = ">=\(有効日.fmString)"
+        if let type = 伝票種類 {
+            query["伝票種類"] = "==\(type.fmString)"
+        }
+        return try find(query)
+    }
+
     static func find(最小製作納期 day: Day, 伝票種類 type: 伝票種類型?) throws -> [指示書型] {
         var query = FileMakerQuery()
         query["製作納期"] = ">=\(day.fmString)"

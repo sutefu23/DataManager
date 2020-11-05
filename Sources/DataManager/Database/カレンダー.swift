@@ -144,10 +144,10 @@ public let 半田カレンダー: カレンダー型 = 固定カレンダー型(
 
 public protocol カレンダー型 {
     func isHoliday(of day: Day) -> Bool
-    func calcWorkTime(state: 工程型?, from: Date, to: Date) -> TimeInterval
-    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型
+    func calcWorkTime(state: 工程型?, from: Date, to: Date, 終業カット: Bool) -> TimeInterval
+    func 勤務時間(工程: 工程型?, 日付: Day) -> 勤務時間型
 }
- 
+
 public extension カレンダー型 {
     func 勤務日数(from: Day, to: Day) -> Int {
         var day = from
@@ -159,6 +159,12 @@ public extension カレンダー型 {
             } while day.isHoliday
         }
         return count
+    }
+
+    /// 全工程で最大の勤務時間
+    func 勤務時間(日付: Day) -> 勤務時間型 { self.勤務時間(工程: nil, 日付: 日付) }
+    func calcWorkTime(state: 工程型?, from: Date, to: Date) -> TimeInterval {
+        calcWorkTime(state: state, from: from, to: to, 終業カット: false)
     }
 }
 
@@ -177,10 +183,10 @@ final class 固定カレンダー型: カレンダー型 {
 
     
 // MARK: 時間
-    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型 {
+    func 勤務時間(工程: 工程型?, 日付: Day) -> 勤務時間型 {
         return timeDB
     }
-    func calcWorkTime(state: 工程型?, from: Date, to: Date) -> TimeInterval {
+    func calcWorkTime(state: 工程型?, from: Date, to: Date, 終業カット: Bool) -> TimeInterval {
         if to < from  { return 0 }
         var day = from.day
         let toDay = to.day
@@ -195,7 +201,11 @@ final class 固定カレンダー型: カレンダー型 {
             }
             day = day.nextDay
         }
-        workTime += timeDB.calcWorkTime(from: timeDB.始業, to: to.time)
+        var toTime = to.time
+        if 終業カット && timeDB.終業 < toTime {
+            toTime = timeDB.終業
+        }
+        workTime += timeDB.calcWorkTime(from: timeDB.始業, to: toTime)
         return workTime
     }
 }
@@ -265,7 +275,7 @@ final class 自動カレンダー型: カレンダー型 {
         return dayDB.isHoliday(of:day)
     }
     
-    func 勤務時間(工程: 工程型, 日付: Day) -> 勤務時間型 {
+    func 勤務時間(工程: 工程型?, 日付: Day) -> 勤務時間型 {
         return timeDB(of: 日付, state: 工程)
     }
 
@@ -279,7 +289,7 @@ final class 自動カレンダー型: カレンダー型 {
         return db.timeDB(of: state)
     }
     
-    func calcWorkTime(state: 工程型?, from: Date, to: Date) -> TimeInterval {
+    func calcWorkTime(state: 工程型?, from: Date, to: Date, 終業カット: Bool) -> TimeInterval {
         if to < from  { return 0 }
         var day = from.day
         let toDay = to.day
@@ -297,7 +307,11 @@ final class 自動カレンダー型: カレンダー型 {
             day = day.nextDay
         }
         timeDB = self.timeDB(of: day, state: state)
-        workTime += timeDB.calcWorkTime(from: timeDB.始業, to: to.time)
+        var toTime = to.time
+        if 終業カット && timeDB.終業 < toTime {
+            toTime = timeDB.終業
+        }
+        workTime += timeDB.calcWorkTime(from: timeDB.始業, to: toTime)
         return workTime
     }
 }

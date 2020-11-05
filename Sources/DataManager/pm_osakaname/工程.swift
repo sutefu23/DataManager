@@ -55,6 +55,7 @@ public struct 工程型: Hashable, Comparable, Codable {
     public var description: String {
         return 工程名称DB[self] ?? ""
     }
+    public var is製作工程: Bool { is製作工程Set.contains(self) } 
 
     public func 作業時間(from: Date?, to: Date?) -> TimeInterval? {
         guard let from = from, let to = to else { return nil }
@@ -115,9 +116,7 @@ class 工程名称DB型 {
             "検査" : .照合検査
         ]
         var map3: [工程型: String] = [:]
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = (try? db.fetch(layout: 工程型.dbName)) ?? []
-        for record in list {
+        for record in db_全工程 {
             guard let code = record.string(forKey: "工程コード"), let state = 工程型(code: code), let name = record.string(forKey: "工程名") else { continue }
             map[state] = name
             map2[name] = state
@@ -130,6 +129,28 @@ class 工程名称DB型 {
     
     subscript(_ state: 工程型) -> String? { return map[state] }
 }
+
+private let db_全工程: [FileMakerRecord] = {
+    let db = FileMakerDB.pm_osakaname
+    return (try? db.fetch(layout: 工程型.dbName)) ?? []
+}()
+
+var is製作工程Set: Set<工程型> = {
+    var set = Set<工程型>()
+    for record in db_全工程 {
+        guard let code = record.string(forKey: "工程コード"),
+              let process = 工程型(code: code),
+              let state1 = record.string(forKey: "受取"),
+              let state2 = record.string(forKey: "開始"),
+              let state3 = record.string(forKey: "仕掛"),
+              let state4 = record.string(forKey: "完了")
+        else { continue }
+        if state1 == "製作中" || state2 == "製作中" || state3 == "製作中" || state4 == "製作中" {
+            set.insert(process)
+        }
+    }
+    return set
+}()
 
 func flush工程名称DB() {
     工程名称DB = 工程名称DB型()

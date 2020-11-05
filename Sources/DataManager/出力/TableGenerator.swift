@@ -352,9 +352,9 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
+    func share(_ key: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
         let url = 生産管理集計URL.appendingPathComponent(title)
-        try self.write(source, format: format, to: url)
+        try self.write(key, format: format, to: url)
     }
 }
 
@@ -362,18 +362,18 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
+    func share(_ key: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title)
-        try self.write(source, format: format, to: url)
+        try self.write(key, format: format, to: url)
 
-        guard let source = UIApplication.shared.windows.last?.rootViewController else { return }
+        guard let key = UIApplication.shared.windows.last?.rootViewController else { return }
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
 //        controller.excludedActivityTypes = [.airDrop, .mail]
-        controller.popoverPresentationController?.sourceView = source.view
+        controller.popoverPresentationController?.sourceView = key.view
         if let button = shareButton {
                 controller.popoverPresentationController?.sourceRect = button.frame
         }
-        source.present(controller, animated: true, completion: nil)
+        key.present(controller, animated: true, completion: nil)
     }
 }
 #elseif os(macOS)
