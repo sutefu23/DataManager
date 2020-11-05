@@ -29,6 +29,7 @@
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		14767166251D630C00429C17 /* CharacterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* CharacterType.swift */; };
 		14788CCB2538267900995762 /* 丸パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14788CCA2538266F00995762 /* 丸パイプ一覧.csv */; };
+		1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1485E4932553DA570006DA8D /* 進捗集計.swift */; };
 		148CA55225367D98002CE1D4 /* ICCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55125367D98002CE1D4 /* ICCard.swift */; };
 		148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55B25367E50002CE1D4 /* TestICCardID.swift */; };
 		148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
@@ -244,6 +245,7 @@
 		14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "付属品封筒裏面.pdf"; sourceTree = "<group>"; };
 		14767165251D630C00429C17 /* CharacterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterType.swift; sourceTree = "<group>"; };
 		14788CCA2538266F00995762 /* 丸パイプ一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "丸パイプ一覧.csv"; sourceTree = "<group>"; };
+		1485E4932553DA570006DA8D /* 進捗集計.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗集計.swift"; sourceTree = "<group>"; };
 		148CA55025367D73002CE1D4 /* scanICCard.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanICCard.py; sourceTree = "<group>"; };
 		148CA55125367D98002CE1D4 /* ICCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICCard.swift; sourceTree = "<group>"; };
 		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
@@ -459,6 +461,14 @@
 				OBJ_145 /* maru.ita */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		1485E4922553DA330006DA8D /* 集計 */ = {
+			isa = PBXGroup;
+			children = (
+				1485E4932553DA570006DA8D /* 進捗集計.swift */,
+			);
+			path = "集計";
 			sourceTree = "<group>";
 		};
 		OBJ_105 /* 工程分析 */ = {
@@ -708,6 +718,7 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				1485E4922553DA330006DA8D /* 集計 */,
 				14767125251D5CA600429C17 /* Resources */,
 				OBJ_82 /* ラベル印刷 */,
 				OBJ_89 /* 作業ツリー */,
@@ -976,6 +987,7 @@
 				OBJ_241 /* 伝票種別.swift in Sources */,
 				8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */,
 				OBJ_242 /* 伝票種類.swift in Sources */,
+				1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */,
 				OBJ_243 /* 作業内容.swift in Sources */,
 				OBJ_244 /* 入力区分.swift in Sources */,
 				OBJ_245 /* 分量.swift in Sources */,

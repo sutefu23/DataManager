@@ -85,7 +85,7 @@ public class 食事要求型: Identifiable {
     }
 
     public var isChanged: Bool { original != data }
-    
+
     public lazy var メニュー: 食事メニュー型? = {
         try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
     }()
