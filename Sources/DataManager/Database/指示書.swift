@@ -681,6 +681,59 @@ extension 指示書型 {
         if let result = target.filter({ $0.作業系列 == .hp || $0.作業者 == from.作業者 }).last { return result.登録日時 }
         return target.last?.登録日時
     }
+    
+    /// 製作工程の最初の開始。先頭の製作工程進捗が完了時はその一つ前の入力を製作開始とする
+    public var 推定製作開始日時: Date? {
+        var prev: 進捗型? = nil
+        for progress in self.進捗一覧 {
+            if progress.工程.is製作工程 {
+                switch progress.作業内容 {
+                case .受取:
+                    break
+                case .開始:
+                    return progress.登録日時
+                case .仕掛, .完了:
+                    if let prev = prev {
+                        if prev.工程.is製作工程 { return prev.登録日時 }
+                        switch prev.作業内容 {
+                        case .完了:
+                            return prev.登録日時
+                        case .受取, .開始, .仕掛:
+                            break
+                        }
+                    }
+                    return progress.登録日時
+                }
+            }
+            prev = progress
+        }
+        return nil
+    }
+    
+    public var 推定製作完了日時: Date? {
+        var prev: 進捗型? = nil
+        for progress in self.進捗一覧.reversed() {
+            if progress.工程.is製作工程 {
+                switch progress.作業内容 {
+                case .完了:
+                    return progress.登録日時
+                case .受取, .開始, .仕掛:
+                    if let prev = prev {
+                        if prev.工程.is製作工程 { return prev.登録日時 }
+                        switch prev.作業内容 {
+                        case .受取, .開始:
+                            return prev.登録日時
+                        case .仕掛, .完了:
+                            break
+                        }
+                    }
+                    return progress.登録日時
+                }
+            }
+            prev = progress
+        }
+        return nil
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {
