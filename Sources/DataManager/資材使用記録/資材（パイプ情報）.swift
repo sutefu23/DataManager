@@ -18,6 +18,7 @@ public enum 資材パイプ仕上型: String {
     case D
     case HL
     case F
+    case CO2C
     case CO
     case HO
     case 仕上げなし
@@ -99,6 +100,8 @@ public struct 資材パイプ情報型 {
                 self.仕上 = .HL
             } else if scanner.scanString("F") {
                 self.仕上 = .F
+            } else if scanner.scanString("CO2C") {
+                self.仕上 = .CO2C
             } else if scanner.scanString("CO") {
                 self.仕上 = .CO
             } else if scanner.scanString("HO") {
@@ -174,12 +177,13 @@ func searchボルト等パイプ(ボルト欄: String) -> 資材パイプ情報�
 }
 
 func searcボルト欄パイプ等カット(ボルト欄: String) -> (info: 資材パイプ情報型, 全長: Double, 長さ: Double)? {
+    var scanner = DMScanner(ボルト欄.replacingOccurrences(of: "×", with: "X"), upperCased: true)
     for info in カット可能資材パイプリスト {
         guard let header = info.カット用チェック名, !header.isEmpty, let itemLength = Double(info.長さ), itemLength > 0 else { continue }
-        var scanner = DMScanner(ボルト欄, upperCased: true)
-        if scanner.scanString(header) && scanner.scanCharacter("X"), let length = scanner.scanDouble(), scanner.isAtEnd {
+        if scanner.scanString(header), let length = scanner.scanDouble(), scanner.isAtEnd {
             return (info, itemLength * 1000, length)
         }
+        scanner.reset()
     }
     return nil
 }
