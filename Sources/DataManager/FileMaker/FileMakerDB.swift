@@ -176,6 +176,7 @@ public final class FileMakerDB {
         } catch {
             if case let error as FileMakerError = error, error.canRetry {
                 session.logout()
+                Thread.sleep(forTimeInterval: 10)
                 try work(session)
             } else {
                 throw error

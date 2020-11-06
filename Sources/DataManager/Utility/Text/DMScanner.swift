@@ -655,6 +655,60 @@ public struct DMScanner: RandomAccessCollection {
     public var containsNGCharacters: Bool {
         source[startIndex..<endIndex].containsNGCharacters
     }
+    
+    /// hh:mmまたはhh:mm:ssを読みとる。
+    public mutating func scanTime() -> Time? {
+        dropHeadSpacesIfNeeds()
+        let initialIndex = self.startIndex
+        var index = initialIndex
+        var hoursStr = ""
+        var hasCol = false
+        var hasCol2 = false
+        var minutesStr = ""
+        var secondsStr = ""
+        while index < self.endIndex {
+            let ch = source[index]
+            index = source.index(after: index)
+            if ch.isNumber {
+                if hasCol == false {
+                    hoursStr.append(ch)
+                } else if hasCol2 == false {
+                    minutesStr.append(ch)
+                } else {
+                    secondsStr.append(ch)
+                }
+            } else if ch == ":" {
+                if hasCol == false {
+                    hasCol = true
+                } else if hasCol2 == false {
+                    hasCol2 = true
+                } else {
+                    self.startIndex = initialIndex
+                    return nil
+                }
+            } else {
+                break
+            }
+        }
+        if minutesStr.count == 2, let hours = Int(hoursStr),
+           (hoursStr.count == 2 || hoursStr.count == 1 && hours < 10) && hours < 24,
+           let minutes = Int(minutesStr), minutes < 60 {
+            assert(hours >= 0 && minutes >= 0) // マイナス記号がないため
+            if hasCol2 {
+                if secondsStr.count == 2, let seconds = Int(secondsStr), seconds < 60 {
+                    assert(seconds >= 0) // マイナス記号がないため
+                    self.startIndex = index
+                    return Time(hours, minutes, seconds)
+                }
+            } else {
+                self.startIndex = index
+                return Time(hours, minutes)
+            }
+        }
+        self.startIndex = initialIndex
+        return nil
+    }
+    
 }
 
 let ngCharacters: Set<Character> = [

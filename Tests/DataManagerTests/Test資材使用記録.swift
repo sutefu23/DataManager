@@ -33,7 +33,7 @@ class TestUseItemRecord: XCTestCase {
         XCTAssertEqual(use.印刷対象, .全て)
         
         guard execDBTest else { return }
-        use.upload()
+        try? use.upload()
     }
 }
 

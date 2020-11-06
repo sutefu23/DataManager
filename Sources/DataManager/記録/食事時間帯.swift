@@ -113,6 +113,7 @@ public class 食事時間帯型 {
     }
 
     // MARK: - DB検索
+    
     static func find(query: FileMakerQuery) throws -> [食事時間帯型] {
         lock.lock(); defer { lock.unlock() }
         let db = FileMakerDB.system

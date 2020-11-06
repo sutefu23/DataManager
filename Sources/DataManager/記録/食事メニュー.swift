@@ -218,7 +218,10 @@ public class 食事メニュー型 {
         lock.lock(); defer { lock.unlock() }
         let db = FileMakerDB.system
         let list: [FileMakerRecord] = try db.find(layout: 食事メニューData型.dbName, query: [query])
-        return list.compactMap { 食事メニュー型($0) }
+        let result = list.compactMap { 食事メニュー型($0) }
+        let cache = 食事メニューキャッシュ型.shared
+        result.forEach { cache.regist($0) }
+        return result
     }
 
     public static func find(メニューID: String? = nil, 図番: 図番型? = nil) throws -> [食事メニュー型] {
@@ -264,14 +267,17 @@ public class 食事メニューキャッシュ型 {
     private var cache: [メニューID型: (有効期限: Date, 食事メニュー: 食事メニュー型)] = [:]
 
     func 現在メニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
-        guard let object = try 食事メニュー型.find(メニューID: メニューID).first else { return nil }
-        let expire = Date(timeIntervalSinceNow: self.expireTime)
-        lock.lock()
-        cache[メニューID] = (expire, object)
-        lock.unlock()
-        return object
+        guard let menu = try 食事メニュー型.find(メニューID: メニューID).first else { return nil }
+        return menu
     }
 
+    func regist(_ menu: 食事メニュー型) {
+        let expire = Date(timeIntervalSinceNow: self.expireTime)
+        lock.lock()
+        cache[menu.メニューID] = (expire, menu)
+        lock.unlock()
+    }
+    
     public func キャッシュメニュー(メニューID: メニューID型) throws -> 食事メニュー型? {
         lock.lock()
         let data = self.cache[メニューID]

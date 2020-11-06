@@ -47,6 +47,7 @@ extension Array {
 
     public func concurrentCompactMap<T>(converter: (_ item: Element) throws ->T?) rethrows -> [T] {
         if self.count <= 1 {
+            if self.isEmpty { return [] }
             if let result = try converter(self[0]) { return [result] } else { return [] }
         }
         var results = [Result<T?, Error>](repeating: .failure(ConcurrentError.emptyData), count: self.count)

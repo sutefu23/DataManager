@@ -73,6 +73,12 @@ public enum FileMakerError: LocalizedError {
     }
     
     var canRetry: Bool {
+        switch self {
+        case .tokenCreate, .find, .fetch, .delete:
+            return true
+        default:
+            break
+        }
         let mes = self.message
         return mes.contains("Invalid FileMaker Data API token")
     }

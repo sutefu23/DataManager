@@ -9,11 +9,43 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public enum 食事要求状態型: String {
-    case 未処理
-    case 受取待
-    case 受渡済
-    case 追加発注
+public enum 食事要求状態型: Int, Comparable, Hashable {
+    case 未処理 = 0
+    case 受取待 = 1
+    case 受渡済 = 2
+    case 追加発注 = 3
+    
+    public init?(text: String) {
+        switch text {
+        case "未処理":
+            self = .未処理
+        case "受取待":
+            self = .受取待
+        case "受渡済":
+            self = .受渡済
+        case "追加発注":
+            self = .追加発注
+        default:
+            return nil
+        }
+    }
+    
+    public var text: String {
+        switch self {
+        case .未処理:
+            return "未処理"
+        case .受取待:
+            return "受取待"
+        case .受渡済:
+            return "受渡済"
+        case .追加発注:
+            return "追加発注"
+        }
+    }
+    
+    public static func <(left: 食事要求状態型, right: 食事要求状態型) -> Bool {
+        return left.rawValue < right.rawValue
+    }
 }
 
 struct 食事要求Data型: Equatable {
@@ -36,7 +68,7 @@ struct 食事要求Data型: Equatable {
         guard let 社員番号 = record.string(forKey: "社員番号"),
               let メニューID = record.string(forKey: "メニューID"),
               let 状態str = record.string(forKey: "要求状態"),
-              let 要求状態 = 食事要求状態型(rawValue: 状態str) else { return nil }
+              let 要求状態 = 食事要求状態型(text: 状態str) else { return nil }
         self.社員番号 = 社員番号
         self.メニューID = メニューID
         self.要求状態 = 要求状態
@@ -47,7 +79,7 @@ struct 食事要求Data型: Equatable {
         var data = FileMakerQuery()
         data["社員番号"] = self.社員番号
         data["メニューID"] = self.メニューID
-        data["要求状態"] = self.要求状態.rawValue
+        data["要求状態"] = self.要求状態.text
         return data
     }
 }
@@ -122,7 +154,6 @@ public class 食事要求型: Identifiable {
         } else {
             self.recordId = try db.insert(layout: 食事要求Data型.dbName, fields: data)
         }
-        //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
     }
     
     public var 食事時間帯: 食事時間帯型? {
@@ -187,7 +218,7 @@ public class 食事要求型: Identifiable {
         let gen = TableGenerator<食事要求型>()
             .string("社員番号") { $0.社員番号 }
             .string("メニューID") { $0.メニューID }
-            .string("要求状態") { $0.要求状態.rawValue }
+            .string("要求状態") { $0.要求状態.text }
             .date("修正情報タイムスタンプ", .yearToMinute) { $0.修正情報タイムスタンプ }
         try gen.share(list, format: .excel(header: true), title: "backup食事要求\(day.monthDayJString).csv")
     }
