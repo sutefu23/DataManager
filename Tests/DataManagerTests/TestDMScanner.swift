@@ -411,6 +411,9 @@ class TestDMScanner: XCTestCase {
         scanner = DMScanner("17:03")
         XCTAssertEqual(scanner.scanTime(), Time(17, 3))
 
+        scanner = DMScanner("00:00")
+        XCTAssertEqual(scanner.scanTime(), Time(0, 0))
+
         scanner = DMScanner("1:49")
         XCTAssertEqual(scanner.scanTime(), Time(1, 49))
 
@@ -447,6 +450,29 @@ class TestDMScanner: XCTestCase {
         XCTAssertEqual(scanner.scanTime(), nil)
         scanner = DMScanner("17:03:003")
         XCTAssertEqual(scanner.scanTime(), nil)
+        
+        scanner = DMScanner("23:59OCN")
+        XCTAssertEqual(scanner.scanTime(), Time(23, 59))
+        XCTAssertEqual(scanner.string, "OCN")
+    }
+    
+    func testScanUpToTime() {
+        var scanner: DMScanner
+        scanner = DMScanner("G01C9:2H17:03ZZZ")
+        var result = scanner.scanUpToTime()
+        XCTAssertEqual(result?.left, "G01C9:2H")
+        XCTAssertEqual(result?.time, Time(17, 03))
+        XCTAssertEqual(scanner.string, "ZZZ")
 
+        scanner = DMScanner("ICE34:60Cre")
+        result = scanner.scanUpToTime()
+        XCTAssertNil(result)
+        XCTAssertEqual(scanner.string, "ICE34:60Cre")
+
+        scanner = DMScanner(" G01 C 9:2H17:03Z ZZ", skipSpaces: true)
+        result = scanner.scanUpToTime()
+        XCTAssertEqual(result?.left, "G01C9:2H")
+        XCTAssertEqual(result?.time, Time(17, 03))
+        XCTAssertEqual(scanner.string, "Z ZZ")
     }
 }

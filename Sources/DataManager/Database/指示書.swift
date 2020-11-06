@@ -477,9 +477,31 @@ public final class 指示書型 {
         }
         return set
     }()
+    
+    public lazy var 発送事項出荷時間: Time? = {
+        var scanner = DMScanner(self.発送事項, normalizedFullHalf: true, skipSpaces: true)
+        while let (_, time) = scanner.scanUpToTime() {
+            if scanner.scanString("出荷") { return time }
+        }
+        return nil
+    }()
+    public lazy var 発送事項完成時間: Time? = {
+        var scanner = DMScanner(self.発送事項, normalizedFullHalf: true, skipSpaces: true)
+        while let (_, time) = scanner.scanUpToTime() {
+            if scanner.scanString("完成") { return time }
+        }
+        return nil
+    }()
+
+    public lazy var 出荷時間: Time? = {
+        guard let string = record.string(forKey: "連絡欄1") else { return nil }
+        return Time(fmTime: string.toJapaneseNormal)
+    }()
 }
 
 extension 指示書型 {
+    public var 発送事項: String { record.string(forKey: "発送事項") ?? "" }
+    
     public func is分納相手完納済み(自工程: 工程型) throws -> Bool? {
         var result: Bool? = nil
         for info in self.ボルト資材情報.values {
@@ -682,58 +704,6 @@ extension 指示書型 {
         return target.last?.登録日時
     }
     
-//    /// 製作工程の最初の開始。先頭の製作工程進捗が完了時はその一つ前の入力を製作開始とする
-//    public var 推定製作開始日時: Date? {
-//        var prev: 進捗型? = nil
-//        for progress in self.進捗一覧 {
-//            if progress.工程.is製作工程 {
-//                switch progress.作業内容 {
-//                case .受取:
-//                    break
-//                case .開始:
-//                    return progress.登録日時
-//                case .仕掛, .完了:
-//                    if let prev = prev {
-//                        if prev.工程.is製作工程 { return prev.登録日時 }
-//                        switch prev.作業内容 {
-//                        case .完了:
-//                            return prev.登録日時
-//                        case .受取, .開始, .仕掛:
-//                            break
-//                        }
-//                    }
-//                    return progress.登録日時
-//                }
-//            }
-//            prev = progress
-//        }
-//        return nil
-//    }
-//
-//    public var 推定製作完了日時: Date? {
-//        var prev: 進捗型? = nil
-//        for progress in self.進捗一覧.reversed() {
-//            if progress.工程.is製作工程 {
-//                switch progress.作業内容 {
-//                case .完了:
-//                    return progress.登録日時
-//                case .受取, .開始, .仕掛:
-//                    if let prev = prev {
-//                        if prev.工程.is製作工程 { return prev.登録日時 }
-//                        switch prev.作業内容 {
-//                        case .受取, .開始:
-//                            return prev.登録日時
-//                        case .仕掛, .完了:
-//                            break
-//                        }
-//                    }
-//                    return progress.登録日時
-//                }
-//            }
-//            prev = progress
-//        }
-//        return nil
-//    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {
@@ -775,7 +745,6 @@ public extension 指示書型 {
         query["製作納期"] = 製作納期?.fmString
         return try find(query)
     }
-
     
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 受注日 range0: ClosedRange<Day>? = nil, 製作納期 range: ClosedRange<Day>? = nil,  出荷納期 range2: ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil, 進捗準備: Bool = false) throws -> [指示書型] {
         var query = FileMakerQuery()
@@ -852,6 +821,20 @@ public extension 指示書型 {
         return try find(query)
     }
     
+    static func find(出荷納期: Day, 発送事項: String) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["出荷納期"] = 出荷納期.fmString
+        query["発送事項"] = 発送事項
+        return try find(query)
+    }
+
+    static func find(出荷納期: ClosedRange<Day>, 発送事項: String) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["出荷納期"] = makeQueryDayString(出荷納期)
+        query["発送事項"] = 発送事項
+        return try find(query)
+    }
+
     static func find(進捗入力日 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程: 工程型? = nil, 作業内容: 作業内容型? = nil) throws -> [指示書型] {
         let list = try 進捗型.find(登録期間: range, 伝票種類: type, 工程: 工程, 作業内容: 作業内容)
         var numbers = Set<伝票番号型>()

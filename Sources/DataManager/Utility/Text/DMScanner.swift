@@ -668,8 +668,7 @@ public struct DMScanner: RandomAccessCollection {
         var secondsStr = ""
         while index < self.endIndex {
             let ch = source[index]
-            index = source.index(after: index)
-            if ch.isNumber {
+            if ch.isASCIINumber {
                 if hasCol == false {
                     hoursStr.append(ch)
                 } else if hasCol2 == false {
@@ -689,6 +688,7 @@ public struct DMScanner: RandomAccessCollection {
             } else {
                 break
             }
+            index = source.index(after: index)
         }
         if minutesStr.count == 2, let hours = Int(hoursStr),
            (hoursStr.count == 2 || hoursStr.count == 1 && hours < 10) && hours < 24,
@@ -709,6 +709,27 @@ public struct DMScanner: RandomAccessCollection {
         return nil
     }
     
+    /// 時間のところまで読み込み、それまでの文字列と時間を返す
+    public mutating func scanUpToTime() -> (left: String, time: Time)? {
+        var left: String = ""
+        let initialIndex = self.startIndex
+        var index = initialIndex
+        while index < self.endIndex {
+            let ch = source[index]
+            if ch.isASCIINumber {
+                self.startIndex = index
+                if let time = self.scanTime() {
+                    return (left, time)
+                }
+            }
+            if !(self.skipSpaces && ch.isWhitespace) {
+                left.append(ch)
+            }
+            index = source.index(after: index)
+        }
+        self.startIndex = initialIndex
+        return nil
+    }
 }
 
 let ngCharacters: Set<Character> = [
