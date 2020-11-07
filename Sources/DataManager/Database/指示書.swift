@@ -572,15 +572,20 @@ extension 指示書型 {
         return self.管理用メモ.contains("アクリのみ")
     }
     public var セット数値: Double {
-        var result = 1.0
-        var scanner = DMScanner(self.セット数, normalizedFullHalf: true, skipSpaces: true)
-        while !scanner.isAtEnd {
-            scanner.skip数字以外()
-            if let value = scanner.scanDouble(), value > result {
-                result = value
+        switch self.伝票種類 {
+        case .切文字, .箱文字, .校正, .外注:
+            var result = 1.0
+            var scanner = DMScanner(self.セット数, normalizedFullHalf: true, skipSpaces: true)
+            while !scanner.isAtEnd {
+                scanner.skip数字以外()
+                if let value = scanner.scanDouble(), value > result {
+                    result = value
+                }
             }
+            return result
+        case .加工, .エッチング:
+            return Double(self.文字数) ?? 1.0
         }
-        return result
     }
     
     public func 通常最終作業(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
