@@ -189,8 +189,8 @@ public class 食事要求型: Identifiable {
         return try find(query: query)
     }
 
-    public static func find追加発注(発注日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 発注日.fmString, "要求状態": "追加発注"]
+    public static func find追加発注(提供日: Day) throws -> [食事要求型] {
+        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 提供日.fmString, "要求状態": "==追加発注"]
         return try find(query: query)
     }
 
