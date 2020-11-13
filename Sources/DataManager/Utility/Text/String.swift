@@ -42,9 +42,20 @@ extension String {
 
 extension StringProtocol {
     public var 比較用文字列: String {
-        var result = self.replacingOccurrences(of: "㈲", with: "（有）")
-        result = result.replacingOccurrences(of: "㈱", with: "（株）")
-        return result.toJapaneseNormal.spaceStripped
+        var result = ""
+        for ch in self.toJapaneseNormal.spaceStripped {
+            switch ch {
+            case "㈲":
+                result.append("（有）")
+            case "㈱":
+                result.append("（株）")
+            case "・", "･", "．", "。": // 点は全部同じ扱い
+                result.append(".")
+            default:
+                result.append(ch)
+            }
+        }
+        return result
     }
 
     public var remove㈱㈲: String {

@@ -50,6 +50,7 @@ public extension 発注型 {
     var 規格: String { return record.string(forKey: "規格")! }
     var 規格2: String { return record.string(forKey: "規格2")! }
     var 納品日: Day? { return record.day(forKey: "納品日") }
+    var 納品書処理日: Day? { return record.day(forKey: "納品書処理日") }
     var 備考: String { return record.string(forKey: "備考")! }
     var 依頼社員: 社員型? { return record.社員(forKey: "依頼社員番号") }
     var 品名1: String { return self.製品名称 }
@@ -120,10 +121,13 @@ extension 発注型 {
         return list.compactMap { 発注型($0) }
     }
     
-    public static func find(登録期間: ClosedRange<Day>, 発注種類: 発注種類型) throws -> [発注型] {
+    public static func find(登録期間: ClosedRange<Day>, 発注種類: 発注種類型, 版数: String?) throws -> [発注型] {
         var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(登録期間)
         query["発注種類"] = 発注種類.description
+        if let han = 版数 {
+            query["版数"] = "==\(han)"
+        }
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
         return list.compactMap { 発注型($0) }

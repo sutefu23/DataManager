@@ -8,11 +8,11 @@
 
 import Foundation
 
-public enum 伝票種類型: CustomStringConvertible {
+public enum 伝票種類型: CustomStringConvertible, Comparable {
     case 箱文字
     case 切文字
-    case エッチング
     case 加工
+    case エッチング
     case 外注
     case 校正
     

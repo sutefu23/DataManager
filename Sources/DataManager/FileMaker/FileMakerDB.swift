@@ -247,19 +247,34 @@ public final class FileMakerDB {
         return try self.execute { try $0.delete(layout: layout, recordID: recordId) }
     }
     
-    @discardableResult func insert(layout: String, fields: FileMakerQuery) throws -> String {
+    @discardableResult
+    func insert(layout: String, fields: FileMakerQuery) throws -> String {
         try checkStop()
         return try self.execute2 { try $0.insert(layout: layout, fields: fields) }
     }
     
-    /// DBにアクセス可能か調べる
-    public static func testDBAccess() -> Bool {
-        if UserDefaults.standard.filemakerIsDisabled { return false }
-        return pm_osakaname.execute2 { $0.checkDBAccess() }
+    /// DBの接続状態を確認し接続できないなら例外を出す
+    public static func checkConnection() throws {
+        if defaults.filemakerIsDisabled {
+            throw FileMakerError.dbIsDisabled
+        }
+        let isOk = pm_osakaname.execute2 { $0.checkDBAccess() }
+        if isOk == false {
+            throw FileMakerError.noConnection
+        }
     }
-    
+    /// DBにアクセス可能ならtrueを返す
+    public static func testDBAccess() -> Bool {
+        do {
+            try checkConnection()
+            return true
+        } catch {
+            return false
+        }
+    }
+
     /// 現在使用していないアイドル状態のセッションを閉じる
-    public static func logputAll() {
+    public static func logoutAll() {
         serverCache.logoutAll()
     }
 }

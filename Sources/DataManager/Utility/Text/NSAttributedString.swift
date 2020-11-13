@@ -56,6 +56,10 @@ extension NSAttributedString {
         self.init(string: string, attributes: attributes)
     }
 
+    public convenience init(string: String, color: DMColor) {
+        let attributes  = [NSAttributedString.Key.foregroundColor: color]
+        self.init(string: string, attributes: attributes)
+    }
 
     public convenience init(string: String, font: DMFont, color: DMColor) {
         let attributes  = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]

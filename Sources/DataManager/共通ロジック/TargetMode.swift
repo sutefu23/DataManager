@@ -135,6 +135,4 @@ public extension 指示書型 {
         }
         return state
     }
-
 }
-

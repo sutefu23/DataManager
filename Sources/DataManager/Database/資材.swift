@@ -19,12 +19,12 @@ public final class 資材型: Codable, Comparable, Hashable {
     public let 規格: String
     public let 単価: Double?
 
-    init(図番: 図番型 = "", 製品名称: String = "") {
+    init(図番: 図番型 = "", 版数: String = "", 製品名称: String = "", 規格: String = "", 単価: Double? = nil) {
         self.record = FileMakerRecord()
         self.図番 = 図番
         self.製品名称 = 製品名称
-        self.規格 = ""
-        self.単価 = nil
+        self.規格 = 規格
+        self.単価 = 単価
     }
     
     init(_ record: FileMakerRecord) throws {
@@ -169,6 +169,9 @@ public extension 資材型 {
         return record.string(forKey: "f14") ?? ""
     }
     
+    var is棚卸し対象: Bool {
+        record.string(forKey: "棚卸し対象")?.isEmpty == false
+    }
     var 備考: String {
         return record.string(forKey: "備考") ?? ""
     }
@@ -225,7 +228,8 @@ public extension 資材型 {
         try [action].exportToDB()
     }
     
-    @discardableResult func 数量調整(部署: 部署型? = nil, 調整者: 社員型, 現在数: Int) throws -> Bool {
+    @discardableResult
+    func 数量調整(部署: 部署型? = nil, 調整者: 社員型, 現在数: Int) throws -> Bool {
         let data = try self.現在在庫数()
         let diff = 現在数 - data
         if diff == 0 { return false }

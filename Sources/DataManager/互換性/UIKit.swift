@@ -113,7 +113,8 @@ public extension UIView {
     private func searchSwitch(_ blockName: String) -> UISwitch? {
         return self.searchView(blockName) as? UISwitch
     }
-    @discardableResult func updateSwitch(_ blockName: String, _ flg: Bool, tag: Int? = nil) -> UISwitch? {
+    @discardableResult
+    func updateSwitch(_ blockName: String, _ flg: Bool, tag: Int? = nil) -> UISwitch? {
         guard let view = searchSwitch(blockName) else { return nil }
         view.isOn = flg
         if let tag = tag { view.tag = tag }
@@ -122,7 +123,8 @@ public extension UIView {
     
     #endif
     
-    @discardableResult func updateText(_ blockName: String, text: String?, tag: Int? = nil, target: Any? = nil, action: Selector? = nil) -> UITextField? {
+    @discardableResult
+    func updateText(_ blockName: String, text: String?, tag: Int? = nil, target: Any? = nil, action: Selector? = nil) -> UITextField? {
         guard let view = searchTextField(blockName) else { return nil }
         if let target = target, let action = action {
             view.addTarget(target, action: action, for: .primaryActionTriggered)
@@ -132,7 +134,8 @@ public extension UIView {
         return view
     }
 
-    @discardableResult func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
+    @discardableResult
+    func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
         switch text {
         case let attr as NSAttributedString:
@@ -158,7 +161,8 @@ public extension UIView {
         return view
     }
     
-    @discardableResult func updateImage(_ blockName: String, image: UIImage) -> UIImageView? {
+    @discardableResult
+    func updateImage(_ blockName: String, image: UIImage) -> UIImageView? {
         guard let view = searchImage(blockName) else { return nil }
         view.image = image
         return view
@@ -223,7 +227,6 @@ public extension UIColor {
         let (_, _, _, alpha) = self.srgbComponents
         return alpha
     }
-    
 }
 
 public extension UIView {
