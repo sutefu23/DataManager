@@ -75,11 +75,10 @@ open class TextWriter: TextOutputStream {
     public func dataWithEncoding(encoding: String.Encoding = String.Encoding.ascii, lineEndType: LineEndType = .crlf) -> Data {
         let crlf: Data = lineEndType.data
         var data = Data()
-        let lastIndex = lines.count - 1
-        for (index, line) in lines.enumerated() {
+        for line in lines {
             guard let lineData = line.data(using: encoding, allowLossyConversion: true) else { continue }
             data.append(lineData)
-            if index != lastIndex { data.append(crlf) }
+            data.append(crlf) 
         }
         return data
     }
