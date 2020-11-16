@@ -31,10 +31,6 @@ public enum 箱文字前工程優先度型: Int, Comparable {
     case 営業開始
     case その他
 
-    public static func == (left: 箱文字前工程優先度型, right: 箱文字前工程優先度型) -> Bool {
-        return left.rawValue == right.rawValue
-    }
-
     public static func < (left: 箱文字前工程優先度型, right: 箱文字前工程優先度型) -> Bool {
         return left.rawValue < right.rawValue
     }

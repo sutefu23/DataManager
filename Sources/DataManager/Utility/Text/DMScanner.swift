@@ -12,7 +12,7 @@ import Foundation
 public struct DMScanner: RandomAccessCollection {
     /// スキャン対象(調整済み)
     private let source: String
-    /// スキャン開始時にスペースを除外するならtrue
+    /// スキャン時にスペースを除外するならtrue
     public var skipSpaces: Bool {
         didSet { needsSpaceCheck = skipSpaces }
     }

@@ -18,10 +18,6 @@ public struct GroupSet: Hashable {
         self.group2 = group2
         self.group3 = group3
     }
-    
-    public static func ==(left: GroupSet, right: GroupSet) -> Bool {
-        return left.group1 == right.group1 && left.group2 == right.group2 && left.group3 == right.group3
-    }
 }
 
 public struct 工程社員型: Hashable, Comparable {

@@ -160,6 +160,10 @@ public struct Month: Hashable, Strideable, Codable {
         }
     }
     
+    public var workDays: [Day] {
+        self.days.filter { $0.isWorkday }
+    }
+
     public static func <(left: Month, right: Month) -> Bool {
         if left.longYear != right.longYear { return left.longYear < right.longYear }
         return left.month < right.month
