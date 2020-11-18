@@ -13,10 +13,11 @@ import Cocoa
 import UIKit
 #endif
 
-public func showMessage(message: String, ok: String = "Ok") {
+public func showMessage(message: String, info: String = "", ok: String = "Ok") {
     #if os(macOS)
     let alert = NSAlert()
     alert.messageText = message
+    alert.informativeText = info
     alert.addButton(withTitle: ok)
     alert.runModal()
     #elseif os(iOS) || os(tvOS)

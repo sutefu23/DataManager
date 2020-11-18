@@ -44,6 +44,9 @@ let オブジェ仕様map: [String: オブジェ仕様型] = {
     return map
 }()
 
+// 一覧作成時の名前重複チェック用
+private var nameSet = Set<String>()
+
 public let オブジェ仕様一覧: [オブジェ仕様型] = {
     var ngname = Set<String>()
     let bundle = Bundle.dataManagerBundle
@@ -62,6 +65,8 @@ public let オブジェ仕様一覧: [オブジェ仕様型] = {
         case 4:
             base = 1
             name = String(cols[0])
+//            if nameSet.insert(name).inserted == false { print(name) }
+            assert(nameSet.insert(name).inserted == true)
             prevName = name
         case 3:
             base = 0
