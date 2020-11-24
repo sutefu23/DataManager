@@ -137,6 +137,7 @@ public class 食事時間帯型 {
         return try find(query: query)
     }
 
+    #if !os(tvOS)
     public static func backup(from: Day) throws {
         let list = try 食事時間帯型.find(query: [:])
         let gen = TableGenerator<食事時間帯型>()
@@ -144,8 +145,9 @@ public class 食事時間帯型 {
             .string("食事グループ") { $0.食事グループ }
             .time("開始時間") { $0.開始時間 }
             .time("終了時間") { $0.終了時間 }
-        try gen.share(list, format: .excel(header: true), title: "backup食事時間帯.csv")
+        try gen.share(list, format: .excel(header: true), dir: "backup", title: "食事時間帯.csv")
     }
+    #endif
 }
 
 // MARK: - キャッシュ

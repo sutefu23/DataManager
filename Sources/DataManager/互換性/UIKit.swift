@@ -200,7 +200,7 @@ extension UIViewController {
 #endif
 
 // NCEngine/Utility/ClossPlatformより移設
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 
 public extension UIColor {

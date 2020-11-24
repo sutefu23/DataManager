@@ -159,6 +159,7 @@ public class IDカード型 {
         return try find(query: query)
     }
         
+    #if !os(tvOS)
     public static func backup(from: Day) throws {
         let list = try IDカード型.find(query: [:])
         let gen = TableGenerator<IDカード型>()
@@ -167,9 +168,9 @@ public class IDカード型 {
             .string("カードID") { $0.カードID }
             .string("種類") { $0.種類.rawValue }
             .string("備考") { $0.備考 }
-        try gen.share(list, format: .excel(header: true), title: "backup食事IDカード.csv")
+        try gen.share(list, format: .excel(header: true), dir: "backup", title: "食事IDカード.csv")
     }
-
+    #endif
 }
 
 // MARK: - キャッシュ

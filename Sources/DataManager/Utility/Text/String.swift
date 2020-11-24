@@ -284,6 +284,19 @@ extension String {
         }
         return (self, "")
     }
+    /// 先頭の半角スペース・全角スペース・タブを修正する
+    public var dropHeadSpaces: String {
+        var result = ""
+        var isHead = true
+        for ch in self {
+            if isHead {
+                if ch.isWhitespace { continue }
+                isHead = false
+            }
+            result.append(ch)
+        }
+        return result
+    }
     
     /// 半角スペース・全角スペース・タブを除去する
     public var spaceStripped: String {

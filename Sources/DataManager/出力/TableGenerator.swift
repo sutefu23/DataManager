@@ -362,7 +362,11 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
+    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil) throws {
+        var title = title
+        if !dir.isEmpty {
+            title = "\(dir)_\(title)"
+        }
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title)
         try self.write(key, format: format, to: url)
 
@@ -380,8 +384,15 @@ public extension TableGenerator {
 import AppKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, title: String) throws {
-        let url = 生産管理集計URL.appendingPathComponent(title)
+    func share(_ source: [S], format: ExportType, dir: String = "", title: String) throws {
+        var url = 生産管理集計URL
+        if !dir.isEmpty {
+            url.appendPathComponent(dir)
+            if !url.isExists {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+        }
+        url.appendPathComponent(title)
         try self.write(source, format: format, to: url)
     }
 }

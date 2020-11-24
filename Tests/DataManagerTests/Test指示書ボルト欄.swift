@@ -66,6 +66,12 @@ class TestOrderBoltField: XCTestCase {
         } else {
             XCTAssert(false)
         }
+        data = scanSource(ボルト欄: "ナットM3/8", 伝票種類: .箱文字)
+        if case .ナット(サイズ: let size) = data?.種類 {
+            XCTAssertEqual(size, "3/8")
+        } else {
+            XCTAssert(false)
+        }
     }
     
     func testMPipe() {

@@ -213,6 +213,7 @@ public class 食事要求型: Identifiable {
         return try find(query: query)
     }
     
+    #if !os(tvOS)
     public static func backup(from day: Day) throws {
         let list = try 食事要求型.find(提供開始日: day)
         let gen = TableGenerator<食事要求型>()
@@ -220,9 +221,9 @@ public class 食事要求型: Identifiable {
             .string("メニューID") { $0.メニューID }
             .string("要求状態") { $0.要求状態.text }
             .date("修正情報タイムスタンプ", .yearToMinute) { $0.修正情報タイムスタンプ }
-        try gen.share(list, format: .excel(header: true), title: "backup食事要求\(day.monthDayJString).csv")
+        try gen.share(list, format: .excel(header: true), dir: "backup", title: "食事要求\(day.monthDayJString).csv")
     }
-
+    #endif
 }
 
 public extension Sequence where Element == 食事要求型 {

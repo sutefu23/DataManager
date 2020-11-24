@@ -747,7 +747,12 @@ extension DMScanner {
     
     mutating func scanSize(_ name: String) -> String? {
         guard name.isEmpty || scanString(name) else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else { return nil }
+        guard var size = scanStringAsDouble(), size.value > 0 else { return nil }
+        if scanCharacter("/") {
+            if let size2 = scanStringAsDouble() {
+                size.string += "/\(size2.string)"
+            }
+        }
         return size.string
     }
     mutating func scanSizeXRXR(_ name: String) -> (size: String, r1: Double, r2: Double)? {
@@ -764,12 +769,11 @@ extension DMScanner {
     }
     
     mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard scanString("ナット") else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else {
+        guard let size = self.scanSize("ナット"), let value = (try? Double(formula: size)), value > 0 else {
             self.reset()
             return nil
         }
-        return ("ナット", .ナット(サイズ: size.string), 90)
+        return ("ナット", .ナット(サイズ: size), 90)
     }
 }
 
@@ -855,20 +859,19 @@ private extension DMScanner {
     
     mutating func scan鏡止めナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard scanString("C-") || scanString("鏡止めナットC-")  else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else {
+        guard let size = self.scanSize(""), let value = (try? Double(formula: size)), value > 0 else {
             self.reset()
             return nil
         }
-        return ("鏡止めナット", .鏡止めナット(サイズ: size.string), 90)
+        return ("鏡止めナット", .鏡止めナット(サイズ: size), 90)
     }
 
     mutating func scan袋ナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard scanString("袋ナットM") else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else {
+        guard let size = self.scanSize("袋ナットM"), let value = (try? Double(formula: size)), value > 0 else {
             self.reset()
             return nil
         }
-        return ("袋ナット", .袋ナット(サイズ: size.string), 90)
+        return ("袋ナット", .袋ナット(サイズ: size), 90)
     }
     
     mutating func scan高ナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -1068,12 +1071,11 @@ private extension DMScanner {
     }
     
     mutating func scan外注() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard scanString("外注") else { return nil }
-        guard let size = scanStringAsDouble(), size.value > 0 else {
+        guard let size = self.scanSize("外注"), let value = (try? Double(formula: size)), value > 0 else {
             self.reset()
             return nil
         }
-        return ("外注", .外注(サイズ: size.string), 90)
+        return ("外注", .外注(サイズ: size), 90)
     }
 
     mutating func scan単品個数物() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
@@ -1103,8 +1105,6 @@ private extension DMScanner {
         }
         return (type.表示名, .単品個数物(種類: type), 0)
     }
-
-    
 }
 
 private let lengthMap: [図番型: Double] = [

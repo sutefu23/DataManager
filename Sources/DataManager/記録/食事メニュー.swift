@@ -241,6 +241,7 @@ public class 食事メニュー型 {
         return try find(query: query)
     }
 
+    #if !os(tvOS)
     public static func backup(from day: Day) throws {
         let list = try 食事メニュー型.find(from: day)
         let gen = TableGenerator<食事メニュー型>()
@@ -255,8 +256,9 @@ public class 食事メニュー型 {
             .integer("最大提供数") { $0.最大提供数 }
             .integer("金額") { $0.金額 }
             .string("提供パターン") { $0.提供パターン }
-        try gen.share(list, format: .excel(header: true), title: "backup食事メニュー\(day.monthDayJString).csv")
+        try gen.share(list, format: .excel(header: true), dir: "backup", title: "食事メニュー\(day.monthDayJString).csv")
     }
+    #endif
 }
 
 // MARK: - キャッシュ
