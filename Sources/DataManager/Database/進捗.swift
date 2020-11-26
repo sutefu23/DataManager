@@ -72,7 +72,7 @@ public extension 進捗型 {
     var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "伝票種類") }
     var 社員番号: Int? { record.integer(forKey: "社員番号") }
     var 製作納期: Day? { record.day(forKey: "製作納期") }
-    var 指示書: 指示書型? { (try? 指示書型.find(伝票番号: self.伝票番号))?.first }
+    var 指示書: 指示書型? { try? 指示書型.find(伝票番号: self.伝票番号).first }
     
     var レーザー加工機: レーザー加工機型? {
         switch self.作業系列 {

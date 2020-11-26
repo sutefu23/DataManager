@@ -85,7 +85,7 @@ public final class 部署作業者分析型 {
         var lines: [(工程社員型, 作業型)] = []
         let fromDay = range.lowerBound.前出勤日()
         let toDay = range.lowerBound.翌出勤日()
-        guard let orders = (try? 指示書型.find(作業範囲: (fromDay.day)...(toDay.day))) else { return }
+        guard let orders = try? 指示書型.find(作業範囲: (fromDay.day)...(toDay.day)) else { return }
         for order in orders {
             var currentLines: [(工程社員型, 作業型)] = []
             // 範囲内の有効な作業の追加

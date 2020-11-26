@@ -391,7 +391,7 @@ public struct 資材要求情報型 {
     }
     
     public func 現在数量(伝票番号: 伝票番号型, is封筒印刷のみ: Bool?) ->  Double? {
-        guard var list = (try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名)), !list.isEmpty else { return nil }
+        guard var list = try? 資材使用記録型.find(伝票番号: 伝票番号, 図番: self.図番, 表示名: self.表示名), !list.isEmpty else { return nil }
         if let target = is封筒印刷のみ {
             if target {
                 list = list.filter { ($0.印刷対象 ?? $0.仮印刷対象).is封筒印刷あり }
@@ -769,7 +769,7 @@ extension DMScanner {
     }
     
     mutating func scanナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let size = self.scanSize("ナット"), let value = (try? Double(formula: size)), value > 0 else {
+        guard let size = self.scanSize("ナット"), let value = try? Double(formula: size), value > 0 else {
             self.reset()
             return nil
         }
@@ -859,7 +859,7 @@ private extension DMScanner {
     
     mutating func scan鏡止めナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         guard scanString("C-") || scanString("鏡止めナットC-")  else { return nil }
-        guard let size = self.scanSize(""), let value = (try? Double(formula: size)), value > 0 else {
+        guard let size = self.scanSize(""), let value = try? Double(formula: size), value > 0 else {
             self.reset()
             return nil
         }
@@ -867,7 +867,7 @@ private extension DMScanner {
     }
 
     mutating func scan袋ナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let size = self.scanSize("袋ナットM"), let value = (try? Double(formula: size)), value > 0 else {
+        guard let size = self.scanSize("袋ナットM"), let value = try? Double(formula: size), value > 0 else {
             self.reset()
             return nil
         }
@@ -1071,7 +1071,7 @@ private extension DMScanner {
     }
     
     mutating func scan外注() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let size = self.scanSize("外注"), let value = (try? Double(formula: size)), value > 0 else {
+        guard let size = self.scanSize("外注"), let value = try? Double(formula: size), value > 0 else {
             self.reset()
             return nil
         }

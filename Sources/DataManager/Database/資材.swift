@@ -38,7 +38,7 @@ public final class 資材型: Codable, Comparable, Hashable {
         self.単価 = record.double(forKey: "f88")
     }
     public convenience init?(図番: 図番型) {
-        guard let record = (try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番))?.record else { return nil }
+        guard let record = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番)?.record else { return nil }
         try? self.init(record)
     }
     

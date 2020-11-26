@@ -14,6 +14,18 @@ protocol 記録Data型: Equatable {
     var fieldData: FileMakerQuery { get }
 }
 
-public class 記録型 {
+class 記録型<D: 記録Data型> {
+    var original: D?
+    var data: D
+    public internal(set) var recordId: String?
+
+    init?(_ record: FileMakerRecord) {
+        guard let data = D(record) else { return nil }
+        self.original = data
+        self.data = data
+        self.recordId = record.recordID
+    }
     
+    public var isChanged: Bool { original != data }
+
 }

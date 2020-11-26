@@ -76,7 +76,7 @@ public final class 指示書文字数型 {
     public init(指示書 order: 指示書型) {
         self.初期箱文字文字数 = 箱文字文字数型(指示書: order)
 
-        if let data = (try? 箱文字文字数型.find(指示書: order)) {
+        if let data = try? 箱文字文字数型.find(指示書: order) {
             self.recordId = data.recordId
             self.伝票番号 = order.伝票番号
             self.読み込み時箱文字文字数 = data.箱文字文字数
@@ -136,7 +136,7 @@ public final class 指示書文字数型 {
         if self.recordId != nil { return }
         let data = self.fieldData
         let operation = BlockOperation {
-            if let recordId = (try? session.insert(layout: 指示書文字数型.dbName, fields: data)) {
+            if let recordId = try? session.insert(layout: 指示書文字数型.dbName, fields: data) {
                 self.recordId = recordId
             }
         }

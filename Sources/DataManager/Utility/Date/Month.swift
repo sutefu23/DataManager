@@ -23,6 +23,10 @@ public struct Month: Hashable, Strideable, Codable {
         self.init(year, month)
     }
     
+    public init(_ day: Day) {
+        self.init(day.year, day.month)
+    }
+    
     public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")

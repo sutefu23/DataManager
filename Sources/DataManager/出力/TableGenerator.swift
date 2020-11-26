@@ -352,9 +352,15 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, title: String, shareButton: UIButton? = nil) throws {
-        let url = 生産管理集計URL.appendingPathComponent(title)
-        try self.write(key, format: format, to: url)
+    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil) throws {
+        var url = 生産管理集計URL
+        if !dir.isEmpty {
+            url.appendPathComponent(dir)
+            if !url.isExists {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+        }
+        url.appendPathComponent(title)
     }
 }
 

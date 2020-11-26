@@ -221,12 +221,12 @@ extension 指示書型 {
         if cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target) {
             return .自動判定
         }
-        let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target))
+        let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
         return data?.優先設定 ?? .自動判定
     }
     
     public func set箱文字優先設定(for target: 工程型?, 設定: 優先設定型) {
-        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)) else { return }
+        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else { return }
         data.優先設定 = 設定
         data.synchronize()
     }
@@ -235,11 +235,11 @@ extension 指示書型 {
         if Time() <= 箱文字優先度型.自動有効期限 || (cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target)) {
             return .自動判定
         }
-        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)), data.表示設定日.isToday else { return .自動判定 }
+        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target), data.表示設定日.isToday else { return .自動判定 }
         return data.表示設定
     }
     public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) {
-        guard let data = (try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)) else { return }
+        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else { return }
         data.表示設定 = 設定
         data.synchronize()
     }

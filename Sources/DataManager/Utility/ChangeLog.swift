@@ -46,7 +46,7 @@ final class History {
     }
     
     init?(_ bundle: Bundle) {
-        guard let url = bundle.url(forResource: histryFileName, withExtension: histryFileExtension), let text = (try? String(contentsOf: url, encoding: .utf8)) else { return nil }
+        guard let url = bundle.url(forResource: histryFileName, withExtension: histryFileExtension), let text = try? String(contentsOf: url, encoding: .utf8) else { return nil }
         self.history = makeHistory(text: text)
     }
     func changeLog(from fromVersion: Version) -> [String] {
@@ -85,7 +85,7 @@ public class HistoryViewController: NSViewController {
     
     public override func viewDidLoad() {
         let bundle = Bundle.main
-        guard let url = bundle.url(forResource: histryFileName, withExtension: histryFileExtension), let text = (try? String(contentsOf: url, encoding: .utf8)) else { return }
+        guard let url = bundle.url(forResource: histryFileName, withExtension: histryFileExtension), let text = try? String(contentsOf: url, encoding: .utf8) else { return }
         textView.string = text
     }
 }

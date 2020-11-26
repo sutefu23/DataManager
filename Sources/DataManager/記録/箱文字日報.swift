@@ -103,7 +103,7 @@ public final class 箱文字日報型 {
             if let recordId = self.recordId {
                 try? db.update(layout: 箱文字日報Data型.dbName, recordId: recordId, fields: data)
             } else {
-                if let recordId = (try? db.insert(layout: 箱文字日報Data型.dbName, fields: data)) {
+                if let recordId = try? db.insert(layout: 箱文字日報Data型.dbName, fields: data) {
                     self.recordId = recordId
                 }
             }

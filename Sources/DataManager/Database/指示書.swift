@@ -155,7 +155,7 @@ public final class 指示書型 {
         defer { lock.unlock() }
         guard let url = self.図URL else { return nil }
         let db = FileMakerDB.pm_osakaname
-        guard let 一覧 = (try? db.downloadObject(url: url)) else { return nil }
+        guard let 一覧 = try? db.downloadObject(url: url) else { return nil }
         let image = DMImage(data: 一覧)
         return image
     }()

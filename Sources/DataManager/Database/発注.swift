@@ -60,7 +60,7 @@ public extension 発注型 {
     var 発注数量文字列: String { return record.string(forKey: "発注数量")! }
     
     var 補正済状態: 発注状態型 {
-        guard let state = (try? 資材入庫状況キャッシュ型.shared.キャッシュ資材入庫状況(指定注文番号: self.指定注文番号)) else { return self.状態 }
+        guard let state = try? 資材入庫状況キャッシュ型.shared.キャッシュ資材入庫状況(指定注文番号: self.指定注文番号) else { return self.状態 }
         switch state.資材入庫状況状態 {
         case .入庫済:
             switch self.状態 {

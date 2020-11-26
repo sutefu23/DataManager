@@ -122,7 +122,7 @@ public class 食事要求型: Identifiable {
         try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
     }()
     public lazy var IDカード: IDカード型? = {
-        (try? IDカードキャッシュ型.shared.キャッシュIDカード(社員番号: self.社員番号)) ?? (try? IDカードキャッシュ型.shared.現在IDカード(社員番号: self.社員番号))
+        try? IDカードキャッシュ型.shared.キャッシュIDカード(社員番号: self.社員番号) ?? IDカードキャッシュ型.shared.現在IDカード(社員番号: self.社員番号)
     }()
     
     public lazy var 社員: 社員型? = { 社員型(社員コード: self.社員番号) }()

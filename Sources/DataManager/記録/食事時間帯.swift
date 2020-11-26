@@ -127,7 +127,7 @@ public class 食事時間帯型 {
     }
     
     public static func find(提供パターン: String? = nil, 食事グループ: String? = nil) throws -> [食事時間帯型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         if let number = 提供パターン {
             query["提供パターン"] = "==\(number)"
         }

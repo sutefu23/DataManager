@@ -14,7 +14,7 @@ class TestItem: XCTestCase {
     let doTest = false
     func testFetch() {
         if doTest == false { return }
-        guard let items = (try? 資材型.fetchAll()) else {
+        guard let items = try? 資材型.fetchAll() else {
             XCTAssert(false)
             return
         }

@@ -47,7 +47,7 @@ public final class 作業系列型: Hashable {
             self.init(cache.record)
             return
         }
-        guard let series = (try? 作業系列型.find(系列コード: code)) else {
+        guard let series = try? 作業系列型.find(系列コード: code) else {
             return nil
         }
         seriesCache[code] = series

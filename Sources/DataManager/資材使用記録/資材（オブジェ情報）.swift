@@ -11,7 +11,7 @@ public class オブジェ資材型 {
     init?(図番: 図番型, 面積: Double, 枚数: Int) {
         self.単位数 = Double(枚数)
         self.金額計算タイプ = .平面形状(area: 面積)
-        guard let item = (try? 資材型.find(図番: 図番)) else { return nil }
+        guard let item = try? 資材型.find(図番: 図番) else { return nil }
         self.資材 = item
         let sheet = 資材板情報型(item)
         self.表示名 = "\(sheet.板厚)t \(sheet.材質)"

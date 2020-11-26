@@ -97,7 +97,7 @@ public struct 進捗出力型: Hashable {
     
     /// DB内に重複があればtrueを返す
     public var isDBに重複あり: Bool {
-        guard let list = (try? 進捗型.find(伝票番号: self.伝票番号, 工程: self.工程, 作業内容: self.作業内容, 作業種別: self.作業種別))?.map({ 進捗出力型($0) }) else { return false }
+        guard let list = try? 進捗型.find(伝票番号: self.伝票番号, 工程: self.工程, 作業内容: self.作業内容, 作業種別: self.作業種別).map({ 進捗出力型($0) }) else { return false }
         for progress in list {
             if progress.is内容重複(with: self) { return true }
         }

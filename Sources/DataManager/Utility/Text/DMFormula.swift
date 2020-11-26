@@ -274,7 +274,7 @@ public struct DMFormula: ExpressibleByStringLiteral {
     
     public var result: Double? {
         mutating get {
-            guard let result = (try? self.calc()) else { return nil }
+            guard let result = try? self.calc() else { return nil }
             return Double(result)
         }
     }
