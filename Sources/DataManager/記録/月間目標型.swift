@@ -159,6 +159,10 @@ public final class 月間目標型 {
         self.data = source.data
     }
     
+    public func isEqualData(to data: 月間目標型) -> Bool {
+        return self.data == data.data
+    }
+    
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordId else { return }
