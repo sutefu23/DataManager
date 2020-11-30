@@ -361,6 +361,7 @@ public extension TableGenerator {
             }
         }
         url.appendPathComponent(title)
+        try self.write(key, format: format, to: url)
     }
 }
 

@@ -190,7 +190,23 @@ public final class 月間目標型 {
         }
 //        食事時間帯キャッシュ型.shared.flush(提供パターン: self.提供パターン, 食事グループ: self.食事グループ)
     }
-
+    
+    /// 既に登録済みなら差し替える、そうでなければ普通にアップロードする
+    public func replace() throws {
+        let target = try 月間目標型.find(対象月: self.対象月)
+        if let target = target, self.recordId != target.recordId {
+            try target.delete()
+            self.recordId = target.recordId
+        }
+        try self.synchronize()
+    }
+    
+    public func load(from: 月間目標型) {
+        self.original = from.original
+        self.data = from.data
+        self.recordId = from.recordId
+    }
+    
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [月間目標型] {
         lock.lock(); defer { lock.unlock() }

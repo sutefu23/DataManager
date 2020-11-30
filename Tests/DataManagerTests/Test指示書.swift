@@ -133,7 +133,15 @@ class TestOrder : XCTestCase {
         XCTAssertEqual(time1, Time(18, 00))
         XCTAssertEqual(time2, Time(17, 00))
     }
-    
+
+    func test発送事項_時間2() {
+        let order = try! 指示書型.findDirect(伝票番号: 伝票番号型(validNumber: 201111560))!
+        let time1 = order.発送事項出荷時間
+        let time2 = order.発送事項完成時間
+        XCTAssertEqual(time1, Time(16, 00))
+        XCTAssertEqual(time2, nil)
+    }
+
     func test出荷時間() {
         let order = try! 指示書型.findDirect(伝票番号: 伝票番号型(validNumber: 201014565))!
         let time = order.出荷時間

@@ -145,7 +145,7 @@ public final class FileMakerDB {
     public static var isEnabled = true
     
     let dbURL: URL
-    let server: FileMakerServer
+    var server: FileMakerServer
     let user: String
     let password: String
 

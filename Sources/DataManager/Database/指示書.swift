@@ -483,6 +483,18 @@ public final class 指示書型 {
         while let (_, time) = scanner.scanUpToTime() {
             if scanner.scanString("出荷") { return time }
         }
+        scanner.reset()
+        scanner.skip数字以外()
+        while !scanner.isAtEnd {
+            if let value = scanner.scanInteger(), value >= 0 && value <= 24 {
+                if scanner.scanString("時まで出荷") {
+                    return Time(value, 00)
+                } else if scanner.scanString("時半まで出荷") {
+                    return Time(value, 30)
+                }
+            }
+            scanner.skip数字以外()
+        }
         return nil
     }()
     public lazy var 発送事項完成時間: Time? = {
