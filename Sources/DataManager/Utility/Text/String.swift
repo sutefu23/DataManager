@@ -118,6 +118,19 @@ extension Double {
         let str = formatter.string(from: NSNumber(value: self))
         return str ?? ""
     }
+
+    public var 金額テキスト2: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let str = formatter.string(from: NSNumber(value: self.rounded()))
+        return str ?? ""
+    }
+
+    public init?(金額テキスト text: String) {
+        let text = text.filter { $0 != "," }
+        guard let value = try? Double(formula: text) else { return nil }
+        self = value
+    }
 }
 
 public extension String {
