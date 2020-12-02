@@ -1035,7 +1035,7 @@ private extension DMScanner {
         return ("真鍮釘", .真鍮釘(サイズ: size, 長さ: length), 62)
     }
     mutating func scanステンレス釘() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        guard let (size, length) = scanSizeXLength("ステンレス釘M") else {
+        guard let (size, length) = scanSizeXLength("ステンレス釘") else {
             self.reset()
             return nil
         }
