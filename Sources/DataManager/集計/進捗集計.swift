@@ -14,13 +14,15 @@ public func outout仕掛かり始め(チェック日 range: ClosedRange<Day>) {
         source = try 進捗型.find(登録期間: range, 作業種別: .作直)
         let numbers = Set<伝票番号型>(source.map { $0.伝票番号 } )
         let orders = numbers.compactMap { $0.キャッシュ指示書 }.sorted { $0.伝票番号 < $1.伝票番号 }
-        let pairs: [(order: 指示書型, progress: 進捗型)] = orders.concurrentCompactMap {
+        let pairs: [(order: 指示書型, progress: 進捗型, source: 工程型?)] = orders.concurrentCompactMap {
             guard let progress = $0.進捗一覧.first(where: { $0.作業種別 == .作直 } ), range.contains(progress.登録日) else { return nil }
-                return ($0, progress)
+            let source = $0.進捗一覧.search作直し仕掛かり工程(作直開始日時: progress.登録日時)
+            return ($0, progress, source)
         }
-        let gen = TableGenerator<(order: 指示書型, progress: 進捗型)>()
+        let gen = TableGenerator<(order: 指示書型, progress: 進捗型, source: 工程型?)>()
             .integer("伝票番号") { $0.order.伝票番号.整数値 }
             .string("伝票種類") { $0.order.伝票種類.description }
+            .string("仕掛工程") { $0.source?.description }
             .string("先頭工程") { $0.progress.工程.description }
             .time("先頭時間") { $0.progress.登録時間 }
             .string("登録者") { $0.progress.社員名称 }

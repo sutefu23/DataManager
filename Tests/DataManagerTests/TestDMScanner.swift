@@ -475,4 +475,12 @@ class TestDMScanner: XCTestCase {
         XCTAssertEqual(result?.time, Time(17, 03))
         XCTAssertEqual(scanner.string, "Z ZZ")
     }
+    
+    func testScanUpToString() {
+        var scanner: DMScanner
+        scanner = DMScanner("abcQWEgg2")
+        XCTAssertEqual(scanner.scanUpToString("WE2"), nil)
+        XCTAssertEqual(scanner.scanUpToString("WEg"), "abcQ")
+        XCTAssertEqual(scanner.string, "g2")
+    }
 }

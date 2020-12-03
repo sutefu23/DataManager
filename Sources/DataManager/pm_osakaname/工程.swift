@@ -176,7 +176,17 @@ public extension 工程型 {
         .外注, .付属品準備, .組立,
         .品質管理, .発送,
     ]
-    
+    static var 有効工程一覧: [工程型] = {
+        let list: [工程型] = db_全工程.compactMap {
+            guard let code = $0.string(forKey: "工程コード"),
+                  let process = 工程型(code: code) else { return nil }
+            let name = process.description
+            if name.contains("廃止") || name.contains("予備") { return nil }
+            return process
+        }.sorted()
+        return list.isEmpty ? 工程型.工場工程一覧 : list
+    }()
+
     static let 営業 = 工程型(code: "P001")!
     static let 校正 = 工程型(code: "P002")!
     static let 管理 = 工程型(code: "P003")!

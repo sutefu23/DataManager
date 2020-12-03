@@ -98,7 +98,13 @@ public extension 進捗型 {
         default:
             return nil
         }
-    }    
+    }
+    
+    /// 残業の最後に打った進捗ならtrue
+    var is最終時間進捗: Bool {
+        let work = 標準カレンダー.勤務時間(工程: self.工程, 日付: self.登録日)
+        return abs(work.終業 - self.登録時間) < 1 // 残業時間の1秒以内の進捗は残業時間記録仕掛かりとみなす
+    }
 }
 
 public extension Array where Element == 進捗型 {
@@ -125,6 +131,44 @@ public extension Sequence where Element == 進捗型 {
     
     func findFirst(工程: 工程型, 作業内容: 作業内容型) -> 進捗型? {
         return self.first { $0.工程 == 工程 && $0.作業内容 == 作業内容 }
+    }
+    
+    func contains作り直し仕掛かり(工程: 工程型, 作直開始日時: Date) -> Bool {
+        let targets = self.filter { $0.登録日時 < 作直開始日時 }.sorted { $0.登録日時 > $1.登録日時 }
+        for progress in targets {
+            if progress.工程 == 工程 {
+                return true
+            }
+            switch progress.作業種別 {
+            case .先行, .在庫, .通常, .その他:
+                break
+            case .作直, .手直:
+                return false
+            }
+        }
+        return false
+    }
+    
+    func search作直し仕掛かり工程(作直開始日時: Date) -> 工程型? {
+        let targets = self.filter { $0.登録日時 < 作直開始日時 }.sorted { $0.登録日時 > $1.登録日時 }
+        for progress in targets {
+            switch progress.作業種別 {
+            case .通常:
+                switch progress.作業内容 {
+                case .仕掛:
+                    if !progress.is最終時間進捗 {
+                        return progress.工程
+                    }
+                default:
+                    break
+                }
+            case .先行, .在庫, .その他:
+                break
+            case .作直, .手直:
+                return nil
+            }
+        }
+        return nil
     }
 }
 
