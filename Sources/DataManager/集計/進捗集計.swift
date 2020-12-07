@@ -15,7 +15,7 @@ public func outout仕掛かり始め(チェック日 range: ClosedRange<Day>) {
         let numbers = Set<伝票番号型>(source.map { $0.伝票番号 } )
         let orders = numbers.compactMap { $0.キャッシュ指示書 }.sorted { $0.伝票番号 < $1.伝票番号 }
         let pairs: [(order: 指示書型, progress: 進捗型, source: 工程型?)] = orders.concurrentCompactMap {
-            guard let progress = $0.進捗一覧.first(where: { $0.作業種別 == .作直 } ), range.contains(progress.登録日) else { return nil }
+            guard let progress = $0.進捗一覧.first(where: { $0.作業種別 == .作直 && $0.作業内容 != .仕掛  } ), range.contains(progress.登録日) else { return nil }
             let source = $0.進捗一覧.search作直し仕掛かり工程(作直開始日時: progress.登録日時)
             return ($0, progress, source)
         }
