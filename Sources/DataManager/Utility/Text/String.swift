@@ -46,15 +46,16 @@ extension StringProtocol {
         for ch in self.toJapaneseNormal.spaceStripped {
             switch ch {
             case "㈲":
-                result.append("（有）")
+                result.append("有限会社")
             case "㈱":
-                result.append("（株）")
+                result.append("株式会社")
             case "・", "･", "．", "。": // 点は全部同じ扱い
                 result.append(".")
             default:
                 result.append(ch)
             }
         }
+        result = result.replacingOccurrences(of: "(株)", with: "株式会社").replacingOccurrences(of: "(有)", with: "有限会社")
         return result
     }
 

@@ -197,10 +197,11 @@ public final class 月間目標型 {
     
     /// 既に登録済みなら差し替える、そうでなければ普通にアップロードする
     public func replace() throws {
-        let target = try 月間目標型.find(対象月: self.対象月)
-        if let target = target, self.recordId != target.recordId {
-            try target.delete()
-            self.recordId = target.recordId
+        if self.recordId == nil {
+            if let target = try 月間目標型.find(対象月: self.対象月) {
+                self.recordId = target.recordId
+                if self.isEqualData(to: target) { return } // アップロード不要
+            }
         }
         try self.synchronize()
     }

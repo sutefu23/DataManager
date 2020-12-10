@@ -171,7 +171,7 @@ public extension 工程型 {
         .溶接, .立ち上がり_溶接, .裏加工_溶接, .レーザー溶接,
         .立ち上がり, .半田, .裏加工, .ボンド,
         .ルーター, .タップ,
-        .研磨, .表面仕上,
+        .研磨, .表面仕上, .中塗り,
         .塗装, .乾燥炉, .拭き取り,
         .外注, .付属品準備, .組立,
         .品質管理, .発送,
@@ -223,6 +223,7 @@ public extension 工程型 {
     static let タップ = 工程型(code: "P017B")!
     static let 印刷 = 工程型(code: "P018")!
     static let 表面仕上 = 工程型(code: "P019")!
+    static let 中塗り = 工程型(code: "P019B")!
     static let 塗装 = 工程型(code: "P020")!
     static let 乾燥炉 = 工程型(code: "P020B")!
     static let 外注 = 工程型(code: "P021")!

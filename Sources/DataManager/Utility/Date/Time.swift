@@ -106,6 +106,10 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
         let second = self.second
         return Time(hour, minute, second)
     }
+    
+    public func isSameHourMinutes(to time: Time) -> Bool {
+        self.hour == time.hour && self.minute == time.minute
+    }
 }
 public func -(left: Time, right: Time) -> TimeInterval {
     return TimeInterval(left.allSeconds - right.allSeconds)

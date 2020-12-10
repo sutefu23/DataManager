@@ -147,15 +147,15 @@ extension Sequence where Element == 進捗出力型 {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
-            Thread.sleep(forTimeInterval: 0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount))
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: 0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount))
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
             if checked.count == target.count { return }
             target = target.filter {
                 for (index, progress) in checked.enumerated() {
-                    if $0.伝票番号 == progress.伝票番号 && $0.工程 == progress.工程 && $0.作業内容 == progress.作業内容 && $0.作業種別 == progress.作業種別 && $0.作業系列 == progress.作業系列 && $0.社員 == progress.作業者 && $0.登録日 == progress.登録日 && $0.登録時間 == progress.登録時間 {
+                    if $0.伝票番号 == progress.伝票番号 && $0.工程 == progress.工程 && $0.作業内容 == progress.作業内容 && $0.作業種別 == progress.作業種別 && $0.作業系列 == progress.作業系列 && $0.社員 == progress.作業者 && $0.登録日 == progress.登録日 && $0.登録時間.isSameHourMinutes(to: progress.登録時間) {
                         checked.remove(at: index)
                         return false
                     }
