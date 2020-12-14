@@ -9,7 +9,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public enum IDカード種類型: String, Hashable {
+public enum IDカード種類型: String, Hashable, CaseIterable {
     case マスタ
     case 予備
     case その他
@@ -91,7 +91,7 @@ public class IDカード型 {
         set { data.食事グループ = newValue }
     }
     
-    init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
+    public init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
         self.data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考, 食事グループ: 食事グループ)
     }
     

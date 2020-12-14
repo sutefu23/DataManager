@@ -21,6 +21,8 @@ enum CardError: LocalizedError {
 
 public struct DMCardReader {
     /// カードリーダーからカードIDを読み取る
+    public init(){}
+
     @available(OSX 10.13, *)
     public func scanCardID() throws -> String? {
         #if os(macOS) || os(Linux) 
