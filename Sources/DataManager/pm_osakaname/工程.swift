@@ -225,6 +225,7 @@ public extension 工程型 {
     static let 表面仕上 = 工程型(code: "P019")!
     static let 中塗り = 工程型(code: "P019B")!
     static let 塗装 = 工程型(code: "P020")!
+    static let 下処理 = 工程型(code: "P020A")!
     static let 乾燥炉 = 工程型(code: "P020B")!
     static let 外注 = 工程型(code: "P021")!
     static let 拭き取り = 工程型(code: "P022")!
