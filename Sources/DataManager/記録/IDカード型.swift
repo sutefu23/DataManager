@@ -56,6 +56,7 @@ struct IDカードData型: Equatable {
         data["社員番号"] = 社員番号
         data["カードID"] = カードID
         data["種類"] = 種類.rawValue
+        data["食事グループ"] = 食事グループ
         data["備考"] = 備考
         return data
     }
