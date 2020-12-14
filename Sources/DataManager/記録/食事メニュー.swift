@@ -9,6 +9,32 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
+public enum メニュー種類: 図番型, Comparable, CaseIterable{
+    
+    public typealias RawValue = String
+    case 朝食
+    case A定食
+    case B定食
+    case C定食
+    
+    
+    public static func ==(left: メニュー種類, right: メニュー種類) -> Bool {
+        left.rawValue == right.rawValue
+    }
+    
+    public var code: 図番型 {
+        switch self {
+        case .朝食: return "10000"
+        case .A定食: return "10001"
+        case .B定食: return "10002"
+        case .C定食: return "10003"
+        }
+    }
+    
+    public static func <(left: メニュー種類, right: メニュー種類) -> Bool {
+        left.code < right.code
+    }
+}
 public enum 食事種類型: String, Comparable {
     case 朝食
     case 昼食
@@ -241,6 +267,12 @@ public class 食事メニュー型 {
         return try find(query: query)
     }
 
+    public static func find(提供日: Day) throws -> [食事メニュー型] {
+        var query = [String: String]()
+        query["提供日"] = "==\(提供日.fmString)"
+        return try find(query: query)
+    }
+    
     #if !os(tvOS)
     public static func backup(from day: Day) throws {
         let list = try 食事メニュー型.find(from: day)

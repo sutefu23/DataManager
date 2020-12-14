@@ -105,7 +105,7 @@ public class 食事要求型: Identifiable {
     
     public var 修正情報タイムスタンプ: Date { data.修正情報タイムスタンプ }
     
-    init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
+    public init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
         self.data = 食事要求Data型(社員番号: 社員番号, メニューID: メニューID, 要求状態: 要求状態)
     }
     
