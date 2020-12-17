@@ -31,6 +31,7 @@ public final class 社員型: Hashable, Codable {
     }()
     
     public static let 全社員一覧: [社員型] = {
+        if FileMakerDB.isEnabled == false { return [] }
         do {
             if let cache = 全社員一覧cache { return cache }
             let cache = try 社員型.fetchAll()
@@ -88,16 +89,34 @@ public final class 社員型: Hashable, Codable {
         self.社員_名ふりがな = source.社員_名ふりがな
     }
     
-    public init?(社員番号: Int?, 社員名称: String? = nil) {
+    public init?(社員番号: Int?) {
         guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
-        self.社員名称 = 社員名称 ?? member.社員名称
+        self.社員名称 = member.社員名称
         self.部署Data = member.部署Data
         self.補足情報 = member.補足情報
         self.社員_姓ふりがな = member.社員_姓ふりがな
         self.社員_名ふりがな = member.社員_名ふりがな
     }
-
+    
+    public init(社員番号: Int, 社員名称: String) {
+        if let member = 社員型.社員番号マップ[社員番号] {
+            self.社員番号 = member.社員番号
+            self.社員名称 = member.社員名称
+            self.部署Data = member.部署Data
+            self.補足情報 = member.補足情報
+            self.社員_姓ふりがな = member.社員_姓ふりがな
+            self.社員_名ふりがな = member.社員_名ふりがな
+        } else {
+            self.社員番号 = 社員番号
+            self.社員名称 = 社員名称
+            self.部署Data = nil
+            self.補足情報 = ""
+            self.社員_姓ふりがな = ""
+            self.社員_名ふりがな = ""
+        }
+    }
+    
     convenience init?(社員名称: String) {
         for member in 社員型.全社員一覧 {
             if member.社員名称 == 社員名称 {
@@ -126,25 +145,37 @@ public final class 社員型: Hashable, Codable {
     
     // MARK: - Coable
     enum CodingKeys: String, CodingKey {
-        case 社員番号, 社員名称
+        case 社員番号, 社員名称, 社員_姓ふりがな, 社員_名ふりがな, 補足情報, 部署
     }
     
-    public required convenience init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let num = try values.decode(Int.self, forKey: .社員番号)
-        let name: String
-        if let object = 社員型.社員番号マップ[num] {
-            name = object.社員名称
+        if let member = 社員型.社員番号マップ[num] {
+            self.社員番号 = member.社員番号
+            self.社員名称 = member.社員名称
+            self.部署Data = member.部署Data
+            self.補足情報 = member.補足情報
+            self.社員_姓ふりがな = member.社員_姓ふりがな
+            self.社員_名ふりがな = member.社員_名ふりがな
         } else {
-            name = try values.decode(String.self, forKey: .社員名称)
+            self.社員番号 = num
+            self.社員名称 = try values.decode(String.self, forKey: .社員名称)
+            self.部署Data = try values.decodeIfPresent(部署型.self, forKey: .部署)
+            self.補足情報 = try values.decodeIfPresent(String.self, forKey: .補足情報) ?? ""
+            self.社員_姓ふりがな = try values.decodeIfPresent(String.self, forKey: .社員_姓ふりがな) ?? ""
+            self.社員_名ふりがな = try values.decodeIfPresent(String.self, forKey: .社員_名ふりがな) ?? ""
         }
-        self.init(社員番号: num, 社員名称: name)!
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.社員番号, forKey: .社員番号)
         try container.encode(self.社員名称, forKey: .社員名称)
+        try container.encode(self.部署, forKey: .部署)
+        try container.encode(self.補足情報, forKey: .補足情報)
+        try container.encode(self.社員_姓ふりがな, forKey: .社員_姓ふりがな)
+        try container.encode(self.社員_名ふりがな, forKey: .社員_名ふりがな)
     }
     
     // MARK: - Equatable
@@ -169,16 +200,24 @@ public final class 社員型: Hashable, Codable {
     }
 }
 
+func prepare社員(社員番号: Int, 社員名称: String) -> 社員型 {
+    if let member = 社員型.社員番号マップ[社員番号] {
+        return member
+    } else {
+        return 社員型(社員番号: 社員番号, 社員名称: 社員名称)
+    }
+}
+
 public extension 社員型 {
-    static let 稗田_司: 社員型 = 社員番号マップ[012]!
-    static let 川原_夏彦: 社員型 = 社員番号マップ[017]!
-    static let 室中_哲郎: 社員型 = 社員番号マップ[019]!
-    static let 関_雄也: 社員型 = 社員番号マップ[034]!
-    static let 井手_法昭: 社員型 = 社員番号マップ[102]!
-    static let 岸原_秀昌: 社員型 = 社員番号マップ[112]!
-    static let 葏口_徹: 社員型 = 社員番号マップ[125]!
-    static let 森藤_年栄: 社員型 = 社員番号マップ[717]!
-    static let 和田_千秋: 社員型 = 社員番号マップ[955]!
+    static let 稗田_司 = prepare社員(社員番号: 012, 社員名称: "稗田 司")
+    static let 川原_夏彦 = prepare社員(社員番号: 017, 社員名称: "川原 夏彦")
+    static let 室中_哲郎 = prepare社員(社員番号: 019, 社員名称: "室中 哲郎")
+    static let 関_雄也 = prepare社員(社員番号: 034, 社員名称: "関 雄也")
+    static let 井手_法昭 = prepare社員(社員番号: 102, 社員名称: "井手 法昭")
+    static let 岸原_秀昌 = prepare社員(社員番号: 112, 社員名称: "岸原 秀昌")
+    static let 葏口_徹 = prepare社員(社員番号: 125, 社員名称: "葏口 徹")
+    static let 森藤_年栄 = prepare社員(社員番号: 717, 社員名称: "森藤 年栄")
+    static let 和田_千秋 = prepare社員(社員番号: 955, 社員名称: "和田 千秋")
 }
 
 // MARK: - 保存

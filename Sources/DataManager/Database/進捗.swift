@@ -48,12 +48,11 @@ public final class 進捗型: Equatable, Identifiable {
     }
     public lazy var 作業者: 社員型 = {
         if let number = self.社員番号 {
-            return 社員型(社員番号: number, 社員名称:self.社員名称)!
+            return prepare社員(社員番号: number, 社員名称: self.社員名称)
         } else {
             return 社員型(社員名称:self.社員名称)!
         }
     }()
-
     
     public static func ==(left: 進捗型, right: 進捗型) -> Bool {
         return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.作業者 == right.作業者 && left.登録日時 == right.登録日時 && left.作業種別 == right.作業種別 && left.作業系列 == right.作業系列

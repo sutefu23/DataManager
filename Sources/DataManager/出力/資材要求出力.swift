@@ -67,7 +67,7 @@ extension Sequence where Element == 資材要求出力型 {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_MaterialRequirementsInput"
-        if loopCount >= 10 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
+        if loopCount >= 5 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
 
         let uuid = UUID()
         do {
@@ -75,7 +75,9 @@ extension Sequence where Element == 資材要求出力型 {
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
             try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
             let result = try 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
                 return

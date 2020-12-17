@@ -92,7 +92,7 @@ extension Sequence where Element == 資材入出庫出力型 {
     }
     
     func exportToDB(loopCount: Int, session: FileMakerSession) throws {
-        if loopCount >= 10 {
+        if loopCount >= 5 {
             let targets = Array(self)
             NSLog("retry count:\(loopCount) orders:\(targets.count)")
             return
@@ -105,9 +105,12 @@ extension Sequence where Element == 資材入出庫出力型 {
                 try session.insert(layout: "DataAPI_MaterialEntry", fields: progress.makeRecord(識別キー: uuid))
                 count += 1
             }
+            
+            Thread.sleep(forTimeInterval: TimeInterval(count)+0.1)
             if count > 0 {
                 try session.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
             }
+            Thread.sleep(forTimeInterval: TimeInterval(count)+0.1)
             var errorResult: [資材入出庫出力型] = []
             for progress in self {
                 let result = try 資材入出庫型.find(登録日: progress.登録日, 登録時間: progress.登録時間, 社員: progress.社員, 入力区分: progress.入力区分, 資材: progress.資材, 入庫数: progress.入庫数, 出庫数: progress.出庫数)

@@ -58,7 +58,11 @@ public final class 指示書進捗キャッシュ型 {
     public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .受取, member: member)
     }
-    
+
+    public func has開始(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
+        return try hasComplete(number: number, process: process, work: .開始, member: member)
+    }
+
     public func has完了(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .完了, member: member)
     }

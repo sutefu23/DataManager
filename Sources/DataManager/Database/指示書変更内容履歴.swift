@@ -51,7 +51,7 @@ public final class 指示書変更内容履歴型 {
     public lazy var 内容: String = { self.record.string(forKey: "内容")! }()
     public lazy var 社員名称: String = { return record.string(forKey: "社員名称")! }()
     public lazy var 社員番号: Int = { return record.integer(forKey: "社員番号")! }()
-    public lazy var 作業者: 社員型 = { return 社員型(社員番号: self.社員番号, 社員名称: self.社員名称)! }()
+    public lazy var 作業者: 社員型 = { return prepare社員(社員番号: self.社員番号, 社員名称: self.社員名称) }()
     public lazy var 指示書UUID: String = { self.record.string(forKey: "指示書UUID")! }()
     public lazy var 指示書: 指示書型 = {
         let uuid = self.record.string(forKey: "指示書UUID")!

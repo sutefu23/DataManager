@@ -147,9 +147,9 @@ extension Sequence where Element == 進捗出力型 {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount))
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount))
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
             if checked.count == target.count { return }
@@ -165,7 +165,7 @@ extension Sequence where Element == 進捗出力型 {
             if target.isEmpty { return }
             if loopCount.isMultiple(of: 2) { FileMakerDB.logoutAll() }
             loopCount += 1
-        } while loopCount <= 5
+        } while loopCount <= 3
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")
     }
     

@@ -174,6 +174,7 @@ extension StringProtocol {
 //        return self.split { numberRange.contains($0) == false }.compactMap { Int($0) }
     }
     
+    /// 全角を半角に変換する
     public func 全文字半角変換() -> String {
         return self.toHalfCharacters
     }

@@ -284,6 +284,7 @@ extension 指示書型 {
         var firstAccepts: [工程型: 進捗型] = [:]
         var accepts: [工程型: 進捗型] = [:]
         var froms: [工程型: 進捗型] = [:]
+        var pending: [工程型: 進捗型] = [:]
         var sharedFroms: [工程型: 進捗型] = [:]
         var completed: [工程型: 進捗型] = [:]
         var lastMarked: [工程型: 進捗型] = [:]
@@ -360,8 +361,19 @@ extension 指示書型 {
                 accepts[state] = progress
                 if firstAccepts[state] == nil { firstAccepts[state] = progress }
             case .開始:
+                if let mid = pending[state], let from = froms[state] {
+                    pending[state] = nil
+                    if let work = 作業記録型(progress, from: from.登録日時, to: mid.登録日時) {
+                        regist(work: work, state: state)
+                    }
+                }
                 froms[state] = progress
+            case .仕掛:
+                if froms[state] != nil {
+                    pending[state] = progress
+                }
             case .完了:
+                pending[state] = nil
                 if let from = froms[state] {
                     if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
                         regist(work: work, state: state)
@@ -397,12 +409,6 @@ extension 指示書型 {
                         } else {
                             completed[state] = progress
                         }
-//                    case .切文字:
-//                        if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
-//                            regist(work: work, state: state)
-//                        } else {
-//                            completed[state] = progress
-//                        }
                     case .レーザー（アクリル）:
                         if let from = froms[.レーザー] {
                             if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
@@ -430,8 +436,6 @@ extension 指示書型 {
                         completed[state] = progress
                     }
                 }
-            case .仕掛:
-                break
             }
             lastMarked[state] = progress
         }
