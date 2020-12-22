@@ -77,6 +77,14 @@ public final class 箱文字優先度キャッシュ型 {
         return result
     }
     
+    func update(_ data: 箱文字優先度型) {
+        guard let number = data.伝票番号 else { return }
+        let key = CacheKey(number: number, process: data.工程)
+        lock.lock()
+        cache[key] = TimeData(data)
+        lock.unlock()
+    }
+    
     public func removeAll() {
         lock.lock()
         self.cache.removeAll()
@@ -232,14 +240,14 @@ extension 指示書型 {
     }
     
     public func 箱文字表示設定(for target: 工程型?, cacheOnly: Bool = false) -> 表示設定型 {
-        if Time() <= 箱文字優先度型.自動有効期限 || (cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target)) {
-            return .自動判定
-        }
-        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target), data.表示設定日.isToday else { return .自動判定 }
-        return data.表示設定
+        if cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target) { return .自動判定 }
+        let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
+        return data?.表示設定 ?? .自動判定
     }
     public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) {
-        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else { return }
+        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else {
+            return
+        }
         data.表示設定 = 設定
         data.synchronize()
     }

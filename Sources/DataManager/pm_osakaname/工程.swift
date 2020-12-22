@@ -30,6 +30,13 @@ public struct 工程型: Hashable, Comparable, Codable {
 
     init(_ number: Int) { self.number = number }
     
+    init(name: String, code: String) {
+        assert(!name.isEmpty)
+        self.init(code: code)!
+        nameMap2[self] = name
+        codeMap2[self] = code
+    }
+    
     public init?(code: String?) {
         guard let code = code else { return nil }
         var main: Int = 0
@@ -53,7 +60,7 @@ public struct 工程型: Hashable, Comparable, Codable {
     }
     
     public var description: String {
-        return 工程名称DB[self] ?? ""
+        return 工程名称DB[self] ?? nameMap2[self] ?? ""
     }
     public var is製作工程: Bool { is製作工程Set.contains(self) } 
 
@@ -71,7 +78,7 @@ public struct 工程型: Hashable, Comparable, Codable {
         return 標準カレンダー.勤務時間(工程: self, 日付: day).終業
     }
     public var isValid: Bool { 工程名称DB.codeMap[self] != nil }
-    public var code: String { return 工程名称DB.codeMap[self]! }
+    public var code: String { return 工程名称DB.codeMap[self] ?? codeMap2[self]! }
     
     public static func < (left: 工程型, right: 工程型) -> Bool { return left.number < right.number  }
     public static func == (left: 工程型, right: 工程型) -> Bool { return left.number == right.number  }
@@ -92,6 +99,9 @@ public struct 工程型: Hashable, Comparable, Codable {
         try container.encode(self.number)
     }
 }
+
+private var nameMap2 = [工程型: String]()
+private var codeMap2 = [工程型: String]()
 
 class 工程名称DB型 {
     var map: [工程型: String]
@@ -127,7 +137,9 @@ class 工程名称DB型 {
         self.codeMap = map3
     }
     
-    subscript(_ state: 工程型) -> String? { return map[state] }
+    subscript(_ state: 工程型) -> String? {
+        return map[state] ?? nameMap2[state]
+    }
 }
 
 private let db_全工程: [FileMakerRecord] = {
@@ -172,7 +184,7 @@ public extension 工程型 {
         .立ち上がり, .半田, .裏加工, .ボンド,
         .ルーター, .タップ,
         .研磨, .表面仕上, .中塗り,
-        .塗装, .乾燥炉, .拭き取り,
+        .下処理, .塗装, .乾燥炉, .拭き取り,
         .外注, .付属品準備, .組立,
         .品質管理, .発送,
     ]
@@ -187,53 +199,53 @@ public extension 工程型 {
         return list.isEmpty ? 工程型.工場工程一覧 : list
     }()
 
-    static let 営業 = 工程型(code: "P001")!
-    static let 校正 = 工程型(code: "P002")!
-    static let 管理 = 工程型(code: "P003")!
-    static let 設計 = 工程型(code: "P003B")!
-    static let 原稿 = 工程型(code: "P004")!
-    static let 出力 = 工程型(code: "P004B")!
-    static let フィルム = 工程型(code: "P004C")!
-    static let 入力 = 工程型(code: "P005")!
-    static let レーザー = 工程型(code: "P006")!
-    static let レーザー（アクリル） = 工程型(code: "P006A")!
-    static let 照合検査 = 工程型(code: "P006B")!
-    static let 腐蝕 = 工程型(code: "P007")!
-    static let 版焼き = 工程型(code: "P007A")!
-    static let 腐蝕印刷 = 工程型(code: "P007B")!
-    static let エッチング = 工程型(code: "P007C")!
-    static let オブジェ = 工程型(code: "P008")!
-    static let フォーミング = 工程型(code: "P009")!
-    static let シャーリング = 工程型(code: "P009A")!
-    static let プレーナー = 工程型(code: "P009B")!
-    static let タレパン = 工程型(code: "P009C")!
-    static let 加工 = 工程型(code: "P010")!
-    static let 仕上 = 工程型(code: "P011")!
-    static let 切文字 = 工程型(code: "P012")!
-    static let 溶接 = 工程型(code: "P013")!
-    static let 立ち上がり_溶接 = 工程型(code: "P013A")!
-    static let 裏加工_溶接 = 工程型(code: "P013C")!
-    static let 立ち上がり = 工程型(code: "P014")!
-    static let 半田 = 工程型(code: "P015")!
-    static let レーザー溶接 = 工程型(code: "P015A")!
-    static let ボンド = 工程型(code: "P015B")!
-    static let 裏加工 = 工程型(code: "P015C")!
-    static let 研磨 = 工程型(code: "P016")!
-    static let ルーター = 工程型(code: "P017")!
-    static let タップ = 工程型(code: "P017B")!
-    static let 印刷 = 工程型(code: "P018")!
-    static let 表面仕上 = 工程型(code: "P019")!
-    static let 中塗り = 工程型(code: "P019B")!
-    static let 塗装 = 工程型(code: "P020")!
-    static let 下処理 = 工程型(code: "P020A")!
-    static let 乾燥炉 = 工程型(code: "P020B")!
-    static let 外注 = 工程型(code: "P021")!
-    static let 拭き取り = 工程型(code: "P022")!
-    static let 付属品準備 = 工程型(code: "P024")!
-    static let 組立 = 工程型(code: "P026")!
-    static let 品質管理 = 工程型(code: "P026B")!
-    static let 発送 = 工程型(code: "P027")!
-    static let 経理 = 工程型(code: "P028")!
+    static let 営業 = 工程型(name: "営業", code: "P001")
+    static let 校正 = 工程型(name: "校正", code: "P002")
+    static let 管理 = 工程型(name: "管理", code: "P003")
+    static let 設計 = 工程型(name: "設計", code: "P003B")
+    static let 原稿 = 工程型(name: "原稿", code: "P004")
+    static let 出力 = 工程型(name: "出力", code: "P004B")
+    static let フィルム = 工程型(name: "フィルム", code: "P004C")
+    static let 入力 = 工程型(name: "入力", code: "P005")
+    static let レーザー = 工程型(name: "レーザー", code: "P006")
+    static let レーザー（アクリル） = 工程型(name: "レーザー（アクリル）", code: "P006A")
+    static let 照合検査 = 工程型(name: "照合検査", code: "P006B")
+    static let 腐蝕 = 工程型(name: "腐蝕", code: "P007")
+    static let 版焼き = 工程型(name: "版焼き", code: "P007A")
+    static let 腐蝕印刷 = 工程型(name: "腐蝕印刷", code: "P007B")
+    static let エッチング = 工程型(name: "エッチング", code: "P007C")
+    static let オブジェ = 工程型(name: "オブジェ", code: "P008")
+    static let フォーミング = 工程型(name: "フォーミング", code: "P009")
+    static let シャーリング = 工程型(name: "シャーリング", code: "P009A")
+    static let プレーナー = 工程型(name: "プレーナー", code: "P009B")
+    static let タレパン = 工程型(name: "タレパン", code: "P009C")
+    static let 加工 = 工程型(name: "加工", code: "P010")
+    static let 仕上 = 工程型(name: "仕上", code: "P011")
+    static let 切文字 = 工程型(name: "切文字", code: "P012")
+    static let 溶接 = 工程型(name: "溶接", code: "P013")
+    static let 立ち上がり_溶接 = 工程型(name: "立ち上がり（溶接）", code: "P013A")
+    static let 裏加工_溶接 = 工程型(name: "裏加工（溶接）", code: "P013C")
+    static let 立ち上がり = 工程型(name: "立ち上がり", code: "P014")
+    static let 半田 = 工程型(name: "半田", code: "P015")
+    static let レーザー溶接 = 工程型(name: "レーザー溶接", code: "P015A")
+    static let ボンド = 工程型(name: "ボンド", code: "P015B")
+    static let 裏加工 = 工程型(name: "裏加工", code: "P015C")
+    static let 研磨 = 工程型(name: "研磨", code: "P016")
+    static let ルーター = 工程型(name: "ルーター", code: "P017")
+    static let タップ = 工程型(name: "タップ", code: "P017B")
+    static let 印刷 = 工程型(name: "印刷", code: "P018")
+    static let 表面仕上 = 工程型(name: "表面仕上", code: "P019")
+    static let 中塗り = 工程型(name: "中塗り", code: "P019B")
+    static let 塗装 = 工程型(name: "塗装", code: "P020")
+    static let 下処理 = 工程型(name: "下処理", code: "P020A")
+    static let 乾燥炉 = 工程型(name: "乾燥炉", code: "P020B")
+    static let 外注 = 工程型(name: "外注", code: "P021")
+    static let 拭き取り = 工程型(name: "拭き取り", code: "P022")
+    static let 付属品準備 = 工程型(name: "付属品準備", code: "P024")
+    static let 組立 = 工程型(name: "組立", code: "P026")
+    static let 品質管理 = 工程型(name: "品質管理", code: "P026B")
+    static let 発送 = 工程型(name: "発送", code: "P027")
+    static let 経理 = 工程型(name: "経理", code: "P028")
 }
 
 // MARK: - 管理グループ

@@ -29,6 +29,11 @@ extension 指示書型 {
         if 仕様.toJapaneseNormal.hasPrefix("EXILE出力") { return true }
         return false
     }
+    
+    public var is形式発送: Bool {
+        if 品名.hasPrefix("原稿作成費") { return true }
+        return false
+    }
 }
 
 // MARK: - フィルム関係

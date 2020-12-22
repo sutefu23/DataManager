@@ -35,11 +35,13 @@ public extension Bundle {
 
 #if os(Linux) || os(Windows)
 #else
+private let currentVersionCache: Version = {
+    let bundle = Bundle.main
+    return bundle.bundleVersion!
+}()
+
 extension DMApplication {
-    public var currentVersion: Version {
-        let bundle = Bundle.main
-        return bundle.bundleVersion!
-    }
+    public var currentVersion: Version { currentVersionCache }
     
     var newVersionBundle: Bundle? {
         guard let newVersionURL = UserDefaults.standard.newVersionURL else { return nil }

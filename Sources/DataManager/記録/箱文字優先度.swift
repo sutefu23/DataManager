@@ -139,17 +139,18 @@ public final class 箱文字優先度型 {
         let data = self.data.fieldData
         let db = FileMakerDB.system
         do {
-        if let recordID = self.recordID {
-            try db.update(layout: 箱文字優先度Data型.dbName, recordId: recordID, fields: data)
-        } else {
-            let db = FileMakerDB.system
-            let recordID = try db.insert(layout: 箱文字優先度Data型.dbName, fields: data)
-            self.recordID = recordID
-        }
-        self.original = self.data
+            if let recordID = self.recordID {
+                try db.update(layout: 箱文字優先度Data型.dbName, recordId: recordID, fields: data)
+            } else {
+                let db = FileMakerDB.system
+                let recordID = try db.insert(layout: 箱文字優先度Data型.dbName, fields: data)
+                self.recordID = recordID
+            }
+            self.original = self.data
         } catch {
             NSLog(error.localizedDescription)
         }
+        箱文字優先度キャッシュ型.shared.update(self)
     }
     
     public static func allRegistered(for 伝票番号: 伝票番号型) throws -> [箱文字優先度型] {
