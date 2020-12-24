@@ -563,13 +563,15 @@ public struct DMScanner: RandomAccessCollection {
 
     /// patternsのどれか合致する物をスキップする
     @discardableResult public mutating func scanStrings(_ patterns: String...) -> Bool {
-        let patterns = patterns.sorted { $0.count > $1.count }
-        for pattern in patterns {
-            if scanString(pattern) { return true }
-        }
-        return false
+        let patterns = patterns.sorted { $0.count > $1.count } // 長いものから順に実施する
+        return patterns.contains { self.scanString($0) }
     }
-    
+
+    @discardableResult public mutating func scanStrings(_ patterns: [String]) -> Bool {
+        let patterns = patterns.sorted { $0.count > $1.count } // 長いものから順に実施する
+        return patterns.contains { self.scanString($0) }
+    }
+
     /// マッチする分スキップする
     public mutating func skipMatchString(_ pattern: String) {
         dropHeadSpacesIfNeeds()

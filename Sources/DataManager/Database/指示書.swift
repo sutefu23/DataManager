@@ -481,15 +481,15 @@ public final class 指示書型 {
     public lazy var 発送事項出荷時間: Time? = {
         var scanner = DMScanner(self.発送事項, normalizedFullHalf: true, skipSpaces: true)
         while let (_, time) = scanner.scanUpToTime() {
-            if scanner.scanString("出荷") { return time }
+            if scanner.scanStrings(出荷時間文言リスト1) { return time }
         }
         scanner.reset()
         scanner.skip数字以外()
         while !scanner.isAtEnd {
             if let value = scanner.scanInteger(), value >= 0 && value <= 24 {
-                if scanner.scanString("時まで出荷") {
+                if scanner.scanStrings(出荷時間文言リスト2) {
                     return Time(value, 00)
-                } else if scanner.scanString("時半まで出荷") {
+                } else if scanner.scanStrings(出荷時間文言リスト3) {
                     return Time(value, 30)
                 }
             }
@@ -963,3 +963,33 @@ public extension 指示書型 {
         }
     }
 }
+
+// MARK: - 出荷時間チェック文言
+/// hh:mmの後ろに続く文言
+private let 出荷時間文言リスト1: [String] = {
+    var result: [String] = []
+    for word0 in ["", "以降", "までに"] {
+        for word1 in ["", "先方"] {
+            for word2 in ["出荷", "積込", "持込", "引取", "積み込み", "持ち込み", "引き取り"] {
+                result.append(word0 + word1 + word2)
+            }
+        }
+    }
+    return result.sorted { $0.count > $1.count }
+}()
+
+/// hhの後ろに続く文言を生成する
+private func make出荷時間文言リスト23(_ head: String) -> [String] {
+    var result: [String] = []
+    for word0 in ["", "頃", "まで", "までに", "以降"] {
+        for word1 in ["出荷", "積込", "持込", "引取", "積み込み", "持ち込み", "引き取り"] {
+            result.append(head + word0 + word1)
+        }
+    }
+    return result.sorted { $0.count > $1.count }
+}
+
+/// hhの後ろに続く文言（mm=0）
+private let 出荷時間文言リスト2: [String] = make出荷時間文言リスト23("時")
+/// hhの後ろに続く文言（mm=30）
+private let 出荷時間文言リスト3: [String] = make出荷時間文言リスト23("時半")
