@@ -19,7 +19,7 @@ final class 進捗一覧Data型 {
 }
 
 public final class 指示書進捗キャッシュ型 {
-    public var expire: TimeInterval = 10*60
+    public var expire: TimeInterval = 5*60 // ５分
     public static let shared = 指示書進捗キャッシュ型()
     
     private let lock = NSLock()
@@ -70,7 +70,7 @@ public final class 指示書進捗キャッシュ型 {
     public func hasComplete(number: 伝票番号型, process: 工程型, work: 作業内容型, member: 社員型? = nil) throws -> Bool {
         var hasHigh: Bool = false
         let list = try self.キャッシュ一覧(number).進捗一覧
-        for progress in list.reversed() {
+        for progress in list.reversed() where progress.工程 == process {
             if let member = member, progress.作業者 != member { continue }
             let current = progress.作業内容
             if current == work { return true }
