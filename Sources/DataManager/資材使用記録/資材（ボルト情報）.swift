@@ -8,6 +8,8 @@
 
 import Foundation
 
+private var boltMap: [図番型: 選択ボルト等種類型] = [:]
+
 public enum 選択ボルト等種類型: String, Hashable {
     case FB
     case ボルト, オールアンカー, アイボルト, 真鍮ボルト
@@ -30,6 +32,11 @@ public enum 選択ボルト等種類型: String, Hashable {
     case ブラインドリベット
     case 真鍮釘, ステンレス釘
     case 角パイプD, 角パイプF, 角パイプHL
+    
+    public init?(図番: 図番型) {
+        guard let bolt = boltMap[図番] else { return nil }
+        self = bolt
+    }
 }
 
 public struct 選択ボルト等型 {
@@ -95,6 +102,7 @@ public struct 選択ボルト等型 {
         } else {
             self.社名先頭1文字 = "?"
         }
+        boltMap[self.図番] = self.種類
     }
     
     public var 資材登録あり: Bool {

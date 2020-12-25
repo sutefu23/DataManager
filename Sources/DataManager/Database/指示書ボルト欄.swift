@@ -38,41 +38,92 @@ public enum ボルト数調整モード型 {
     }
     
     public func 数量調整(ベース数量 count: Double, 資材種類: 資材種類型?, 表示名: String) -> Double {
+        let type: 数量調整種類
         switch self {
         case .箱文字式:
-            let offset: [Double]
             switch 資材種類 {
             case .ボルト, .アイボルト, .真鍮ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー:
-                offset = [1, 2, 3, 3, 3, 5, 5, 6]
+                type = .ボルト
             case .丸パイプ, .浮かしパイプ:
-                offset = [1, 2, 3, 3, 3, 5, 5, 6]
+                type = .パイプ
             case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ, .木ビス, .皿木ビス, .真鍮釘, .ステンレス釘:
-                offset = [2, 3, 3, 5, 10, 10, 10, 20]
+                type = .ビス
             case .ナット, .鏡止めナット, .袋ナット, .高ナット, .鬼目ナット:
-                offset = [2, 3, 3, 5, 10, 10, 10, 15]
+                type = .ナット
             case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
-                offset = [2, 3, 3, 5, 10, 10, 10, 15]
+                type = .ワッシャー
             case .定番FB, .FB, .外注, .単品個数物:
-                return count
+                type = .調整なし
             case nil:
                 if 表示名.hasPrefix("L金具") {
-                    offset = [2, 3, 3, 5, 10, 10, 10, 10]
-                    break
+                    type = .L金具
+                } else {
+                    type = .調整なし
                 }
-                return count
             }
-            assert(offset.count == 8)
-            if (1...5).contains(count) { return offset[0] + count }
-            if (6...10).contains(count) { return offset[1] + count }
-            if (11...15).contains(count) { return offset[2] + count }
-            if (16...30).contains(count) { return offset[3] + count }
-            if (31...40).contains(count) { return offset[4] + count }
-            if (41...50).contains(count) { return offset[5] + count }
-            if (51...100).contains(count) { return offset[6] + count }
-            if (101...).contains(count) { return offset[7] + count }
-            return count
         case .切文字式:
-            let offset: [Double] = [2, 3, 4, 5, 6, 8, 10]
+            type = .切文字
+        case .調整なし:
+            type = .調整なし
+        }
+        return type.数量調整(ベース数量: count)
+    }
+
+    public func 数量調整(ベース数量 count: Double, 図番: 図番型?, 表示名: String) -> Double {
+        guard let num = 図番 else { return count }
+        let bolt = 選択ボルト等種類型(図番: num)
+        return self.数量調整(ベース数量: count, ボルト等: bolt, 表示名: 表示名)
+    }
+    
+    public func 数量調整(ベース数量 count: Double, ボルト等: 選択ボルト等種類型?, 表示名: String) -> Double {
+        let type: 数量調整種類
+        switch self {
+        case .箱文字式:
+            switch ボルト等 {
+            case .ボルト, .アイボルト, .真鍮ボルト, .六角, .スタッド, .ALスタッド, .ストレートスタッド, .オールアンカー, .Sスタッド, .ブラインドリベット:
+                type = .ボルト
+            case .丸パイプ, .浮かしパイプ, .角パイプHL, .角パイプF, .角パイプD, .配線パイプ, .電源用パイプ:
+                type = .パイプ
+            case .スリムヘッド, .トラス, .サンロックトラス, .サンロック特皿, .特皿, .Cタッピング, .ナベ, .テクスナベ, .テクス皿, .テクス特皿, .皿, .片ネジ, .木ビス, .皿木ビス, .真鍮釘, .ステンレス釘, .なべ:
+                type = .ビス
+            case .ナット, .鏡止めナット, .袋ナット, .高ナット, .鬼目ナット:
+                type = .ナット
+            case .ワッシャー, .Sワッシャー, .特寸ワッシャー:
+                type = .ワッシャー
+            case .FB, .外注, .SUSヒートン, .BSPヒートン, .メッキヒートン, .三角コーナー, .アングル, .アジャスター, .アイメタルジョイナー:
+                type = .調整なし
+            case nil:
+                if 表示名.hasPrefix("L金具") {
+                    type = .L金具
+                } else {
+                    type = .調整なし
+                }
+            }
+        case .切文字式:
+            type = .切文字
+        case .調整なし:
+            type = .調整なし
+        }
+        return type.数量調整(ベース数量: count)
+    }
+}
+
+enum 数量調整種類 {
+    case ボルト
+    case パイプ
+    case ビス
+    case ナット
+    case ワッシャー
+    case L金具
+    case 調整なし
+    case 切文字
+    
+    public func 数量調整(ベース数量 count: Double) -> Double {
+        let offset: [Double]
+        switch self {
+        case .調整なし: return count
+        case .切文字:
+            offset = [2, 3, 4, 5, 6, 8, 10]
             if (1...10).contains(count) { return offset[0] + count }
             if (11...20).contains(count) { return offset[1] + count }
             if (21...30).contains(count) { return offset[2] + count }
@@ -80,10 +131,30 @@ public enum ボルト数調整モード型 {
             if (41...50).contains(count) { return offset[4] + count }
             if (51...70).contains(count) { return offset[5] + count }
             if (71...).contains(count) { return offset[6] + count }
-            return count
-        default:
-            return count
+            return 0
+        case .ボルト:
+            offset = [1, 2, 3, 3, 3, 5, 5, 6]
+        case .パイプ:
+            offset = [1, 2, 3, 3, 3, 5, 5, 6]
+        case .ビス:
+            offset = [2, 3, 3, 5, 10, 10, 10, 20]
+        case .ナット:
+            offset = [2, 3, 3, 5, 10, 10, 10, 15]
+        case .ワッシャー:
+            offset = [2, 3, 3, 5, 10, 10, 10, 15]
+        case .L金具:
+            offset = [2, 3, 3, 5, 10, 10, 10, 10]
         }
+        assert(offset.count == 8)
+        if (1...5).contains(count) { return offset[0] + count }
+        if (6...10).contains(count) { return offset[1] + count }
+        if (11...15).contains(count) { return offset[2] + count }
+        if (16...30).contains(count) { return offset[3] + count }
+        if (31...40).contains(count) { return offset[4] + count }
+        if (41...50).contains(count) { return offset[5] + count }
+        if (51...100).contains(count) { return offset[6] + count }
+        if (101...).contains(count) { return offset[7] + count }
+        return 0
     }
 }
 
@@ -292,7 +363,11 @@ public struct 資材要求情報型 {
             if self.is附属品 != true { return }
             guard let count = self.単位数 else { return }
             self.調整前数 = count
-            self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: self.資材種類, 表示名: self.表示名)
+            if let type = self.資材種類 {
+                self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 資材種類: type, 表示名: self.表示名)
+            } else {
+                self.単位数 = ボルト数調整モード.数量調整(ベース数量: count, 図番: self.図番, 表示名: self.表示名)
+            }
         }
     }
     
