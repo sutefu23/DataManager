@@ -30,6 +30,7 @@ public final class 取引先型 {
     
     public func is社名マッチ(to name: String) -> Bool {
         let name = name.比較用文字列
+        if name.contains("(仮)") { return true }
         let name1 = 会社名.比較用文字列
         let name2 = 印字会社名.比較用文字列
         if name == name1 || name == name2 { return true }
