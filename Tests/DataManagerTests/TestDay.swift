@@ -55,4 +55,11 @@ class TestDay: XCTestCase {
         XCTAssertEqual(ClosedRange<Day>("10/11-13"), Day(year,10,11)...Day(year,10,13))
         XCTAssertEqual(ClosedRange<Day>("10/21-5"), Day(year,10,21)...Day(year,11,5))
     }
+    func testInit422() {
+        var day: Day?
+        day = Day(yyyymmdd: "20210514")
+        XCTAssertEqual(day?.year, 2021)
+        XCTAssertEqual(day?.month, 5)
+        XCTAssertEqual(day?.day, 14)
+    }
 }

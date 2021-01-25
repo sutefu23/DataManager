@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 進捗出力型: Hashable {
+public struct 進捗出力型: Hashable, Codable {
     public let 登録日: Day
     public let 登録時間: Time
 
@@ -21,6 +21,42 @@ public struct 進捗出力型: Hashable {
     public let 作業系列: 作業系列型?
 
     public var 登録日時: Date { return Date(self.登録日, self.登録時間) }
+    
+    enum CodingKeys: String, CodingKey {
+        case 登録日
+        case 登録時間
+        case 伝票番号
+        case 工程
+        case 作業内容
+        case 作業種別
+        case 社員
+        case 作業系列
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.登録日 = try values.decode(Day.self, forKey: .登録日)
+        self.登録時間 = try values.decode(Time.self, forKey: .登録時間)
+        self.伝票番号 = try values.decode(伝票番号型.self, forKey: .伝票番号)
+        self.工程 = try values.decode(工程型.self, forKey: .工程)
+        self.作業内容 = try values.decode(作業内容型.self, forKey: .作業内容)
+        self.作業種別 = try values.decode(作業種別型.self, forKey: .作業種別)
+        self.社員 = try values.decode(社員型.self, forKey: .社員)
+        self.作業系列 = nil
+//        self.作業系列 = try values.decodeIfPresent(作業系列型.self, forKey: .作業系列)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.登録日, forKey: .登録日)
+        try container.encode(self.登録時間, forKey: .登録時間)
+        try container.encode(self.伝票番号, forKey: .伝票番号)
+        try container.encode(self.工程, forKey: .工程)
+        try container.encode(self.作業内容, forKey: .作業内容)
+        try container.encode(self.作業種別, forKey: .作業種別)
+        try container.encode(self.社員, forKey: .社員)
+//        try container.encodeIfPresent(self.作業系列, forKey: .作業系列)
+    }
     
     public init(伝票番号: 伝票番号型, 工程: 工程型, 作業内容: 作業内容型, 社員: 社員型, 登録日時: Date, 作業種別: 作業種別型, 作業系列: 作業系列型?) {
         let 登録日時 = 登録日時.rounded()
@@ -147,9 +183,9 @@ extension Sequence where Element == 進捗出力型 {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.5)
             try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.5)
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
             if checked.count == target.count { return }

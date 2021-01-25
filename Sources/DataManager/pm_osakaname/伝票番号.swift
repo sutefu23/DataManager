@@ -82,6 +82,7 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
     }
     
     public func testIsValid() throws -> Bool {
+        guard FileMakerDB.isEnabled else { return self.isValidNumber }
         lock.lock()
         defer { lock.unlock() }
         
@@ -182,6 +183,8 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
             return "\(上位整数値)-\(下位文字列)"
         }
     }
+    
+    public var 整数文字列: String { String(整数値) }
     
     public var バーコード: String {
         return "*\(整数値)*"

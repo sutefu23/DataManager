@@ -2,18 +2,17 @@
 //  Test板加工在庫.swift
 //  DataManagerTests
 //
-//  Created by manager on 2020/06/04.
-//  Copyright © 2020 四熊泰之. All rights reserved.
+//  Created by manager on 2021/01/22.
 //
 
 import XCTest
 @testable import DataManager
 
-class TestItaKakouZaikoGata: XCTestCase {
+class TestItaKakouZaiko: XCTestCase {
 
-    func testList() {
+    func testItiran() {
         let list = 板加工在庫一覧
-        XCTAssertNotEqual(list.count, 0)
+        XCTAssertEqual(list.isEmpty, false)
     }
 
 }

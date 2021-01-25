@@ -192,6 +192,7 @@ public final class 月間目標型 {
         } else {
             self.recordId = try db.insert(layout: 月間目標Data型.dbName, fields: data)
         }
+        self.original = self.data
 //        食事時間帯キャッシュ型.shared.flush(提供パターン: self.提供パターン, 食事グループ: self.食事グループ)
     }
     

@@ -57,6 +57,15 @@ public struct Day: Hashable, Strideable, Codable {
             self.day = day1
         }
     }
+    public init?<S: StringProtocol>(yyyymmdd: S) {
+        let numbers = yyyymmdd.toHalfCharacters
+        guard numbers.count == 8,
+              let year = Int(numbers.prefix(4)), year > 2000,
+              let month = Int(numbers.dropFirst(4).prefix(2)), month >= 1 && month <= 12,
+              let day = Int(numbers.dropFirst(6)), day >= 1 && day <= 31
+        else { return nil }
+        self.init(year, month, day)
+    }
     
     // FileMakerの日付
     public init?<S: StringProtocol>(fmDate2: S?) {
@@ -156,6 +165,10 @@ public struct Day: Hashable, Strideable, Codable {
 
     public var yearMonthDayString: String {
         return "\(year)/\(make2dig(month))/\(make2dig(day))"
+    }
+
+    public var yearMonthDayNumberString: String {
+        return "\(year)\(make2dig(month))\(make2dig(day))"
     }
 
     public var shortYearMonthDayString: String {

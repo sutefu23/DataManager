@@ -182,7 +182,7 @@ public extension 工程型 {
         .切文字,
         .溶接, .立ち上がり_溶接, .裏加工_溶接, .レーザー溶接,
         .立ち上がり, .半田, .裏加工, .ボンド,
-        .ルーター, .タップ,
+        .ルーター, .タップ, .シート貼り,
         .研磨, .表面仕上, .中塗り,
         .下処理, .塗装, .乾燥炉, .拭き取り,
         .外注, .付属品準備, .組立,
@@ -233,6 +233,7 @@ public extension 工程型 {
     static let 研磨 = 工程型(name: "研磨", code: "P016")
     static let ルーター = 工程型(name: "ルーター", code: "P017")
     static let タップ = 工程型(name: "タップ", code: "P017B")
+    static let シート貼り = 工程型(name: "シート貼り", code: "P017C")
     static let 印刷 = 工程型(name: "印刷", code: "P018")
     static let 表面仕上 = 工程型(name: "表面仕上", code: "P019")
     static let 中塗り = 工程型(name: "中塗り", code: "P019B")

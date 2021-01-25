@@ -235,6 +235,7 @@ public class 食事メニュー型 {
         } else {
             self.recordId = try db.insert(layout: 食事メニューData型.dbName, fields: data)
         }
+        self.original = self.data
         食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
     }
     

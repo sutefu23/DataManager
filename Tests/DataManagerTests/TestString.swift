@@ -80,4 +80,95 @@ class TestString: XCTestCase {
         XCTAssertEqual(isASCIIAlphabetValue(Character("z").asciiValue!), true)
         XCTAssertEqual(isASCIIAlphabetValue(Character("{").asciiValue!), false)
     }
+    
+    func testCSVColumns() {
+        var columns: [String]
+        
+        // "なし
+        columns = "".csvColumns
+        XCTAssertEqual(columns, [""])
+
+        columns = "dx".csvColumns
+        XCTAssertEqual(columns.count, 1)
+        XCTAssertEqual(columns[0], "dx")
+
+        columns = ",".csvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "")
+        XCTAssertEqual(columns[1], "")
+
+        columns = "123,aadc".csvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+        
+        columns = "123,aadc,".csvColumns
+        XCTAssertEqual(columns.count, 3)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+        XCTAssertEqual(columns[2], "")
+
+        // "あり
+        columns = "\"\"".csvColumns
+        XCTAssertEqual(columns, [""])
+
+        columns = "\"dx\"".csvColumns
+        XCTAssertEqual(columns.count, 1)
+        XCTAssertEqual(columns[0], "dx")
+
+        columns = "\"d,x\"".csvColumns
+        XCTAssertEqual(columns.count, 1)
+        XCTAssertEqual(columns[0], "d,x")
+
+        columns = "\"\",\"\"".csvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "")
+        XCTAssertEqual(columns[1], "")
+
+        columns = "\"123\",\"aadc\"".csvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+        
+        columns = "\"123\",\"aad,c\",".csvColumns
+        XCTAssertEqual(columns.count, 3)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aad,c")
+        XCTAssertEqual(columns[2], "")
+        
+        // 左のみ"
+        columns = "\"123\",\"aadc".csvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+    }
+    
+    func testTSVColumns() {
+        var columns: [String]
+        
+        // "なし
+        columns = "".tsvColumns
+        XCTAssertEqual(columns, [""])
+
+        columns = "dx".tsvColumns
+        XCTAssertEqual(columns.count, 1)
+        XCTAssertEqual(columns[0], "dx")
+
+        columns = "\t".tsvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "")
+        XCTAssertEqual(columns[1], "")
+
+        columns = "123\taadc".tsvColumns
+        XCTAssertEqual(columns.count, 2)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+        
+        columns = "123\taadc\t".tsvColumns
+        XCTAssertEqual(columns.count, 3)
+        XCTAssertEqual(columns[0], "123")
+        XCTAssertEqual(columns[1], "aadc")
+        XCTAssertEqual(columns[2], "")
+    }
+
 }

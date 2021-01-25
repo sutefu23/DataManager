@@ -154,6 +154,7 @@ public class 食事要求型: Identifiable {
         } else {
             self.recordId = try db.insert(layout: 食事要求Data型.dbName, fields: data)
         }
+        self.original = self.data
     }
     
     public var 食事時間帯: 食事時間帯型? {

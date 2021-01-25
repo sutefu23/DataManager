@@ -60,12 +60,15 @@ extension StringProtocol {
     }
 
     public var remove㈱㈲: String {
-        var result = String(self)
+        var result = String(self).toJapaneseNormal
         if let ch = result.first, ch == "㈱" || ch == "㈲" {
             result.removeFirst(1)
             while let ch = result.first, ch.isWhitespace || ch == "　" {
                 result.removeFirst(1)
             }
+            return result
+        } else if result.hasPrefix("(株)") || result.hasPrefix("(有)") {
+            result.removeFirst(3)
             return result
         }
         if let ch = result.last, ch == "㈱" || ch == "㈲" {
@@ -73,6 +76,9 @@ extension StringProtocol {
             while let ch = result.last, ch.isWhitespace || ch == "　" {
                 result.removeLast(1)
             }
+            return result
+        } else if result.hasSuffix("(株)") || result.hasSuffix("(有)") {
+            result.removeLast(3)
             return result
         }
         return result
@@ -359,5 +365,60 @@ extension Array where Element == String {
             index = self.index(after: index)
         }
         return false
+    }
+}
+
+// MARK: - CSV関連
+extension StringProtocol {
+    /// CSVでテキストを分割する
+    public var csvColumns: [String] {
+        return self.splitColumns(delimiter: ",", bracket: ("\"", "\""))
+    }
+    /// TSVでテキストを分割する
+    public var tsvColumns: [String] {
+        return self.splitColumns(delimiter: "\t", bracket: nil)
+    }
+    /// 指定の文字でテキストを分割する
+    public func splitColumns(delimiter: Character, bracket: (left: Character, right: Character)?) -> [String] {
+        if self.isEmpty { return [""] }
+        var columns: [String] = []
+        var scanner = DMScanner(self)
+        var leftComma: Bool = false
+        while !scanner.isEmpty {
+            if scanner.scanCharacter(delimiter) {
+                columns.append("")
+                leftComma = true
+                continue
+            }
+            if let bracket = bracket {
+                if scanner.scanCharacter(bracket.left) {
+                    if let left = scanner.scanUpTo(bracket.right) {
+                        columns.append(left)
+                        guard scanner.scanCharacter(delimiter) else {
+                            leftComma = false
+                            break
+                        }
+                        leftComma = true
+                        continue
+                    } else {
+                        columns.append(scanner.scanAll())
+                        leftComma = false
+                        break
+                    }
+                }
+            }
+            if let left = scanner.scanUpTo(delimiter) {
+                columns.append(left)
+                leftComma = true
+            } else {
+                columns.append(scanner.scanAll())
+                leftComma = false
+                break
+            }
+        }
+        if leftComma {
+            columns.append(scanner.string)
+        }
+        return columns
     }
 }

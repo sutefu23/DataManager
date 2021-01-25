@@ -173,6 +173,7 @@ public final class 指示書文字数型 {
         } else {
             self.insert()
         }
+        self.読み込み時箱文字文字数 = self.現箱文字文字数
     }
 }
 

@@ -751,6 +751,74 @@ public struct DMScanner: RandomAccessCollection {
         self.startIndex = initialIndex
         return nil
     }
+    
+    // MARK: - 逆方向スキャン
+    /// 必要なら逆方向にスペースをスキップする
+    private mutating func reverseDropHeadSpacesIfNeeds() {
+        if skipSpaces { reverseDropHeadSpaces() }
+    }
+    /// 一つ前がスペースでないようにカーソルを前に移動する
+    public mutating func reverseDropHeadSpaces() {
+        var index = startIndex
+        while index != source.startIndex {
+            index = source.index(before: startIndex)
+            if !source[index].isWhitespace { return }
+            startIndex = index
+        }
+        needsSpaceCheck = skipSpaces
+    }
+
+    /// 前方キャラが指定された文字ならカーソルを前に戻してtrueを返す
+    public mutating func reverseScanCharacter(_ character: Character) -> Bool {
+        reverseDropHeadSpacesIfNeeds()
+        guard startIndex != source.startIndex else { return false }
+        let index = source.index(before: startIndex)
+        if source[index] == character {
+            startIndex = index
+            return true
+        } else {
+            return false
+        }
+    }
+
+    public mutating func reverseScanInteger() -> Int? {
+        return Int(reverseScanIntegerString())
+    }
+    
+    public mutating func reverseScanIntegerString() -> String {
+        reverseDropHeadSpacesIfNeeds()
+        var numberString = ""
+        var index = startIndex
+        while index != source.startIndex {
+            self.startIndex = index
+            index = source.index(before: index)
+            let ch = source[index]
+            if ch.isASCIINumber {
+                numberString.insert(ch, at: numberString.startIndex)
+                continue
+            } else if !numberString.isEmpty {
+                if ch == "+" || ch == "-" {
+                    numberString.insert(ch, at: numberString.startIndex)
+                    startIndex = index
+                    return numberString
+                }
+            }
+            break
+        }
+        return numberString
+    }
+    
+    public mutating func reverseScanDay() -> Day? {
+        reverseDropHeadSpacesIfNeeds()
+        let currentIndex = self.startIndex
+        guard let day = self.reverseScanInteger(), day >= 1 && day <= 31,
+              self.reverseScanCharacter("/") == true,
+              let month = self.reverseScanInteger(), month >= 1 && month <= 12 else {
+            self.startIndex = currentIndex
+            return nil
+        }
+        return Day(month, day)
+    }
 }
 
 let ngCharacters: Set<Character> = [

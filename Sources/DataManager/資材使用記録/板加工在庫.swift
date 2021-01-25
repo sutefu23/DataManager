@@ -15,7 +15,7 @@ struct 板加工在庫型 {
     let ソート順: Double
     
     init?(_ line: String, order: Double?) {
-        let digs = line.toJapaneseNormal.split(separator: ",")
+        let digs = line.toJapaneseNormal.csvColumns
         guard digs.count >= 3 else { return nil }
         let name = digs[0]
         if name.isEmpty { return nil }

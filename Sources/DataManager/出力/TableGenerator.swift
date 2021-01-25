@@ -193,6 +193,7 @@ public extension TableGenerator {
     }
     enum DayFormat {
         case yearMonthDay
+        case yearMonthDayNumber
         case monthDay
         case monthDayWeek
         case yearMonth
@@ -300,6 +301,8 @@ public extension TableGenerator {
             switch format {
             case .yearMonthDay:
                 return day?.yearMonthDayString
+            case .yearMonthDayNumber:
+                return day?.yearMonthDayNumberString
             case .monthDay:
                 return day?.monthDayString
             case .yearMonth:

@@ -37,10 +37,14 @@
 		148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
 		148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */; };
 		148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */; };
+		148DBA6925B939B100721484 /* 送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148DBA6825B939B100721484 /* 送状.swift */; };
 		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
 		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
 		1498B067252429CB001698DF /* IDカード型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B066252429CB001698DF /* IDカード型.swift */; };
 		1498B07B25254743001698DF /* 13939.dxf in Resources */ = {isa = PBXBuildFile; fileRef = 1498B07A25254743001698DF /* 13939.dxf */; };
+		149D95F225B95FAB000F97B5 /* 福山通運.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149D95F125B95FAB000F97B5 /* 福山通運.swift */; };
+		14A0C10025BA9DE800C44167 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */; };
+		14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */; };
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
@@ -183,7 +187,6 @@
 		OBJ_338 /* Test指示書.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_161 /* Test指示書.swift */; };
 		OBJ_339 /* Test指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_162 /* Test指示書ボルト欄.swift */; };
 		OBJ_340 /* Test指示書文字数.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_163 /* Test指示書文字数.swift */; };
-		OBJ_341 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_164 /* Test板加工在庫.swift */; };
 		OBJ_342 /* Test発注.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_165 /* Test発注.swift */; };
 		OBJ_343 /* Test社員.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_166 /* Test社員.swift */; };
 		OBJ_344 /* Test管理板材型.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_167 /* Test管理板材型.swift */; };
@@ -255,10 +258,14 @@
 		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
 		148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "角パイプ一覧.csv"; sourceTree = "<group>"; };
 		148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材パイプ情報.swift"; sourceTree = "<group>"; };
+		148DBA6825B939B100721484 /* 送状.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状.swift"; sourceTree = "<group>"; };
 		1498B052252413FA001698DF /* 全角カナto半角カナ.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角カナto半角カナ.txt"; sourceTree = "<group>"; };
 		1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角ASCIIto半角ASCII.txt"; sourceTree = "<group>"; };
 		1498B066252429CB001698DF /* IDカード型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDカード型.swift"; sourceTree = "<group>"; };
 		1498B07A25254743001698DF /* 13939.dxf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 13939.dxf; sourceTree = "<group>"; };
+		149D95F125B95FAB000F97B5 /* 福山通運.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "福山通運.swift"; sourceTree = "<group>"; };
+		14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
+		14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableGenerator.swift; sourceTree = "<group>"; };
 		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
@@ -332,7 +339,6 @@
 		OBJ_161 /* Test指示書.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書.swift"; sourceTree = "<group>"; };
 		OBJ_162 /* Test指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書ボルト欄.swift"; sourceTree = "<group>"; };
 		OBJ_163 /* Test指示書文字数.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test指示書文字数.swift"; sourceTree = "<group>"; };
-		OBJ_164 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
 		OBJ_165 /* Test発注.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test発注.swift"; sourceTree = "<group>"; };
 		OBJ_166 /* Test社員.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test社員.swift"; sourceTree = "<group>"; };
 		OBJ_167 /* Test管理板材型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test管理板材型.swift"; sourceTree = "<group>"; };
@@ -483,6 +489,14 @@
 			path = "集計";
 			sourceTree = "<group>";
 		};
+		149D95F025B95F68000F97B5 /* CSV */ = {
+			isa = PBXGroup;
+			children = (
+				149D95F125B95FAB000F97B5 /* 福山通運.swift */,
+			);
+			path = CSV;
+			sourceTree = "<group>";
+		};
 		OBJ_105 /* 工程分析 */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,6 +595,7 @@
 				OBJ_154 /* TestTextReader.swift */,
 				OBJ_155 /* TestTextWriter.swift */,
 				OBJ_156 /* TestVersion.swift */,
+				14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */,
 				OBJ_157 /* Test伝票番号.swift */,
 				OBJ_158 /* Test出勤日.swift */,
 				OBJ_159 /* Test工程.swift */,
@@ -588,7 +603,6 @@
 				OBJ_161 /* Test指示書.swift */,
 				OBJ_162 /* Test指示書ボルト欄.swift */,
 				OBJ_163 /* Test指示書文字数.swift */,
-				OBJ_164 /* Test板加工在庫.swift */,
 				OBJ_165 /* Test発注.swift */,
 				OBJ_166 /* Test社員.swift */,
 				OBJ_167 /* Test管理板材型.swift */,
@@ -604,6 +618,7 @@
 				OBJ_176 /* Test進捗.swift */,
 				OBJ_177 /* Test進捗出力.swift */,
 				OBJ_178 /* Test部署.swift */,
+				14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */,
 				14F3DFE6251DAEA0003D4BCA /* TestSession.swift */,
 				148CA55B25367E50002CE1D4 /* TestICCardID.swift */,
 			);
@@ -731,6 +746,7 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				149D95F025B95F68000F97B5 /* CSV */,
 				147A6311255927610077634B /* 工程分解 */,
 				14767125251D5CA600429C17 /* Resources */,
 				1485E4922553DA330006DA8D /* 集計 */,
@@ -805,6 +821,7 @@
 				OBJ_24 /* 進捗.swift */,
 				OBJ_25 /* 部署.swift */,
 				OBJ_26 /* 部門.swift */,
+				148DBA6825B939B100721484 /* 送状.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1031,6 +1048,7 @@
 				OBJ_268 /* 管理資材（パイプ）.swift in Sources */,
 				OBJ_269 /* 管理資材（板）.swift in Sources */,
 				OBJ_270 /* 資材入出庫出力.swift in Sources */,
+				148DBA6925B939B100721484 /* 送状.swift in Sources */,
 				OBJ_271 /* 資材要求出力.swift in Sources */,
 				OBJ_272 /* 進捗出力.swift in Sources */,
 				OBJ_273 /* 作業パターン.swift in Sources */,
@@ -1058,6 +1076,7 @@
 				OBJ_292 /* 箱文字優先度キャッシュ.swift in Sources */,
 				OBJ_293 /* 資材キャッシュ.swift in Sources */,
 				8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */,
+				149D95F225B95FAB000F97B5 /* 福山通運.swift in Sources */,
 				1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */,
 				OBJ_294 /* 資材発注キャッシュ.swift in Sources */,
 				OBJ_295 /* 指示書文字数.swift in Sources */,
@@ -1086,6 +1105,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */,
 				OBJ_323 /* DataManagerTests.swift in Sources */,
 				OBJ_324 /* TestDMScanner.swift in Sources */,
 				OBJ_325 /* TestDate.swift in Sources */,
@@ -1107,11 +1127,11 @@
 				OBJ_338 /* Test指示書.swift in Sources */,
 				OBJ_339 /* Test指示書ボルト欄.swift in Sources */,
 				OBJ_340 /* Test指示書文字数.swift in Sources */,
-				OBJ_341 /* Test板加工在庫.swift in Sources */,
 				OBJ_342 /* Test発注.swift in Sources */,
 				OBJ_343 /* Test社員.swift in Sources */,
 				OBJ_344 /* Test管理板材型.swift in Sources */,
 				OBJ_345 /* Test管理資材型.swift in Sources */,
+				14A0C10025BA9DE800C44167 /* Test板加工在庫.swift in Sources */,
 				OBJ_346 /* Test資材.swift in Sources */,
 				OBJ_347 /* Test資材コイル情報.swift in Sources */,
 				OBJ_348 /* Test資材使用記録.swift in Sources */,

@@ -133,6 +133,7 @@ public class IDカード型 {
         } else {
             self.recordId = try db.insert(layout: IDカードData型.dbName, fields: data)
         }
+        self.original = self.data
         IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
     }
     

@@ -483,4 +483,45 @@ class TestDMScanner: XCTestCase {
         XCTAssertEqual(scanner.scanUpToString("WEg"), "abcQ")
         XCTAssertEqual(scanner.string, "g2")
     }
+    
+    // MARK: - 逆方向スキャン
+    func testReverseInteger() {
+        var scanner: DMScanner
+        scanner = DMScanner("aaa-100c")
+        XCTAssertEqual(scanner.reverseScanInteger(), nil)
+        XCTAssertEqual(scanner.scanString("aaa-100"), true)
+        XCTAssertEqual(scanner.reverseScanInteger(), -100)
+        
+        scanner = DMScanner("aaa-100c")
+        XCTAssertEqual(scanner.scanString("aaa-100c"), true)
+        XCTAssertEqual(scanner.reverseScanInteger(), nil)
+    }
+    
+    func testReverseScanCharacter() {
+        var scanner: DMScanner
+        scanner = DMScanner("aaa-100c")
+        XCTAssertEqual(scanner.reverseScanCharacter("a"), false)
+
+        scanner.scanString("aaa-")
+        let index = scanner.startIndex
+        
+        XCTAssertEqual(scanner.reverseScanCharacter("a"), false)
+        XCTAssertEqual(index, scanner.startIndex)
+
+        XCTAssertEqual(scanner.string, "100c")
+        XCTAssertEqual(scanner.reverseScanCharacter("-"), true)
+        XCTAssertNotEqual(index, scanner.startIndex)
+    }
+    
+    func testReverseScanDay() {
+        var scanner: DMScanner
+        scanner = DMScanner("a10/9 sa")
+        scanner.skipSpaces = true
+        scanner.scanString("a10/9")
+        scanner.dropHeadSpaces()
+        XCTAssertEqual(scanner.string, "sa")
+
+        XCTAssertEqual(scanner.reverseScanDay(), Day(10,9))
+        XCTAssertEqual(scanner.string, "10/9 sa")
+    }
 }

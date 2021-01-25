@@ -236,6 +236,7 @@ public final class 資材使用記録型 {
         } else {
             self.recordID = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
         }
+        self.original = self.data
         資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
     }
     

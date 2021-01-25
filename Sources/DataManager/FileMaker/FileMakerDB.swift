@@ -142,7 +142,11 @@ public final class FileMakerDB {
     /// レーザーDB
     static let laser: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "laser", user: "admin", password: "ws")
 
-    public static var isEnabled = true
+    private static var isEnabledValue = true
+    public static var isEnabled: Bool {
+        get { isEnabledValue && !defaults.filemakerIsDisabled}
+        set { isEnabledValue = newValue }
+    }
     
     let dbURL: URL
     var server: FileMakerServer
@@ -204,7 +208,7 @@ public final class FileMakerDB {
     
     /// サーバーが停止中ならtrueを返す
     private func checkStop() throws {
-        if !FileMakerDB.isEnabled || UserDefaults.standard.filemakerIsDisabled { throw FileMakerError.dbIsDisabled }
+        if !FileMakerDB.isEnabled { throw FileMakerError.dbIsDisabled }
     }
 
     /// スクリプトを実行する

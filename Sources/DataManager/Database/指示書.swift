@@ -483,8 +483,10 @@ public final class 指示書型 {
         while !scanner.isAtEnd {
             if let value = scanner.scanInteger(), value >= 0 && value <= 24 {
                 if scanner.scanStrings(出荷時間文言リスト2) {
+                    if let day = scanner.reverseScanDay(), day != self.出荷納期 { return nil } // 出荷納期と違う
                     return Time(value, 00)
                 } else if scanner.scanStrings(出荷時間文言リスト3) {
+                    if let day = scanner.reverseScanDay(), day != self.出荷納期 { return nil } // 出荷納期と違う
                     return Time(value, 30)
                 }
             }
@@ -716,6 +718,32 @@ extension 指示書型 {
         return target.last?.登録日時
     }
     
+    /// 伝票状態が正常ならtrueを返す
+    public var isValid伝票状態: Bool {
+        switch self.伝票種類 {
+        case .校正:
+            switch self.伝票状態 {
+            case .キャンセル, .未製作:
+                return true
+            case .製作中, .発送済:
+                return false
+            }
+        case .エッチング, .切文字, .加工, .箱文字, .外注:
+            break
+        }
+        switch self.伝票状態 {
+        case .キャンセル, .未製作:
+            return true
+        case .製作中:
+            return
+                self.承認状態 == .承認済 &&
+                self.進捗一覧.contains(工程: .発送, 作業内容: .完了) == false
+        case .発送済:
+            return
+                self.承認状態 == .承認済 &&
+                self.進捗一覧.contains(工程: .発送, 作業内容: .完了) == true
+        }
+    }
 }
 
 public enum 立ち上がりランク型: Int, Comparable, Hashable {

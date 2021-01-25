@@ -264,7 +264,9 @@ class ProgressCounter {
 
 // MARK: - 工程分析
 extension 指示書型 {
-    public static var 作業記録補完: Bool = true
+    public var is作業記録補完対象: Bool {
+        self.受注日 < Day(2020, 1, 1) // これ以前は欠けが多い
+    }
     
     func setup関連保留校正処理<S: Sequence>(_ works: S) where S.Element == 作業記録型 {
         let stops = self.保留校正一覧 + make管理戻し()
@@ -349,7 +351,7 @@ extension 指示書型 {
                     return
                 }
             }
-            if 指示書型.作業記録補完 {
+            if self.is作業記録補完対象 {
                 完了補完(前工程: .立ち上がり, 後工程: .半田)
                 完了補完(前工程: .半田, 後工程: .裏加工)
                 完了補完(前工程: .立ち上がり_溶接, 後工程: .溶接)
@@ -390,7 +392,7 @@ extension 指示書型 {
                         }
                         return false
                     }
-                    if 指示書型.作業記録補完 {
+                    if self.is作業記録補完対象 {
                         if 開始補完(前工程: .照合検査, 後工程: .立ち上がり) { break }
                         if 開始補完(前工程: .立ち上がり, 後工程: .半田) { break }
                         if 開始補完(前工程: .半田, 後工程: .裏加工) { break }

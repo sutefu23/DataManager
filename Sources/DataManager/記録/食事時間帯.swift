@@ -109,6 +109,7 @@ public class 食事時間帯型 {
         } else {
             self.recordId = try db.insert(layout: 食事時間帯Data型.dbName, fields: data)
         }
+        self.original = self.data
         食事時間帯キャッシュ型.shared.flush(提供パターン: self.提供パターン, 食事グループ: self.食事グループ)
     }
 
