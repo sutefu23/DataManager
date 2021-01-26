@@ -264,8 +264,12 @@ class ProgressCounter {
 
 // MARK: - 工程分析
 extension 指示書型 {
+    public static var 作業記録補完: Bool? = true
+
     public var is作業記録補完対象: Bool {
-        self.受注日 < Day(2020, 1, 1) // これ以前は欠けが多い
+        return
+            指示書型.作業記録補完 ?? // 指定されている場合それに従う
+            (self.受注日 < Day(2020, 1, 1)) // これ以前は欠けが多い
     }
     
     func setup関連保留校正処理<S: Sequence>(_ works: S) where S.Element == 作業記録型 {

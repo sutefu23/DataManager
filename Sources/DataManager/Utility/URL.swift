@@ -77,7 +77,7 @@ extension URL {
     }
 
     /// fromの示すディレクトリ下にこのURLが在る場合、from以下の要素を取り出す
-    public func subComponents(from: URL) -> [String]? {
+    public func childComponents(from: URL) -> [String]? {
         let base = from.standardizedFileURL.pathComponents
         let sub = self.standardizedFileURL.pathComponents
         if base.count > sub.count { return nil }
@@ -105,6 +105,12 @@ extension URL {
         let ext = pathExtension
         var url = self.deletingLastPathComponent()
         url.appendPathComponent(newFilename + "." + ext)
+        return url
+    }
+    
+    public func appendingPathComponents(_ components: [String]) -> URL {
+        var url = self
+        components.forEach { url.appendPathComponent($0) }
         return url
     }
 }
