@@ -67,8 +67,7 @@ extension Sequence where Element == 資材要求出力型 {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_MaterialRequirementsInput"
-        if loopCount >= 5 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件")}
-
+        if loopCount >= 5 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件") }
         let uuid = UUID()
         do {
             // 発注処理

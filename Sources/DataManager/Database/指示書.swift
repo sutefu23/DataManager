@@ -476,16 +476,16 @@ public final class 指示書型 {
     public lazy var 発送事項出荷時間: Time? = {
         var scanner = DMScanner(self.発送事項, normalizedFullHalf: true, skipSpaces: true)
         while let (_, time) = scanner.scanUpToTime() {
-            if scanner.scanStrings(出荷時間文言リスト1) { return time }
+            if scanner.scanStrings(出荷時間文言リスト1) != nil { return time }
         }
         scanner.reset()
         scanner.skip数字以外()
         while !scanner.isAtEnd {
             if let value = scanner.scanInteger(), value >= 0 && value <= 24 {
-                if scanner.scanStrings(出荷時間文言リスト2) {
+                if scanner.scanStrings(出荷時間文言リスト2) != nil {
                     if let day = scanner.reverseScanDay(), day != self.出荷納期 { return nil } // 出荷納期と違う
                     return Time(value, 00)
-                } else if scanner.scanStrings(出荷時間文言リスト3) {
+                } else if scanner.scanStrings(出荷時間文言リスト3) != nil {
                     if let day = scanner.reverseScanDay(), day != self.出荷納期 { return nil } // 出荷納期と違う
                     return Time(value, 30)
                 }

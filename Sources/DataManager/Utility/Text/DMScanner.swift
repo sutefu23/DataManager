@@ -99,6 +99,17 @@ public struct DMScanner: RandomAccessCollection {
         }
     }
 
+    /// 末尾に指定文字列のどれかを含むとtrue
+    public mutating func hasSuffix(_ suffix: [String], upperCased: Bool = false) -> Bool {
+        if upperCased {
+            let target = substring.uppercased()
+            return suffix.contains { target.hasSuffix($0) }
+        } else {
+            let target = substring
+            return suffix.contains { target.hasSuffix($0) }
+        }
+    }
+
     /// 先頭に指定文字列を含むとtrue
     public mutating func hasPrefix(_ prefix: String, upperCased: Bool = false) -> Bool {
         if upperCased {
@@ -539,8 +550,9 @@ public struct DMScanner: RandomAccessCollection {
     
     /// 指定文字分スキップする
     @discardableResult public mutating func scanString(_ pattern: String) -> Bool {
-        dropHeadSpacesIfNeeds()
         let count = pattern.count
+        if count == 0 { return false }
+        dropHeadSpacesIfNeeds()
         let match = self.substring
         if match.count < count { return false }
         if match.count == count {
@@ -562,14 +574,20 @@ public struct DMScanner: RandomAccessCollection {
     }
 
     /// patternsのどれか合致する物をスキップする
-    @discardableResult public mutating func scanStrings(_ patterns: String...) -> Bool {
+    @discardableResult public mutating func scanStrings(_ patterns: String...) -> String? {
         let patterns = patterns.sorted { $0.count > $1.count } // 長いものから順に実施する
-        return patterns.contains { self.scanString($0) }
+        for pattern in patterns {
+            if self.scanString(pattern) { return pattern }
+        }
+        return nil
     }
 
-    @discardableResult public mutating func scanStrings(_ patterns: [String]) -> Bool {
+    @discardableResult public mutating func scanStrings(_ patterns: [String]) -> String? {
         let patterns = patterns.sorted { $0.count > $1.count } // 長いものから順に実施する
-        return patterns.contains { self.scanString($0) }
+        for pattern in patterns {
+            if self.scanString(pattern) { return pattern }
+        }
+        return nil
     }
 
     /// マッチする分スキップする
