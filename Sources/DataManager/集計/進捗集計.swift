@@ -8,7 +8,7 @@
 import Foundation
 
 #if !os(tvOS)
-public func outout仕掛かり始め(チェック日 range: ClosedRange<Day>) {
+public func output仕掛かり始め(チェック日 range: ClosedRange<Day>) {
     do {
         let source: [進捗型]
         source = try 進捗型.find(登録期間: range, 作業種別: .作直)

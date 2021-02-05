@@ -179,6 +179,10 @@ public struct Day: Hashable, Strideable, Codable {
         }
     }
 
+    public var yearString: String { make4dig(year) }
+    public var monthString: String { make2dig(month) }
+    public var dayString: String { make2dig(day) }
+
     public var monthDayWeekString: String {
         return "\(self.month)/\(self.day)(\(self.week))"
     }

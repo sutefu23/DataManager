@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		14083ED725CD07E900A326ED /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
@@ -242,6 +243,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
@@ -659,6 +661,7 @@
 				OBJ_42 /* File.swift */,
 				OBJ_43 /* Future.swift */,
 				OBJ_44 /* Int.swift */,
+				14083ED625CD07E900A326ED /* NAS.swift */,
 				OBJ_45 /* PropertyWrapper.swift */,
 				OBJ_46 /* RunLoop.swift */,
 				OBJ_47 /* Sequence.swift */,
@@ -981,6 +984,7 @@
 				OBJ_207 /* FileMakerRecord.swift in Sources */,
 				OBJ_208 /* FileMakerSession.swift in Sources */,
 				OBJ_209 /* Alert.swift in Sources */,
+				14083ED725CD07E900A326ED /* NAS.swift in Sources */,
 				OBJ_210 /* Bundle.swift in Sources */,
 				OBJ_211 /* ChangeLog.swift in Sources */,
 				OBJ_212 /* Concurrent.swift in Sources */,

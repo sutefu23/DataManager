@@ -163,9 +163,9 @@ public extension Sequence where Element == 進捗型 {
             case .通常:
                 switch progress.作業内容 {
                 case .仕掛:
-                    if !progress.is最終時間進捗 {
+//                    if !progress.is最終時間進捗 {
                         return progress.工程
-                    }
+//                    }
                 default:
                     break
                 }
@@ -174,9 +174,9 @@ public extension Sequence where Element == 進捗型 {
             case .作直, .手直:
                 switch progress.作業内容 {
                 case .仕掛:
-                    if !progress.is最終時間進捗 {
+//                    if !progress.is最終時間進捗 {
                         return progress.工程
-                    }
+//                    }
                 default:
                     break
                 }

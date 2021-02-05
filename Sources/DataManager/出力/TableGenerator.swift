@@ -49,7 +49,7 @@ public enum ExportType {
     
     private static let ngCharacters: CharacterSet = {
         var set = CharacterSet()
-        set.insert(charactersIn: ",\"\r\n\t\\")
+        set.insert(charactersIn: ",'\"\r\n\t\\")
         return set
     }()
 

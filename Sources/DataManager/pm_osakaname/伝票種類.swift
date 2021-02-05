@@ -8,13 +8,13 @@
 
 import Foundation
 
-public enum 伝票種類型: CustomStringConvertible, Comparable {
-    case 箱文字
-    case 切文字
-    case 加工
-    case エッチング
-    case 外注
-    case 校正
+public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
+    case 箱文字 = 1
+    case 切文字 = 2
+    case 加工 = 3
+    case エッチング = 4
+    case 外注 = 5
+    case 校正 = 6
     
     init?<T>(_ name: T) where T: StringProtocol {
         switch name {
@@ -60,6 +60,8 @@ public enum 伝票種類型: CustomStringConvertible, Comparable {
 
     }
     #endif
+    
+    public static func <(left: 伝票種類型, right: 伝票種類型) -> Bool { left.rawValue < right.rawValue }
 }
 
 extension FileMakerRecord {

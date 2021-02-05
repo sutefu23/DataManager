@@ -421,4 +421,13 @@ extension StringProtocol {
         }
         return columns
     }
+    
+    /// カラムの先頭が'だった場合削除する
+    var dashStribbped: String {
+        if self.hasPrefix("'") {
+            return String(self.dropFirst())
+        } else {
+            return String(self)
+        }
+    }
 }

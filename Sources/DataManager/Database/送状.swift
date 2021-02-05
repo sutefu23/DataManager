@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class 送状型: Identifiable {
+public class 送状型: Identifiable {
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {
@@ -47,6 +47,7 @@ public final class 送状型: Identifiable {
     public var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "エッチング指示書テーブル::伝票種類") }
     public var 出荷納期: Day? { record.day(forKey: "エッチング指示書テーブル::出荷納期") }
     public var 発送事項: String? { record.string(forKey: "エッチング指示書テーブル::発送事項") }
+    public var 伝票状態: 伝票状態型? { record.伝票状態(forKey: "エッチング指示書テーブル::伝票状態") }
 }
 
 extension 送状型 {
@@ -85,4 +86,53 @@ extension 送状型 {
         query["管理番号"] = 送状管理番号
         return try find(query).first
     }
+    
+    public var 送り主住所: 住所型 {
+        return 住所型(郵便番号: self.依頼主郵便番号, 住所1: self.依頼主住所1, 住所2: self.依頼主住所2, 住所3: self.依頼主住所3, 名前: self.依頼主受取者名, 電話番号: self.依頼主電話番号)
+    }
+    public var 送り先住所: 住所型 {
+        return 住所型(郵便番号: self.届け先郵便番号, 住所1: self.届け先住所1, 住所2: self.届け先住所2, 住所3: self.届け先住所3, 名前: self.届け先受取者名, 電話番号: self.届け先電話番号)
+    }
+}
+
+public struct 住所型: Hashable {
+    public var 郵便番号: String
+    public var 住所1: String
+    public var 住所2: String
+    public var 住所3: String
+    public var 名前: String
+    public var 電話番号: String
+    
+    public var 比較用データ: 住所型 {
+        return 住所型(
+            郵便番号: self.郵便番号.toHalfCharacters.spaceStripped.filter { $0 != "-" },
+            住所1: self.住所1.比較用文字列,
+            住所2: self.住所2.比較用文字列,
+            住所3: self.住所3.比較用文字列,
+            名前: self.名前.比較用文字列,
+            電話番号: self.電話番号.toHalfCharacters.spaceStripped.filter { $0 != "-" }
+        )
+    }
+}
+
+extension 送状型 {
+    public var is福山発送ok: Bool {
+        let test = self.送り主住所.比較用データ
+        return 住所型.福山送り主一覧Set.contains(test)
+    }
+}
+
+extension 住所型 {
+    static let 福山送り主一覧Set: Set<住所型> = {
+        Set<住所型>(福山送り主一覧.map { $0.住所.比較用データ })
+    }()
+    
+    public static let 福山送り主一覧: [(会社コード: String, 住所: 住所型)] = [
+        ("3105", 住所型(郵便番号: "811-2232", 住所1: "福岡県糟屋郡志免町", 住所2: "別府西1-1-8", 住所3: "", 名前: "株式会社オオサカネーム", 電話番号: "092-518-1131")),
+        ("2579", 住所型(郵便番号: "501-6002", 住所1: "岐阜県羽島郡岐南町", 住所2: "三宅3-228", 住所3: "", 名前: "㈱ 美濃クラフト", 電話番号: "058-248-3000")),
+        ("3659", 住所型(郵便番号: "535-0022", 住所1: "大阪市旭区", 住所2: "新森3-5-1 1F", 住所3: "", 名前: "㈲　ミナミ工芸", 電話番号: "06-6955-6363")),
+        ("3659", 住所型(郵便番号: "535-0022", 住所1: "大阪市旭区", 住所2: "新森3-5-1", 住所3: "", 名前: "㈲　ミナミ工芸", 電話番号: "06-6955-6363")),
+    ]
+
+    public static let 福山送り主一覧比較用: [(会社コード: String, 住所: 住所型)] = 住所型.福山送り主一覧.map { ($0.会社コード, $0.住所.比較用データ) }
 }

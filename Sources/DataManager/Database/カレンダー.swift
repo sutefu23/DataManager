@@ -212,19 +212,27 @@ final class 固定カレンダー型: カレンダー型 {
 
 final class 自動カレンダー型: カレンダー型 {
    
+    struct ProgressListCache {
+        var list: [進捗型]?
+        
+        init(list: [進捗型]?) { self.list = list }
+    }
+    
     final class DayDB {
         let day: Day
-        private let lock = NSLock()
+        private let lock = NSRecursiveLock()
         private var map: [工程型: 勤務時間型] = [:]
         private var all : 勤務時間型?
         private var allProgress: [進捗型]?
-        private var progressMap: [工程型: [進捗型]]?
+        private var progressMap: [工程型: [進捗型]] = [:]
         
         init(_ day: Day) {
             self.day = day
         }
         
         private func fetchAllProgress() -> [進捗型] {
+            lock.lock()
+            defer { lock.unlock() }
             if let list = self.allProgress { return list }
             let list = (try? 進捗型.find(工程: nil, 登録日: day)) ?? []
             self.allProgress = list
@@ -232,10 +240,21 @@ final class 自動カレンダー型: カレンダー型 {
         }
         
         private func fetchProgress(for state: 工程型) -> [進捗型] {
-            if let map = progressMap { return map[state] ?? [] }
-            let map = Dictionary(grouping: fetchAllProgress()) { $0.工程 }
-            self.progressMap = map
-            return map[state] ?? []
+            lock.lock()
+            defer { lock.unlock() }
+            if let cache = progressMap[state] { return cache }
+            if let allProgress = allProgress {
+                let list = allProgress.filter { $0.工程 == state }
+                progressMap[state] = list
+                return list
+            } else {
+                if let list = try? 進捗型.find(工程: state, 登録日: day) {
+                    progressMap[state] = list
+                    return list
+                } else {
+                    return []
+                }
+            }
         }
         
         func timeDB(of state: 工程型?) -> 勤務時間型 {
