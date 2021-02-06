@@ -24,6 +24,7 @@ public func output仕掛かり始め(チェック日 range: ClosedRange<Day>) {
             .string("伝票種類") { $0.order.伝票種類.description }
             .string("仕掛工程") { $0.source?.description }
             .string("先頭工程") { $0.progress.工程.description }
+            .day("先頭日", .yearMonthDay) { $0.progress.登録日 }
             .time("先頭時間") { $0.progress.登録時間 }
             .string("登録者") { $0.progress.社員名称 }
             .string("仕掛~作直完了(分)") {
