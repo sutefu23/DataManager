@@ -106,7 +106,7 @@ public func getDisplayInfo(of screen: NSScreen)-> (screenSize: CGSize, xPixels: 
     }
 }
 
-public func showModalDialog(message: String, info: String = "", buttons: String...) -> Int {
+public func showModalDialog(message: String, info: String = "", buttons: String...) -> Int? {
     let alert = NSAlert()
     alert.messageText = message
     alert.informativeText = info
@@ -122,7 +122,7 @@ public func showModalDialog(message: String, info: String = "", buttons: String.
     case .alertThirdButtonReturn:
         return 2
     default:
-        return -1
+        return nil
     }
 }
 

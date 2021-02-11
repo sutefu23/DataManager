@@ -32,8 +32,10 @@ private extension 送状型 {
         if self.配達指定日 == nil { return "" }
         return 着指定時間.toHalfCharacters.contains("AM") ? "130" : "" // AM指定
     }
-    var 品名記事1: String { String(self.品名.prefix(15)) }
-    var 品名記事2: String { String(self.品名.dropFirst(15).prefix(15)) }
+    var 品名記事1: String {
+        String(self.品名.prefix(全角2文字: 30))
+    }
+    var 品名記事2: String { String(self.品名.dropFirst(全角2文字: 30).prefix(全角2文字: 30)) }
     var 品名記事3: String {
         if let number = self.伝票番号?.表示用文字列 {
             return number + " " + self.記事
@@ -239,7 +241,7 @@ extension Array where Element == 福山出荷実績型 {
             guard let data = send.指示書 else { return .対応する指示書が存在しない }
             guard data.伝票状態 != .キャンセル else { return .キャンセルされた伝票の送状 }
             let number = send.送り状番号
-            if number.isEmpty {
+            if number.isEmpty || Int(number) == 0 {
                 return .問題なし（送状番号未登録）
             } else {
                 if number == order.送り状番号 {

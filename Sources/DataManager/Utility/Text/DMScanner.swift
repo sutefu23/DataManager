@@ -837,6 +837,25 @@ public struct DMScanner: RandomAccessCollection {
         }
         return Day(month, day)
     }
+    
+    @discardableResult
+    public mutating func drop(全角2文字 count: Int) -> String {
+        dropHeadSpacesIfNeeds()
+        var result: String = ""
+        var rest = count
+        while startIndex < endIndex {
+            let ch = source[startIndex]
+            if ch.isASCII {
+                rest -= 1
+            } else {
+                rest -= 2
+            }
+            if rest < 0 { break }
+            result.append(ch)
+            startIndex = source.index(after: startIndex)
+        }
+        return result
+    }
 }
 
 let ngCharacters: Set<Character> = [

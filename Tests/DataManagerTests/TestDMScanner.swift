@@ -524,4 +524,40 @@ class TestDMScanner: XCTestCase {
         XCTAssertEqual(scanner.reverseScanDay(), Day(10,9))
         XCTAssertEqual(scanner.string, "10/9 sa")
     }
+    
+    func test全角2文字() {
+        var scanner: DMScanner
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 0), "")
+        XCTAssertEqual(scanner.string, "a漢字bbc")
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 1), "a")
+        XCTAssertEqual(scanner.string, "漢字bbc")
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 2), "a")
+        XCTAssertEqual(scanner.string, "漢字bbc")
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 3), "a漢")
+        XCTAssertEqual(scanner.string, "字bbc")
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 4), "a漢")
+        XCTAssertEqual(scanner.string, "字bbc")
+        
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 5), "a漢字")
+        XCTAssertEqual(scanner.string, "bbc")
+
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 6), "a漢字b")
+        XCTAssertEqual(scanner.string, "bc")
+        
+        scanner = DMScanner("a漢字bbc")
+        XCTAssertEqual(scanner.drop(全角2文字: 100), "a漢字bbc")
+        XCTAssertEqual(scanner.string, "")
+    }
 }

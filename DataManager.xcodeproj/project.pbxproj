@@ -930,6 +930,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
+				ja,
 			);
 			mainGroup = OBJ_5;
 			productRefGroup = OBJ_179 /* Products */;

@@ -83,6 +83,16 @@ extension StringProtocol {
         }
         return result
     }
+    
+    func dropFirst(全角2文字 count: Int) -> String {
+        var scanner = DMScanner(self, normalizedFullHalf: true, newlineToSpace: true)
+        scanner.drop(全角2文字: count)
+        return scanner.string
+    }
+    func prefix(全角2文字 count: Int) -> String {
+        var scanner = DMScanner(self, normalizedFullHalf: true, newlineToSpace: true)
+        return scanner.drop(全角2文字: count)
+    }
 }
 
 extension Substring {

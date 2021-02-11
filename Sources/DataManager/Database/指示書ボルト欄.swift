@@ -595,6 +595,16 @@ public enum 資材種類型 {
     case 単品個数物(種類: 選択ボルト等型)
     case 外注(サイズ: String)
 
+    public init?(_ bolt: 選択ボルト等型) {
+        switch bolt.種類 {
+        case .浮かしパイプ:
+            guard let length = bolt.長さValue else { return nil }
+            self = .浮かしパイプ(サイズ: bolt.サイズ, 長さ: length)
+        default:
+            return nil
+        }
+    }
+    
     public func make使用情報() -> (図番: 図番型, 金額計算タイプ: 金額計算タイプ型)? {
         let 図番: 図番型
         let 金額計算タイプ: 金額計算タイプ型

@@ -80,19 +80,26 @@ extension URL {
     public func childComponents(from: URL) -> [String]? {
         let base = from.standardizedFileURL.pathComponents
         let sub = self.standardizedFileURL.pathComponents
-        if base.count > sub.count { return nil }
-        if !sub.prefix(base.count).elementsEqual(base) { return nil }
+        guard sub.prefix(base.count).elementsEqual(base) else { return nil }
         return [String](sub.suffix(sub.count - base.count))
     }
-
+    
     public var contentModificationDate: Date? {
-        let res = try? resourceValues(forKeys: [.contentModificationDateKey])
-        let date = res?.contentModificationDate
-        return date
+        do {
+            var url = self
+            url.removeCachedResourceValue(forKey: .contentModificationDateKey)
+            let res = try url.resourceValues(forKeys: [.contentModificationDateKey])
+            let date = res.contentModificationDate
+            return date
+        } catch {
+            return nil
+        }
     }
-
+    
     public var contentCreationDate: Date? {
-        let res = try? resourceValues(forKeys: [.creationDateKey])
+        var url = self
+        url.removeCachedResourceValue(forKey: .creationDateKey)
+        let res = try? url.resourceValues(forKeys: [.creationDateKey])
         let date = res?.contentModificationDate
         return date
     }
