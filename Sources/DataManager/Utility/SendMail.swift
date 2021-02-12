@@ -34,19 +34,13 @@ public func sendMail(mail_from: String ,mail_to: String, title: String, body: St
     process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
     let bundle = Bundle.dataManagerBundle
 
-    let app = bundle.url(forResource: "sendMail", withExtension: "py")!
-    
-    if isValidEmail(mail_from){
-        throw MailError.notValidMailFormat
-    }
-    
-    if isValidEmail(mail_to){
-        throw MailError.notValidMailFormat
+    guard let app = bundle.url(forResource: "sendMail", withExtension: "py") else {
+        NSLog("sendMail.pyが見つかりません")
+        return
     }
 
-    if title.contains(" ") {//コマンドライン引数と区別がつかないため
-        throw MailError.spaceNotAllowInSpace
-    }
+    
+
     //コマンドライン引数＝[送信元、受信先、タイトル、本文]
     process.arguments = [app.path, mail_from, mail_to, title, body]
 

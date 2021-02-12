@@ -49,6 +49,8 @@
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
+		67227BF625D65663003D6C50 /* sendMail.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00AAB90F2595D91E00ACB725 /* sendMail.py */; };
+		67227BFB25D6566D003D6C50 /* mailConfig.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00AAB90B2595D90C00ACB725 /* mailConfig.py */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
@@ -230,6 +232,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				67227BFB25D6566D003D6C50 /* mailConfig.py in CopyFiles */,
+				67227BF625D65663003D6C50 /* sendMail.py in CopyFiles */,
 				141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */,
 				146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */,
 				14788CCB2538267900995762 /* 丸パイプ一覧.csv in CopyFiles */,
