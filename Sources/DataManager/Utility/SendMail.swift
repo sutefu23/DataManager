@@ -28,7 +28,7 @@ enum MailError: LocalizedError {
 }
 
 @available(OSX 10.13, *)
-public func sendMail(mail_from: String ,mail_to: String, title: String, body: String) throws {
+public func sendMail(mail_from: String ,mail_to: String, mail_cc: String , title: String, body: String) throws {
     #if os(macOS) || os(Linux)
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
@@ -42,7 +42,7 @@ public func sendMail(mail_from: String ,mail_to: String, title: String, body: St
     
 
     //コマンドライン引数＝[送信元、受信先、タイトル、本文]
-    process.arguments = [app.path, mail_from, mail_to, title, body]
+    process.arguments = [app.path, mail_from, mail_to, mail_cc, title, body]
 
     let pipe = Pipe()
     process.standardOutput = pipe

@@ -11,16 +11,18 @@ import mailConfig as config
 
 try:
     if len(sys.argv) < 5:
-        raise AttributeError("コマンドライン引数は最低４つ必要です（送信元メール、受信先メール、タイトル、本文）")
+        raise AttributeError("コマンドライン引数は最低5つ必要です（送信元メール、受信先メール、CC、タイトル、本文）")
 
 
     mail_from = sys.argv[1]
 
     mail_to = sys.argv[2]
 
-    title = sys.argv[3]
+    mail_cc = sys.argv[3]
+    
+    title = sys.argv[4]
 
-    body = " ".join(sys.argv[4:]) #本文中に半角スペースが入ってる可能性を勘案
+    body = " ".join(sys.argv[5:]) #本文中に半角スペースが入ってる可能性を勘案
 
     charset = "utf-8"
     if charset == "utf-8":
@@ -36,7 +38,7 @@ try:
     msg["Subject"] = title
     msg["From"] = mail_from
     msg["To"] = mail_to
-    msg["Cc"] = ""
+    msg["Cc"] = mail_cc
     msg["Bcc"] = ""
     msg["Date"] = formatdate(None,True)
 
