@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		14083ED725CD07E900A326ED /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
+		00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB9102595D9A500ACB725 /* SendMail.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
@@ -206,6 +206,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		00CC3945258C35470002D937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14C80CAB256341C00058A18C;
+			remoteInfo = GohanServer2;
+		};
+		00CC3947258C35470002D937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14C80CBD256341C00058A18C;
+			remoteInfo = GohanServer2Tests;
+		};
+		00CC3949258C35470002D937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14C80CC8256341C00058A18C;
+			remoteInfo = GohanServer2UITests;
+		};
 		8E6BE7C2251B500300F75A82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
@@ -244,6 +265,10 @@
 
 /* Begin PBXFileReference section */
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
+		00AAB90B2595D90C00ACB725 /* mailConfig.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = mailConfig.py; sourceTree = "<group>"; };
+		00AAB90F2595D91E00ACB725 /* sendMail.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = sendMail.py; sourceTree = "<group>"; };
+		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
+		00CC393F258C35470002D937 /* GohanServer2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GohanServer2.xcodeproj; path = ../GohanServer2/GohanServer2.xcodeproj; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
@@ -450,6 +475,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00CC3940258C35470002D937 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00CC3946258C35470002D937 /* GohanServer2.app */,
+				00CC3948258C35470002D937 /* GohanServer2Tests.xctest */,
+				00CC394A258C35470002D937 /* GohanServer2UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		14767125251D5CA600429C17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +497,8 @@
 				141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */,
 				146F88A8253E7019001F8AF1 /* FB一覧.csv */,
 				148CA55025367D73002CE1D4 /* scanICCard.py */,
+				00AAB90B2595D90C00ACB725 /* mailConfig.py */,
+				00AAB90F2595D91E00ACB725 /* sendMail.py */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -674,6 +711,7 @@
 				OBJ_61 /* UserDefaultsUtility.swift */,
 				OBJ_62 /* Utility.swift */,
 				OBJ_63 /* Version.swift */,
+				00AAB9102595D9A500ACB725 /* SendMail.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -692,6 +730,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				00CC393F258C35470002D937 /* GohanServer2.xcodeproj */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_143 /* Tests */,
@@ -936,6 +975,12 @@
 			mainGroup = OBJ_5;
 			productRefGroup = OBJ_179 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 00CC3940258C35470002D937 /* Products */;
+					ProjectRef = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				"DataManager::DataManager" /* DataManager */,
@@ -945,6 +990,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		00CC3946258C35470002D937 /* GohanServer2.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = GohanServer2.app;
+			remoteRef = 00CC3945258C35470002D937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00CC3948258C35470002D937 /* GohanServer2Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GohanServer2Tests.xctest;
+			remoteRef = 00CC3947258C35470002D937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00CC394A258C35470002D937 /* GohanServer2UITests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GohanServer2UITests.xctest;
+			remoteRef = 00CC3949258C35470002D937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		14767131251D5D1700429C17 /* Resources */ = {
@@ -1015,6 +1084,7 @@
 				OBJ_233 /* URL.swift in Sources */,
 				OBJ_234 /* UserDefaults.swift in Sources */,
 				OBJ_235 /* UserDefaultsUtility.swift in Sources */,
+				00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */,
 				OBJ_236 /* Utility.swift in Sources */,
 				147A63132559277B0077634B /* 工程分解.swift in Sources */,
 				OBJ_237 /* Version.swift in Sources */,

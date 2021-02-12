@@ -35,6 +35,8 @@ public enum メニュー種類: 図番型, Comparable, CaseIterable{
         left.code < right.code
     }
 }
+
+
 public enum 食事種類型: String, Comparable {
     case 朝食
     case 昼食
@@ -54,6 +56,27 @@ public enum 食事種類型: String, Comparable {
         left.code < right.code
     }
 }
+
+public enum 食事カテゴリー: String, Comparable, CaseIterable{
+    public static func < (lhs: 食事カテゴリー, rhs: 食事カテゴリー) -> Bool {
+        lhs.code < rhs.code
+    }
+    
+    case 朝食 = "朝食"
+    case 一汁三菜ランチＡ = "一汁三菜ランチＡ"
+    case 一汁三菜ランチＢ = "一汁三菜ランチＢ"
+    case お好みランチ = "お好みランチ"
+    
+    public var code: 図番型 {
+        switch self {
+        case .朝食: return メニュー種類.朝食.code
+        case .一汁三菜ランチＡ: return メニュー種類.A定食.code
+        case .一汁三菜ランチＢ: return メニュー種類.B定食.code
+        case .お好みランチ: return メニュー種類.C定食.code
+        }
+    }
+}
+
 extension FileMakerRecord {
     func 食事種類(forKey key: String) -> 食事種類型? {
         guard let name = self.string(forKey: key) else { return nil }
@@ -114,7 +137,6 @@ struct 食事メニューData型: Equatable {
     
     var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
-        data["メニューID"] = メニューID
         data["図番"] = 図番
         data["提供日"] = 提供日.fmString
         data["発注日"] = 発注日.fmString
@@ -129,7 +151,7 @@ struct 食事メニューData型: Equatable {
     }
 }
 
-public class 食事メニュー型 {
+public class 食事メニュー型 {    
     var original: 食事メニューData型?
     var data: 食事メニューData型
     
@@ -179,7 +201,7 @@ public class 食事メニュー型 {
         set { data.提供パターン = newValue }
     }
 
-    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
+    public init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
         self.data = 食事メニューData型(メニューID: メニューID, 図番: 図番, 提供日: 提供日, 発注日: 発注日, 種類: 種類, 内容: 内容, カロリー: カロリー, 食塩: 食塩, 最大提供数: 最大提供数, 金額: 金額, 提供パターン: 提供パターン)
     }
     
