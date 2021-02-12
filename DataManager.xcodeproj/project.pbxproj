@@ -48,6 +48,7 @@
 		14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */; };
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
+		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
@@ -206,27 +207,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		00CC3945258C35470002D937 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14C80CAB256341C00058A18C;
-			remoteInfo = GohanServer2;
-		};
-		00CC3947258C35470002D937 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14C80CBD256341C00058A18C;
-			remoteInfo = GohanServer2Tests;
-		};
-		00CC3949258C35470002D937 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14C80CC8256341C00058A18C;
-			remoteInfo = GohanServer2UITests;
-		};
 		8E6BE7C2251B500300F75A82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
@@ -264,11 +244,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		00AAB90B2595D90C00ACB725 /* mailConfig.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = mailConfig.py; sourceTree = "<group>"; };
 		00AAB90F2595D91E00ACB725 /* sendMail.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = sendMail.py; sourceTree = "<group>"; };
 		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
-		00CC393F258C35470002D937 /* GohanServer2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GohanServer2.xcodeproj; path = ../GohanServer2/GohanServer2.xcodeproj; sourceTree = "<group>"; };
+		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
@@ -475,16 +454,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00CC3940258C35470002D937 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				00CC3946258C35470002D937 /* GohanServer2.app */,
-				00CC3948258C35470002D937 /* GohanServer2Tests.xctest */,
-				00CC394A258C35470002D937 /* GohanServer2UITests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		14767125251D5CA600429C17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -730,7 +699,6 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				00CC393F258C35470002D937 /* GohanServer2.xcodeproj */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_143 /* Tests */,
@@ -953,7 +921,7 @@
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					"DataManager::DataManager" = {
-						DevelopmentTeam = 4EX9H95FTD;
+						DevelopmentTeam = LVA4CJGB2J;
 					};
 					"DataManager::DataManagerPackageTests::ProductTarget" = {
 						LastSwiftMigration = 1200;
@@ -975,12 +943,6 @@
 			mainGroup = OBJ_5;
 			productRefGroup = OBJ_179 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 00CC3940258C35470002D937 /* Products */;
-					ProjectRef = 00CC393F258C35470002D937 /* GohanServer2.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				"DataManager::DataManager" /* DataManager */,
@@ -990,30 +952,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		00CC3946258C35470002D937 /* GohanServer2.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = GohanServer2.app;
-			remoteRef = 00CC3945258C35470002D937 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		00CC3948258C35470002D937 /* GohanServer2Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GohanServer2Tests.xctest;
-			remoteRef = 00CC3947258C35470002D937 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		00CC394A258C35470002D937 /* GohanServer2UITests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GohanServer2UITests.xctest;
-			remoteRef = 00CC3949258C35470002D937 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		14767131251D5D1700429C17 /* Resources */ = {
@@ -1032,6 +970,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				67227BD025D63F79003D6C50 /* NAS.swift in Sources */,
 				OBJ_188 /* インシデント.swift in Sources */,
 				OBJ_189 /* カレンダー.swift in Sources */,
 				OBJ_190 /* スケジュール.swift in Sources */,
@@ -1055,7 +994,6 @@
 				OBJ_207 /* FileMakerRecord.swift in Sources */,
 				OBJ_208 /* FileMakerSession.swift in Sources */,
 				OBJ_209 /* Alert.swift in Sources */,
-				14083ED725CD07E900A326ED /* NAS.swift in Sources */,
 				OBJ_210 /* Bundle.swift in Sources */,
 				OBJ_211 /* ChangeLog.swift in Sources */,
 				OBJ_212 /* Concurrent.swift in Sources */,
@@ -1241,7 +1179,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1272,7 +1210,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

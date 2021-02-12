@@ -20,7 +20,7 @@ try:
 
     title = sys.argv[3]
 
-    body = " ".join(sys.argv[3:]) #本文中に半角スペースが入ってる可能性を勘案
+    body = " ".join(sys.argv[4:]) #本文中に半角スペースが入ってる可能性を勘案
 
     charset = "utf-8"
     if charset == "utf-8":
