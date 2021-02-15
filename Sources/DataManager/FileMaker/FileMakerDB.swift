@@ -15,6 +15,8 @@ public extension UserDefaults {
         set { self.set(newValue, forKey: "filemakerIsDisabled") }
     }
     
+    var fileMakerIsEnabled: Bool { !self.filemakerIsDisabled }
+    
     /// サーバーへの同時接続数
     var filemakerMaxConnection: Int {
         get { maxConnection }

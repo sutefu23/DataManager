@@ -81,6 +81,19 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
         if try testIsValid() == false { return nil }
     }
     
+    public init?(month: Month, lowNumber: Int) {
+        if lowNumber <= 0 { return nil }
+        if lowNumber <= 9999 {
+            let number = (month.shortYear * 100 + month.month) * 10000 + lowNumber
+            try? self.init(invalidNumber: number)
+        } else if lowNumber <= 9_9999 {
+            let number = (month.shortYear * 100 + month.month) * 100000 + lowNumber
+            try? self.init(invalidNumber: number)
+        } else {
+            try? self.init(invalidNumber: lowNumber)
+        }
+    }
+    
     public func testIsValid() throws -> Bool {
         guard FileMakerDB.isEnabled else { return self.isValidNumber }
         lock.lock()

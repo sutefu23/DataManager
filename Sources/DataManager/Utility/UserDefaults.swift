@@ -16,7 +16,11 @@ extension UserDefaults {
         get { url(forKey: "newVersionURL") }
         set { set(newValue, forKey: "newVersionURL") }
     }
-    
+    public var newVersionDirectoryURL: URL? {
+        guard let url = self.newVersionURL, let isDirectory = url.isDirectory else { return nil }
+        return isDirectory ? url : url.deletingLastPathComponent()
+    }
+
     public static let dataManagerDefaultValues: [String: Any] = [
         "programName": mainBundleName
     ]

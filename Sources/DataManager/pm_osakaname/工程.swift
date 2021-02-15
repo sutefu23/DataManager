@@ -109,6 +109,7 @@ class 工程名称DB型 {
     var codeMap: [工程型: String]
     
     init() {
+        let _ = 工程型.工場工程一覧
         var map: [工程型: String] = [:]
         var map2: [String: 工程型] = [
             "レーザー・ウォーター" : .レーザー,

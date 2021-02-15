@@ -925,7 +925,7 @@
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					"DataManager::DataManager" = {
-						DevelopmentTeam = LVA4CJGB2J;
+						DevelopmentTeam = 4EX9H95FTD;
 					};
 					"DataManager::DataManagerPackageTests::ProductTarget" = {
 						LastSwiftMigration = 1200;
@@ -1183,7 +1183,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = LVA4CJGB2J;
+				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1214,7 +1214,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = LVA4CJGB2J;
+				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

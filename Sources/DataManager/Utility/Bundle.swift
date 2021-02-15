@@ -44,8 +44,12 @@ extension DMApplication {
     public var currentVersion: Version { currentVersionCache }
     
     var newVersionBundle: Bundle? {
-        guard let newVersionURL = UserDefaults.standard.newVersionURL else { return nil }
-        return Bundle(url: newVersionURL)
+        guard var newVersionURL = UserDefaults.standard.newVersionURL, let isDirectory = newVersionURL.isDirectory else { return nil }
+        if isDirectory {
+            newVersionURL.appendPathComponent("\(defaults.programName).app")
+        }
+        let bundle = Bundle(url: newVersionURL)
+        return bundle
     }
 
     public var bundleIdentifier: String {

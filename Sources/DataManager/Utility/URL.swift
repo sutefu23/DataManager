@@ -121,3 +121,15 @@ extension URL {
         return url
     }
 }
+
+#if os(macOS)
+import Cocoa
+
+extension URL {
+    public func open() {
+        let ws = NSWorkspace.shared
+        ws.open(self)
+    }
+}
+
+#endif

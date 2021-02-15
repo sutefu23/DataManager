@@ -90,26 +90,6 @@ public struct DMScanner: RandomAccessCollection {
         self.endIndex = source.endIndex
     }
 
-    /// 末尾に指定文字列を含むとtrue
-    public mutating func hasSuffix(_ suffix: String, upperCased: Bool = false) -> Bool {
-        if upperCased {
-            return substring.uppercased().hasSuffix(suffix)
-        } else {
-            return substring.hasSuffix(suffix)
-        }
-    }
-
-    /// 末尾に指定文字列のどれかを含むとtrue
-    public mutating func hasSuffix(_ suffix: [String], upperCased: Bool = false) -> Bool {
-        if upperCased {
-            let target = substring.uppercased()
-            return suffix.contains { target.hasSuffix($0) }
-        } else {
-            let target = substring
-            return suffix.contains { target.hasSuffix($0) }
-        }
-    }
-
     /// 先頭に指定文字列を含むとtrue
     public mutating func hasPrefix(_ prefix: String, upperCased: Bool = false) -> Bool {
         if upperCased {
@@ -838,6 +818,41 @@ public struct DMScanner: RandomAccessCollection {
         return Day(month, day)
     }
     
+    // MARK: -
+    /// 末尾に指定文字列を含むとtrue
+    public mutating func hasSuffix(_ suffix: String, upperCased: Bool = false) -> Bool {
+        if upperCased {
+            return substring.uppercased().hasSuffix(suffix)
+        } else {
+            return substring.hasSuffix(suffix)
+        }
+    }
+
+    /// 末尾に指定文字列のどれかを含むとtrue
+    public mutating func hasSuffix(_ suffix: [String], upperCased: Bool = false) -> Bool {
+        if upperCased {
+            let target = substring.uppercased()
+            return suffix.contains { target.hasSuffix($0) }
+        } else {
+            let target = substring
+            return suffix.contains { target.hasSuffix($0) }
+        }
+    }
+    public mutating func scanSuffix(_ suffix: String) -> Bool {
+        guard self.hasSuffix(suffix) else { return false }
+        self.endIndex = self.source.index(self.endIndex, offsetBy: -suffix.count)
+        return true
+    }
+    public mutating func scanSuffixes(_ suffixes: [String]) -> String? {
+        let list = suffixes.sorted { $0.count > $1.count }
+        for suffix in list {
+            if self.scanSuffix(suffix) { return suffix }
+        }
+        return nil
+    }
+    
+
+    // MARK: -
     @discardableResult
     public mutating func drop(全角2文字 count: Int) -> String {
         dropHeadSpacesIfNeeds()

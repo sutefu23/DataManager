@@ -560,4 +560,15 @@ class TestDMScanner: XCTestCase {
         XCTAssertEqual(scanner.drop(全角2文字: 100), "a漢字bbc")
         XCTAssertEqual(scanner.string, "")
     }
+    
+    func testScanSuffix() {
+        var scanner: DMScanner
+        
+        scanner = DMScanner("HLよこ")
+        XCTAssertEqual(scanner.scanSuffix("たて"), false)
+        XCTAssertEqual(scanner.string, "HLよこ")
+
+        XCTAssertEqual(scanner.scanSuffix("よこ"), true)
+        XCTAssertEqual(scanner.string, "HL")
+    }
 }

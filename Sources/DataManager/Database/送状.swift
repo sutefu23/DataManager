@@ -134,11 +134,20 @@ extension 住所型 {
 extension 送状型 {
     public var is福山発送ok: Bool {
         let test = self.送り主住所.比較用データ
-        return 住所型.福山送り主一覧Set.contains(test)
+        for addr in 住所型.福山送り主一覧比較用.map ({ $0.住所 }) {
+            if addr.contains(to: test) {
+                return true
+            }
+        }
+        return false
     }
 }
 
 extension 住所型 {
+    public func contains(to: 住所型) -> Bool {
+        return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 住所3.hasPrefix(to.住所3) && 名前.contains(to.名前) && 電話番号 == 電話番号
+    }
+    
     static let 福山送り主一覧Set: Set<住所型> = {
         Set<住所型>(福山送り主一覧.map { $0.住所.比較用データ })
     }()
