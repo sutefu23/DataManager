@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if os(macOS)
-import NetFS
-import Cocoa
-
 /// ネットワーク接続の種類
 public enum NFSType: String {
     /// SMB接続
@@ -107,6 +103,10 @@ public struct NASUser: Hashable {
         self.password = password
     }
 }
+
+#if os(macOS)
+import NetFS
+import Cocoa
 
 final class NASConnection : Equatable {
     private(set) var server: String
@@ -227,14 +227,21 @@ public final class MountManager {
         return result
     }
     
-    public func mount受け渡し(user: NAS4User = .レーザー) {
+    public func mount受け渡し(user: NAS4User? = nil) {
+        let user = defaults.nas4User ?? .レーザー
         mountNAS(server: .nas4, type: .smb, volume: "受け渡し", user: user.account)
     }
 
-    public func mount部署専用(user: NAS4User = .レーザー) {
+    public func mount部署専用(user: NAS4User? = nil) {
+        let user = defaults.nas4User ?? .レーザー
         mountNAS(server: .nas4, type: .smb, volume: "部署専用", user: user.account)
     }
-    
+
+    public func mountその他共有(user: NAS4User? = nil) {
+        let user = defaults.nas4User ?? .レーザー
+        mountNAS(server: .nas4, type: .smb, volume: "その他共有", user: user.account)
+    }
+
     public func terminate() {
         keepQueue.sync { self.stopKeep() }
     }

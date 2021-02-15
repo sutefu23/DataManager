@@ -24,6 +24,28 @@ extension UserDefaults {
     public static let dataManagerDefaultValues: [String: Any] = [
         "programName": mainBundleName
     ]
+    /// 起動時にNAS自動接続
+    public var launchAutoMountNAS: Bool {
+        get { self.bool(forKey: "launchAutoMountNAS") }
+        set { self.set(newValue, forKey: "launchAutoMountNAS") }
+    }
+    
+    public var nas4User: NAS4User? {
+        get { NAS4User(rawValue: self.nasUserTag) }
+        set {
+            if let tag = newValue?.rawValue {
+                self.nasUserTag = tag
+            } else {
+                self.removeObject(forKey: "nasUserTag")
+            }
+            
+        }
+    }
+    public var nasUserTag: Int {
+        get { return self.integer(forKey: "nasUserTag") }
+        set { self.set(newValue, forKey: "nasUserTag") }
+    }
+    
 }
 
 let defaults: UserDefaults = {

@@ -58,7 +58,7 @@ public func sendMail(mail_from: String ,mail_to: String, mail_cc: String , title
     }
 
     #else
-    throw MailError.notsupport
+    throw MailError.notSupport
     #endif
     
 }
