@@ -43,12 +43,23 @@ private final class FileMakerServerCache {
         return server
     }
     
-    /// 全てのサーバーへの接続を解除する
-    func logoutAll() {
+    /// 全てのサーバーの現在の接続数の合計
+    var connectionCount: Int {
         lock.lock()
         defer { lock.unlock() }
+        return cache.reduce(0) { $0 + $1.value.connectionCount }
+    }
+
+    @DMSynchronized private var logoutAll_working: Bool = false
+    /// 全てのサーバーへの接続を解除する
+    func logoutAll() {
+        guard logoutAll_working == false else { return } // すでに解除中なら追加の解除はしない
+        lock.lock()
+        defer { lock.unlock() }
+        logoutAll_working = true
         if cache.isEmpty { return }
         cache.values.forEach { $0.logout() }
+        logoutAll_working = false
     }
 }
 
@@ -81,6 +92,9 @@ final class FileMakerServer: Hashable {
         self.serverURL = serverURL
         self.sem = DispatchSemaphore(value: maxConnection)
     }
+    
+    /// 現在の接続数
+    var connectionCount: Int { pool.count }
     
     func makeURL(with filename: String) -> URL {
         return self.serverURL.appendingPathComponent(filename)
@@ -124,6 +138,7 @@ final class FileMakerServer: Hashable {
     
     /// セッションを閉じる
     func logout() {
+        guard FileMakerDB.isEnabled else { return }
         lock.lock()
         for session in pool {
             session.logout()
@@ -283,4 +298,14 @@ public final class FileMakerDB {
     public static func logoutAll() {
         serverCache.logoutAll()
     }
+    
+    /// 現在使用していないアイドル状態のセッションを非同期で閉じる
+    public static func logoutAllAsync() {
+        DispatchQueue.global(qos: .utility).async {
+            serverCache.logoutAll()
+        }
+    }
+    /// 全てのサーバーの現在の接続数の合計
+    public static var connectionCount: Int { serverCache.connectionCount }
+
 }

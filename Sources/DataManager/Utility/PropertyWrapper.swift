@@ -8,7 +8,8 @@
 
 import Foundation
 
-@propertyWrapper public struct NCSynchronized<T> {
+/// 排他的な読み書きを提供する
+@propertyWrapper public struct DMSynchronized<T> {
     private var value: T
     private var mutext: pthread_mutex_t = pthread_mutex_t()
 

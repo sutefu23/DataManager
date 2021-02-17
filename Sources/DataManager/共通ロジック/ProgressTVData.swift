@@ -390,6 +390,7 @@ public final class ProgressTVCore {
         if count2 != 0 {
             startUpdateTimer()
         }
+        FileMakerDB.logoutAll()
     }
     
     // TableView表示用
@@ -455,6 +456,7 @@ public final class ProgressTVCore {
         default:
             break
         }
+        FileMakerDB.logoutAll()
         if let color = color {
             return text.makeAttributedString(color: color, font: font)
         } else {
