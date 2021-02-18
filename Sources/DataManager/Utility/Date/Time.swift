@@ -27,7 +27,8 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
         self.init(hour:hour, minute:minute, second:second)
     }
 
-    public init?<S: StringProtocol>(fmTime: S) {
+    public init?<S: StringProtocol>(fmTime: S?) {
+        guard let fmTime = fmTime else { return nil }
         self.init(fmJSONTime:fmTime)
     }
     

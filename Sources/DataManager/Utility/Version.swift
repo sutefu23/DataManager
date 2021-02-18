@@ -137,3 +137,12 @@ extension UILabel {
     }
 }
 #endif
+
+// MARK: - バージョン記録
+extension UserDefaults {
+    /// UserDefaultsを保存したアプリのバージョン
+    public var defaultsVersion: Version {
+        get { self.json(forKey: "defaultsVersion" ) ?? Version("0.00") } // 記録がない場合バージョン0扱いとする
+        set { self.setJson(object: newValue, forKey: "defaultsVersion") }
+    }
+}

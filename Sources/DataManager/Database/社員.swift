@@ -210,6 +210,7 @@ func prepare社員(社員番号: Int, 社員名称: String) -> 社員型 {
 
 public extension 社員型 {
     static let 稗田_司 = prepare社員(社員番号: 012, 社員名称: "稗田 司")
+    static let 伊川_浩 = prepare社員(社員番号: 016, 社員名称: "伊川 浩")
     static let 川原_夏彦 = prepare社員(社員番号: 017, 社員名称: "川原 夏彦")
     static let 室中_哲郎 = prepare社員(社員番号: 019, 社員名称: "室中 哲郎")
     static let 関_雄也 = prepare社員(社員番号: 034, 社員名称: "関 雄也")

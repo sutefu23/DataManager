@@ -66,8 +66,9 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
         self.整数値 = validNumber
     }
 
-    public init?<S: StringProtocol>(invalidString: S) throws {
-        guard let number = Int(invalidString) ?? Int(String(invalidString.filter{ $0.isASCIINumber })) else { return nil }
+    public init?<S: StringProtocol>(invalidString: S?) throws {
+        guard let invalidString = invalidString,
+              let number = Int(invalidString) ?? Int(String(invalidString.filter{ $0.isASCIINumber })) else { return nil }
         try self.init(invalidNumber:number)
     }
 

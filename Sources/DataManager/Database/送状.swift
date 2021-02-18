@@ -162,6 +162,7 @@ extension 住所型 {
         for code in [
             "0297", "3160", "3161", "3163", // アボック社
             "2365", "2370", "2371", // 富士プラスチック
+            "2543" // 宮崎硝子
         ] {
             guard let addr = try? 住所型(会社コード: code) else { continue }
             list.append((code, addr))
