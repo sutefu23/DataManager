@@ -73,6 +73,15 @@ public struct Day: Hashable, Strideable, Codable {
         self.init(fmDate: fmDate)
     }
 
+    /// 4桁の数字mmddまたは6桁の数字yymmddから初期化
+    public init?<S: StringProtocol>(numbers: S?) {
+        guard let numbers = numbers, let value = Int(numbers), value > 0 else { return nil }
+        self.year = value <= 100_00 ? Day().year : 2000 + (value / 100_00)
+        self.month = (value % 100_00) / 100
+        self.day = value % 100
+        guard year >= 2000 && year <= 2200 && month >= 1 && month <= 12 && day >= 1 && day <= 31 else { return nil }
+    }
+
     public init?<S: StringProtocol>(fmDate: S) {
         if fmDate.isEmpty { return nil }
         let digs = fmDate.split(separator: "/")

@@ -31,7 +31,16 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
         guard let fmTime = fmTime else { return nil }
         self.init(fmJSONTime:fmTime)
     }
-    
+
+    /// 4桁の数字hhmmから初期化
+    public init?<S: StringProtocol>(numbers: S?) {
+        guard let numbers = numbers, let value = Int(numbers), value >= 0 else { return nil }
+        self.hour = value / 100
+        self.minute = value % 100
+        self.second = 0
+        guard hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 else { return nil }
+    }
+
     init?<T>(fmJSONTime: T?) where T: StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
@@ -47,6 +56,7 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
             return nil
         }
     }
+    
     // MARK: - <Codable>
     enum CodingKeys: String, CodingKey {
         case hour = "Hour"

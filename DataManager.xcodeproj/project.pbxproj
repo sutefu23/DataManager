@@ -24,6 +24,7 @@
 		00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB9102595D9A500ACB725 /* SendMail.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
+		143C608725E8680B00DF10DF /* TestTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C608625E8680B00DF10DF /* TestTime.swift */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
 		146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
 		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
@@ -254,6 +255,7 @@
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
+		143C608625E8680B00DF10DF /* TestTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTime.swift; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
 		146F88A8253E7019001F8AF1 /* FB一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "FB一覧.csv"; sourceTree = "<group>"; };
 		14767117251D577A00429C17 /* DMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DMColor.swift; sourceTree = "<group>"; };
@@ -600,6 +602,7 @@
 				OBJ_147 /* TestDMScanner.swift */,
 				OBJ_148 /* TestDate.swift */,
 				OBJ_149 /* TestDay.swift */,
+				143C608625E8680B00DF10DF /* TestTime.swift */,
 				OBJ_150 /* TestEtc.swift */,
 				OBJ_151 /* TestMonth.swift */,
 				OBJ_152 /* TestSerialCache.swift */,
@@ -1131,6 +1134,7 @@
 				14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */,
 				OBJ_327 /* TestEtc.swift in Sources */,
 				OBJ_328 /* TestMonth.swift in Sources */,
+				143C608725E8680B00DF10DF /* TestTime.swift in Sources */,
 				OBJ_329 /* TestSerialCache.swift in Sources */,
 				OBJ_330 /* TestString.swift in Sources */,
 				OBJ_331 /* TestTextReader.swift in Sources */,

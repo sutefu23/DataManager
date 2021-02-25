@@ -62,4 +62,9 @@ class TestDay: XCTestCase {
         XCTAssertEqual(day?.month, 5)
         XCTAssertEqual(day?.day, 14)
     }
+    
+    func testInitNumber() {
+        XCTAssertEqual(Day(numbers: "0310"), Day(Day().year, 3, 10))
+        XCTAssertEqual(Day(numbers: "211201"), Day(2021, 12, 1))
+    }
 }
