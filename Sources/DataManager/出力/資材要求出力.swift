@@ -74,9 +74,9 @@ extension Sequence where Element == 資材要求出力型 {
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
             try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
             let result = try 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
                 return

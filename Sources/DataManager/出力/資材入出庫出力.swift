@@ -106,11 +106,11 @@ extension Sequence where Element == 資材入出庫出力型 {
                 count += 1
             }
             
-            Thread.sleep(forTimeInterval: TimeInterval(count)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(count)+0.5)
             if count > 0 {
                 try session.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
             }
-            Thread.sleep(forTimeInterval: TimeInterval(count)+0.1)
+            Thread.sleep(forTimeInterval: TimeInterval(count)+0.5)
             var errorResult: [資材入出庫出力型] = []
             for progress in self {
                 let result = try 資材入出庫型.find(登録日: progress.登録日, 登録時間: progress.登録時間, 社員: progress.社員, 入力区分: progress.入力区分, 資材: progress.資材, 入庫数: progress.入庫数, 出庫数: progress.出庫数)

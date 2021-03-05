@@ -27,6 +27,15 @@ public let 生産管理集計URL: URL = {
     return url
 }()
 
+public let applicationSupportURL: URL = {
+    let fm = FileManager.default
+    let url = try! fm.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(defaults.programName)
+    if !url.isExists {
+        try! fm.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+    }
+    return url
+}()
+
 extension URL {
     /// 指定された拡張子の一時ファイルを作成する
     /// - Parameters:

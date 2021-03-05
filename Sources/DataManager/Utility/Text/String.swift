@@ -41,6 +41,11 @@ extension String {
 }
 
 extension StringProtocol {
+    public var isエラーあり: Bool {
+        if self.contains("\0") { return true }
+        return false
+    }
+    
     public var 比較用文字列: String {
         var result = ""
         for ch in self.toJapaneseNormal.spaceStripped {

@@ -147,4 +147,10 @@ class TestOrder : XCTestCase {
         let time = order.出荷時間
         XCTAssertEqual(time, Time(19, 00))
     }
+    
+    func testName() {
+        let order = try! 指示書型.findDirect(伝票番号文字列: "210213731")!
+        let title = order.品名
+        XCTAssertEqual(title.isエラーあり, true)
+    }
 }

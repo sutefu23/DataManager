@@ -143,10 +143,14 @@ public struct DMScanner: RandomAccessCollection {
     public mutating func dropTailSpaces() {
         if startIndex == endIndex { return }
         var lastIndex = source.index(before: endIndex)
-        while startIndex <= lastIndex, source[lastIndex].isWhitespace {
+        while startIndex < lastIndex, source[lastIndex].isWhitespace {
             lastIndex = source.index(before: lastIndex)
         }
-        endIndex = source.index(after: lastIndex)
+        if startIndex == lastIndex && source[startIndex].isWhitespace {
+            endIndex = startIndex
+        } else {
+            endIndex = source.index(after: lastIndex)
+        }
     }
 
     /// 先頭が指定文字ならtrue。indexは次に移動する
