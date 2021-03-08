@@ -189,6 +189,7 @@ extension 住所型 {
             "1094", // コンダ工芸
             "1085", // ㈲幸宣社
             "2214", // 広島ネームプレート
+            "0924", // クリーンデザイン工房
         ] {
             guard let addr = try? 住所型(会社コード: code) else { continue }
             list.append((code, addr))

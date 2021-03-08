@@ -842,11 +842,13 @@ public struct DMScanner: RandomAccessCollection {
             return suffix.contains { target.hasSuffix($0) }
         }
     }
+    @discardableResult
     public mutating func scanSuffix(_ suffix: String) -> Bool {
         guard self.hasSuffix(suffix) else { return false }
         self.endIndex = self.source.index(self.endIndex, offsetBy: -suffix.count)
         return true
     }
+    @discardableResult
     public mutating func scanSuffixes(_ suffixes: [String]) -> String? {
         let list = suffixes.sorted { $0.count > $1.count }
         for suffix in list {
@@ -854,7 +856,6 @@ public struct DMScanner: RandomAccessCollection {
         }
         return nil
     }
-    
 
     // MARK: -
     @discardableResult
