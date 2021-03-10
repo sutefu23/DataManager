@@ -118,12 +118,15 @@ final class FileMakerRecord {
         return Date(fmJSONDayTime: date)
     }
     
-    func date(dayKey: String, timeKey: String) -> Date? {
-        let day = string(forKey: dayKey)
+    func date(dayKey: String, timeKey: String, optionDayKey: String? = nil) -> Date? {
+        var day = string(forKey: dayKey)
+        if day?.isEmpty != false, let key = optionDayKey {
+            day = string(forKey: key)
+        }
         let time = string(forKey: timeKey)
         return Date(fmJSONDay: day, fmJSONTime: time)
     }
-    
+
     func url(forKey key: String) -> URL? {
         guard let url = string(forKey: key) else { return nil }
         return URL(string: url)

@@ -32,7 +32,10 @@ public final class 発注型 {
             self.指定注文番号 = 指定注文番号型(text: text)
         }
     }
-    public var 状態: 発注状態型 { return record.発注状態(forKey: "状態")! }
+    public var 状態: 発注状態型 {
+        guard let type = record.発注状態(forKey: "状態") else { return .処理済み } // 未設定(外注資材)は処理済み扱いとする
+        return type
+    }
 }
 
 public extension 発注型 {
@@ -74,7 +77,7 @@ public extension 発注型 {
     }
 }
 
-public enum 発注種類型: CustomStringConvertible {
+public enum 発注種類型: CustomStringConvertible, CaseIterable {
     case 資材
     case 外注
     
