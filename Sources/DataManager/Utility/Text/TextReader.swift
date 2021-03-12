@@ -156,8 +156,9 @@ extension Data {
         guard let firstByte = data.first else { return nil }
         let dataCount = data.count
         let endIndex = self.endIndex - dataCount
-        if endIndex < 0 { return nil }
-        for index in 0...endIndex {
+        let startIndex = self.startIndex
+        if endIndex < startIndex { return nil }
+        for index in startIndex...endIndex {
             if self[index] != firstByte { continue }
             let upperIndex = index + dataCount
             assert(upperIndex <= self.endIndex)
