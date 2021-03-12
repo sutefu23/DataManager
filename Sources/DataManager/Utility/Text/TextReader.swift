@@ -22,7 +22,7 @@ public final class TextReader {
     }
     
 // MARK: 初期化
-    public init(_ strings: [String] = [String]()) {
+    public init(_ strings: [String] = []) {
         self.lines = strings.isEmpty ? [""] : strings
         self.nextIndex = 0
     }
@@ -153,12 +153,15 @@ extension Data {
     }
 
     private func searchRange(of data: Data) -> Range<Int>? {
-        let firstByte = data[0] // nilだとロジックエラー
-        let endIndex = self.count - data.count
+        guard let firstByte = data.first else { return nil }
+        let dataCount = data.count
+        let endIndex = self.endIndex - dataCount
         if endIndex < 0 { return nil }
         for index in 0...endIndex {
             if self[index] != firstByte { continue }
-            let range = index..<index+data.count
+            let upperIndex = index + dataCount
+            assert(upperIndex <= self.endIndex)
+            let range = index..<upperIndex
             if self[range] == data {
                 return range
             }
