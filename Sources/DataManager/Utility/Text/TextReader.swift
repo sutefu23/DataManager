@@ -103,6 +103,43 @@ public final class TextReader {
 }
 
 extension Data {
+    func lossyStrings(encoding: String.Encoding) -> [String] {
+        var rangeList: [Range<Data.Index>] = []
+        let baseIndex = self.startIndex
+        var fromIndex = baseIndex
+        var tailCode: UInt8? = nil
+        
+        for (offset, ch) in self.enumerated() {
+            if ch == 13 || ch == 10 {
+                if let prev = tailCode {
+                    if ch != prev { // crlf or lfcr完成
+                        tailCode = nil
+                    } else { // crcrまたはlflf。間に空行が入る
+                        rangeList.append(fromIndex ..< fromIndex)
+                    }
+                } else {
+                    tailCode = ch
+                    rangeList.append(fromIndex ..< baseIndex + offset)
+                }
+                fromIndex = baseIndex + offset + 1
+            }
+        }
+        if fromIndex < self.endIndex {
+            rangeList.append(fromIndex ..< self.endIndex)
+        }
+        var result = [String](repeating: "", count: rangeList.count)
+        let lock = NSLock()
+        DispatchQueue.concurrentPerform(iterations: rangeList.count) {
+            let range = rangeList[$0]
+            let data = self[range]
+            let string = data.decodeLossy(encoding: encoding)
+            lock.lock()
+            result[$0] = string
+            lock.unlock()
+        }
+        return result
+    }
+
     private func decodeLossy(encoding: String.Encoding) -> String {
         let count = self.count
         if count == 0 { return "" }
@@ -121,37 +158,6 @@ extension Data {
         return self[1..<count].decodeLossy(encoding: encoding)
     }
     
-    func lossyStrings(encoding: String.Encoding) -> [String] {
-        var result: [String] = []
-
-        var lineData = Data()
-        var tailCode: UInt8? = nil
-        
-        for ch in self {
-            if ch == 13 || ch == 10 {
-                if let prev = tailCode {
-                    if ch != prev { // crlf or lfcr完成
-                        tailCode = nil
-                    } else { // crcrまたはlflf。間に空行が入る
-                        assert(lineData.isEmpty)
-                        result.append("")
-                    }
-                } else {
-                    tailCode = ch
-                    result.append(lineData.decodeLossy(encoding: encoding))
-                    lineData = Data()
-                }
-            } else {
-                lineData.append(ch)
-                tailCode = nil
-            }
-        }
-        if !lineData.isEmpty {
-            result.append(lineData.decodeLossy(encoding: encoding))
-        }
-        return result
-    }
-
     private func searchRange(of data: Data) -> Range<Int>? {
         guard let firstByte = data.first else { return nil }
         let dataCount = data.count
