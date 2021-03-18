@@ -141,8 +141,7 @@ extension Data {
     }
 
     private func decodeLossy(encoding: String.Encoding) -> String {
-        let count = self.count
-        if count == 0 { return "" }
+        if self.isEmpty { return "" }
         if let str = String(data: self, encoding: encoding) { return str }
         if encoding == .shiftJIS {
             var data = self
@@ -155,7 +154,8 @@ extension Data {
                 return str
             }
         }
-        return self[1..<count].decodeLossy(encoding: encoding)
+        let nextStartIndex = self.index(after: self.startIndex)
+        return self[nextStartIndex..<self.endIndex].decodeLossy(encoding: encoding)
     }
     
     private func searchRange(of data: Data) -> Range<Int>? {
