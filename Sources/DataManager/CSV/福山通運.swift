@@ -53,7 +53,6 @@ private extension 送状型 {
 
 public struct 福山ご依頼主型 {
     public var 荷受人コード: String
-    public var 送り主住所: 住所型
     public var 電話番号: String
     public var 住所1: String
     public var 住所2: String
@@ -68,10 +67,12 @@ public struct 福山ご依頼主型 {
     public var メールアドレス: String
     public var 請求先コード : String
     public var 請求先部課コード: String
-    
-    init(会社コード: String, 住所: 住所型) {
+
+    public var 住所型: 住所型
+
+    public init(会社コード: String, 住所: 住所型) {
         self.荷受人コード = 会社コード
-        self.送り主住所 = 住所
+        self.住所型 = 住所
         self.電話番号 = 住所.電話番号
         self.住所1 = 住所.住所1
         self.住所2 = 住所.住所2
@@ -86,8 +87,9 @@ public struct 福山ご依頼主型 {
         self.メールアドレス = ""
         self.請求先コード = "0925181131"
         self.請求先部課コード = ""
+        self.住所型 = 住所
     }
-    
+
 }
 extension Array where Element == 福山ご依頼主型 {
     public init(url: URL) throws {
@@ -95,8 +97,8 @@ extension Array where Element == 福山ご依頼主型 {
         var result: [福山ご依頼主型] = []
         text.enumerateLines {
             (line, _) in
-            let fields = line.components(separatedBy: ",")
-            let ご依頼主 = 福山ご依頼主型(会社コード: fields[0], 住所: 住所型(郵便番号: fields[1], 住所1: fields[2], 住所2: fields[2], 住所3: fields[3], 名前: fields[4], 電話番号: fields[5]))
+            let fields = line.csvColumns
+            let ご依頼主 = 福山ご依頼主型(会社コード: fields[0], 住所: 住所型(郵便番号: fields[8], 住所1: fields[2], 住所2: fields[3], 住所3: fields[4], 名前: fields[5], 電話番号: fields[1]))
             result.append(ご依頼主)
 
         }
@@ -106,17 +108,6 @@ extension Array where Element == 福山ご依頼主型 {
 }
 
 extension Sequence where Element == 福山ご依頼主型 {
-    public func export標準リスト(to url: URL) throws {
-        var set = Set<String>()
-        var list: [福山ご依頼主型] = []
-        let source = self.sorted { $0.荷受人コード < $1.荷受人コード }
-        for sender in source{
-            if set.contains(sender.荷受人コード) { continue }
-            list.append(sender)
-            set.insert(sender.荷受人コード)
-        }
-        try list.exportCSV(to: url)
-    }
     
     public func exportCSV(to url: URL) throws {
         let generator = TableGenerator<福山ご依頼主型>()

@@ -103,7 +103,20 @@ public struct 住所型: Hashable {
     public var 名前: String
     public var 電話番号: String
     
-    
+    public init(
+                郵便番号: String,
+                住所1: String,
+                住所2: String,
+                住所3: String,
+                名前: String,
+                電話番号: String){
+        self.郵便番号 = 郵便番号
+        self.住所1 = 住所1
+        self.住所2 = 住所2
+        self.住所3 = 住所3
+        self.名前 = 名前
+        self.電話番号 = 電話番号        
+    }
     public var 比較用データ: 住所型 {
         return 住所型(
             郵便番号: self.郵便番号.toHalfCharacters.spaceStripped.filter { $0 != "-" },

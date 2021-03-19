@@ -9,21 +9,30 @@
 import Foundation
 public typealias 会社コード型 = String
 
+public enum 分類型 : String{
+    case 見込み = "見込み"
+    case 顧客 = "顧客"
+    case 発注先 = "発注先"
+}
+
 public final class 取引先型: Identifiable {
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {
         self.record = record
+        guard let 会社コード = record.string(forKey: "会社コード") else { return nil }
+        self.会社コード = 会社コード
     }
     public init?(会社コード code: String) throws {
         guard let record = try 取引先型.find(会社コード: code)?.record else { return nil }
+        self.会社コード = code
         self.record = record
     }
     
-    public var 会社コード: 会社コード型 { return record.string(forKey: "会社コード")! }
+    public var 会社コード: 会社コード型
     public var 会社名: String { return record.string(forKey: "会社名")! }
     public var 印字会社名: String { return record.string(forKey: "印字会社名")! }
-    public var 分類: String { return record.string(forKey: "分類")! }
+    public var 分類: 分類型 { return 分類型(rawValue: record.string(forKey: "分類")!)! }
     public var 郵便番号: String { return record.string(forKey: "郵便番号")! }
     public var 住所1: String { return record.string(forKey: "住所1")! }
     public var 住所2: String { return record.string(forKey: "住所2")! }
@@ -62,6 +71,15 @@ extension 取引先型 {
         query["会社コード"] = "==\(会社コード)"
         let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [query])
         return list.compactMap { 取引先型($0) }.first
+    }
+
+    public static func find(分類: 分類型) throws -> [取引先型]? {
+        let db = FileMakerDB.pm_osakaname
+        var query = FileMakerQuery()
+        query["分類"] = "\(分類)"
+        
+        let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [query])
+        return list.compactMap { 取引先型($0) }
     }
 }
 

@@ -48,7 +48,7 @@ extension StringProtocol {
     
     public var 比較用文字列: String {
         var result = ""
-        for ch in self.toJapaneseNormal.spaceStripped {
+        for ch in self.toJapaneseNormal.toHalfCharacters.spaceStripped {
             switch ch {
             case "㈲":
                 result.append("有限会社")
@@ -56,6 +56,12 @@ extension StringProtocol {
                 result.append("株式会社")
             case "・", "･", "．", "。": // 点は全部同じ扱い
                 result.append(".")
+            case "−": //マイナスを半角ハイフンに
+                result.append("-")
+            case "~":
+                result.append("〜")
+            case "\'":
+                result.append("")
             default:
                 result.append(ch)
             }
