@@ -98,8 +98,10 @@ extension Array where Element == 福山ご依頼主型 {
         text.enumerateLines {
             (line, _) in
             let fields = line.csvColumns
-            let ご依頼主 = 福山ご依頼主型(会社コード: fields[0], 住所: 住所型(郵便番号: fields[8], 住所1: fields[2], 住所2: fields[3], 住所3: fields[4], 名前: fields[5], 電話番号: fields[1]))
-            result.append(ご依頼主)
+            if !fields.isEmpty && !fields[0].isEmpty {
+                let ご依頼主 = 福山ご依頼主型(会社コード: fields[0].dashStribbped, 住所: 住所型(郵便番号: fields[8].dashStribbped, 住所1: fields[2].dashStribbped, 住所2: fields[3].dashStribbped, 住所3: fields[4].dashStribbped, 名前: fields[5].dashStribbped, 電話番号: fields[1].dashStribbped))
+                result.append(ご依頼主)
+            }
 
         }
         self.init(result)
