@@ -50,16 +50,21 @@ private final class FileMakerServerCache {
         return cache.reduce(0) { $0 + $1.value.connectionCount }
     }
 
-    @DMSynchronized private var logoutAll_working: Bool = false
+    private var logoutAll_working: Bool = false
     /// 全てのサーバーへの接続を解除する
     func logoutAll() {
-        guard logoutAll_working == false else { return } // すでに解除中なら追加の解除はしない
         lock.lock()
-        defer { lock.unlock() }
+        if logoutAll_working {
+            lock.unlock()
+            return
+        }
         logoutAll_working = true
-        if cache.isEmpty { return }
+        lock.unlock()
+        
         cache.values.forEach { $0.logout() }
+        lock.lock()
         logoutAll_working = false
+        lock.unlock()
     }
 }
 
