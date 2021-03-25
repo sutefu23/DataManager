@@ -32,7 +32,7 @@ public final class 取引先型: Identifiable {
     public var 会社コード: 会社コード型
     public var 会社名: String { return record.string(forKey: "会社名")! }
     public var 印字会社名: String { return record.string(forKey: "印字会社名")! }
-    public var 分類: 分類型 { return 分類型(rawValue: record.string(forKey: "分類")!)! }
+    public var 分類: 分類型? { return 分類型(rawValue: record.string(forKey: "分類") ?? "") }
     public var 郵便番号: String { return record.string(forKey: "郵便番号")! }
     public var 住所1: String { return record.string(forKey: "住所1")! }
     public var 住所2: String { return record.string(forKey: "住所2")! }
@@ -42,6 +42,7 @@ public final class 取引先型: Identifiable {
     public var 直通TEL: String { return record.string(forKey: "直通TEL")! }
 
     public var 電話番号: String { return 代表TEL.isEmpty ? 直通TEL : 代表TEL }
+    public var 社員名称: String { return record.string(forKey: "社員名称") ?? "" }
     
     public var is原稿社名不要: Bool { self.会社コード.is原稿社名不要会社コード }
     public var is管理用: Bool { self.会社コード.is管理用会社コード }
