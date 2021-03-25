@@ -109,7 +109,7 @@ extension URL {
         var url = self
         url.removeCachedResourceValue(forKey: .creationDateKey)
         let res = try? url.resourceValues(forKeys: [.creationDateKey])
-        let date = res?.contentModificationDate
+        let date = res?.creationDate
         return date
     }
 
