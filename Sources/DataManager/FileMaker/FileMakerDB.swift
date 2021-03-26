@@ -99,7 +99,12 @@ final class FileMakerServer: Hashable {
     }
     
     /// 現在の接続数
-    var connectionCount: Int { pool.count }
+    var connectionCount: Int {
+        lock.lock()
+        let count = pool.count
+        lock.unlock()
+        return count
+    }
     
     func makeURL(with filename: String) -> URL {
         return self.serverURL.appendingPathComponent(filename)

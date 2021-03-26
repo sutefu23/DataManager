@@ -8,7 +8,7 @@
 
 import Foundation
 
-private final class TwoElementCacheData<T, U> where T: Equatable {
+private struct TwoElementCacheData<T, U> where T: Equatable {
     let key: T
     let value: U
     
@@ -18,17 +18,29 @@ private final class TwoElementCacheData<T, U> where T: Equatable {
     }
 }
 
-/// ２データサイズの小キャッシュ
-public class TwoElementCache<T, U> where T: Equatable {
-    private let lock = NSLock()
+/// ２データサイズの小キャッシュ（ロックあり）
+public class TwoElementCache<T: Equatable, U>: TwoElementStorage<T, U> {
+    private let lock: NSLock
+
+    public init(_ lock: NSLock = NSLock()){
+        self.lock = lock
+    }
+
+    public override func result(for key: T, calc: ()->U) -> U {
+        lock.lock()
+        defer { lock.unlock() }
+        return super.result(for: key, calc: calc)
+    }
+}
+
+/// ２データサイズの小キャッシュ（ロックなし）
+public class TwoElementStorage<T: Equatable, U> {
     private var firstCache: TwoElementCacheData<T, U>? = nil
     private var secondCache: TwoElementCacheData<T, U>? = nil
 
-    public init(){}
-
+    public init() {}
+    
     public func result(for key: T, calc: ()->U) -> U {
-        lock.lock()
-        defer { lock.unlock() }
         if let cache = firstCache, cache.key == key { return cache.value }
         if let cache = secondCache, cache.key == key {
             self.secondCache = firstCache
