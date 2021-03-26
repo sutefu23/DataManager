@@ -68,11 +68,19 @@ public struct 福山ご依頼主型 {
     public var 請求先コード : String
     public var 請求先部課コード: String
 
-    public var 住所型: 住所型
+    public var 住所型: 住所型 {
+        return DataManager.住所型(
+            郵便番号: self.郵便番号,
+            住所1: self.住所1,
+            住所2: self.住所2,
+            住所3: "",
+            名前: self.名前1,
+            電話番号:  self.電話番号
+        )
+    }
 
     public init(会社コード: String, 住所: 住所型) {
         self.荷受人コード = 会社コード
-        self.住所型 = 住所
         self.電話番号 = 住所.電話番号
         self.住所1 = 住所.住所1
         self.住所2 = 住所.住所2 + 住所.住所3
@@ -87,7 +95,6 @@ public struct 福山ご依頼主型 {
         self.メールアドレス = ""
         self.請求先コード = "0925181131"
         self.請求先部課コード = ""
-        self.住所型 = 住所
     }
 
 }
@@ -99,7 +106,7 @@ extension Array where Element == 福山ご依頼主型 {
             (line, _) in
             let fields = line.csvColumns
             if !fields.isEmpty && !fields[0].isEmpty {
-                let ご依頼主 = 福山ご依頼主型(会社コード: fields[0].dashStribbped, 住所: 住所型(郵便番号: fields[8].dashStribbped, 住所1: fields[2].dashStribbped, 住所2: fields[3].dashStribbped, 住所3: fields[4].dashStribbped, 名前: fields[5].dashStribbped, 電話番号: fields[1].dashStribbped))
+                let ご依頼主 = 福山ご依頼主型(会社コード: fields[0].dashStribbped, 住所: 住所型(郵便番号: fields[8].dashStribbped, 住所1: fields[2].dashStribbped, 住所2: fields[3].dashStribbped + fields[4].dashStribbped, 住所3: "", 名前: fields[5].dashStribbped, 電話番号: fields[1].dashStribbped))
                 result.append(ご依頼主)
             }
 
