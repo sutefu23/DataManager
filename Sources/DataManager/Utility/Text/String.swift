@@ -38,12 +38,27 @@ extension String {
     var commaStripped: [Substring] {
         return self.split(separator: ",", omittingEmptySubsequences: false).map(\.controlStripped)
     }
+    
+    public mutating func removeTailSpace() {
+        while self.last?.isWhitespace == true { self.removeLast() }
+    }
 }
 
 extension StringProtocol {
     public var isエラーあり: Bool {
         if self.contains("\0") { return true }
         return false
+    }
+    
+    ///　末尾に数字がある場合、それを取り出す
+    public var tailNumbers: String? {
+        var result: String = ""
+        for ch in self.reversed() {
+            if ch.isASCIINumber {
+                result.insert(ch, at: result.startIndex)
+            }
+        }
+        return !result.isEmpty ? result : nil
     }
     
     public var 比較用文字列: String {

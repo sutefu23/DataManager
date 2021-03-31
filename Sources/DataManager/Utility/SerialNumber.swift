@@ -12,12 +12,12 @@ public typealias ObjectID = UInt32
 
 public let serialGenerator = SerialGenerator()
 
-private let warnintSpan: ObjectID = 10_0000 // 10万件ごとに警告
+private let warningSpan: ObjectID = 10_0000 // 10万件ごとに警告
 private let warningCount: ObjectID = 10 // 溢れるまでに10回ほど警告する
 
 public final class SerialGenerator {
     private let lock = NSLock()
-    private var limit: ObjectID = ObjectID.max - warnintSpan * warningCount - warnintSpan / 2
+    private var limit: ObjectID = ObjectID.max - warningSpan * warningCount - warningSpan / 2
     private var serial: ObjectID = 0
     public init() {}
     public func generateID() -> ObjectID {
@@ -29,7 +29,7 @@ public final class SerialGenerator {
             DispatchQueue.main.async {
                 let _ = showModalDialog(message: "オブジェクトIDが残り少なくなっています。アプリケーションを再起動して下さい", buttons: "Ok")
             }
-            limit = limit &+ warnintSpan
+            limit = limit &+ warningSpan
         }
         #endif
         return serial

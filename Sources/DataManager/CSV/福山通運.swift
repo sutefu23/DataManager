@@ -96,7 +96,6 @@ public struct 福山ご依頼主型 {
         self.請求先コード = "0925181131"
         self.請求先部課コード = ""
     }
-
 }
 extension Array where Element == 福山ご依頼主型 {
     public init(url: URL) throws {
