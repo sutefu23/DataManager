@@ -25,7 +25,8 @@ public enum ProgressTVMode: Int {
     case 切文字 = 3
     case 加工 = 4
     case エッチング = 5
-
+    case 出力原稿 = 6
+    
     public var targetName: String {
         switch self {
         case .箱文字: return "箱文字"
@@ -33,6 +34,8 @@ public enum ProgressTVMode: Int {
         case .切文字: return "切文字"
         case .加工: return "加工"
         case .エッチング: return "エッチング"
+        case .出力原稿: return "出力原稿"
+
         }
     }
 
@@ -43,7 +46,7 @@ public enum ProgressTVMode: Int {
         case .切文字: return "切文字"
         case .加工: return "加工"
         case .エッチング: return "腐蝕"
-
+        case .出力原稿: return "出力原稿"
         }
     }
 
@@ -58,6 +61,8 @@ public enum ProgressTVMode: Int {
         case .加工:
             return .エッチング
         case .エッチング:
+            return .出力原稿
+        case .出力原稿:
             return .箱文字
         }
     }
@@ -84,6 +89,7 @@ public final class ProgressTVData {
     public var 略号: Set<略号型> { return self.指示書.略号 }
     public var 伝言欄: String { return self.指示書.管理用メモ }
     public var 進捗一覧: [進捗型] { return self.指示書.進捗一覧 }
+
     
     public init(_ 指示書: 指示書型) {
         self.指示書 = 指示書
@@ -189,7 +195,7 @@ public final class ProgressTVCore {
     }
     public var アクリル有りのみ表示: Bool {
         switch mode {
-        case .箱文字, .切文字, .加工, .エッチング: return false
+        case .箱文字, .切文字, .加工, .エッチング,.出力原稿: return false
         case .箱文字アクリル: return true
         }
     }
@@ -266,7 +272,17 @@ public final class ProgressTVCore {
                 orders = try 指示書型.find(最小製作納期: today, 伝票種類: .加工)
             case .エッチング:
                 orders = try 指示書型.find(最小製作納期: today, short: .腐食)
+            case .出力原稿:
+                var odr: [指示書型] = []
+                odr =
+                    try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字) +
+                    指示書型.find(最小製作納期: today, 伝票種類: .切文字) +
+                    指示書型.find(最小製作納期: today, 伝票種類: .加工) +
+                    指示書型.find(最小製作納期: today, 伝票種類: .エッチング)
 
+                orders = odr.filter{
+                    $0.contains(工程: .原稿, 作業内容: .開始)
+                }
             }
         }
         if item?.isCancelled == true { return nil }
@@ -469,6 +485,11 @@ public final class ProgressTVCore {
                 }
             }
             return rs2
+        case "LaserStart":
+            text = data.進捗一覧.findFirst(工程: .レーザー, 作業内容: .開始)?.登録日時.monthDayHourMinuteString ?? ""
+        case "LaserEnd":
+            text = data.進捗一覧.findFirst(工程: .レーザー, 作業内容: .完了)?.登録日時.monthDayHourMinuteString ?? ""
+
         default:
             break
         }
@@ -509,6 +530,8 @@ extension ProgressTVCore{
         self.updateLabel(view: view, row: row, col: "Number")
         self.updateLabel(view: view, row: row, col: "Mark")
         self.updateLabel(view: view, row: row, col: "Message")
+        self.updateLabel(view: view, row: row, col: "LaserStart")
+        self.updateLabel(view: view, row: row, col: "LaserEnd")
         view.backgroundColor = self.tableViewRowBackgroundColor(row: row)
     }
 }
