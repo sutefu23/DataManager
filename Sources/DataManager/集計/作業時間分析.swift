@@ -8,12 +8,74 @@
 import Foundation
 import CreateML
 
-public struct TimeTable {
-    public var データ集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-    public var 準備集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-    public var 製造集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-    public var 仕上集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-    public var 発送集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//public struct TimeTable {
+//    public var データ集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//    public var 準備集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//    public var 製造集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//    public var 仕上集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//    public var 発送集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
+//}
+
+@available(OSX 11.0, *)
+public struct OrderTimeInfo {
+    public let order: 指示書型
+    public let model: TimeModel
+    
+    public init(order: 指示書型, model: TimeModel) {
+        self.order = order
+        self.model = model
+    }
+
+    // 名目
+    public func calc名目(process: 工程型) -> TimeInterval? {
+        return order.make集計(工程: process)?.名目
+    }
+
+    public func calc名目(set: Set<工程型>) -> TimeInterval? {
+        return order.make集計(関連工程: set)?.名目
+    }
+
+    public func calc名目(group: 作業グループ型) -> TimeInterval? {
+        return order.make集計(作業グループ: group)?.名目
+    }
+
+    public func calc名目推計(group: 作業グループ型) -> TimeInterval? {
+        return try? model.predict名目作業時間(order, 作業グループ: group)
+    }
+    
+    public func calc名目推計(process: 工程型) -> TimeInterval? {
+        return try? model.predict名目作業時間(order, 工程: process)
+    }
+    
+    public func calc名目推計(set: Set<工程型>) -> TimeInterval? {
+        return try? model.predict作業時間(order, 関連工程: set, 集計タイプ: .名目)
+    }
+
+    // 実質
+    public func calc実働(process: 工程型) -> TimeInterval? {
+        return order.make集計(工程: process)?.実質
+    }
+
+    public func calc実働(set: Set<工程型>) -> TimeInterval? {
+        return order.make集計(関連工程: set)?.実質
+    }
+
+    public func calc実働(group: 作業グループ型) -> TimeInterval? {
+        return order.make集計(作業グループ: group)?.実質
+    }
+
+    public func calc実働推計(group: 作業グループ型) -> TimeInterval? {
+        return try? model.predict実働作業時間(order, 作業グループ: group)
+    }
+    
+    public func calc実働推計(process: 工程型) -> TimeInterval? {
+        return try? model.predict実働作業時間(order, 工程: process)
+    }
+    
+    public func calc実働推計(set: Set<工程型>) -> TimeInterval? {
+        return try? model.predict実働作業時間(order, 関連工程: set)
+    }
+
 }
 
 public enum 指示書分類型: Hashable {
@@ -60,7 +122,7 @@ public enum 作業グループ型: Hashable {
         case .準備:
             return [.レーザー, .フォーミング, .腐蝕, .版焼き, .腐蝕印刷, .エッチング, .印刷, .シート貼り]
         case .製造:
-            return [.オブジェ, .加工, .切文字, .溶接, .立ち上がり_溶接, .裏加工_溶接, .立ち上がり, .半田, .レーザー溶接, .ボンド, .裏加工]
+            return [.オブジェ, .加工, .切文字, .溶接, .裏加工_溶接, .半田, .レーザー溶接, .ボンド, .裏加工]
         case .仕上:
             return [.研磨, .表面仕上, .マスキング, .中塗り, .塗装, .下処理, .乾燥炉, .プライマー, .外注, .拭き取り]
         case .発送:
@@ -70,10 +132,10 @@ public enum 作業グループ型: Hashable {
 }
 // 作業集計
 extension 指示書型 {
-    /// タイムテーブルの集計
-    public func makeTimeTable() -> TimeTable {
-        return TimeTable(データ集計: make集計(作業グループ: .データ), 準備集計: make集計(作業グループ: .準備), 製造集計: make集計(作業グループ: .製造), 仕上集計: make集計(作業グループ: .仕上), 発送集計: make集計(作業グループ: .発送))
-    }
+//    /// タイムテーブルの集計
+//    public func makeTimeTable() -> TimeTable {
+//        return TimeTable(データ集計: make集計(作業グループ: .データ), 準備集計: make集計(作業グループ: .準備), 製造集計: make集計(作業グループ: .製造), 仕上集計: make集計(作業グループ: .仕上), 発送集計: make集計(作業グループ: .発送))
+//    }
 
     func make集計(作業グループ: 作業グループ型) -> (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)? {
         return make集計(関連工程: 作業グループ.関連工程)
@@ -125,17 +187,23 @@ struct TimeEstimation {
     var 発送推計 : TimeInterval
 }
 
+public enum 時間集計型: Hashable {
+    case 名目
+    case 実質
+}
+
 @available(OSX 11.0, *)
 public class TimeModel {
     private let lock = NSLock()
     private let orders: [指示書型]
     private let orderMap: [指示書分類型: [指示書型]]
     private var modelCache: [ModelKey: 作業時間推計モデル型] = [:]
+    private var modelCache2: [ModelKey: 作業時間推計モデル型] = [:]
     private struct ModelKey: Hashable {
         let 関連工程: Set<工程型>
         let 指示書分類: 指示書分類型
+        let 集計タイプ: 時間集計型
     }
-    
     public init(orders: [指示書型]) {
         self.orders = orders
         var map = [指示書分類型: [指示書型]]()
@@ -156,30 +224,47 @@ public class TimeModel {
         defer { lock.unlock() }
         if let cache = modelCache[key] { return cache }
         let orders = self.orderMap[key.指示書分類] ?? self.orders
-        let model = try 作業時間推計モデル型(orders, 関連工程: key.関連工程)
+        let model = try 作業時間推計モデル型(orders, 関連工程: key.関連工程, 集計タイプ: key.集計タイプ)
         modelCache[key] = model
         return model
     }
-    
-    public func predict作業時間(_ order: 指示書型, 作業グループ: 作業グループ型) throws -> TimeInterval {
-        return try self.predict作業時間(order, 関連工程: 作業グループ.関連工程)
+
+    public func predict名目作業時間(_ order: 指示書型, 作業グループ: 作業グループ型) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: 作業グループ.関連工程, 集計タイプ: .名目)
     }
 
-    public func predict作業時間(_ order: 指示書型, 工程: 工程型) throws -> TimeInterval {
-        return try self.predict作業時間(order, 関連工程: [工程])
+    public func predict名目作業時間(_ order: 指示書型, 工程: 工程型) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: [工程], 集計タイプ: .名目)
     }
 
-    public func predict作業時間(_ order: 指示書型, 関連工程: Set<工程型>) throws -> TimeInterval {
+    public func predict名目作業時間(_ order: 指示書型, 関連工程: Set<工程型>) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: 関連工程, 集計タイプ: .名目)
+    }
+
+    public func predict実働作業時間(_ order: 指示書型, 作業グループ: 作業グループ型) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: 作業グループ.関連工程, 集計タイプ: .実質)
+    }
+
+    public func predict実働作業時間(_ order: 指示書型, 工程: 工程型) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: [工程], 集計タイプ: .実質)
+    }
+
+    public func predict実働作業時間(_ order: 指示書型, 関連工程: Set<工程型>) throws -> TimeInterval {
+        return try self.predict作業時間(order, 関連工程: 関連工程, 集計タイプ: .実質)
+    }
+
+    public func predict作業時間(_ order: 指示書型, 関連工程: Set<工程型>, 集計タイプ: 時間集計型) throws -> TimeInterval {
         guard let type = 指示書分類型(order) else { return 0 }
-        let key = ModelKey(関連工程: 関連工程, 指示書分類: type)
+        let key = ModelKey(関連工程: 関連工程, 指示書分類: type, 集計タイプ: 集計タイプ)
         let model = try self.prepareModel(forKey: key)
         return try model.predict作業時間(order)
     }
+
 }
 
 @available(OSX 11.0, *)
 struct 作業時間推計モデル型 {
-    static func makeTable(orders: [指示書型], 関連工程 set: Set<工程型>) throws -> MLDataTable {
+    static func makeTable(orders: [指示書型], 関連工程 set: Set<工程型>, 集計タイプ: 時間集計型) throws -> MLDataTable {
         let lock = NSLock()
         // 集計
         var 作業時間: [TimeInterval] = []
@@ -199,7 +284,14 @@ struct 作業時間推計モデル型 {
 
         DispatchQueue.concurrentPerform(iterations: orders.count) {
             let order = orders[$0]
-            let _作業時間 = order.make集計(関連工程: set)?.実質 ?? 0
+            let timeTable = order.make集計(関連工程: set)
+            let _作業時間: TimeInterval
+            switch 集計タイプ {
+            case .名目:
+                _作業時間 = timeTable?.名目 ?? 0
+            case .実質:
+                _作業時間 = timeTable?.実質 ?? 0
+            }
             let _時期 = Date(order.出荷納期).timeIntervalSinceReferenceDate
             let _伝票種類 = order.伝票種類.rawValue
             let _仕様 = order.仕様
@@ -251,15 +343,17 @@ struct 作業時間推計モデル型 {
 
     let regressor: MLLinearRegressor
     let set: Set<工程型>
+    let 集計タイプ: 時間集計型
 
-    init(_ orders: [指示書型], 関連工程 set: Set<工程型>) throws {
+    init(_ orders: [指示書型], 関連工程 set: Set<工程型>, 集計タイプ: 時間集計型) throws {
+        self.集計タイプ = 集計タイプ
         self.set = set
-        let table = try 作業時間推計モデル型.makeTable(orders: orders, 関連工程: set)
+        let table = try 作業時間推計モデル型.makeTable(orders: orders, 関連工程: set, 集計タイプ: 集計タイプ)
         self.regressor = try MLLinearRegressor(trainingData: table, targetColumn: "作業時間")
     }
     
     func predict作業時間(_ order: 指示書型) throws -> TimeInterval {
-        let table = try 作業時間推計モデル型.makeTable(orders: [order], 関連工程: self.set)
+        let table = try 作業時間推計モデル型.makeTable(orders: [order], 関連工程: self.set, 集計タイプ: 集計タイプ)
         let col = try self.regressor.predictions(from: table)
         guard let values = col.doubles, !values.isEmpty else { return 0 }
         return values.element(at: 0) ?? 0

@@ -119,7 +119,7 @@ public final class TableGenerator<S> {
         self.columns = columns
     }
     
-    public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> String where C.Element == S {
+    public func makeText<C: Sequence>(_ source: C, format: ExportType, title: String, concurrent: Bool = false) throws -> String where C.Element == S {
         // ヘッダー
         var text = format.header(title: title)
         switch format {
@@ -132,12 +132,27 @@ public final class TableGenerator<S> {
             text = ""
         }
         // 本体
-        for rowSource in source {
-            let cols: [String] = columns.map {
-                $0.aggregator?.sum(rowSource) // 集計
-                return $0.value(for: rowSource) // セルの表示内容の生成
+        if concurrent {
+            let sourceArray = Array<S>(source)
+            let lines: [String] = sourceArray.concurrentMap {
+                let rowSource = $0
+                let cols: [String] = columns.map {
+                    $0.aggregator?.sum(rowSource) // 集計
+                    return $0.value(for: rowSource) // セルの表示内容の生成
+                }
+                return format.makeLine(cols)
             }
-            text += format.makeLine(cols)
+            for line in lines {
+                text += line
+            }
+        } else {
+            for rowSource in source {
+                let cols: [String] = columns.map {
+                    $0.aggregator?.sum(rowSource) // 集計
+                    return $0.value(for: rowSource) // セルの表示内容の生成
+                }
+                text += format.makeLine(cols)
+            }
         }
         // 集計結果
         if columns.contains(where: { $0.aggregator != nil }) { // 全く集計項目がない場合出力なし
@@ -151,15 +166,15 @@ public final class TableGenerator<S> {
         return text
     }
     
-    public func makeData<C: Sequence>(_ source: C, format: ExportType, title: String) throws -> Data where C.Element == S {
-        let text = try makeText(source, format: format, title: title)
+    public func makeData<C: Sequence>(_ source: C, format: ExportType, title: String, concurrent: Bool = false) throws -> Data where C.Element == S {
+        let text = try makeText(source, format: format, title: title, concurrent: concurrent)
         let data = format.encode(text: text)
         return data
     }
     
-    public func write<C: Sequence>(_ source: C, format: ExportType, to url: URL) throws where C.Element == S {
+    public func write<C: Sequence>(_ source: C, format: ExportType, to url: URL, concurrent: Bool = false) throws where C.Element == S {
         let title = url.deletingPathExtension().lastPathComponent
-        let data = try makeData(source, format: format, title: title)
+        let data = try makeData(source, format: format, title: title, concurrent: concurrent)
         try data.write(to: url, options: .atomic)
     }
     
@@ -403,7 +418,7 @@ public extension TableGenerator {
 import AppKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, dir: String = "", title: String) throws {
+    func share(_ source: [S], format: ExportType, dir: String = "", title: String, concurrent: Bool = false) throws {
         var url = 生産管理集計URL
         if !dir.isEmpty {
             url.appendPathComponent(dir)
@@ -412,7 +427,7 @@ public extension TableGenerator {
             }
         }
         url.appendPathComponent(title)
-        try self.write(source, format: format, to: url)
+        try self.write(source, format: format, to: url, concurrent: concurrent)
     }
 }
 
