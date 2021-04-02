@@ -6,15 +6,10 @@
 //
 
 import Foundation
-import CreateML
 
-//public struct TimeTable {
-//    public var データ集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-//    public var 準備集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-//    public var 製造集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-//    public var 仕上集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-//    public var 発送集計: (開始: Date, 名目: TimeInterval, 実質: TimeInterval, 完了: Date)?
-//}
+#if os(iOS)
+#elseif os(macOS)
+import CreateML
 
 @available(OSX 11.0, *)
 public struct OrderTimeInfo {
@@ -375,3 +370,5 @@ private extension 指示書型 {
         }
     }
 }
+
+#endif
