@@ -23,12 +23,16 @@ public enum ProgressTVMode: Int {
     case 箱文字 = 1
     case 箱文字アクリル = 2
     case 切文字 = 3
-    
+    case 加工 = 4
+    case エッチング = 5
+
     public var targetName: String {
         switch self {
         case .箱文字: return "箱文字"
         case .箱文字アクリル: return "箱文字アクリル"
         case .切文字: return "切文字"
+        case .加工: return "加工"
+        case .エッチング: return "エッチング"
         }
     }
 
@@ -37,6 +41,9 @@ public enum ProgressTVMode: Int {
         case .箱文字: return "箱文字"
         case .箱文字アクリル: return "アクリ"
         case .切文字: return "切文字"
+        case .加工: return "加工"
+        case .エッチング: return "腐蝕"
+
         }
     }
 
@@ -47,6 +54,10 @@ public enum ProgressTVMode: Int {
         case .箱文字アクリル:
             return .切文字
         case .切文字:
+            return .加工
+        case .加工:
+            return .エッチング
+        case .エッチング:
             return .箱文字
         }
     }
@@ -178,7 +189,7 @@ public final class ProgressTVCore {
     }
     public var アクリル有りのみ表示: Bool {
         switch mode {
-        case .箱文字, .切文字: return false
+        case .箱文字, .切文字, .加工, .エッチング: return false
         case .箱文字アクリル: return true
         }
     }
@@ -251,6 +262,11 @@ public final class ProgressTVCore {
                 orders = try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字)
             case .切文字:
                 orders = try 指示書型.find(最小製作納期: today, 伝票種類: .切文字)
+            case .加工:
+                orders = try 指示書型.find(最小製作納期: today, 伝票種類: .加工)
+            case .エッチング:
+                orders = try 指示書型.find(最小製作納期: today, short: .腐食)
+
             }
         }
         if item?.isCancelled == true { return nil }
