@@ -174,14 +174,6 @@ extension 指示書型 {
 }
 
 // 時間集計
-struct TimeEstimation {
-    var データ推計 : TimeInterval
-    var 準備推計 : TimeInterval
-    var 製造推計 : TimeInterval
-    var 仕上推計 : TimeInterval
-    var 発送推計 : TimeInterval
-}
-
 public enum 時間集計型: Hashable {
     case 名目
     case 実質
@@ -263,7 +255,9 @@ struct 作業時間推計モデル型 {
         let lock = NSLock()
         // 集計
         var 作業時間: [TimeInterval] = []
-        var 時期: [TimeInterval] = []
+        var 年: [Int] = []
+        var 月: [Int] = []
+        var 日: [Int] = []
         var 伝票種類: [Int] = []
         var 仕様: [String] = []
         var 文字数: [Int] = []
@@ -287,7 +281,10 @@ struct 作業時間推計モデル型 {
             case .実質:
                 _作業時間 = timeTable?.実質 ?? 0
             }
-            let _時期 = Date(order.出荷納期).timeIntervalSinceReferenceDate
+            let day = order.出荷納期
+            let _年 = day.year
+            let _月 = day.month
+            let _日 = day.day
             let _伝票種類 = order.伝票種類.rawValue
             let _仕様 = order.仕様
             let _裏仕様 = order.裏仕様
@@ -302,7 +299,9 @@ struct 作業時間推計モデル型 {
 
             lock.lock()
             作業時間.append(_作業時間)
-            時期.append(_時期)
+            年.append(_年)
+            月.append(_月)
+            日.append(_日)
             伝票種類.append(_伝票種類)
             仕様.append(_仕様)
             裏仕様.append(_裏仕様)
@@ -319,7 +318,9 @@ struct 作業時間推計モデル型 {
         // モデルの作成
         let dic: [String: MLDataValueConvertible]  = [
             "作業時間": 作業時間,
-            "時期": 時期,
+            "年": 年,
+            "月": 月,
+            "日": 日,
             "伝票種類": 伝票種類,
             "仕様": 仕様,
             "裏仕様": 裏仕様,

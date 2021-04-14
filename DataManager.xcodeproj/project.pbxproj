@@ -25,6 +25,8 @@
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
+		143471432625651E00F06E4C /* WorkMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143471422625651E00F06E4C /* WorkMap.swift */; };
+		1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434714A2625664B00F06E4C /* 資源量分析.swift */; };
 		143C608725E8680B00DF10DF /* TestTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C608625E8680B00DF10DF /* TestTime.swift */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
 		146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
@@ -258,6 +260,8 @@
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
+		143471422625651E00F06E4C /* WorkMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkMap.swift; sourceTree = "<group>"; };
+		1434714A2625664B00F06E4C /* 資源量分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源量分析.swift"; sourceTree = "<group>"; };
 		143C608625E8680B00DF10DF /* TestTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTime.swift; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
 		146F88A8253E7019001F8AF1 /* FB一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "FB一覧.csv"; sourceTree = "<group>"; };
@@ -467,6 +471,7 @@
 		14767125251D5CA600429C17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_82 /* ラベル印刷 */,
 				14767127251D5CA600429C17 /* 付属品封筒裏面.pdf */,
 				1498B052252413FA001698DF /* 全角カナto半角カナ.txt */,
 				1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */,
@@ -504,6 +509,8 @@
 			children = (
 				1485E4932553DA570006DA8D /* 進捗集計.swift */,
 				1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */,
+				1434714A2625664B00F06E4C /* 資源量分析.swift */,
+				143471422625651E00F06E4C /* WorkMap.swift */,
 			);
 			path = "集計";
 			sourceTree = "<group>";
@@ -773,7 +780,6 @@
 				147A6311255927610077634B /* 工程分解 */,
 				14767125251D5CA600429C17 /* Resources */,
 				1485E4922553DA330006DA8D /* 集計 */,
-				OBJ_82 /* ラベル印刷 */,
 				OBJ_89 /* 作業ツリー */,
 				OBJ_94 /* 共通ロジック */,
 				OBJ_97 /* 出力 */,
@@ -992,6 +998,7 @@
 				OBJ_193 /* 出勤日.swift in Sources */,
 				OBJ_194 /* 指示書.swift in Sources */,
 				OBJ_195 /* 指示書ボルト欄.swift in Sources */,
+				1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */,
 				OBJ_196 /* 指示書変更内容履歴.swift in Sources */,
 				1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */,
 				OBJ_197 /* 発注.swift in Sources */,
@@ -1040,6 +1047,7 @@
 				OBJ_236 /* Utility.swift in Sources */,
 				147A63132559277B0077634B /* 工程分解.swift in Sources */,
 				OBJ_237 /* Version.swift in Sources */,
+				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
 				OBJ_238 /* レーザー加工機.swift in Sources */,
 				OBJ_239 /* 伝票状態.swift in Sources */,
 				OBJ_240 /* 伝票番号.swift in Sources */,

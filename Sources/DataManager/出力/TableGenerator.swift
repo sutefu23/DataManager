@@ -219,7 +219,9 @@ public extension TableGenerator {
         case hourMinuteSecond
     }
     enum TimeIntervalFormat {
-        /// 小数点以下は切り捨て
+        /// 小数点以下は切り捨て（マイナス表示）
+        case minute0_pm
+        /// 小数点以下は切り捨て（マイナスは非表示）
         case minute0
         /// 小数点以下１桁まで
         case minute1
@@ -362,6 +364,8 @@ public extension TableGenerator {
             case .minute0:
                 //結果が０以下の時はnilを返す
                 if value <= 0 { return nil }
+                fallthrough
+            case .minute0_pm:
                 //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
                 let tmp = round(value/60)
                 if tmp < 0.95 { fallthrough }
@@ -539,6 +543,10 @@ final class TimeIntervalColumnAggregator<S>: ColumnAggregator<S> {
         if count == 0 { return nil }
         let value = sum / Double(count)
         switch format {
+        case .minute0_pm:
+            //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
+            let value = Int(value/60)
+            return String(value)
         case .minute0:
             //小数点第一位以下は切り捨て（旧CSVエクスポーターにデータを合わせるため
             let value = Int(value/60)

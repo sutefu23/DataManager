@@ -766,6 +766,57 @@ public extension 指示書型 {
         return orders
     }
 
+    /// 通常種類の指示書を検索する
+    internal static func normalFind(_ query: FileMakerQuery) throws -> [指示書型] {
+        let db = FileMakerDB.pm_osakaname
+        var result: [指示書型] = []
+        var error2: Error? = nil
+        let lock = NSLock()
+        DispatchQueue.concurrentPerform(iterations: 4) {
+            lock.lock()
+            var query2 = query
+            let type: 伝票種類型
+            switch $0 {
+            case 0:
+                type = .切文字
+            case 1:
+                type = .加工
+            case 2:
+                type = .箱文字
+            case 3:
+                type = .エッチング
+            default:
+                fatalError()
+            }
+            query2["伝票種類"] = type.fmString
+            lock.unlock()
+            do {
+                let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
+                let orders: [指示書型] = list.compactMap {
+                    guard let order = 指示書型($0) else { return nil }
+                    switch order.伝票状態 {
+                    case .キャンセル:
+                        return nil
+                    case .未製作, .発送済, .製作中:
+                        break
+                    }
+                    return order
+                }
+                lock.lock()
+                result.append(contentsOf: orders)
+                lock.unlock()
+            } catch {
+                lock.lock()
+                error2 = error
+                lock.unlock()
+            }
+        }
+        if let error2 = error2 {
+            throw error2
+        }
+        return result
+    }
+
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {
         var query = FileMakerQuery()
         if let num = 伝票番号 {
@@ -993,6 +1044,13 @@ public extension 指示書型 {
             if $0.製作納期 != $1.製作納期 { return $0.製作納期 < $1.製作納期 }
             return $0.伝票番号 < $1.伝票番号
         }
+    }
+    
+    static func normalFind(作業範囲 range: ClosedRange<Day>) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["受注日"] = "<=\(range.upperBound.fmString)"
+        query["出荷納期"] = ">=\(range.lowerBound.fmString)"
+        return try normalFind(query)
     }
 }
 

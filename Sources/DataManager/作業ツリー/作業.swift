@@ -154,12 +154,16 @@ public class 作業記録型 {
         for stop in orderedStops {
             if (stop.開始日時...stop.完了日時).contains(current) {
                 current = stop.完了日時
+            } else if current > to {
+                break
             } else if (current...to).contains(stop.開始日時) {
                 result += self.工程.作業時間(from: current, to: stop.開始日時)
                 current = stop.完了日時
             }
         }
-        return result + self.工程.作業時間(from: current, to: to) - self.営業戻し時間 - self.原稿校正時間
+        let diff = self.calc営業戻時間(from: from, to: to) + self.calc原稿校正時間(from: from, to: to)
+        result += self.工程.作業時間(from: current, to: to)
+        return result > diff ? result - diff : result
     }
     
     public lazy var 原稿校正時間: TimeInterval = {
@@ -171,6 +175,41 @@ public class 作業記録型 {
         if self.工程 != .管理 { return 0 }
         return self.関連保留校正.filter { $0.作業種類 == .営業戻し }.reduce(0) { $0 + $1.作業時間 }
     }()
+    
+    func calc営業戻時間(from: Date? = nil, to: Date? = nil) -> TimeInterval {
+        guard let baseFrom = maxDate(from, self.開始日時), let baseTo = minDate(to, self.完了日時) else { return 0 }
+        if baseFrom > baseTo  { return 0 }
+        return self.関連保留校正.filter { $0.作業種類 == .営業戻し }.reduce(0) {
+            if $1.開始日時 >= baseTo || $1.完了日時 <= baseFrom { return $0 }
+            let from = max($1.開始日時, baseFrom)
+            let to = max($1.完了日時, baseTo)
+            let sec = $1.工程.作業時間(from: from, to: to)
+            return $0 + sec
+        }
+    }
+
+    func calc原稿校正時間(from: Date? = nil, to: Date? = nil) -> TimeInterval {
+        guard let baseFrom = maxDate(from, self.開始日時), let baseTo = minDate(to, self.完了日時) else { return 0 }
+        if baseFrom > baseTo  { return 0 }
+        return self.関連保留校正.filter { $0.作業種類 == .校正 }.reduce(0) {
+            if $1.開始日時 >= baseTo || $1.完了日時 <= baseFrom { return $0 }
+            let from = max($1.開始日時, baseFrom)
+            let to = max($1.完了日時, baseTo)
+            let sec = $1.工程.作業時間(from: from, to: to)
+            return $0 + sec
+        }
+    }
+
+    public func 作業時間(of day: Day) -> TimeInterval? {
+        guard self.isOverlap(range: day...day) else { return nil }
+        let from = Date(day, self.工程.推定始業時間(of: day))
+        let to = Date(day, self.工程.推定終業時間(of: day))
+        let sec = self.calc作業時間(from: from, to: to)
+        if let sec = sec, sec < 0 {
+            NSLog("")
+        }
+        return sec
+    }
 }
 
 extension Array where Element == 作業記録型 {

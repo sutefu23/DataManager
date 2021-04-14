@@ -135,6 +135,15 @@ public extension UIView {
     }
 
     @discardableResult
+    func updateAction(_ blockName: String, target: Any?, action: Selector?) -> UITextField? {
+        guard let view = searchTextField(blockName) else { return nil }
+        if let target = target, let action = action {
+            view.addTarget(target, action: action, for: .primaryActionTriggered)
+        }
+        return view
+    }
+
+    @discardableResult
     func updateLabel(_ blockName: String, text: Any?, tcolor: DMColor? = nil, bgColor: DMColor? = nil, tag: Int? = nil, noEmpty: Bool = false, target: Any? = nil, action: Selector? = nil) -> UILabel? {
         guard let view = searchLabel(blockName) else { return nil }
         switch text {
