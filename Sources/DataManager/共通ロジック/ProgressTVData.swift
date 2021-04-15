@@ -68,6 +68,33 @@ public enum ProgressTVMode: Int {
     }
 }
 
+/// 表示順切り替えモード
+public enum ProgressTVSort: Int {
+    case 箱文字優先 = 1
+    case 白優先 = 2
+    
+    public var targetName: String {
+        switch self {
+        case .箱文字優先: return "箱文字優先"
+        case .白優先: return "白優先"
+        }
+    }
+    public var simpleTargetName: String {
+        switch self {
+        case .箱文字優先: return "通常表示"
+        case .白優先: return "白優先"
+        }
+    }
+    public var nextSortMode: ProgressTVSort {
+        switch self {
+        case .箱文字優先:
+            return .白優先
+        case .白優先:
+            return .箱文字優先
+        }
+    }
+}
+
 private let 注目工程: Set<工程型> = [.立ち上がり, .立ち上がり_溶接]
 private let スルー工程一覧: Set<工程型> = [.レーザー（アクリル）, .フォーミング, .シャーリング, .タップ, .タレパン, .プレーナー, .ルーター, .付属品準備]
 private let ペア工程: [工程型: 工程型] = [
@@ -175,6 +202,7 @@ public final class ProgressTVData {
         let flg2 = self.update優先状態(for: [target])
         return flg1 || flg2
     }
+
 }
 
 // MARK: - Delegate
@@ -183,7 +211,8 @@ public protocol ProgressTVCoreOwner: class {
     func showInfo2(_ text: String)
     func showInfo3(_ text: String)
     func showMode(_ text: String)
-
+    func showSortMode(_ text: String)
+    
     func reloadTableViewData()
 }
 
@@ -191,6 +220,9 @@ public protocol ProgressTVCoreOwner: class {
 public final class ProgressTVCore {
     weak var owner: ProgressTVCoreOwner!
     public var mode: ProgressTVMode {
+        didSet { self.updateNow() }
+    }
+    public var sortMode: ProgressTVSort {
         didSet { self.updateNow() }
     }
     public var アクリル有りのみ表示: Bool {
@@ -212,12 +244,13 @@ public final class ProgressTVCore {
     var lastAllUpdate: Date? = nil
     public var count: Int { return datas.count }
 
-    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, mode: ProgressTVMode, orders: [指示書型]? = nil) {
+    public init(owner: ProgressTVCoreOwner, target: 工程型 = .立ち上がり, mode: ProgressTVMode, orders: [指示書型]? = nil, sort: ProgressTVSort = .箱文字優先) {
         owner.showInfo3("Ver " + (Version()?.fullText ?? ""))
         self.mode = mode
         self.owner = owner
         self.target = target
         self.sourceOrders = orders
+        self.sortMode = sort
         prepareFirstLabel()
         startOrderUpdate()
     }
@@ -227,6 +260,7 @@ public final class ProgressTVCore {
             owner.showInfo1("\(self.target.description) 初回検索中・・・・・")
             owner.showInfo2("")
             owner.showMode(mode.simpleTargetName)
+            owner.showSortMode(sortMode.simpleTargetName)
             datas = []
             owner.reloadTableViewData()
         }
@@ -242,9 +276,12 @@ public final class ProgressTVCore {
     }
     
     public func changeFilter(mode: ProgressTVMode) {
-        self.mode = mode
         self.currentTarget = nil
-        self.updateNow()
+        self.mode = mode
+    }
+    
+    public func changeSort(sortMode: ProgressTVSort) {
+        self.sortMode = sortMode
     }
     
     private func updateNow() {
@@ -401,7 +438,14 @@ public final class ProgressTVCore {
         let today = Day()
         let now = Time()
         if allChange {
-            self.datas = self.sourceDatas.filter{ $0.必要チェック(for: target) }.sorted{ 箱文字前工程比較($0.指示書, $1.指示書, 工程: target) }
+            self.datas = self.sourceDatas.filter{ $0.必要チェック(for: target) }.sorted{
+                if(sortMode == .箱文字優先){
+                    return 箱文字前工程比較($0.指示書, $1.指示書, 工程: target)
+                }else{
+                    return 白優先比較($0, $1, 工程: target)
+                }
+                
+            }
         }
         let targets = [self.target]
 
@@ -415,6 +459,7 @@ public final class ProgressTVCore {
         }
         owner.showInfo2(label2)
         owner.showMode(mode.simpleTargetName)
+        owner.showSortMode(sortMode.simpleTargetName)
         self.currentTarget = self.target
         if allChange {
             owner.reloadTableViewData()
@@ -505,6 +550,16 @@ public final class ProgressTVCore {
         return datas[row]
     }
     
+    public func 白優先比較(_ data1: ProgressTVData, _ data2: ProgressTVData, 工程 target: 工程型) -> Bool {
+        let isWhite1 = data1.白表示(for: [target]) ?? false
+        let isWhite2 = data2.白表示(for: [target]) ?? false
+        
+        if isWhite1 && isWhite2 { //どっちも白
+            return 箱文字前工程比較(data1.指示書, data2.指示書, 工程: target)
+        }else{
+            return isWhite1
+        }
+    }
     
     #if os(iOS) || os(tvOS)
     public func updateLabel(view: DMView, row: Int, col: String) {
