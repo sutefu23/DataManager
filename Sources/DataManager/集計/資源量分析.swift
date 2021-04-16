@@ -21,6 +21,14 @@ public struct OrderResourceInfo {
         self.model = model
     }
 
+    public func predict資源量(工程 process: 工程型) -> TimeInterval? {
+        return self.predict資源量(関連工程: [process])
+    }
+
+    public func real資源量(工程 process: 工程型) -> TimeInterval? {
+        return self.real資源量(関連工程: [process])
+    }
+
     public func predict資源量(作業グループ group: 作業グループ型) -> TimeInterval? {
         return self.predict資源量(関連工程: group.関連工程)
     }
