@@ -58,6 +58,7 @@ public enum NAS4User: Int, RawRepresentable, Hashable, Identifiable {
     case 塗装 = 26
     case 溶接 = 27
     case 複合機 = 28
+    case 製造グループ = 29
     
     public var account: NASUser {
         switch self {
@@ -89,6 +90,7 @@ public enum NAS4User: Int, RawRepresentable, Hashable, Identifiable {
         case .塗装 : return NASUser(account: "tosou", password: "CwUJJ33D")
         case .溶接: return NASUser(account: "yosetu", password: "S3YE23kQ")
         case .複合機: return NASUser(account: "scan", password: "scan")
+        case .製造グループ: return NASUser(account: "seizou", password: "s3ye23Kq")
         }
     }
 }
