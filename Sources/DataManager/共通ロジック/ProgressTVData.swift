@@ -35,7 +35,6 @@ public enum ProgressTVMode: Int {
         case .加工: return "加工"
         case .エッチング: return "エッチング"
         case .出力原稿: return "出力原稿"
-
         }
     }
 
@@ -51,20 +50,7 @@ public enum ProgressTVMode: Int {
     }
 
     public var nextMode: ProgressTVMode {
-        switch self {
-        case .箱文字:
-            return .箱文字アクリル
-        case .箱文字アクリル:
-            return .切文字
-        case .切文字:
-            return .加工
-        case .加工:
-            return .エッチング
-        case .エッチング:
-            return .出力原稿
-        case .出力原稿:
-            return .箱文字
-        }
+        return ProgressTVMode(rawValue: self.rawValue + 1) ?? .箱文字
     }
 }
 
@@ -95,13 +81,6 @@ public enum ProgressTVSort: Int {
     }
 }
 
-private let 注目工程: Set<工程型> = [.立ち上がり, .立ち上がり_溶接]
-private let スルー工程一覧: Set<工程型> = [.レーザー（アクリル）, .フォーミング, .シャーリング, .タップ, .タレパン, .プレーナー, .ルーター, .付属品準備]
-private let ペア工程: [工程型: 工程型] = [
-    .立ち上がり: .立ち上がり_溶接,
-    .立ち上がり_溶接: .立ち上がり
-]
-
 public final class ProgressTVData {
     private let lock = NSRecursiveLock()
 
@@ -117,12 +96,10 @@ public final class ProgressTVData {
     public var 伝言欄: String { return self.指示書.管理用メモ }
     public var 進捗一覧: [進捗型] { return self.指示書.進捗一覧 }
 
-    
     public init(_ 指示書: 指示書型) {
         self.指示書 = 指示書
         self.状態表示 = 指示書.箱文字前工程状態表示
     }
-    
 
     public func 必要チェック(for target: 工程型) -> Bool {
         return self.指示書.箱文字前工程必要チェック(for: target)
@@ -267,7 +244,7 @@ public final class ProgressTVCore {
     }
     
     public func changeTarget() {
-        let list: [工程型] = [.立ち上がり, .照合検査, .レーザー, .出力, .入力, .原稿, .管理, .営業]
+        let list: [工程型] = [.加工, .切文字, .立ち上がり, .照合検査, .レーザー, .出力, .入力, .原稿, .管理, .営業]
         guard let currentIndex = list.firstIndex(of: self.target) else { return }
         var nextIndex = list.index(after: currentIndex)
         if !list.indices.contains(nextIndex) { nextIndex = list.startIndex }
@@ -296,7 +273,7 @@ public final class ProgressTVCore {
     
     func makeList(_ item: DispatchWorkItem?) throws -> [ProgressTVData]? {
         let today = Day()
-        let orders: [指示書型]
+        var orders: [指示書型]
         if let source = self.sourceOrders {
             orders = source
         } else {
@@ -320,6 +297,14 @@ public final class ProgressTVCore {
                 orders = odr.filter{
                     $0.contains(工程: .原稿, 作業内容: .開始)
                 }
+            }
+        }
+        orders = orders.filter { // 工程管理対象外を除去する
+            switch $0.伝票状態 {
+            case .キャンセル, .発送済:
+                return false
+            case .未製作, .製作中:
+                return true
             }
         }
         if item?.isCancelled == true { return nil }
