@@ -141,6 +141,11 @@ public final class 指示書型 {
     public var 台板材質: String { record.string(forKey: "台板材質")! }
     public var 裏仕様: String { record.string(forKey: "裏仕様")! }
 
+    public var 枠寸法1: String { record.string(forKey: "枠寸法1")! }
+    public var 枠寸法2: String { record.string(forKey: "枠寸法2")! }
+    public var 枠寸法3: String { record.string(forKey: "枠寸法3")! }
+    public var 台板寸法: String { record.string(forKey: "台板寸法")! }
+    
     public var 合計金額: Double { record.double(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }
@@ -509,6 +514,16 @@ public final class 指示書型 {
 }
 
 extension 指示書型 {
+    public var 台板サイズ: (height: Double, width: Double)? {
+        var scanner = DMScanner(self.台板寸法, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: true)
+        scanner.scanString("H")
+        guard let height = scanner.scanDouble() else { return nil }
+        scanner.scanString("*")
+        scanner.scanString("W")
+        guard let width = scanner.scanDouble() else { return nil }
+        return (height: height, width: width)
+    }
+    
     public var 発送事項: String { record.string(forKey: "発送事項") ?? "" }
     
     public func is分納相手完納済み(自工程: 工程型) throws -> Bool? {
