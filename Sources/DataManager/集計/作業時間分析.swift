@@ -210,10 +210,12 @@ public class TimeModel {
         lock.lock()
         defer { lock.unlock() }
         if let cache = modelCache[key] { return cache }
-        let orders = self.orderMap[key.指示書分類] ?? self.orders
-        let model = try 作業時間推計モデル型(orders, 関連工程: key.関連工程, 集計タイプ: key.集計タイプ)
-        modelCache[key] = model
-        return model
+        return try autoreleasepool {
+            let orders = self.orderMap[key.指示書分類] ?? self.orders
+            let model = try 作業時間推計モデル型(orders, 関連工程: key.関連工程, 集計タイプ: key.集計タイプ)
+            modelCache[key] = model
+            return model
+        }
     }
 
     public func predict名目作業時間(_ order: 指示書型, 作業グループ: 作業グループ型) throws -> TimeInterval {
@@ -252,95 +254,99 @@ public class TimeModel {
 @available(OSX 11.0, *)
 struct 作業時間推計モデル型 {
     static func makeTable(orders: [指示書型], 関連工程 set: Set<工程型>, 集計タイプ: 時間集計型) throws -> MLDataTable {
-        let lock = NSLock()
-        // 集計
-        var 作業時間: [TimeInterval] = []
-        var 年: [Int] = []
-        var 月: [Int] = []
-        var 日: [Int] = []
-        var 伝票種類: [Int] = []
-        var 仕様: [String] = []
-        var 文字数: [Int] = []
-        var サイズ: [Double] = []
-        var 裏仕様: [String] = []
-        
-        var 社内塗装あり: [Bool] = []
-        var 外注あり: [Bool] = []
-        var レーザーあり: [Bool] = []
-        var エッチングあり: [Bool] = []
-        var 印刷あり: [Bool] = []
-        var 台板あり: [Bool] = []
-
-        DispatchQueue.concurrentPerform(iterations: orders.count) {
-            let order = orders[$0]
-            let timeTable = order.make集計(関連工程: set)
-            let _作業時間: TimeInterval
-            switch 集計タイプ {
-            case .名目:
-                _作業時間 = timeTable?.名目 ?? 0
-            case .実質:
-                _作業時間 = timeTable?.実質 ?? 0
+            let lock = NSLock()
+            // 集計
+            var 作業時間: [TimeInterval] = []
+            var 年: [Int] = []
+            var 月: [Int] = []
+            var 日: [Int] = []
+            var 伝票種類: [Int] = []
+            var 仕様: [String] = []
+            var 文字数: [Int] = []
+            var サイズ: [Double] = []
+            var 裏仕様: [String] = []
+            
+            var 社内塗装あり: [Bool] = []
+            var 外注あり: [Bool] = []
+            var レーザーあり: [Bool] = []
+            var エッチングあり: [Bool] = []
+            var 印刷あり: [Bool] = []
+            var 台板あり: [Bool] = []
+            
+            DispatchQueue.concurrentPerform(iterations: orders.count) {
+                let order = orders[$0]
+                autoreleasepool {
+                    let timeTable = order.make集計(関連工程: set)
+                    let _作業時間: TimeInterval
+                    switch 集計タイプ {
+                    case .名目:
+                        _作業時間 = timeTable?.名目 ?? 0
+                    case .実質:
+                        _作業時間 = timeTable?.実質 ?? 0
+                    }
+                    let day = order.出荷納期
+                    let _年 = day.year
+                    let _月 = day.month
+                    let _日 = day.day
+                    let _伝票種類 = order.伝票種類.rawValue
+                    let _仕様 = order.仕様
+                    let _裏仕様 = order.裏仕様
+                    let _文字数 = order.指示書文字数.総文字数
+                    let _サイズ = order.寸法サイズ.max() ?? order.仮サイズ
+                    let _社内塗装あり = order.社内塗装あり || order.is内作塗装あり
+                    let _外注あり = order.外注塗装あり || order.外注メッキあり || order.is外注塗装あり
+                    let _レーザーあり = order.レーザーアクリルあり || !order.レーザー加工機.isEmpty
+                    let _エッチングあり = order.略号.contains(.腐食)
+                    let _印刷あり = order.略号.contains(.印刷)
+                    let _台板あり = order.略号.contains(.看板) || order.略号.contains(.組込)
+                    
+                    lock.lock()
+                    作業時間.append(_作業時間)
+                    年.append(_年)
+                    月.append(_月)
+                    日.append(_日)
+                    伝票種類.append(_伝票種類)
+                    仕様.append(_仕様)
+                    裏仕様.append(_裏仕様)
+                    文字数.append(_文字数)
+                    サイズ.append(_サイズ)
+                    社内塗装あり.append(_社内塗装あり)
+                    外注あり.append(_外注あり)
+                    レーザーあり.append(_レーザーあり)
+                    エッチングあり.append(_エッチングあり)
+                    印刷あり.append(_印刷あり)
+                    台板あり.append(_台板あり)
+                    lock.unlock()
+                }
             }
-            let day = order.出荷納期
-            let _年 = day.year
-            let _月 = day.month
-            let _日 = day.day
-            let _伝票種類 = order.伝票種類.rawValue
-            let _仕様 = order.仕様
-            let _裏仕様 = order.裏仕様
-            let _文字数 = order.指示書文字数.総文字数
-            let _サイズ = order.寸法サイズ.max() ?? order.仮サイズ
-            let _社内塗装あり = order.社内塗装あり || order.is内作塗装あり
-            let _外注あり = order.外注塗装あり || order.外注メッキあり || order.is外注塗装あり
-            let _レーザーあり = order.レーザーアクリルあり || !order.レーザー加工機.isEmpty
-            let _エッチングあり = order.略号.contains(.腐食)
-            let _印刷あり = order.略号.contains(.印刷)
-            let _台板あり = order.略号.contains(.看板) || order.略号.contains(.組込)
-
-            lock.lock()
-            作業時間.append(_作業時間)
-            年.append(_年)
-            月.append(_月)
-            日.append(_日)
-            伝票種類.append(_伝票種類)
-            仕様.append(_仕様)
-            裏仕様.append(_裏仕様)
-            文字数.append(_文字数)
-            サイズ.append(_サイズ)
-            社内塗装あり.append(_社内塗装あり)
-            外注あり.append(_外注あり)
-            レーザーあり.append(_レーザーあり)
-            エッチングあり.append(_エッチングあり)
-            印刷あり.append(_印刷あり)
-            台板あり.append(_台板あり)
-            lock.unlock()
+        return try autoreleasepool {
+            // モデルの作成
+            let dic: [String: MLDataValueConvertible]  = [
+                "作業時間": 作業時間,
+                "年": 年,
+                "月": 月,
+                "日": 日,
+                "伝票種類": 伝票種類,
+                "仕様": 仕様,
+                "裏仕様": 裏仕様,
+                "文字数": 文字数,
+                "サイズ": サイズ,
+                "社内塗装あり": 社内塗装あり.map{ $0 ? 1 : 0 },
+                "外注あり": 外注あり.map{ $0 ? 1 : 0 },
+                "レーザーあり": レーザーあり.map{ $0 ? 1 : 0 },
+                "エッチングあり": エッチングあり.map{ $0 ? 1 : 0 },
+                "印刷あり": 印刷あり.map{ $0 ? 1 : 0 },
+                "台板あり": 台板あり.map{ $0 ? 1 : 0 },
+            ]
+            let table = try MLDataTable(dictionary: dic)
+            return table
         }
-        // モデルの作成
-        let dic: [String: MLDataValueConvertible]  = [
-            "作業時間": 作業時間,
-            "年": 年,
-            "月": 月,
-            "日": 日,
-            "伝票種類": 伝票種類,
-            "仕様": 仕様,
-            "裏仕様": 裏仕様,
-            "文字数": 文字数,
-            "サイズ": サイズ,
-            "社内塗装あり": 社内塗装あり.map{ $0 ? 1 : 0 },
-            "外注あり": 外注あり.map{ $0 ? 1 : 0 },
-            "レーザーあり": レーザーあり.map{ $0 ? 1 : 0 },
-            "エッチングあり": エッチングあり.map{ $0 ? 1 : 0 },
-            "印刷あり": 印刷あり.map{ $0 ? 1 : 0 },
-            "台板あり": 台板あり.map{ $0 ? 1 : 0 },
-        ]
-        let table = try MLDataTable(dictionary: dic)
-        return table
     }
-
+    
     let regressor: MLLinearRegressor
     let set: Set<工程型>
     let 集計タイプ: 時間集計型
-
+    
     init(_ orders: [指示書型], 関連工程 set: Set<工程型>, 集計タイプ: 時間集計型) throws {
         self.集計タイプ = 集計タイプ
         self.set = set
@@ -349,10 +355,12 @@ struct 作業時間推計モデル型 {
     }
     
     func predict作業時間(_ order: 指示書型) throws -> TimeInterval {
-        let table = try 作業時間推計モデル型.makeTable(orders: [order], 関連工程: self.set, 集計タイプ: 集計タイプ)
-        let col = try self.regressor.predictions(from: table)
-        guard let values = col.doubles, !values.isEmpty else { return 0 }
-        return values.element(at: 0) ?? 0
+        try autoreleasepool {
+            let table = try 作業時間推計モデル型.makeTable(orders: [order], 関連工程: self.set, 集計タイプ: 集計タイプ)
+            let col = try self.regressor.predictions(from: table)
+            guard let values = col.doubles, !values.isEmpty else { return 0 }
+            return values.element(at: 0) ?? 0
+        }
     }
 }
 

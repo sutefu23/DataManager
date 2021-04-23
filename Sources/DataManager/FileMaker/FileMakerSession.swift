@@ -252,11 +252,13 @@ extension DMHttpConnectionProtocol {
         let data = string.data(using: .utf8)!
         return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
     }
-
+    
     func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(object)
-        return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
+        try autoreleasepool {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(object)
+            return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
+        }
     }
 }
 

@@ -200,35 +200,39 @@ public final class FileMakerDB {
     /// セッションを一時的に取得して作業を行う
     /// - Parameter work: セッション上で行う作業
     private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
-        let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
-        defer { server.putSession(session) }
-        do {
-            try work(session)
-        } catch {
-            if case let error as FileMakerError = error, error.canRetry {
-                session.logout()
-                Thread.sleep(forTimeInterval: 10)
+        try autoreleasepool {
+            let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+            defer { server.putSession(session) }
+            do {
                 try work(session)
-            } else {
-                throw error
+            } catch {
+                if case let error as FileMakerError = error, error.canRetry {
+                    session.logout()
+                    Thread.sleep(forTimeInterval: 10)
+                    try work(session)
+                } else {
+                    throw error
+                }
             }
         }
     }
-
+    
     /// セッションを一時的に取得して作業を行う
     /// - Parameter work: セッション上で行う作業。なんらかの値を返す
     /// - Returns: 作業の返り値
     private func execute2<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
-         let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
-         defer { server.putSession(session) }
-        do {
-            return try work(session)
-        } catch {
-            if case let error as FileMakerError = error, error.canRetry {
-                session.logout()
+        try autoreleasepool {
+            let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+            defer { server.putSession(session) }
+            do {
                 return try work(session)
-            } else {
-                throw error
+            } catch {
+                if case let error as FileMakerError = error, error.canRetry {
+                    session.logout()
+                    return try work(session)
+                } else {
+                    throw error
+                }
             }
         }
      }

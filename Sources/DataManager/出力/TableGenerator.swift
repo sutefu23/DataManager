@@ -136,22 +136,27 @@ public final class TableGenerator<S> {
             let sourceArray = Array<S>(source)
             let lines: [String] = sourceArray.concurrentMap {
                 let rowSource = $0
-                let cols: [String] = columns.map {
-                    $0.aggregator?.sum(rowSource) // 集計
-                    return $0.value(for: rowSource) // セルの表示内容の生成
+                let line: String = autoreleasepool {
+                    let cols: [String] = columns.map {
+                        $0.aggregator?.sum(rowSource) // 集計
+                        return $0.value(for: rowSource) // セルの表示内容の生成
+                    }
+                    return format.makeLine(cols)
                 }
-                return format.makeLine(cols)
+                return line
             }
             for line in lines {
                 text += line
             }
         } else {
             for rowSource in source {
-                let cols: [String] = columns.map {
-                    $0.aggregator?.sum(rowSource) // 集計
-                    return $0.value(for: rowSource) // セルの表示内容の生成
+                autoreleasepool {
+                    let cols: [String] = columns.map {
+                        $0.aggregator?.sum(rowSource) // 集計
+                        return $0.value(for: rowSource) // セルの表示内容の生成
+                    }
+                    text += format.makeLine(cols)
                 }
-                text += format.makeLine(cols)
             }
         }
         // 集計結果
