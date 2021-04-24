@@ -74,8 +74,8 @@ final class FileMakerRecord {
         switch object {
         case let str as String:
             return str
-        case let value as Int:
-            return "\(value)"
+        case let value as NSNumber:
+            return value.stringValue
         default:
             return nil
         }
