@@ -141,6 +141,7 @@ public final class 指示書型 {
     public var 台板材質: String { record.string(forKey: "台板材質")! }
     public var 裏仕様: String { record.string(forKey: "裏仕様")! }
 
+    public var 枠仕上: String { record.string(forKey: "枠仕上")! }
     public var 枠寸法1: String { record.string(forKey: "枠寸法1")! }
     public var 枠寸法2: String { record.string(forKey: "枠寸法2")! }
     public var 枠寸法3: String { record.string(forKey: "枠寸法3")! }
