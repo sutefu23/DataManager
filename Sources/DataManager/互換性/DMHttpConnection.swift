@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - HTTP接続
-protocol DMHttpConnectionProtocol: class {
+protocol DMHttpConnectionProtocol: AnyObject {
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data?
 }
 

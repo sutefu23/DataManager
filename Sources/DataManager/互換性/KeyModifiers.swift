@@ -10,7 +10,7 @@ import Foundation
 
 #if os(macOS)
 /// 修飾キーの状態
-public protocol KeyModifiers: class {
+public protocol KeyModifiers: AnyObject {
     var modifierFlags: DMEvent.ModifierFlags { get }
 }
 

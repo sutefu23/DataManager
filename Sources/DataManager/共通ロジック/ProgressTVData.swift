@@ -183,7 +183,7 @@ public final class ProgressTVData {
 }
 
 // MARK: - Delegate
-public protocol ProgressTVCoreOwner: class {
+public protocol ProgressTVCoreOwner: AnyObject {
     func showInfo1(_ text: String)
     func showInfo2(_ text: String)
     func showInfo3(_ text: String)

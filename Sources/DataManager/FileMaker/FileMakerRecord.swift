@@ -12,7 +12,7 @@ struct PortalDataCache {
     let cache: [FileMakerRecord]?
 }
 
-protocol FileMakerRecordOwner: class {
+protocol FileMakerRecordOwner: AnyObject {
     init?(record: FileMakerRecord)
 }
 

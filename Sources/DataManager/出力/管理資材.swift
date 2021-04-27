@@ -15,7 +15,7 @@ public typealias 管理板材一覧一覧型 = 管理対象一覧型<管理板�
 public typealias 管理板材一覧型 = 管理対象一覧型<管理板材型> // 板材一覧
 
 /// 管理対象
-public protocol 管理対象型: class, Codable {
+public protocol 管理対象型: AnyObject, Codable {
     func isIdential(to: Self) -> Bool // 対象が同じものかどうか調べる。同じ物はリストに乗れない
 }
 
