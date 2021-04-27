@@ -8,30 +8,30 @@
 
 import Foundation
 
-private let queue = OperationQueue()
+//private let queue = OperationQueue()
 
-public class Future<T> {
-    
-    var operation: Operation!
-    var resultValue: T!
-    private let lock = NSLock()
-
-    public init(_ exec:@escaping ()->T) {
-        let operation = BlockOperation {
-            let val = exec()
-            self.lock.lock()
-            self.resultValue = val
-            self.lock.unlock()
-        }
-        self.operation = operation
-        queue.addOperation(operation)
-    }
-    
-    public var result: T {
-        operation.waitUntilFinished()
-        return resultValue
-    }
-}
+//public class Future<T> {
+//
+//    var operation: Operation!
+//    var resultValue: T!
+//    private let lock = NSLock()
+//
+//    public init(_ exec:@escaping ()->T) {
+//        let operation = BlockOperation {
+//            let val = exec()
+//            self.lock.lock()
+//            self.resultValue = val
+//            self.lock.unlock()
+//        }
+//        self.operation = operation
+//        queue.addOperation(operation)
+//    }
+//
+//    public var result: T {
+//        operation.waitUntilFinished()
+//        return resultValue
+//    }
+//}
 
 extension Array {
     enum ConcurrentError: Error {
@@ -76,18 +76,16 @@ extension Array {
         var results = [Result<T, Error>](repeating: .failure(ConcurrentError.emptyData), count: self.count)
         let lock = NSLock()
         DispatchQueue.concurrentPerform(iterations: self.count) {
-            let index = self.index(self.startIndex, offsetBy: $0)
-            let target = self[index]
+            let target = self[$0]
+            let result: Result<T, Error>
             do {
-                let result = try converter(target)
-                lock.lock()
-                results[$0] = .success(result)
-                lock.unlock()
+                result = .success(try converter(target))
             } catch {
-                lock.lock()
-                results[$0] = .failure(error)
-                lock.unlock()
+                result = .failure(error)
             }
+            lock.lock()
+            results[$0] = result
+            lock.unlock()
         }
         return try results.map { try $0.get() }
     }
