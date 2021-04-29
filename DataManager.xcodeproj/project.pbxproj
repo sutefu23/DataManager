@@ -1202,7 +1202,7 @@
 		OBJ_185 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1233,7 +1233,7 @@
 		OBJ_186 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
