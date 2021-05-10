@@ -29,6 +29,7 @@ class TestProgress: XCTestCase {
             fatalError()
         }
     }
+    
 //    func testFind2() {
 //        let day0331 = Day(2019, 3, 1)
 //
@@ -39,4 +40,13 @@ class TestProgress: XCTestCase {
 //        }
 //    }
 
+    let doTestFind3 = false
+    func testFind3() {
+        guard doTestFind3 else { return }
+        let day = Day(2021, 5, 7)
+        let time = Time(13, 00)
+        let date = Date(day, time)
+        let list = try! 進捗型.find(工程: .出力, 作業内容: .完了, 開始日時: date)
+        XCTAssertEqual(list.isEmpty, false)
+    }
 }

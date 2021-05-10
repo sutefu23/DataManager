@@ -124,7 +124,8 @@ class 工程名称DB型 {
             "腐食" : .腐蝕,
             "タップ" : .タップ,
             "洗い場" : .表面仕上,
-            "検査" : .照合検査
+            "検査" : .照合検査,
+            "設計" : .商品設計,
         ]
         var map3: [工程型: String] = [:]
         for record in db_全工程 {
@@ -174,7 +175,7 @@ var 名称工程DB: [String: 工程型] { 工程名称DB.reversedMap }
 
 public extension 工程型 {
     static let 工場工程一覧: [工程型] = [
-        .営業, .校正, .管理,
+        .営業, .校正, .管理, .商品設計,
         .原稿, .出力, .フィルム, .入力,
         .レーザー, .レーザー（アクリル）, .照合検査,
         .腐蝕, .印刷, .版焼き, .腐蝕印刷, .腐蝕印刷,
@@ -203,7 +204,7 @@ public extension 工程型 {
     static let 営業 = 工程型(name: "営業", code: "P001")
     static let 校正 = 工程型(name: "校正", code: "P002")
     static let 管理 = 工程型(name: "管理", code: "P003")
-    static let 設計 = 工程型(name: "設計", code: "P003B")
+    static let 商品設計 = 工程型(name: "商品設計", code: "P003B")
     static let 原稿 = 工程型(name: "原稿", code: "P004")
     static let 出力 = 工程型(name: "出力", code: "P004B")
     static let フィルム = 工程型(name: "フィルム", code: "P004C")
@@ -255,7 +256,7 @@ public extension 工程型 {
 // MARK: - 管理グループ
 public let 管理グループ: [工程型] = 管理グループ1 + 管理グループ2
 public let 管理グループ1: [工程型] = [
-    .営業, .管理
+    .営業, .管理, .商品設計
 ]
 public let 管理グループ2: [工程型] = [
     .原稿, .入力, .出力

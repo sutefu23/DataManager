@@ -134,13 +134,23 @@ public extension UIView {
         return view
     }
 
-    @discardableResult
-    func updateAction(_ blockName: String, target: Any?, action: Selector?) -> UITextField? {
-        guard let view = searchTextField(blockName) else { return nil }
+//    @discardableResult
+//    func updateAction(_ blockName: String, target: Any?, action: Selector?) -> UITextField? {
+//        guard let view = searchTextField(blockName) else { return nil }
+//        if let target = target, let action = action {
+//            view.addTarget(target, action: action, for: .primaryActionTriggered)
+//        }
+//        return view
+//    }
+
+    func updateAction(_ blockName: String, tag: Int? = nil, target: Any?, action: Selector?) {
+        guard let view = searchView(blockName) else { return }
+        if let tag = tag { view.tag = tag }
         if let target = target, let action = action {
-            view.addTarget(target, action: action, for: .primaryActionTriggered)
+            let myTap: UITapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+            view.isUserInteractionEnabled = true
+            view.addGestureRecognizer(myTap)
         }
-        return view
     }
 
     @discardableResult

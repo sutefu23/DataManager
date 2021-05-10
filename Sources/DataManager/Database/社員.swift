@@ -218,6 +218,7 @@ public extension 社員型 {
     static let 岸原_秀昌 = prepare社員(社員番号: 112, 社員名称: "岸原 秀昌")
     static let 葏口_徹 = prepare社員(社員番号: 125, 社員名称: "葏口 徹")
     static let 森藤_年栄 = prepare社員(社員番号: 717, 社員名称: "森藤 年栄")
+    static let 平上_未奈 = prepare社員(社員番号: 748, 社員名称: "平上　未奈")
     static let 和田_千秋 = prepare社員(社員番号: 955, 社員名称: "和田 千秋")
 }
 
