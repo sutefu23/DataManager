@@ -237,6 +237,11 @@ public extension TableGenerator {
         case average
     }
 
+    func fix(_ title: String, _ getter: @escaping () -> String?) -> TableGenerator<S> {
+        let col = TableColumn<S>(title: title) { _ in getter() }
+        return appending(col)
+    }
+    
     func string(_ title: String, prefix: Int? = nil, _ getter: @escaping (S) -> String?) -> TableGenerator<S> {
         if let prefix = prefix {
             let prefixGetter: (S) -> String? = {
