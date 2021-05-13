@@ -48,6 +48,11 @@ public class 送状型: Identifiable {
     public var 出荷納期: Day? { record.day(forKey: "エッチング指示書テーブル::出荷納期") }
     public var 発送事項: String? { record.string(forKey: "エッチング指示書テーブル::発送事項") }
     public var 伝票状態: 伝票状態型? { record.伝票状態(forKey: "エッチング指示書テーブル::伝票状態") }
+    
+    public lazy var isAM: Bool = {
+        let str = self.着指定時間.toHalfCharacters.uppercased()
+        return str.hasPrefix("AM")
+    }()
 }
 
 extension 送状型 {

@@ -108,12 +108,14 @@ extension Error {
         alert.runModal()
     }
     
+}
+
+#endif
+
+extension Error {
     public func asyncShowAlert() {
         DispatchQueue.main.async {
             self.showAlert()
         }
     }
 }
-
-#endif
-

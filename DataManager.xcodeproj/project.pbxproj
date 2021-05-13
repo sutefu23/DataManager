@@ -44,6 +44,7 @@
 		148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
 		148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */; };
 		148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */; };
+		148D0F4A264C9EF4009A6B0C /* ヤマト運輸.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */; };
 		148DBA6925B939B100721484 /* 送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148DBA6825B939B100721484 /* 送状.swift */; };
 		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
 		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
@@ -280,6 +281,7 @@
 		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
 		148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "角パイプ一覧.csv"; sourceTree = "<group>"; };
 		148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材パイプ情報.swift"; sourceTree = "<group>"; };
+		148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ヤマト運輸.swift"; sourceTree = "<group>"; };
 		148DBA6825B939B100721484 /* 送状.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状.swift"; sourceTree = "<group>"; };
 		1498B052252413FA001698DF /* 全角カナto半角カナ.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角カナto半角カナ.txt"; sourceTree = "<group>"; };
 		1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "全角ASCIIto半角ASCII.txt"; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				149D95F125B95FAB000F97B5 /* 福山通運.swift */,
+				148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */,
 			);
 			path = CSV;
 			sourceTree = "<group>";
@@ -1011,6 +1014,7 @@
 				OBJ_195 /* 指示書ボルト欄.swift in Sources */,
 				1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */,
 				OBJ_196 /* 指示書変更内容履歴.swift in Sources */,
+				148D0F4A264C9EF4009A6B0C /* ヤマト運輸.swift in Sources */,
 				1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */,
 				OBJ_197 /* 発注.swift in Sources */,
 				OBJ_198 /* 社員.swift in Sources */,
