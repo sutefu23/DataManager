@@ -19,8 +19,8 @@ final class 進捗一覧Data型 {
 }
 
 public final class 指示書進捗キャッシュ型 {
-    public static func 工程別進捗一覧(伝票番号: 伝票番号型) throws -> [工程型: [進捗型]] {
-        return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(伝票番号).工程別進捗一覧
+    public static func 工程別進捗一覧(伝票番号: 伝票番号型, update: Bool = false) throws -> [工程型: [進捗型]] {
+        return try update ? 指示書進捗キャッシュ型.shared.現在一覧(伝票番号).工程別進捗一覧 : 指示書進捗キャッシュ型.shared.キャッシュ一覧(伝票番号).工程別進捗一覧
     }
     
     public var expire: TimeInterval = 5*60 // ５分

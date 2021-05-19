@@ -79,6 +79,7 @@ public class 管理対象一覧型<T: 管理対象型>: 管理対象型, Bidirec
     }
     
     // MARK: 通常操作
+    @discardableResult
     public func append(_ item: T) -> Int {
         一覧.append(item)
         return 一覧.count-1

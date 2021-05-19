@@ -37,8 +37,7 @@ extension UserDefaults {
                 self.nasUserTag = tag
             } else {
                 self.removeObject(forKey: "nasUserTag")
-            }
-            
+            }            
         }
     }
     public var nasUserTag: Int {
@@ -46,6 +45,20 @@ extension UserDefaults {
         set { self.set(newValue, forKey: "nasUserTag") }
     }
     
+    public var nasType: NFSType {
+        get {
+            guard let typestr = self.string(forKey: "nasType") else { return .smb }
+            return NFSType(rawValue: typestr) ?? .smb
+        }
+        set {
+            self.set(newValue.rawValue, forKey: "nasType")
+        }
+    }
+    
+    public var nasTypeCode: NASTypeCode {
+        get { NASTypeCode(self.nasType) }
+        set { self.nasType = NFSType(newValue) }
+    }
 }
 
 let defaults: UserDefaults = {

@@ -16,6 +16,35 @@ public enum NFSType: String {
     case afp = "afp"
     /// CIFS接続
     case cifs = "cifs"
+    
+    public init(_ typeCode: NASTypeCode) {
+        switch typeCode {
+        case .smb:
+            self = .smb
+        case .afp:
+            self = .afp
+        case .cifs:
+            self = .cifs
+        }
+    }
+}
+
+/// ネットワーク接続の種類（数値設定）
+public enum NASTypeCode: Int {
+    case smb = 1
+    case afp = 2
+    case cifs = 3
+    
+    public init(_ type: NFSType) {
+        switch type {
+        case .smb:
+            self = .smb
+        case .afp:
+            self = .afp
+        case .cifs:
+            self = .cifs
+        }
+    }
 }
 
 public struct NASServer: Hashable {
@@ -231,17 +260,17 @@ public final class MountManager {
     
     public func mount受け渡し(user: NAS4User? = nil) {
         let user = user ?? defaults.nas4User ?? .レーザー
-        mountNAS(server: .nas4, type: .smb, volume: "受け渡し", user: user.account)
+        mountNAS(server: .nas4, type: defaults.nasType, volume: "受け渡し", user: user.account)
     }
 
     public func mount部署専用(user: NAS4User? = nil) {
         let user = user ?? defaults.nas4User ?? .レーザー
-        mountNAS(server: .nas4, type: .smb, volume: "部署専用", user: user.account)
+        mountNAS(server: .nas4, type: defaults.nasType, volume: "部署専用", user: user.account)
     }
 
     public func mountその他共有(user: NAS4User? = nil) {
         let user = user ?? defaults.nas4User ?? .レーザー
-        mountNAS(server: .nas4, type: .smb, volume: "その他共有", user: user.account)
+        mountNAS(server: .nas4, type: defaults.nasType, volume: "その他共有", user: user.account)
     }
 
     public func terminate() {

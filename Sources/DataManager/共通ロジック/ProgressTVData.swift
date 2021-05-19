@@ -193,6 +193,14 @@ public protocol ProgressTVCoreOwner: AnyObject {
     func reloadTableViewData()
 }
 
+public extension ProgressTVCoreOwner {
+    func showInfo1(_ text: String) {}
+    func showInfo2(_ text: String) {}
+    func showInfo3(_ text: String) {}
+    func showMode(_ text: String) {}
+    func showSortMode(_ text: String) {}
+}
+
 // MARK: - コア
 public final class ProgressTVCore {
     weak var owner: ProgressTVCoreOwner!
@@ -573,6 +581,7 @@ extension ProgressTVCore{
         self.updateLabel(view: view, row: row, col: "LaserStart")
         self.updateLabel(view: view, row: row, col: "LaserEnd")
         view.backgroundColor = self.tableViewRowBackgroundColor(row: row)
+        FileMakerDB.logoutAll()
     }
 }
 #endif

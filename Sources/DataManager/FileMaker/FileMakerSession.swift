@@ -47,8 +47,11 @@ final class FileMakerSession {
     
     /// 接続可能な状態にする
     private func prepareToken(reuse: Bool = true) throws -> String {
-        if reuse == true, let token = self.activeToken { return token }
-
+        if reuse {
+            if let token = self.activeToken { return token }
+        } else {
+            self.logout()
+        }
         let url = self.url.appendingPathComponent("sessions")
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), string: "{}")
@@ -66,7 +69,8 @@ final class FileMakerSession {
     /// 接続を切断状態にする
     @discardableResult
     func logout() -> Bool {
-        guard let token = self.activeToken else { return false }
+        guard let token = self.ticket?.token else { return false }
+//        guard let token = self.activeToken else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
         _ = try? connection.callFileMaker(url: url, method: .DELETE)
         self.ticket = nil

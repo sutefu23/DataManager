@@ -150,7 +150,8 @@ final class FileMakerServer: Hashable {
     func logout() {
         guard FileMakerDB.isEnabled else { return }
         lock.lock()
-        for session in pool {
+        DispatchQueue.concurrentPerform(iterations: pool.count) {
+            let session = pool[$0]
             session.logout()
         }
         pool.removeAll()

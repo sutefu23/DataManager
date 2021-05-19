@@ -112,6 +112,7 @@ extension Error {
 
 #endif
 
+#if os(macOS) || os(iOS)
 extension Error {
     public func asyncShowAlert() {
         DispatchQueue.main.async {
@@ -119,3 +120,4 @@ extension Error {
         }
     }
 }
+#endif

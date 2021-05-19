@@ -65,7 +65,6 @@ public let オブジェ仕様一覧: [オブジェ仕様型] = {
         case 4:
             base = 1
             name = String(cols[0])
-//            if nameSet.insert(name).inserted == false { print(name) }
             assert(nameSet.insert(name).inserted == true)
             prevName = name
         case 3:
