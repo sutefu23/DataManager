@@ -17,47 +17,48 @@ private extension 送状型 {
     
 public extension Sequence where Element == 送状型 {
     func exportヤマト送状CSV(to url: URL) throws {
+        let today = Day().yearMonthDayNumberString
         let generator = TableGenerator<送状型>()
-            .string("お客様管理番号") { $0.管理番号 }
-            .fix("伝票番号") { "" } // データ入力では空白　ヤマトの送状番号に置き換えられる
-            .day("出荷予定日", .yearMonthDay) { $0.出荷納期 }
-            .fix("届け先JISコード") { "" } // TODO: ?確認
-            .fix("届け先コード") { "" } // TODO: ?確認
-            .string("届け先名名称漢字") { $0.届け先受取者名 }
+            .string("お客様管理番号") { $0.管理番号 } // 送り状レコードのレコードID
+            .string("伝票番号") { $0.送り状番号 } // YamatoCSVで割り当て
+            .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // FIXME: これでは先送りできない。対応必要
+            .fix("届け先JISコード") { "" }
+            .fix("届け先コード") { "" }
+            .string("届け先名名称漢字") { $0.届け先受取者名.newlineToSpace }
             .string("届け先電話番号") { $0.届け先電話番号.toHalfCharacters }
             .string("届け先郵便番号") { $0.届け先郵便番号.toHalfCharacters }
-            .string("届け先住所１") { $0.届け先住所1 }
-            .string("届け先住所２") { $0.届け先住所2 }
-            .string("届け先アパートマンション名") { $0.届け先住所3 }
+            .string("届け先住所１") { $0.届け先住所1.newlineToSpace }
+            .string("届け先住所２") { $0.届け先住所2.newlineToSpace }
+            .string("届け先アパートマンション名") { $0.届け先住所3.newlineToSpace }
             .fix("届け先会社・部門名1") { "" }
             .fix("届け先会社・部門名2") { "" }
-            .fix("依頼主コード") { "" } // TODO: ?確認
-            .string("依頼主名称漢字") { $0.依頼主受取者名 }
+            .fix("依頼主コード") { "" }
+            .string("依頼主名称漢字") { $0.依頼主受取者名.newlineToSpace }
             .string("依頼主電話番号") { $0.依頼主電話番号.toHalfCharacters }
             .string("依頼主郵便番号") { $0.依頼主郵便番号.toHalfCharacters }
-            .string("依頼主住所１") { $0.依頼主住所1 }
-            .string("依頼主住所２") { $0.依頼主住所2 }
-            .string("依頼主アパートマンション") { $0.依頼主住所3 }
+            .string("依頼主住所１") { $0.依頼主住所1.newlineToSpace }
+            .string("依頼主住所２") { $0.依頼主住所2.newlineToSpace }
+            .string("依頼主アパートマンション") { $0.依頼主住所3.newlineToSpace }
             .fix("YGX顧客コード（電話番号）") { "0926112768" }
             .fix("YGX顧客コード（枝番）") { "" }
             .fix("荷扱区分1") { "" }
             .fix("荷扱区分2") { "" }
-            .fix("配達指示・備考") { "" }
+            .string("配達指示・備考") { $0.記事.newlineToSpace }
             .fix("コレクト金額") { "" }
-            .fix("品名コード1") { "" }
-            .string("品名名称1") { $0.品名 }
+            .string("品名コード1") { $0.伝票番号?.整数文字列 } // 伝票番号または空欄
+            .string("品名名称1") { $0.品名.prefix(50).newlineToSpace } // 50文字で区切る
             .fix("品名コード2") { "" }
-            .fix("品名名称2") { "" }
-            .fix("サイズ品目コード") { "" }
+            .string("品名名称2") { $0.品名.dropFirst(50).newlineToSpace }
+            .fix("サイズ品目コード") { "1101" }
             .day("配達指定日", .yearMonthDay) { $0.着指定日 }
-            .string("配達時間帯") { return $0.配達時間帯 }
-            .fix("発行枚数") { "" }
+            .string("配達時間帯") { $0.配達時間帯 } // 指定がある場合、ヤマト形式で出力
+            .integer("発行枚数") { $0.個数 }
             .fix("OMSフラグ") { "0" }
-            .fix("更新日付") { "" }
-            .fix("重量") { "" }
+            .fix("更新日付") { today } // 出力日を入れる
+            .fix("重量") { "0" }
             .fix("届け先FAX番号") { "" }
             .fix("届け先メールアドレス") { "" }
-            .fix("営業所止めフラグ") { "" }
+            .string("営業所止めフラグ") { $0.届け先受取者名.contains(oneOf: "営業所止め", "センター止め") ? "1" : "" }
             .fix("営業所止め店所コード") { "" }
             .fix("営業所止め店所名") { "" }
             .fix("記事1") { "" }
@@ -66,8 +67,6 @@ public extension Sequence where Element == 送状型 {
             .fix("記事4") { "" }
             .fix("記事5") { "" }
             .fix("予備") { "" }
-            
-
         try generator.write(self, format: .excel(header: false), to: url)
     }
 }
