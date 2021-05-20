@@ -11,6 +11,7 @@ import Foundation
 import CoreGraphics
 
 public extension DMColor {
+    /// 輝度を落とす
     func dark(brightnessRatio: CGFloat = 0.8) -> DMColor {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
