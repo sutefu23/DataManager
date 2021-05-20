@@ -53,6 +53,7 @@ public class 送状型: Identifiable {
         let str = self.着指定時間.toHalfCharacters.uppercased()
         return str.hasPrefix("AM")
     }()
+    public var 個数: Int = 1
 }
 
 extension 送状型 {
