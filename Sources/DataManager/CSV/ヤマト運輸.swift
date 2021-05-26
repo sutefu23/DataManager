@@ -9,10 +9,21 @@ import Foundation
 
 extension 送状型 {
     public static let 運送会社名_ヤマト = "ヤマト"
-}
-
-private extension 送状型 {
-    var 配達時間帯: String { self.isAM ? "0812" : "" }
+    
+    /// ヤマト運輸として発送可能ならtrue
+    public var ヤマト発送可能: Bool {
+        if let order = self.指示書 {
+            if order.isActive != true { return false } // 止まっているか終わっている
+        }
+        if let 出荷納期 = self.出荷納期 {
+            if 出荷納期 < Day() { return false } // 出荷日が過去
+            if let 着指定日 = self.着指定日, 着指定日 <= 出荷納期 { return false } // 着指定日が早すぎる
+        }
+        if 管理番号.isEmpty { return false }
+        return true
+    }
+    
+    fileprivate var ヤマト配達時間帯: String { self.isAM ? "0812" : "" }
 }
     
 public extension Sequence where Element == 送状型 {
@@ -20,7 +31,8 @@ public extension Sequence where Element == 送状型 {
         let today = Day().yearMonthDayNumberString
         let generator = TableGenerator<送状型>()
             .string("お客様管理番号") { $0.管理番号 } // 送り状レコードのレコードID
-            .string("伝票番号") { $0.送り状番号 } // YamatoCSVで割り当て
+            .fix("伝票番号") { "" } // ヤマトのソフトで送状管理
+//            .string("伝票番号") { $0.送り状番号 } // YamatoCSVで割り当て
             .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // FIXME: これでは先送りできない。対応必要
             .fix("届け先JISコード") { "" }
             .fix("届け先コード") { "" }
@@ -51,7 +63,7 @@ public extension Sequence where Element == 送状型 {
             .string("品名名称2") { $0.品名.dropFirst(50).newlineToSpace }
             .fix("サイズ品目コード") { "1101" }
             .day("配達指定日", .yearMonthDay) { $0.着指定日 }
-            .string("配達時間帯") { $0.配達時間帯 } // 指定がある場合、ヤマト形式で出力
+            .string("配達時間帯") { $0.ヤマト配達時間帯 } // 指定がある場合、ヤマト形式で出力
             .integer("発行枚数") { $0.個数 }
             .fix("OMSフラグ") { "0" }
             .fix("更新日付") { today } // 出力日を入れる
@@ -67,7 +79,7 @@ public extension Sequence where Element == 送状型 {
             .fix("記事4") { "" }
             .fix("記事5") { "" }
             .fix("予備") { "" }
-        try generator.write(self, format: .excel(header: false), to: url)
+        try generator.write(self, format: .excel(header: false), to: url, concurrent: true)
     }
 }
 

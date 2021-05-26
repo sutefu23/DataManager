@@ -393,7 +393,7 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil) throws {
+    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
         var url = 生産管理集計URL
         if !dir.isEmpty {
             url.appendPathComponent(dir)
@@ -402,7 +402,7 @@ public extension TableGenerator {
             }
         }
         url.appendPathComponent(title)
-        try self.write(key, format: format, to: url)
+        try self.write(key, format: format, to: url, concurrent: concurrent)
     }
 }
 
@@ -410,13 +410,13 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil) throws {
+    func share(_ key: [S], format: ExportType, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
         var title = title
         if !dir.isEmpty {
             title = "\(dir)_\(title)"
         }
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title)
-        try self.write(key, format: format, to: url)
+        try self.write(key, format: format, to: url, concurrent: concurrent)
 
         guard let key = UIApplication.shared.windows.last?.rootViewController else { return }
         let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)

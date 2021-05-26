@@ -29,6 +29,7 @@
 		143471432625651E00F06E4C /* WorkMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143471422625651E00F06E4C /* WorkMap.swift */; };
 		1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434714A2625664B00F06E4C /* 資源量分析.swift */; };
 		143C608725E8680B00DF10DF /* TestTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C608625E8680B00DF10DF /* TestTime.swift */; };
+		143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143DC50B265CAF4A009D547F /* ProgressChecker.swift */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
 		146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
 		1474BD252613FEA80068947E /* TestRegressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474BD242613FEA80068947E /* TestRegressor.swift */; };
@@ -266,6 +267,7 @@
 		143471422625651E00F06E4C /* WorkMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkMap.swift; sourceTree = "<group>"; };
 		1434714A2625664B00F06E4C /* 資源量分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源量分析.swift"; sourceTree = "<group>"; };
 		143C608625E8680B00DF10DF /* TestTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTime.swift; sourceTree = "<group>"; };
+		143DC50B265CAF4A009D547F /* ProgressChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressChecker.swift; sourceTree = "<group>"; };
 		1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "月間目標型.swift"; sourceTree = "<group>"; };
 		146F88A8253E7019001F8AF1 /* FB一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "FB一覧.csv"; sourceTree = "<group>"; };
 		1474BD242613FEA80068947E /* TestRegressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRegressor.swift; sourceTree = "<group>"; };
@@ -874,6 +876,7 @@
 			children = (
 				OBJ_95 /* ProgressTVData.swift */,
 				OBJ_96 /* TargetMode.swift */,
+				143DC50B265CAF4A009D547F /* ProgressChecker.swift */,
 			);
 			path = "共通ロジック";
 			sourceTree = "<group>";
@@ -1077,6 +1080,7 @@
 				14767118251D577A00429C17 /* DMColor.swift in Sources */,
 				OBJ_246 /* 取引先.swift in Sources */,
 				OBJ_247 /* 工程.swift in Sources */,
+				143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */,
 				OBJ_248 /* 工程状態.swift in Sources */,
 				OBJ_249 /* 承認状態.swift in Sources */,
 				OBJ_250 /* 指定注文番号型.swift in Sources */,

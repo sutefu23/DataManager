@@ -8,6 +8,16 @@
 
 import Foundation
 
+enum BoltError: String, LocalizedError {
+    case 不明なアングルです
+    case 不明なヒートンです
+    case 不明なリベットです
+    case 不明なジョイナーです
+    case 不明なアジャスターです
+
+    var errorDescription: String? { self.rawValue }
+}
+
 private let 箱文字Set = Set<工程型>([.立ち上がり, .半田, .ボンド, .裏加工, .立ち上がり_溶接, .溶接, .裏加工_溶接])
 private let 切文字Set = Set<工程型>([.切文字])
 
@@ -371,7 +381,7 @@ public struct 資材要求情報型 {
         }
     }
     
-    public init?(ボルト欄: String, 数量欄: String, セット数: Double, 伝票種類: 伝票種類型) {
+    public init?(ボルト欄: String, 数量欄: String, セット数: Double, 伝票種類: 伝票種類型) throws {
         if ボルト欄.isEmpty { return nil }
         var text = ボルト欄.toJapaneseNormal
         let is附属品: Bool
@@ -413,7 +423,7 @@ public struct 資材要求情報型 {
             return
         }
         // 板
-        guard let (title, size, type, priority) = scanSource(ボルト欄: text, 伝票種類: 伝票種類) else {
+        guard let (title, size, type, priority) = try scanSource(ボルト欄: text, 伝票種類: 伝票種類) else {
             guard let object = 板加工在庫マップ[text] else { return nil }
             self.ソート順 = object.ソート順
             self.分割表示名1 = object.名称
@@ -437,7 +447,7 @@ public struct 資材要求情報型 {
         self.金額計算タイプ = info.金額計算タイプ
     }
 
-    public init?(printSource: 資材使用記録型) {
+    public init?(printSource: 資材使用記録型) throws {
         guard let order = printSource.伝票番号.キャッシュ指示書 else { return nil }
         var text = printSource.表示名.toJapaneseNormal
         self.表示名 = text
@@ -454,7 +464,7 @@ public struct 資材要求情報型 {
         self.ボルト数量 = nil
         self.単位数 = nil
         self.金額計算タイプ = nil
-        if let (title, size, _, priority) = scanSource(ボルト欄: text, 伝票種類: order.伝票種類) {
+        if let (title, size, _, priority) = try scanSource(ボルト欄: text, 伝票種類: order.伝票種類) {
             self.ソート順 = priority
             self.分割表示名1 = title
             self.分割表示名2 = size
@@ -497,7 +507,7 @@ public func sortCompare(_ left: 資材要求情報型, _ right: 資材要求情�
     return false
 }
 
-func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
+func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) throws -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double)? {
     var scanner = DMScanner(ボルト欄, normalizedFullHalf: true, upperCased: true, skipSpaces: true, newlineToSpace: true)
     func makeTail(_ data: (名称: String, 種類: 資材種類型, ソート順: Double)) -> (名称: String, サイズ: String, 種類: 資材種類型, ソート順: Double) {
         scanner.reset()
@@ -549,7 +559,7 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) -> (名称:
     if let data = scanner.scanALスタッド() { return makeTail(data) }
     if let data = scanner.scanFBSimple() { return makeTail(data) }
     if let data = scanner.scan外注() { return makeTail(data) }
-    if let data = scanner.scan単品個数物() { return makeTail(data) }
+    if let data = try scanner.scan単品個数物() { return makeTail(data) }
 
     return nil
 }
@@ -818,7 +828,26 @@ public enum 資材種類型 {
 }
 
 extension DMScanner {
-    mutating func scanSizeXLength(_ name: String, unit1: Character? = nil) -> (size: String, length: Double)? {
+    mutating func scanSizeXSizeXLength(_ name: String) -> (size: String, length: Double)? {
+        guard scanString(name) else { return nil }
+        guard let val = scanStringAsDouble(), val.value > 0 else { return nil }
+        guard scanCharacters("X", "×", "*") else { return nil }
+        guard let val2 = scanStringAsDouble(), val.value > 0 else { return nil }
+        guard scanCharacters("X", "×", "*") else { return nil }
+        guard let length = scanDouble(), length > 0 else { return nil }
+        let size = "\(val.string)×\(val2.string)"
+        return (size, length)
+    }
+    mutating func scanSizeXSize(_ name: String) -> String? {
+        guard scanString(name) else { return nil }
+        guard let val = scanStringAsDouble(), val.value > 0 else { return nil }
+        guard scanCharacters("X", "×", "*") else { return nil }
+        guard let val2 = scanStringAsDouble(), val.value > 0 else { return nil }
+        let size = "\(val.string)×\(val2.string)"
+        return size
+    }
+
+    mutating func scanSizeXLength(_ name: String, unit1: Character? = nil, tail: Character? = "L") -> (size: String, length: Double)? {
         guard scanString(name) else { return nil }
         guard var size = scanStringAsDouble(), size.value > 0 else { return nil }
         if scanCharacter("/") {
@@ -829,7 +858,7 @@ extension DMScanner {
         if let ch = unit1, !scanCharacter(ch) { return nil }
         guard scanCharacters("X", "×", "*") else { return nil }
         guard let length = scanDouble(), length > 0 else { return nil }
-        guard scanCharacter("L") else { return nil }
+        guard let tail = tail, scanCharacter(tail) else { return nil }
         return (size.string, length)
     }
     mutating func thinXHeight(_ name: String, unit1: Character? = nil) -> (size: String, length: Double)? {
@@ -1200,15 +1229,25 @@ private extension DMScanner {
         return ("外注", .外注(サイズ: size), 90)
     }
 
-    mutating func scan単品個数物() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
+    mutating func scan単品個数物() throws -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         let type: 選択ボルト等型
-        let str = self.string.spaceStripped
-        if str.hasPrefix(oneOf: "アングル") {
-            type = searchボルト等(種類: .アングル, サイズ: nil)!
+        self.dropHeadSpaces()
+        if self.hasPrefix("アングル") {
+            if let size = scanSizeXSizeXLength("アングル") {
+                if let type = searchボルト等(種類: .アングル, サイズ: size.size, 長さ: size.length) {
+                    return (type.表示名, .単品個数物(種類: type), 0)
+                }
+            } else if let size = scanSizeXSize("アングル") {
+                if let type = searchボルト等(種類: .アングル, サイズ: size, 長さ: nil) {
+                    return (type.表示名, .単品個数物(種類: type), 0)
+                }
+            }
+            throw BoltError.不明なアングルです
         } else {
-            switch str {
+            switch self.string {
             case "三角コーナー":
-                type = searchボルト等(種類: .三角コーナー, サイズ: "")!
+                guard let angle = searchボルト等(種類: .三角コーナー, サイズ: "") else { throw BoltError.不明なアングルです }
+                type = angle
             case "SUSヒートン", "ステンレスヒートン":
                 type = searchボルト等(種類: .SUSヒートン, サイズ: "")!
             case "BSPヒートン", "真鍮ヒートン":

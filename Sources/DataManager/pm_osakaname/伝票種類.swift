@@ -16,7 +16,8 @@ public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
     case 外注 = 5
     case 校正 = 6
     
-    init?<T>(_ name: T) where T: StringProtocol {
+    public init?<T>(_ name: T?) where T: StringProtocol {
+        guard let name = name else { return nil }
         switch name {
         case "箱文字": self = .箱文字
         case "切文字": self = .切文字
