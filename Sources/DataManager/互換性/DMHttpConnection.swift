@@ -46,7 +46,16 @@ struct DMHttpContentType {
 #if os(macOS) || os(iOS) || os(tvOS)
 typealias DMHttpConnection = DMHttpAppleConnection
 class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProtocol {
-    private lazy var session: URLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
+    private lazy var session: URLSession = {
+        let config = URLSessionConfiguration.default
+        if #available(iOS 13.0, *) {
+            config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        } else {
+            config.requestCachePolicy = .reloadIgnoringCacheData
+        }
+        let settion = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        return settion
+    }()
     private let sem = DispatchSemaphore(value: 0)
 
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {

@@ -153,7 +153,10 @@ extension 住所型 {
 
 extension 住所型 {
     public func contains(to: 住所型) -> Bool {
-        return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 住所3.hasPrefix(to.住所3) && 名前.contains(to.名前) && 電話番号 == 電話番号
+//        if self.電話番号.contains("63360823") {
+//            print("")
+//        }
+        return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 名前.contains(to.名前) && 電話番号 == 電話番号
     }
     
 }

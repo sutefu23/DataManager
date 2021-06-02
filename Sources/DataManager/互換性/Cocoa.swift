@@ -18,6 +18,7 @@ public typealias DMViewController = NSViewController
 
 public typealias DMTextField = NSTextField
 public typealias DMPrintInfo = NSPrintInfo
+public typealias DMButton = NSButton
 
 public func DMGraphicsPushContext(_ context: CGContext) {
     NSGraphicsContext.saveGraphicsState()

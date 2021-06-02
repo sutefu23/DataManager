@@ -208,16 +208,20 @@ func prepare社員(社員番号: Int, 社員名称: String) -> 社員型 {
     }
 }
 
+// 社員リスト（一部抜粋）
 public extension 社員型 {
     static let 稗田_司 = prepare社員(社員番号: 012, 社員名称: "稗田 司")
     static let 伊川_浩 = prepare社員(社員番号: 016, 社員名称: "伊川 浩")
     static let 川原_夏彦 = prepare社員(社員番号: 017, 社員名称: "川原 夏彦")
     static let 室中_哲郎 = prepare社員(社員番号: 019, 社員名称: "室中 哲郎")
     static let 関_雄也 = prepare社員(社員番号: 034, 社員名称: "関 雄也")
+    static let 田中_希望 = prepare社員(社員番号: 059, 社員名称: "田中　希望")
     static let 井手_法昭 = prepare社員(社員番号: 102, 社員名称: "井手 法昭")
     static let 岸原_秀昌 = prepare社員(社員番号: 112, 社員名称: "岸原 秀昌")
+    static let 川﨑_誠 = prepare社員(社員番号: 120, 社員名称: "川﨑　誠")
     static let 葏口_徹 = prepare社員(社員番号: 125, 社員名称: "葏口 徹")
     static let 森藤_年栄 = prepare社員(社員番号: 717, 社員名称: "森藤 年栄")
+    static let 森_未来 = prepare社員(社員番号: 734, 社員名称: "森　未来")
     static let 平上_未奈 = prepare社員(社員番号: 748, 社員名称: "平上　未奈")
     static let 和田_千秋 = prepare社員(社員番号: 955, 社員名称: "和田 千秋")
 }

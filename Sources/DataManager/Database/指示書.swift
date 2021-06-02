@@ -591,7 +591,11 @@ extension 指示書型 {
     
     public func contains(工程: 工程型) -> Bool { return self.工程別進捗一覧[工程]?.isEmpty == false }
     public func contains(工程: 工程型, 作業内容: 作業内容型) -> Bool { return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 }) == true }
-    
+    public func contains(工程: 工程型, 作業内容: 作業内容型, 作業系列: 作業系列型?) -> Bool {
+        guard let 作業系列 = 作業系列 else { return contains(工程: 工程, 作業内容: 作業内容) }
+        return self.工程別進捗一覧[工程]?.contains(where: { $0.作業内容 == 作業内容 && $0.作業系列 == 作業系列 }) == true
+    }
+
     public var is箱文字アクリのみ: Bool {
         if self.伝票種類 != .箱文字 { return false }
         return self.管理用メモ.contains("アクリのみ")
@@ -903,6 +907,7 @@ public extension 指示書型 {
         return try results.map { try $0.get() }
     }
     
+    /// 指定された範囲内に作業が存在する指示書
     static func find(作業範囲 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
         var query = FileMakerQuery()
         query["受注日"] = "<=\(range.upperBound.fmString)"

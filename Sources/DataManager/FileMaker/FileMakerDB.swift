@@ -265,7 +265,12 @@ public final class FileMakerDB {
     
     func find(layout: String, query: [[String: String]], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
         try checkStop()
-        return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
+        do {
+            return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
+        } catch {
+            Thread.sleep(forTimeInterval: 0.5)
+            return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
+        }
     }
     
     func downloadObject(url: URL) throws -> Data? {

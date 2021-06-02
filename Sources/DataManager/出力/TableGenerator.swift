@@ -423,7 +423,8 @@ public extension TableGenerator {
 //        controller.excludedActivityTypes = [.airDrop, .mail]
         controller.popoverPresentationController?.sourceView = key.view
         if let button = shareButton {
-                controller.popoverPresentationController?.sourceRect = button.frame
+            controller.popoverPresentationController?.sourceView = button
+//            controller.popoverPresentationController?.sourceRect = button.frame
         }
         key.present(controller, animated: true, completion: nil)
     }
@@ -432,7 +433,7 @@ public extension TableGenerator {
 import AppKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, dir: String = "", title: String, concurrent: Bool = false) throws {
+    func share(_ source: [S], format: ExportType, dir: String = "", title: String, shareButton: NSButton? = nil, concurrent: Bool = false) throws {
         var url = 生産管理集計URL
         if !dir.isEmpty {
             url.appendPathComponent(dir)

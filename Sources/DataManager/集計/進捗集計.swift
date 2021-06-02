@@ -7,8 +7,9 @@
 
 import Foundation
 
-#if !os(tvOS)
-public func output仕掛かり始め(チェック日 range: ClosedRange<Day>) {
+#if os(tvOS)
+#elseif os(iOS) || os(macOS)
+public func output仕掛かり始め(チェック日 range: ClosedRange<Day>, button: DMButton) {
     do {
         let source: [進捗型]
         source = try 進捗型.find(登録期間: range, 作業種別: .作直)
@@ -38,9 +39,10 @@ public func output仕掛かり始め(チェック日 range: ClosedRange<Day>) {
         } else {
             filename = "仕掛り始め一覧\(range.lowerBound.monthDayJString)~\(range.upperBound.monthDayJString).csv"
         }
-        try gen.share(pairs, format: .excel(header: true), title: filename)
+        try gen.share(pairs, format: .excel(header: true), title: filename, shareButton: button)
     } catch {
         error.showAlert()
     }
 }
 #endif
+    

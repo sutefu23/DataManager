@@ -99,6 +99,14 @@ public extension 進捗型 {
         }
     }
     
+    func 作業時間(from: Date) -> TimeInterval {
+        return self.工程.作業時間(from: from, to: self.登録日時)
+    }
+
+    func 作業時間(to: Date) -> TimeInterval {
+        return self.工程.作業時間(from: self.登録日時, to: to)
+    }
+
     /// 残業の最後に打った進捗ならtrue
     var is最終時間進捗: Bool {
         let work = 標準カレンダー.勤務時間(工程: self.工程, 日付: self.登録日)

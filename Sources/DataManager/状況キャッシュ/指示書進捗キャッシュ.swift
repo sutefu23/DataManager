@@ -57,7 +57,18 @@ public final class 指示書進捗キャッシュ型 {
         cache[伝票番号] = nil
         lock.unlock()
     }
-    
+
+    /// 指定された伝票に対するキャッシュの寿命を短くする
+    public func cutExpire(伝票番号: 伝票番号型, maxExpire: TimeInterval) {
+        let newExpire = Date(timeIntervalSinceNow: maxExpire)
+        lock.lock()
+        if let (currentExpire, data) = cache[伝票番号], currentExpire > newExpire {
+            cache[伝票番号] = (newExpire, data)
+        }
+        cache[伝票番号] = nil
+        lock.unlock()
+    }
+
     // MARK: -
     public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .受取, member: member)

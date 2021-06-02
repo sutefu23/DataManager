@@ -298,7 +298,7 @@ public final class ProgressTVCore {
                 var odr: [指示書型] = []
                 odr =
                     try 指示書型.find(最小製作納期: today, 伝票種類: .箱文字) +
-                    指示書型.find(最小製作納期: today, 伝票種類: .切文字) +
+                    指示書型.find(最小製作納期: today, 伝票種類: .切文字).filter { !$0.is旧美濃在庫 } +
                     指示書型.find(最小製作納期: today, 伝票種類: .加工) +
                     指示書型.find(最小製作納期: today, 伝票種類: .エッチング)
 

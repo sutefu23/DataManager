@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum 製造グループ型: CaseIterable {
+public enum 製造グループ型: CaseIterable, Comparable {
     case 管理グループ
     case 第1製造グループ
     case 第2製造グループ
@@ -33,7 +33,7 @@ public enum 製造グループ型: CaseIterable {
         }
     }
     
-    var members: [工程型] {
+    public var members: [工程型] {
         switch self {
             case .管理グループ:
                 return [.営業, .商品設計, .管理, .原稿, .入力, .出力, .フィルム, .商品設計]
