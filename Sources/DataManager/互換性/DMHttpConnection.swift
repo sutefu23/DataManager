@@ -48,11 +48,11 @@ typealias DMHttpConnection = DMHttpAppleConnection
 class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProtocol {
     private lazy var session: URLSession = {
         let config = URLSessionConfiguration.default
-        if #available(iOS 13.0, *) {
-            config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        } else {
-            config.requestCachePolicy = .reloadIgnoringCacheData
-        }
+//        if #available(iOS 13.0, *) {
+//            config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+//        } else {
+//            config.requestCachePolicy = .reloadIgnoringCacheData
+//        }
         let settion = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         return settion
     }()
