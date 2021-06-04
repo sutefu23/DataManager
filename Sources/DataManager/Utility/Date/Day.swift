@@ -259,7 +259,19 @@ public struct Day: Hashable, Strideable, Codable {
         }
         return count
     }
-    
+
+    // MARK: - <Strideable>
+    public func workDays(to other: Day) -> Int {
+        if self > other { return -other.workDays(to: self) }
+        var count = self.isWorkday ? 1 : 0
+        var day = self
+        while day < other {
+            day = day.nextDay
+            if day.isWorkday { count += 1 }
+        }
+        return count
+    }
+
     public func advanced(by n: Int) -> Day {
         if n == 1 { return self.nextDay }
         if n == -1 { return self.prevDay }

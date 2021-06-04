@@ -72,7 +72,11 @@ final class FileMakerSession {
         guard let token = self.ticket?.token else { return false }
 //        guard let token = self.activeToken else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
-        _ = try? connection.callFileMaker(url: url, method: .DELETE)
+        do {
+            _ = try connection.callFileMaker(url: url, method: .DELETE)
+        } catch {
+            error.asyncShowAlert()
+        }
         self.ticket = nil
         return true
     }

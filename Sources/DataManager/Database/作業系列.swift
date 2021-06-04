@@ -47,11 +47,16 @@ public final class 作業系列型: Hashable {
             self.init(cache.record)
             return
         }
-        guard let series = try? 作業系列型.find(系列コード: code) else {
+        do {
+            guard let series = try 作業系列型.find(系列コード: code) else {
+                return nil
+            }
+            seriesCache[code] = series
+            self.init(series.record)
+        } catch {
+            print(error.localizedDescription)
             return nil
         }
-        seriesCache[code] = series
-        self.init(series.record)
     }
     
     init(_ record: FileMakerRecord) {
