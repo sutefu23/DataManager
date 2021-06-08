@@ -59,10 +59,7 @@ private final class FileMakerServerCache {
     /// 全てのサーバーへの接続を解除する
     func logoutAll(force: Bool) {
         lock.lock(); defer { lock.unlock() }
-        if !force && (poolCount == 0 || connectingCount > 0) { // 接続中がある場合、解除はしない
-            return
-        }
-        cache.values.forEach { $0.logout() }
+        cache.values.forEach { $0.logout(force: force) }
     }
 }
 
@@ -79,12 +76,14 @@ enum FileMakerSortType: String, Encodable {
 
 /// １台のサーバーへの最大同時接続数
 private var maxConnection = 3
+/// 最低180秒はアクセスする
+private let lastAccessInterval: TimeInterval = 60
 
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: Hashable {
     private var pool: [FileMakerSession] = []
-    private var connecting: [FileMakerSession] = []
-    private let lock = NSLock()
+    private var connecting: [ObjectIdentifier: FileMakerSession] = [:]
+    private let lock = NSRecursiveLock()
     private let sem: DispatchSemaphore
 
     let serverURL: URL
@@ -126,10 +125,11 @@ final class FileMakerServer: Hashable {
         sem.wait()
         lock.lock()
         defer { lock.unlock() }
+        if connecting.isEmpty { updateLogoutBaseLine() }
         for (index, session) in pool.enumerated().reversed() {
             if session.url == url {
                 pool.remove(at: index)
-                connecting.append(session)
+                connecting[ObjectIdentifier(session)] = session
                 return session
             }
         }
@@ -138,26 +138,42 @@ final class FileMakerServer: Hashable {
             session.logout()
         }
         let session = FileMakerSession(url: url, user: user, password: password)
-        connecting.append(session)
+        connecting[ObjectIdentifier(session)] = session
         return session
     }
     
-    /// セッションを解放する
+    /// セッションを返却する
     func putSession(_ session: FileMakerSession) {
         lock.lock()
         self.pool.append(session)
-        let index = connecting.firstIndex { $0 === session }!
-        connecting.remove(at: index)
+        connecting[ObjectIdentifier(session)] = nil
+        lock.unlock()
+        sem.signal()
+    }
+
+    /// セッションを解放する
+    func releaseSession(_ session: FileMakerSession) {
+        lock.lock()
+        connecting[ObjectIdentifier(session)] = nil
         lock.unlock()
         sem.signal()
     }
     
+    private func updateLogoutBaseLine() {
+        self.logoutBaseLine = Date()
+    }
+    private var logoutBaseLine: Date = Date() // 前回ログアウト時間。ある程度間隔を空けないとログアウトできない
     /// セッションを閉じる
-    func logout() {
+    func logout(force: Bool) {
         guard FileMakerDB.isEnabled else { return }
         lock.lock(); defer { lock.unlock() }
+        if !force {
+            if connectingCount > 0 { return }
+            if abs(self.logoutBaseLine.timeIntervalSinceNow) < lastAccessInterval { return }
+        }
         pool.forEach { $0.logout() }
         pool.removeAll()
+        updateLogoutBaseLine()
     }
 }
 
@@ -211,8 +227,10 @@ public final class FileMakerDB {
             } catch {
                 if case let error as FileMakerError = error, error.canRetry {
                     session.logout()
-                    Thread.sleep(forTimeInterval: 10)
-                    try work(session)
+                    server.releaseSession(session)
+                    Thread.sleep(forTimeInterval: 0.5)
+                    let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+                    try work(newSession)
                 } else {
                     throw error
                 }
@@ -232,7 +250,10 @@ public final class FileMakerDB {
             } catch {
                 if case let error as FileMakerError = error, error.canRetry {
                     session.logout()
-                    return try work(session)
+                    server.releaseSession(session)
+                    Thread.sleep(forTimeInterval: 0.5)
+                    let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+                    return try work(newSession)
                 } else {
                     throw error
                 }
@@ -270,7 +291,7 @@ public final class FileMakerDB {
         do {
             return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
         } catch {
-            server.logout()
+            server.logout(force: false)
             Thread.sleep(forTimeInterval: 0.5)
             return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
         }

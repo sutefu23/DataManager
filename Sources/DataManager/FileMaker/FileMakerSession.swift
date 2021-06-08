@@ -31,7 +31,7 @@ final class FileMakerSession {
     }
     
     deinit {
-        self.logout()
+        self.logout(force: true)
     }
     
     // MARK: - 接続管理
@@ -68,7 +68,7 @@ final class FileMakerSession {
 
     /// 接続を切断状態にする
     @discardableResult
-    func logout() -> Bool {
+    func logout(force: Bool = true) -> Bool {
         guard let token = self.ticket?.token else { return false }
 //        guard let token = self.activeToken else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)

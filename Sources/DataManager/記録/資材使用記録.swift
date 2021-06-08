@@ -50,8 +50,9 @@ struct 資材使用記録Data型: Equatable {
     var 単位数: Double?
     var 金額: Double?
     var 印刷対象: 印刷対象型?
-    
-    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?) {
+    var 原因工程: 工程型?
+
+    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.工程 = 工程
@@ -65,6 +66,7 @@ struct 資材使用記録Data型: Equatable {
         self.単位量 = 単位量
         self.単位数 = 単位数
         self.印刷対象 = 印刷対象
+        self.原因工程 = 原因工程
     }
     
     init?(_ record: FileMakerRecord) {
@@ -91,6 +93,7 @@ struct 資材使用記録Data型: Equatable {
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
         self.印刷対象 = record.印刷対象(forKey: "印刷対象")
+        self.原因工程 = record.工程(forKey: "原因工程コード")
     }
     
     var fieldData: FileMakerQuery {
@@ -99,6 +102,7 @@ struct 資材使用記録Data型: Equatable {
         data["登録時間"] = 登録日時.time.fmImportString
         data["伝票番号"] = "\(伝票番号.整数値)"
         data["工程コード"] = 工程.code
+        data["原因工程コード"] = 原因工程?.code
         data["作業者コード"] = 作業者.Hなし社員コード
         data["図番"] = 図番
         data["表示名"] = 表示名
@@ -145,6 +149,10 @@ public final class 資材使用記録型 {
     public var 工程: 工程型 {
         get { data.工程 }
         set { data.工程 = newValue }
+    }
+    public var 原因工程: 工程型? {
+        get { data.原因工程 }
+        set { data.原因工程 = newValue }
     }
     public var 作業者: 社員型 {
         get { data.作業者 }
@@ -195,8 +203,8 @@ public final class 資材使用記録型 {
         return 印刷対象型.仮印刷対象工程.contains(data.工程) ? .全て : .なし
     }
 
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?) {
-        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 単位量: 単位量, 単位数: 単位数, 金額: 金額, 印刷対象: 印刷対象)
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
+        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 単位量: 単位量, 単位数: 単位数, 金額: 金額, 印刷対象: 印刷対象, 原因工程: 原因工程)
     }
 
     init?(_ record: FileMakerRecord) {
