@@ -51,23 +51,26 @@ public extension Sequence where Element == 送状型 {
             .string("依頼主住所１") { $0.依頼主住所1.newlineToSpace }
             .string("依頼主住所２") { $0.依頼主住所2.newlineToSpace }
             .string("依頼主アパートマンション") { $0.依頼主住所3.newlineToSpace }
+            .fix("依頼主会社・部門名1") { "＿" }
+            .fix("依頼主会社・部門名2") { "＿" }
             .fix("YGX顧客コード（電話番号）") { "0926112768" }
             .fix("YGX顧客コード（枝番）") { "" }
             .fix("荷扱区分1") { "" }
             .fix("荷扱区分2") { "" }
             .string("配達指示・備考") { $0.記事.newlineToSpace }
+            .fix("クール区分") { "0" } // 0:通常
             .fix("コレクト金額") { "" }
             .string("品名コード1") { $0.伝票番号?.整数文字列 } // 伝票番号または空欄
-            .string("品名名称1") { $0.品名.prefix(50).newlineToSpace } // 50文字で区切る
+            .string("品名名称1") { $0.品名.newlineToSpace.prefix(全角2文字: 50) } // 50文字で区切る
             .fix("品名コード2") { "" }
-            .string("品名名称2") { $0.品名.dropFirst(50).newlineToSpace }
+            .string("品名名称2") { $0.品名.newlineToSpace.dropFirst(全角2文字: 50).prefix(全角2文字: 50) }
             .fix("サイズ品目コード") { "1101" }
             .day("配達指定日", .yearMonthDay) { $0.着指定日 }
             .string("配達時間帯") { $0.ヤマト配達時間帯 } // 指定がある場合、ヤマト形式で出力
             .integer("発行枚数") { $0.個数 }
             .fix("OMSフラグ") { "0" }
             .fix("更新日付") { today } // 出力日を入れる
-            .fix("重量") { "0" }
+            .fix("重量") { "0.1" }
             .fix("届け先FAX番号") { "" }
             .fix("届け先メールアドレス") { "" }
             .string("営業所止めフラグ") { $0.届け先受取者名.contains(oneOf: "営業所止め", "センター止め") ? "1" : "" }
