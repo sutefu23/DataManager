@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if swift(<5.5) // linkエラーによる（恐らくβによるバグ）
+
 #if os(iOS)
 #elseif os(macOS)
 import CreateML
@@ -189,5 +191,7 @@ public struct 資源量推計モデル型 {
         return realMap2[day]
     }
 }
+
+#endif
 
 #endif
