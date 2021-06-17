@@ -62,7 +62,7 @@ public struct 工程型: Hashable, Comparable, Codable {
     public var description: String {
         return 工程名称DB[self] ?? nameMap2[self] ?? ""
     }
-    public var is製作工程: Bool { is製作工程Set.contains(self) } 
+    public var is製作工程: Bool { is製作工程Set.contains(self) }
 
     public func 作業時間(from: Date?, to: Date?) -> TimeInterval? {
         guard let from = from, let to = to else { return nil }
@@ -98,6 +98,34 @@ public struct 工程型: Hashable, Comparable, Codable {
         var container = encoder.singleValueContainer()
         try container.encode(self.number)
     }
+    
+    /// fromからtoに対して基準時間(始業と終業の間)を境に0.5刻みでどれだけ進んだかを返す
+    public func calc作業日(from : Date, to : Date) -> Double{
+        let isSameDay = from.dayNumber == to.dayNumber //fromとtoが同じ日かどうか
+        let workdays = from.day.workDays(to: to.day) - (isSameDay ? 1 : 2) // fromとtoの間に何日営業日があるか
+        let from基準時間 = from.day.基準時間(for: self)
+        let to基準時間 = to.day.基準時間(for: self)
+        
+        let start = self.推定始業時間(of: from.day) < from基準時間 ? 1.0 : 0.5
+        let end = self.推定終業時間(of: to.day) < to基準時間 ? 0 : 0.5
+        let offset = isSameDay ? -1 : 0 //同日だったら１ひく
+        return start + end + Double(workdays) + Double(offset)
+    }
+}
+
+extension Day {
+    /// 工程の始業と終業の中間の時間を返す
+    public func 基準時間(for 工程 :工程型) -> Time {
+        let 始業時間 = 工程.推定始業時間(of: self)
+        let 終業時間 = 工程.推定終業時間(of: self)
+        return middleTime(from: 始業時間, to: 終業時間)
+    }
+    /// 時間と時間の間の時間を返す(テストのために切り出しました)
+    internal func middleTime(from: Time, to: Time ) -> Time {
+        let minute = Int((( to - from) / 2 ) / 60)
+        return from.appendMinutes(minute)
+    }
+    
 }
 
 private var nameMap2 = [工程型: String]()
@@ -283,3 +311,5 @@ public let 第3製造グループ2: [工程型] = [
 public let 第3製造グループ3: [工程型] = [
     .ボンド, .裏加工, .裏加工_溶接
 ]
+
+
