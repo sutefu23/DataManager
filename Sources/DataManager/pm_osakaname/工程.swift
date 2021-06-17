@@ -71,6 +71,15 @@ public struct 工程型: Hashable, Comparable, Codable {
     public func 作業時間(from: Date, to: Date) -> TimeInterval {
         return TimeInterval(工程: self, 作業開始: from, 作業完了: to)
     }
+    /// fromとtoの間の経過時間を算出。fromとtoが前後してるものはマイナスで返す
+    public func 経過時間(from: Date, to: Date) -> TimeInterval {
+        if from <= to {
+            return 作業時間(from: from, to: to)
+        }else{
+            return 作業時間(from: to, to: from) * -1
+        }
+    }
+    
     public func 推定始業時間(of day: Day) -> Time {
         return 標準カレンダー.勤務時間(工程: self, 日付: day).始業
     }
