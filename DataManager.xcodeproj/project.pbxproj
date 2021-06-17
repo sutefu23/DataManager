@@ -697,6 +697,7 @@
 				OBJ_37 /* Date */,
 				OBJ_51 /* Text */,
 				OBJ_33 /* Alert.swift */,
+				OBJ_83 /* BarCode.swift */,
 				OBJ_34 /* Bundle.swift */,
 				OBJ_35 /* ChangeLog.swift */,
 				OBJ_36 /* Concurrent.swift */,
@@ -796,7 +797,6 @@
 				14310E6C2643D3CE00F062CA /* アクションライン */,
 				149D95F025B95F68000F97B5 /* CSV */,
 				147A6311255927610077634B /* 工程分解 */,
-				OBJ_82 /* ラベル印刷 */,
 				14767125251D5CA600429C17 /* Resources */,
 				1485E4922553DA330006DA8D /* 集計 */,
 				OBJ_89 /* 作業ツリー */,
@@ -816,14 +816,6 @@
 			name = DataManager;
 			path = Sources/DataManager;
 			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_82 /* ラベル印刷 */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_83 /* BarCode.swift */,
-			);
-			path = "ラベル印刷";
-			sourceTree = "<group>";
 		};
 		OBJ_84 /* 互換性 */ = {
 			isa = PBXGroup;
