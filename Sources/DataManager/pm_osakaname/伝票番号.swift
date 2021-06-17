@@ -262,3 +262,18 @@ extension 伝票番号型 {
         return list.count == 1
     }
 }
+
+// MARK: - 伝票種類キャッシュ
+private let typeLock = NSLock()
+private var typeCache: [伝票番号型: 伝票種類型] = [:]
+
+extension 伝票番号型 {
+    public var キャッシュ伝票種類: 伝票種類型? {
+        typeLock.lock()
+        defer { typeLock.unlock() }
+        if let cache = typeCache[self] { return cache }
+        guard let type = self.キャッシュ指示書?.伝票種類 else { return nil }
+        typeCache[self] = type
+        return type
+    }
+}

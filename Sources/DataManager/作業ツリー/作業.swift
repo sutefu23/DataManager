@@ -205,9 +205,6 @@ public class 作業記録型 {
         let from = Date(day, self.工程.推定始業時間(of: day))
         let to = Date(day, self.工程.推定終業時間(of: day))
         let sec = self.calc作業時間(from: from, to: to)
-        if let sec = sec, sec < 0 {
-            NSLog("")
-        }
         return sec
     }
 }

@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if swift(<5.5) // linkエラーによる（恐らくβによるバグ）
+
 #if os(iOS)
 #elseif os(macOS)
 import CreateML
@@ -379,5 +381,7 @@ private extension 指示書型 {
         }
     }
 }
+
+#endif
 
 #endif

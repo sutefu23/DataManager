@@ -216,6 +216,46 @@ public final class 資材使用記録型 {
     
     public var isChanged: Bool { original != data }
     
+    /// 必要に応じて用途「作直」を「部署内やり直し」に置き換える
+    public func 部署内やり直しチェック() throws {
+        guard let errorProcess = self.原因工程?.チェック工程 else { return }
+        switch self.用途 {
+        case "作直":
+            break
+        case "":
+            self.用途 = "作直"
+        case "部署内やり直し":
+            return
+        default:
+            return
+        }
+        let execProcess = self.工程.チェック工程
+        guard execProcess == errorProcess else { return }
+        if let last = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧[execProcess]?.last(where: { $0.登録日時 < self.登録日時 && $0.作業種別 != .作直 }) {
+            if last.作業内容 == .完了 { return }
+        }
+        self.用途 = "部署内やり直し"
+    }
+}
+
+extension 工程型 {
+    var チェック工程: 工程型 {
+        let map: [工程型: 工程型] = [
+            .レーザー: .照合検査,
+            .腐蝕: .エッチング,
+            .版焼き: .エッチング,
+            .腐蝕印刷: .エッチング,
+            .タレパン: .フォーミング,
+            .プレーナー: .フォーミング,
+            .シャーリング: .フォーミング,
+            .マスキング: .中塗り,
+            .プライマー: .塗装,
+        ]
+        return map[self] ?? self
+    }
+}
+
+extension 資材使用記録型 {
     // MARK: - DB操作
     public func delete() throws {
         guard let recordID = self.recordID else { return }

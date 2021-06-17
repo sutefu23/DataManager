@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB9102595D9A500ACB725 /* SendMail.swift */; };
+		1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1409A34326783B9800B4530A /* 送り状エラー.swift */; };
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
@@ -260,6 +261,7 @@
 		00AAB90F2595D91E00ACB725 /* sendMail.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = sendMail.py; sourceTree = "<group>"; };
 		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
+		1409A34326783B9800B4530A /* 送り状エラー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送り状エラー.swift"; sourceTree = "<group>"; };
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 			children = (
 				149D95F125B95FAB000F97B5 /* 福山通運.swift */,
 				148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */,
+				1409A34326783B9800B4530A /* 送り状エラー.swift */,
 			);
 			path = CSV;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */,
 				OBJ_248 /* 工程状態.swift in Sources */,
 				OBJ_249 /* 承認状態.swift in Sources */,
+				1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */,
 				OBJ_250 /* 指定注文番号型.swift in Sources */,
 				OBJ_251 /* 注文番号.swift in Sources */,
 				OBJ_252 /* 略号.swift in Sources */,

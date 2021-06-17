@@ -25,8 +25,34 @@ extension 送状型 {
     
     fileprivate var ヤマト配達時間帯: String { self.isAM ? "0812" : "" }
 }
+
+private enum YamatoCheckError: String, LocalizedError {
+    case 送り主郵便番号が空欄
+    case 届け先郵便番号が空欄
+    case 着指定日が未入力
     
+    var errorDescription: String? { self.rawValue }
+}
+
 public extension Sequence where Element == 送状型 {
+    func checkヤマト送り状() -> (ok: [送状型], ng: [送り状エラー型]) {
+        var ok: [送状型] = []
+        var ng: [送り状エラー型] = []
+        for order in self {
+            var isOk = true
+            func appendError(_ error: YamatoCheckError) {
+                ng.append(送り状エラー型(送り状: order, エラー: error))
+                isOk = false
+            }
+            if order.依頼主郵便番号.isEmpty { appendError(.送り主郵便番号が空欄) }
+            if order.届け先郵便番号.isEmpty { appendError(.届け先郵便番号が空欄) }
+            if order.着指定日 == nil { appendError(.着指定日が未入力) }
+            
+            if isOk { ok.append(order) }
+        }
+        return (ok,ng)
+    }
+    
     func exportヤマト送状CSV(to url: URL) throws {
         let today = Day().yearMonthDayNumberString
         let generator = TableGenerator<送状型>()
@@ -36,7 +62,7 @@ public extension Sequence where Element == 送状型 {
             .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // FIXME: これでは先送りできない。対応必要
             .fix("届け先JISコード") { "" }
             .fix("届け先コード") { "" }
-            .string("届け先名名称漢字") { $0.届け先受取者名.newlineToSpace }
+            .string("届け先名名称漢字") { $0.届け先受取者名.newlineToSpace.dropHeadSpaces }
             .string("届け先電話番号") { $0.届け先電話番号.toHalfCharacters }
             .string("届け先郵便番号") { $0.届け先郵便番号.toHalfCharacters }
             .string("届け先住所１") { $0.届け先住所1.newlineToSpace }
@@ -70,7 +96,7 @@ public extension Sequence where Element == 送状型 {
             .integer("発行枚数") { $0.個数 }
             .fix("OMSフラグ") { "0" }
             .fix("更新日付") { today } // 出力日を入れる
-            .fix("重量") { "0.1" }
+            .fix("重量") { "1.0" }
             .fix("届け先FAX番号") { "" }
             .fix("届け先メールアドレス") { "" }
             .string("営業所止めフラグ") { $0.届け先受取者名.contains(oneOf: "営業所止め", "センター止め") ? "1" : "" }

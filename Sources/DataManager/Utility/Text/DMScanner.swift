@@ -289,12 +289,18 @@ public struct DMScanner: RandomAccessCollection {
 
     /// stringまでスキャンする。ポインタはstringの次に移動する。stringまでの文字列を返す
     public mutating func scanUpToString(_ string: String) -> String? {
+        dropHeadSpacesIfNeeds()
         let count = string.count
         if count == 0 { return nil }
-        dropHeadSpacesIfNeeds()
         var left = ""
         var startIndex = self.startIndex
-        let limitIndex = source.index(source.endIndex, offsetBy: -count)
+        var limitIndex = self.endIndex
+        for _ in 1...count {
+            if startIndex == limitIndex { return nil }
+            limitIndex = source.index(before: limitIndex)
+        }
+//
+//        let limitIndex = source.index(source.endIndex, offsetBy: -count)
         while startIndex <= limitIndex {
             let endIndex = source.index(startIndex, offsetBy: count)
             if source[startIndex..<endIndex] == string {
