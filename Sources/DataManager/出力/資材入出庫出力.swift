@@ -93,8 +93,7 @@ extension Sequence where Element == 資材入出庫出力型 {
     
     func exportToDB(loopCount: Int, session: FileMakerSession) throws {
         if loopCount >= 5 {
-            let targets = Array(self)
-            return
+            throw FileMakerError.insert(message: "資材入出庫出力失敗")
         }
         
         let uuid = UUID()

@@ -230,6 +230,8 @@ public extension TableGenerator {
         case minute0
         /// 小数点以下１桁まで
         case minute1
+        /// 時間単位。小数点以下１桁まで
+        case hours1
     }
     /// 集計の種類
     enum ResultType {
@@ -382,6 +384,8 @@ public extension TableGenerator {
                 return String(Int(round(tmp)))
             case .minute1:
                 return String(format: "%.1f", value/60)
+            case .hours1:
+                return String(format: "%.1f", value/3600)
             }
         }
         col.aggregator = TimeIntervalColumnAggregator(type: resultType, format: resultFormat, getter: getter)
@@ -566,6 +570,8 @@ final class TimeIntervalColumnAggregator<S>: ColumnAggregator<S> {
             return String(value)
         case .minute1:
             return String(format: "%.1f", value/60)
+        case .hours1:
+            return String(format: "%.1f", value/3600)
         }
     }
 }
