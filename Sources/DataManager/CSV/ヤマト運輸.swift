@@ -23,12 +23,25 @@ extension 送状型 {
         return true
     }
     
-    fileprivate var ヤマト配達時間帯: String { self.isAM ? "0812" : "" }
+    fileprivate var ヤマト配達時間帯: String { self.isAM ? "1200" : "" }
 }
 
 private enum YamatoCheckError: String, LocalizedError {
     case 送り主郵便番号が空欄
+    case 送り主電話番号が空欄
+    case 送り主住所1が空欄
     case 届け先郵便番号が空欄
+    case 届け先電話番号が空欄
+    case 届け先住所1が空欄
+    case 送り主住所1の文字数が多い
+    case 送り主住所2の文字数が多い
+    case 送り主名称の文字数が多い
+    case 届け先住所1の文字数が多い
+    case 届け先住所2の文字数が多い
+    case 届け先住所3の文字数が多い
+    case 届け先名称の文字数が多い
+    case 品名の文字数が多い
+    case 記事の文字数が多い
     case 着指定日が未入力
     
     var errorDescription: String? { self.rawValue }
@@ -45,8 +58,21 @@ public extension Sequence where Element == 送状型 {
                 isOk = false
             }
             if order.依頼主郵便番号.isEmpty { appendError(.送り主郵便番号が空欄) }
+            if order.依頼主電話番号.isEmpty { appendError(.送り主電話番号が空欄) }
+            if order.依頼主住所1.isEmpty { appendError(.送り主住所1が空欄) }
             if order.届け先郵便番号.isEmpty { appendError(.届け先郵便番号が空欄) }
+            if order.届け先電話番号.isEmpty { appendError(.届け先電話番号が空欄) }
+            if order.届け先住所1.isEmpty { appendError(.届け先住所1が空欄) }
             if order.着指定日 == nil { appendError(.着指定日が未入力) }
+            if order.依頼主住所1.shiftJISBytes > 32 { appendError(.送り主住所1の文字数が多い) }
+            if order.依頼主住所2.shiftJISBytes > 32 { appendError(.送り主住所2の文字数が多い) }
+            if order.依頼主受取者名.shiftJISBytes > 32 { appendError(.送り主名称の文字数が多い) }
+            if order.届け先住所1.shiftJISBytes > 32 { appendError(.届け先住所1の文字数が多い) }
+            if order.届け先住所2.shiftJISBytes > 32 { appendError(.届け先住所2の文字数が多い) }
+            if order.届け先住所3.shiftJISBytes > 32 { appendError(.届け先住所3の文字数が多い) }
+            if order.届け先受取者名.shiftJISBytes > 32 { appendError(.届け先名称の文字数が多い) }
+            if order.品名.shiftJISBytes > 98 { appendError(.品名の文字数が多い) }
+            if order.記事.shiftJISBytes > 20 { appendError(.記事の文字数が多い) }
             
             if isOk { ok.append(order) }
         }
@@ -57,15 +83,15 @@ public extension Sequence where Element == 送状型 {
         let today = Day().yearMonthDayNumberString
         let generator = TableGenerator<送状型>()
             .string("お客様管理番号") { $0.管理番号 } // 送り状レコードのレコードID
-            .fix("伝票番号") { "" } // ヤマトのソフトで送状管理
+            .fix("送状番号") { "" } // ヤマトのソフトで送状管理
 //            .string("伝票番号") { $0.送り状番号 } // YamatoCSVで割り当て
-            .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // FIXME: これでは先送りできない。対応必要
+            .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // 先送りは想定していない
             .fix("届け先JISコード") { "" }
             .fix("届け先コード") { "" }
             .string("届け先名名称漢字") { $0.届け先受取者名.newlineToSpace.dropHeadSpaces }
             .string("届け先電話番号") { $0.届け先電話番号.toHalfCharacters }
             .string("届け先郵便番号") { $0.届け先郵便番号.toHalfCharacters }
-            .string("届け先住所１") { $0.届け先住所1.newlineToSpace }
+            .string("届け先住所１") { $0.届け先住所1.修正済み住所1.newlineToSpace }
             .string("届け先住所２") { $0.届け先住所2.newlineToSpace }
             .string("届け先アパートマンション名") { $0.届け先住所3.newlineToSpace }
             .fix("届け先会社・部門名1") { "" }
@@ -74,18 +100,18 @@ public extension Sequence where Element == 送状型 {
             .string("依頼主名称漢字") { $0.依頼主受取者名.newlineToSpace }
             .string("依頼主電話番号") { $0.依頼主電話番号.toHalfCharacters }
             .string("依頼主郵便番号") { $0.依頼主郵便番号.toHalfCharacters }
-            .string("依頼主住所１") { $0.依頼主住所1.newlineToSpace }
+            .string("依頼主住所１") { $0.依頼主住所1.修正済み住所1.newlineToSpace }
             .string("依頼主住所２") { $0.依頼主住所2.newlineToSpace }
             .string("依頼主アパートマンション") { $0.依頼主住所3.newlineToSpace }
-            .fix("依頼主会社・部門名1") { "＿" }
-            .fix("依頼主会社・部門名2") { "＿" }
+            .fix("依頼主会社・部門名1") { "" }
+            .fix("依頼主会社・部門名2") { "" }
             .fix("YGX顧客コード（電話番号）") { "0926112768" }
             .fix("YGX顧客コード（枝番）") { "" }
             .fix("荷扱区分1") { "" }
             .fix("荷扱区分2") { "" }
-            .string("配達指示・備考") { $0.記事.newlineToSpace }
-            .fix("クール区分") { "0" } // 0:通常
+            .string("配達指示・備考") { $0.記事.newlineToSpace + " " + ($0.伝票番号?.整数文字列 ?? "") }
             .fix("コレクト金額") { "" }
+            .fix("クール区分") { "0" } // 0:通常
             .string("品名コード1") { $0.伝票番号?.整数文字列 } // 伝票番号または空欄
             .string("品名名称1") { $0.品名.newlineToSpace.prefix(全角2文字: 50) } // 50文字で区切る
             .fix("品名コード2") { "" }
@@ -96,7 +122,7 @@ public extension Sequence where Element == 送状型 {
             .integer("発行枚数") { $0.個数 }
             .fix("OMSフラグ") { "0" }
             .fix("更新日付") { today } // 出力日を入れる
-            .fix("重量") { "1.0" }
+            .fix("重量") { "1000" }
             .fix("届け先FAX番号") { "" }
             .fix("届け先メールアドレス") { "" }
             .string("営業所止めフラグ") { $0.届け先受取者名.contains(oneOf: "営業所止め", "センター止め") ? "1" : "" }

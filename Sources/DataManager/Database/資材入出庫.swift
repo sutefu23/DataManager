@@ -19,6 +19,7 @@ public final class 資材入出庫型 {
     public let 入庫数: Int
     public let 出庫数: Int
     public let 部署: 部署型
+    public let 修正社員名: String
     
     init?(_ record: FileMakerRecord) {
         self.record = record
@@ -27,6 +28,7 @@ public final class 資材入出庫型 {
               let worker = record.社員(forKey: "社員番号") ?? record.社員名称(forKey: "社員名称"),
               let type = record.入力区分(forKey: "入力区分"),
               let item = record.資材(forKey: "資材番号"),
+              let name = record.string(forKey: "修正社員名"),
               let sec = record.キャッシュ部署(forKey: "部署記号") else { return nil }
         let input = record.integer(forKey: "入庫数") ?? 0
         let output = record.integer(forKey: "出庫数") ?? 0
@@ -38,6 +40,7 @@ public final class 資材入出庫型 {
         self.入庫数 = input
         self.出庫数 = output
         self.部署 = sec
+        self.修正社員名 = name
     }
     
     public var 出庫金額: Double? {

@@ -224,6 +224,11 @@ extension StringProtocol {
     @inlinable public func 全角半角日本語規格化() -> String {
         self.toJapaneseNormal
     }
+    
+    public var shiftJISBytes: Int {
+        let data = self.data(using: .shiftJIS, allowLossyConversion: true)
+        return data?.count ?? 0
+    }
 }
 
 func make2dig(_ value: Int) -> String {

@@ -54,7 +54,7 @@ final class FileMakerSession {
         }
         let url = self.url.appendingPathComponent("sessions")
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
-        let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), string: "{}")
+        let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
         guard response.code == 0, case let token as String = response["token"] else { throw FileMakerError.tokenCreate(message: response.message) }
         self.ticket = (token: token, expire: expire)
         return token
@@ -254,11 +254,6 @@ extension DMHttpConnectionProtocol {
         let response = (json["response"] as? [String: Any]) ?? [:]
         let message = (messages[0]["message"] as? String) ?? ""
         return FileMakerResponse(code: Int(codeString), message: message, response: response)
-    }
-    
-    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, string: String) throws -> FileMakerResponse {
-        let data = string.data(using: .utf8)!
-        return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
     }
     
     func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {

@@ -160,3 +160,9 @@ extension 住所型 {
     }
     
 }
+
+extension String {
+    public var 修正済み住所1: String {
+        return self.replacingOccurrences(of: "福岡県粕屋郡", with: "福岡県糟屋郡")
+    }
+}
