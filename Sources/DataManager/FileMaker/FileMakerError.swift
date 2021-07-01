@@ -23,6 +23,7 @@ public enum FileMakerError: LocalizedError {
     case upload進捗入力(message: String)
     case upload発注(message: String)
     case upload資材入出庫(message: String)
+    case upload使用資材(message: String)
 
     case invalidData(message: String)
     case notFound(message: String)
@@ -48,6 +49,7 @@ public enum FileMakerError: LocalizedError {
         case .response(message: let mes): return mes
         case .upload進捗入力(message: let mes): return mes
         case .upload発注(message: let mes): return mes
+        case .upload使用資材(message: let mes): return mes
         case .upload資材入出庫(message: let mes): return mes
         case .invalidData(message: let mes): return mes
         case .notFound(message: let mes): return mes
@@ -70,6 +72,7 @@ public enum FileMakerError: LocalizedError {
         case .upload進捗入力(message: let mes): return "進捗入力登録失敗(\(mes))"
         case .upload発注(message: let mes): return "発注登録失敗(\(mes))"
         case .upload資材入出庫(message: let mes): return "資材入出庫登録失敗(\(mes))"
+        case .upload使用資材(message: let mes): return "使用資材登録失敗(\(mes))"
         case .invalidData(message: let mes): return "読み込みフィールド形式不正(\(mes))"
         case .notFound(message: let mes): return "必要なレコードが見つからなかった(\(mes))"
         }

@@ -26,6 +26,10 @@
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
+		142149DE268D8F7200A13F6A /* 使用資材出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DD268D8F7200A13F6A /* 使用資材出力.swift */; };
+		142149E0268D975300A13F6A /* 使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DF268D975300A13F6A /* 使用資材.swift */; };
+		142149E2268D9D1F00A13F6A /* 用途.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E1268D9D1F00A13F6A /* 用途.swift */; };
+		142149E4268DA0B600A13F6A /* Test使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E3268DA0B600A13F6A /* Test使用資材.swift */; };
 		14310E6E2643D3E400F062CA /* ActionLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14310E6D2643D3E400F062CA /* ActionLine.swift */; };
 		143471432625651E00F06E4C /* WorkMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143471422625651E00F06E4C /* WorkMap.swift */; };
 		1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434714A2625664B00F06E4C /* 資源量分析.swift */; };
@@ -265,6 +269,10 @@
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
+		142149DD268D8F7200A13F6A /* 使用資材出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材出力.swift"; sourceTree = "<group>"; };
+		142149DF268D975300A13F6A /* 使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材.swift"; sourceTree = "<group>"; };
+		142149E1268D9D1F00A13F6A /* 用途.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "用途.swift"; sourceTree = "<group>"; };
+		142149E3268DA0B600A13F6A /* Test使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test使用資材.swift"; sourceTree = "<group>"; };
 		14310E6D2643D3E400F062CA /* ActionLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLine.swift; sourceTree = "<group>"; };
 		143471422625651E00F06E4C /* WorkMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkMap.swift; sourceTree = "<group>"; };
 		1434714A2625664B00F06E4C /* 資源量分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源量分析.swift"; sourceTree = "<group>"; };
@@ -666,6 +674,7 @@
 				14F3DFE6251DAEA0003D4BCA /* TestSession.swift */,
 				148CA55B25367E50002CE1D4 /* TestICCardID.swift */,
 				1474BD242613FEA80068947E /* TestRegressor.swift */,
+				142149E3268DA0B600A13F6A /* Test使用資材.swift */,
 			);
 			name = DataManagerTests;
 			path = Tests/DataManagerTests;
@@ -779,6 +788,7 @@
 				OBJ_79 /* 略号.swift */,
 				OBJ_80 /* 発注状態.swift */,
 				OBJ_81 /* 経理状態.swift */,
+				142149E1268D9D1F00A13F6A /* 用途.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -862,6 +872,7 @@
 				OBJ_25 /* 部署.swift */,
 				OBJ_26 /* 部門.swift */,
 				148DBA6825B939B100721484 /* 送状.swift */,
+				142149DF268D975300A13F6A /* 使用資材.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -886,6 +897,7 @@
 				OBJ_102 /* 資材入出庫出力.swift */,
 				OBJ_103 /* 資材要求出力.swift */,
 				OBJ_104 /* 進捗出力.swift */,
+				142149DD268D8F7200A13F6A /* 使用資材出力.swift */,
 			);
 			path = "出力";
 			sourceTree = "<group>";
@@ -1051,6 +1063,7 @@
 				OBJ_230 /* TextReader.swift in Sources */,
 				141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */,
 				OBJ_231 /* TextWriter.swift in Sources */,
+				142149E0268D975300A13F6A /* 使用資材.swift in Sources */,
 				148CA55225367D98002CE1D4 /* ICCard.swift in Sources */,
 				OBJ_232 /* TwoElementCache.swift in Sources */,
 				OBJ_233 /* URL.swift in Sources */,
@@ -1063,6 +1076,7 @@
 				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
 				OBJ_238 /* レーザー加工機.swift in Sources */,
 				OBJ_239 /* 伝票状態.swift in Sources */,
+				142149E2268D9D1F00A13F6A /* 用途.swift in Sources */,
 				OBJ_240 /* 伝票番号.swift in Sources */,
 				14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */,
 				OBJ_241 /* 伝票種別.swift in Sources */,
@@ -1083,6 +1097,7 @@
 				OBJ_251 /* 注文番号.swift in Sources */,
 				OBJ_252 /* 略号.swift in Sources */,
 				OBJ_253 /* 発注状態.swift in Sources */,
+				142149DE268D8F7200A13F6A /* 使用資材出力.swift in Sources */,
 				OBJ_254 /* 経理状態.swift in Sources */,
 				OBJ_255 /* BarCode.swift in Sources */,
 				OBJ_256 /* Cocoa.swift in Sources */,
@@ -1188,6 +1203,7 @@
 				OBJ_346 /* Test資材.swift in Sources */,
 				OBJ_347 /* Test資材コイル情報.swift in Sources */,
 				OBJ_348 /* Test資材使用記録.swift in Sources */,
+				142149E4268DA0B600A13F6A /* Test使用資材.swift in Sources */,
 				OBJ_349 /* Test資材入出庫.swift in Sources */,
 				OBJ_350 /* Test資材板情報.swift in Sources */,
 				OBJ_351 /* Test資材要求出力.swift in Sources */,

@@ -158,11 +158,14 @@ extension 住所型 {
 //        }
         return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 名前.contains(to.名前) && 電話番号 == 電話番号
     }
-    
 }
 
 extension String {
     public var 修正済み住所1: String {
-        return self.replacingOccurrences(of: "福岡県粕屋郡", with: "福岡県糟屋郡")
+        var str = self.replacingOccurrences(of: "福岡県粕屋郡", with: "福岡県糟屋郡")
+        if str.contains("糟屋郡") {
+            str = str.replacingOccurrences(of: "須恵", with: "須惠")
+        }
+        return str
     }
 }

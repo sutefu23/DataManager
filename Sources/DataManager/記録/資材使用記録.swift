@@ -52,7 +52,7 @@ struct 資材使用記録Data型: Equatable {
     var 印刷対象: 印刷対象型?
     var 原因工程: 工程型?
 
-    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
+    init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.工程 = 工程
@@ -62,6 +62,7 @@ struct 資材使用記録Data型: Equatable {
         self.単価 = 単価
         self.用途 = 用途
         self.使用量 = 使用量
+        self.使用面積 = 使用面積
         self.金額 = 金額
         self.単位量 = 単位量
         self.単位数 = 単位数
@@ -83,6 +84,7 @@ struct 資材使用記録Data型: Equatable {
         self.図番 = item.図番
         self.単価 = record.double(forKey: "単価") ?? item.単価
         self.使用量 = record.string(forKey: "使用量")
+        self.使用面積 = record.double(forKey: "使用面積")
         self.用途 = record.string(forKey: "用途")
         self.金額 = record.double(forKey: "金額")
         if let title = record.string(forKey: "表示名"), !title.isEmpty {
@@ -111,23 +113,18 @@ struct 資材使用記録Data型: Equatable {
         data["用途"] = 用途
         if let value = self.単位量 {
             data["単位量"] = "\(value)"
-        } else {
-            data["単位量"] = ""
         }
         if let value = self.単位数 {
             data["単位数"] = "\(value)"
-        } else {
-            data["単位数"] = ""
         }
         if let charge = self.金額 {
             data["金額"] = "\(charge)"
-        } else {
-            data["金額"] = ""
         }
         if let target = self.印刷対象 {
             data["印刷対象"] = target.rawValue
-        } else {
-            data["印刷対象"] = ""
+        }
+        if let value = self.使用面積 {
+            data["使用面積"] = "\(value)"
         }
         return data
     }
@@ -179,6 +176,10 @@ public final class 資材使用記録型 {
         get { data.使用量 }
         set { data.使用量 = newValue }
     }
+    public var 使用面積: Double? {
+        get { data.使用面積 }
+        set { data.使用面積 = newValue }
+    }
     public var 金額: Double? {
         get { data.金額 }
         set { data.金額 = newValue }
@@ -203,8 +204,8 @@ public final class 資材使用記録型 {
         return 印刷対象型.仮印刷対象工程.contains(data.工程) ? .全て : .なし
     }
 
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
-        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 単位量: 単位量, 単位数: 単位数, 金額: 金額, 印刷対象: 印刷対象, 原因工程: 原因工程)
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
+        self.data = 資材使用記録Data型(登録日時: 登録日時, 伝票番号: 伝票番号, 工程: 工程, 作業者: 作業者, 図番: 図番, 表示名: 表示名, 単価: 単価, 用途: 用途, 使用量: 使用量, 使用面積: 使用面積, 単位量: 単位量, 単位数: 単位数, 金額: 金額, 印刷対象: 印刷対象, 原因工程: 原因工程)
     }
 
     init?(_ record: FileMakerRecord) {

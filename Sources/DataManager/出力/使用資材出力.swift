@@ -1,0 +1,137 @@
+//
+//  使用資材出力.swift
+//  DataManager
+//
+//  Created by manager on 2021/07/01.
+//
+
+import Foundation
+
+public struct 使用資材出力型 {
+    public var 登録日時: Date
+    
+    public var 伝票番号: 伝票番号型
+    public var 作業者: 社員型?
+    public var 工程: 工程型?
+    public var 用途: 用途型?
+    public var 図番: 図番型
+    public var 表示名: String
+    public var 使用量: String
+    public var 印刷対象: 印刷対象型?
+    public var 単位量: Double?
+    public var 単位数: Double?
+    public var 金額: Double?
+    public var 原因工程: 工程型?
+
+    public init(登録日時: Date, 伝票番号: 伝票番号型, 作業者: 社員型?, 工程: 工程型?, 用途: 用途型?, 図番: 図番型, 表示名: String, 使用量: String, 印刷対象: 印刷対象型? = nil, 単位量: Double? = nil, 単位数: Double? = nil, 金額: Double? = nil, 原因工程: 工程型? = nil) {
+        self.登録日時 = 登録日時
+        self.伝票番号 = 伝票番号
+        self.作業者 = 作業者
+        self.工程 = 工程
+        self.用途 = 用途
+        self.図番 = 図番
+        self.表示名 = 表示名
+        self.使用量 = 使用量
+        self.印刷対象 = 印刷対象
+        self.単位量 = 単位量
+        self.単位数 = 単位数
+        self.金額 = 金額
+        self.原因工程 = 原因工程
+    }
+    
+    init?(_ record: FileMakerRecord) {
+        guard let date = record.date(dayKey: "登録日", timeKey: "登録時間") else { return nil }
+        guard let number = record.伝票番号(forKey: "伝票番号") else { return nil }
+        guard let item = record.資材(forKey: "図番") else { return nil }
+        
+        self.登録日時 = date
+        self.伝票番号 = number
+        self.工程 = record.工程(forKey: "工程コード")
+        self.作業者 = record.社員(forKey: "作業者コード")
+        self.図番 = item.図番
+        self.使用量 = record.string(forKey: "使用量") ?? ""
+        self.用途 = record.用途(forKey: "用途")
+        self.金額 = record.double(forKey: "金額")
+        if let title = record.string(forKey: "表示名"), !title.isEmpty {
+            self.表示名 = title.全角半角日本語規格化()
+        } else {
+            self.表示名 = item.標準表示名
+        }
+        self.単位量 = record.double(forKey: "単位量")
+        self.単位数 = record.double(forKey: "単位数")
+        self.印刷対象 = record.印刷対象(forKey: "印刷対象")
+        self.原因工程 = record.工程(forKey: "原因工程コード")
+    }
+    
+    func makeRecord(識別キー key: UUID) -> [String: String] {
+        var record: [String: String] = [
+            "登録セッションUUID": key.uuidString,
+            "登録日": 登録日時.day.fmString,
+            "登録時間": 登録日時.time.fmImportString,
+            "伝票番号": "\(伝票番号.整数値)",
+            "資材番号": 図番,
+            "表示名": 表示名,
+            "使用量": 使用量,
+        ]
+        record["工程コード"] = 工程?.code
+        record["社員コード"] = 作業者?.Hなし社員コード
+        record["原因部署"] = 原因工程?.code
+        record["用途コード"] = 用途?.用途コード
+        record["印刷対象"] = 印刷対象?.rawValue
+
+        if let value = self.単位量 {
+            record["単位量"] = "\(value)"
+        }
+        if let value = self.単位数 {
+            record["単位数"] = "\(value)"
+        }
+        if let charge = self.金額 {
+            record["金額"] = "\(charge)"
+        }
+        return record
+    }
+    
+    func isEqual(to order: 使用資材型) -> Bool {
+        return self.伝票番号 == order.伝票番号
+    }
+
+}
+
+extension Sequence where Element == 使用資材出力型 {
+    public func exportToDB() throws {
+        let db = FileMakerDB.pm_osakaname2
+        let session = db.retainSession()
+        defer { db.releaseSession(session) }
+        try self.exportToDB(loopCount: 0, session: session)
+    }
+    
+    private func exportToDB(loopCount: Int, session: FileMakerSession) throws {
+        let targets = Array(self)
+        if targets.isEmpty { return }
+        let layout = "DataAPI_UseMaterialInput"
+        if loopCount >= 5 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件") }
+        let uuid = UUID()
+        do {
+            // 発注処理
+            for progress in targets {
+                try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
+            }
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
+            try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString)
+//            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
+//            let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
+//            if result.count == targets.count { // 登録成功
+//                return
+//            }
+//            if result.count > 0 { // 部分的に登録成功
+//                let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
+//                try rest.exportToDB(loopCount: loopCount+1, session: session)
+//                return
+//            } else { // 完全に登録失敗
+//                try targets.exportToDB(loopCount: loopCount+1, session: session)
+//            }
+        } catch {
+            throw error
+        }
+    }
+}
