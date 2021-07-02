@@ -21,7 +21,7 @@ class TestShiyouShizai: XCTestCase {
         var list = try! 使用資材型.find(伝票番号: order)
         let count = list.count
         
-        let export = 使用資材出力型(登録日時: Date(), 伝票番号: order, 作業者: .川﨑_誠, 工程: .レーザー, 用途: nil, 図番: "309", 表示名: "SUSボルト", 使用量: "10本", 印刷対象: nil, 単位量: 1.0, 単位数: 10.0, 金額: 123, 原因工程: nil)
+        let export = 使用資材出力型(登録日時: Date(), 伝票番号: order, 作業者: .川﨑_誠, 工程: .レーザー, 用途: .天板, 図番: "309", 表示名: "YSUSボルト", 使用量: "10本", 面積: "121", 印刷対象: .全て, 単位量: 0.5, 単位数: 10.0, 金額: 123.5, 原因工程: .オブジェ)
         try! [export].exportToDB()
 
         list = try! 使用資材型.find(伝票番号: order)

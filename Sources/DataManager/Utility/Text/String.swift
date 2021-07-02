@@ -213,7 +213,6 @@ extension StringProtocol {
             scanner.skip数字以外()
         }
         return numbers
-//        return self.split { numberRange.contains($0) == false }.compactMap { Int($0) }
     }
     
     /// 全角を半角に変換する

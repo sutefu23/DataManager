@@ -17,13 +17,28 @@ public struct 使用資材出力型 {
     public var 図番: 図番型
     public var 表示名: String
     public var 使用量: String
+    public var 面積: String?
     public var 印刷対象: 印刷対象型?
     public var 単位量: Double?
     public var 単位数: Double?
     public var 金額: Double?
     public var 原因工程: 工程型?
 
-    public init(登録日時: Date, 伝票番号: 伝票番号型, 作業者: 社員型?, 工程: 工程型?, 用途: 用途型?, 図番: 図番型, 表示名: String, 使用量: String, 印刷対象: 印刷対象型? = nil, 単位量: Double? = nil, 単位数: Double? = nil, 金額: Double? = nil, 原因工程: 工程型? = nil) {
+    public init(登録日時: Date,
+                伝票番号: 伝票番号型,
+                作業者: 社員型?,
+                工程: 工程型?,
+                用途: 用途型?,
+                図番: 図番型,
+                表示名: String,
+                使用量: String,
+                面積: String?,
+                印刷対象: 印刷対象型? = nil,
+                単位量: Double? = nil,
+                単位数: Double? = nil,
+                金額: Double? = nil,
+                原因工程: 工程型? = nil
+    ) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
         self.作業者 = 作業者
@@ -32,6 +47,7 @@ public struct 使用資材出力型 {
         self.図番 = 図番
         self.表示名 = 表示名
         self.使用量 = 使用量
+        self.面積 = 面積
         self.印刷対象 = 印刷対象
         self.単位量 = 単位量
         self.単位数 = 単位数
@@ -57,10 +73,32 @@ public struct 使用資材出力型 {
         } else {
             self.表示名 = item.標準表示名
         }
+        self.面積 = record.string(forKey: "面積")
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
         self.印刷対象 = record.印刷対象(forKey: "印刷対象")
         self.原因工程 = record.工程(forKey: "原因工程コード")
+    }
+    
+    public init(_ record: 資材使用記録型) {
+        self.登録日時 = record.登録日時
+        self.伝票番号 = record.伝票番号
+        self.工程 = record.工程
+        self.作業者 = record.作業者
+        self.図番 = record.図番
+        self.使用量 = record.使用量 ?? ""
+        self.用途 = 用途型(用途名: record.用途)
+        self.金額 = record.金額
+        self.表示名 = record.表示名
+        if let val = record.使用面積 {
+            self.面積 = "\(val)"
+        } else {
+            self.面積 = nil
+        }
+        self.単位量 = record.単位量
+        self.単位数 = record.単位数
+        self.印刷対象 = record.印刷対象
+        self.原因工程 = record.原因工程
     }
     
     func makeRecord(識別キー key: UUID) -> [String: String] {
@@ -78,7 +116,9 @@ public struct 使用資材出力型 {
         record["原因部署"] = 原因工程?.code
         record["用途コード"] = 用途?.用途コード
         record["印刷対象"] = 印刷対象?.rawValue
-
+        if let area = self.面積 {
+            record["面積"] = area
+        }
         if let value = self.単位量 {
             record["単位量"] = "\(value)"
         }
@@ -92,14 +132,27 @@ public struct 使用資材出力型 {
     }
     
     func isEqual(to order: 使用資材型) -> Bool {
-        return self.伝票番号 == order.伝票番号
+        return
+            self.伝票番号 == order.伝票番号 &&
+            self.作業者 == order.作業者 &&
+            self.使用量 == order.使用量 &&
+            self.単位数 == order.単位数 &&
+            self.単位量 == order.単位量 &&
+            self.印刷対象 == order.印刷対象 &&
+            self.原因工程 == order.原因工程 &&
+            self.図番 == order.図番 &&
+            self.工程 == order.工程 &&
+            self.用途 == order.用途 &&
+            self.登録日時 == order.登録日時 &&
+            self.表示名 == order.表示名 &&
+            self.金額 == order.金額 &&
+            self.面積 == order.面積
     }
-
 }
 
 extension Sequence where Element == 使用資材出力型 {
     public func exportToDB() throws {
-        let db = FileMakerDB.pm_osakaname2
+        let db = FileMakerDB.pm_osakaname
         let session = db.retainSession()
         defer { db.releaseSession(session) }
         try self.exportToDB(loopCount: 0, session: session)
@@ -109,7 +162,7 @@ extension Sequence where Element == 使用資材出力型 {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_UseMaterialInput"
-        if loopCount >= 5 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件") }
+        if loopCount >= 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件") }
         let uuid = UUID()
         do {
             // 発注処理
@@ -118,18 +171,18 @@ extension Sequence where Element == 使用資材出力型 {
             }
             Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
             try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString)
-//            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
-//            let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
-//            if result.count == targets.count { // 登録成功
-//                return
-//            }
-//            if result.count > 0 { // 部分的に登録成功
-//                let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
-//                try rest.exportToDB(loopCount: loopCount+1, session: session)
-//                return
-//            } else { // 完全に登録失敗
-//                try targets.exportToDB(loopCount: loopCount+1, session: session)
-//            }
+            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
+            let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
+            if result.count == targets.count { // 登録成功
+                return
+            }
+            if result.count > 0 { // 部分的に登録成功
+                let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
+                try rest.exportToDB(loopCount: loopCount+1, session: session)
+                return
+            } else { // 完全に登録失敗
+                try targets.exportToDB(loopCount: loopCount+1, session: session)
+            }
         } catch {
             throw error
         }

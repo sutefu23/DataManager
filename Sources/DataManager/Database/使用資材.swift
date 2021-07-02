@@ -19,11 +19,15 @@ class 使用資材型 {
     public var 図番: 図番型
     public var 表示名: String
     public var 使用量: String
+    public var 面積: String?
     public var 印刷対象: 印刷対象型?
     public var 単位量: Double?
     public var 単位数: Double?
     public var 金額: Double?
     public var 原因工程: 工程型?
+    public var 登録セッションUUID: String?
+
+    public var 登録日時: Date { Date(self.登録日, self.登録時間) }
     
     init?(_ record: FileMakerRecord) {
         guard let day = record.day(forKey: "登録日"),
@@ -46,6 +50,8 @@ class 使用資材型 {
         self.単位数 = record.double(forKey: "単位数")
         self.金額 = record.double(forKey: "金額")
         self.原因工程 = record.工程(forKey: "原因工程")
+        self.面積 = record.string(forKey: "面積")
+        self.登録セッションUUID = record.string(forKey: "登録セッションUUID") ?? ""
     }
 }
 
@@ -55,14 +61,14 @@ extension 使用資材型 {
         if let session = session {
             list = try session.find(layout: 使用資材型.dbName, query: [query])
         } else {
-            list = try FileMakerDB.pm_osakaname2.find(layout: 使用資材型.dbName, query: [query])
+            list = try FileMakerDB.pm_osakaname.find(layout: 使用資材型.dbName, query: [query])
         }
         return list.compactMap { 使用資材型($0) }
     }
     
     static func find(API識別キー: UUID, session: FileMakerSession) throws -> [使用資材型] {
         var query = FileMakerQuery()
-        query["API識別キー"] = "==\(API識別キー.uuidString)"
+        query["登録セッションUUID"] = "==\(API識別キー.uuidString)"
         return try find(query: query, session: session)
     }
     

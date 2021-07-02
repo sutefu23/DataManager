@@ -12,7 +12,6 @@ private let lock = NSRecursiveLock()
 
 public enum 印刷対象型: String {
     public static let 仮印刷対象工程: Set<工程型> = [.裏加工, .裏加工_溶接]
-    
     case 全て
     case なし
     
