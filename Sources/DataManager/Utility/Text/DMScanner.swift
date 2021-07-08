@@ -543,26 +543,20 @@ public struct DMScanner: RandomAccessCollection {
         let count = pattern.count
         if count == 0 { return false }
         dropHeadSpacesIfNeeds()
-        let match = self.substring
-        if match.count < count { return false }
-        if match.count == count {
-            if match == pattern {
-                startIndex = self.source.index(startIndex, offsetBy: count)
-                return true
-            } else {
-                return false
-            }
-        }
-        let first = match.startIndex
-        let end = match.index(first, offsetBy: count)
-        if match[first..<end] == pattern {
-            startIndex = self.source.index(startIndex, offsetBy: count)
-            return true
-        } else {
-            return false
-        }
+        guard self.substring.hasPrefix(pattern) else { return false }
+        self.skipCursor(count)
+        return true
     }
 
+    /// 指定文字数スキップする
+    public mutating func skipCursor(_ count: Int) {
+        var count = count
+        while count > 0 && startIndex < endIndex {
+            startIndex = source.index(after: startIndex)
+            count -= 1
+        }
+    }
+    
     /// patternsのどれか合致する物をスキップする
     @discardableResult public mutating func scanStrings(_ patterns: String...) -> String? {
         let patterns = patterns.sorted { $0.count > $1.count } // 長いものから順に実施する

@@ -38,6 +38,7 @@ public class 送状型: Identifiable {
     public var 依頼主受取者名: String { record.string(forKey: "依頼主受取者名")! }
     public var 依頼主電話番号: String { record.string(forKey: "依頼主電話番号")! }
     public var 地域: String { record.string(forKey: "地域")! }
+    public var ヤマトお客様コード: String { record.string(forKey: "ヤマトお客様コード")! }
     
     public lazy var 指示書: 指示書型? = {
         try? 指示書型.findDirect(uuid: self.指示書UUID)

@@ -93,11 +93,11 @@ public extension Sequence where Element == 送状型 {
             .string("届け先郵便番号") { $0.届け先郵便番号.toHalfCharacters }
             .string("届け先住所１") { $0.届け先住所1.修正済み住所1.newlineToSpace }
             .string("届け先住所２") { $0.届け先住所2.newlineToSpace }
-            .string("届け先アパートマンション名") { $0.届け先住所3.newlineToSpace }
+            .string("届け先アパートマンション名") { $0.依頼主受取者名.isEmpty ? "" : $0.届け先住所3.newlineToSpace }
             .fix("届け先会社・部門名1") { "" }
             .fix("届け先会社・部門名2") { "" }
             .fix("依頼主コード") { "" }
-            .string("依頼主名称漢字") { $0.依頼主受取者名.newlineToSpace }
+            .string("依頼主名称漢字") { ($0.依頼主受取者名.isEmpty ? $0.届け先住所3 : $0.依頼主受取者名).newlineToSpace }
             .string("依頼主電話番号") { $0.依頼主電話番号.toHalfCharacters }
             .string("依頼主郵便番号") { $0.依頼主郵便番号.toHalfCharacters }
             .string("依頼主住所１") { $0.依頼主住所1.修正済み住所1.newlineToSpace }
@@ -105,7 +105,7 @@ public extension Sequence where Element == 送状型 {
             .string("依頼主アパートマンション") { $0.依頼主住所3.newlineToSpace }
             .fix("依頼主会社・部門名1") { "" }
             .fix("依頼主会社・部門名2") { "" }
-            .fix("YGX顧客コード（電話番号）") { "0926112768" }
+            .string("YGX顧客コード（電話番号）") { $0.ヤマトお客様コード }
             .fix("YGX顧客コード（枝番）") { "" }
             .fix("荷扱区分1") { "" }
             .fix("荷扱区分2") { "" }

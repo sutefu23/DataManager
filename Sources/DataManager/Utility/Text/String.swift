@@ -42,6 +42,10 @@ extension String {
     public mutating func removeTailSpace() {
         while self.last?.isWhitespace == true { self.removeLast() }
     }
+    
+    public var is空欄: Bool {
+        return self.spaceStripped.isEmpty
+    }
 }
 
 extension StringProtocol {
@@ -63,7 +67,7 @@ extension StringProtocol {
     
     public var 比較用文字列: String {
         var result = ""
-        for ch in self.toJapaneseNormal.toHalfCharacters.spaceStripped {
+        for ch in self.toJapaneseNormal.spaceStripped {
             switch ch {
             case "㈲":
                 result.append("有限会社")

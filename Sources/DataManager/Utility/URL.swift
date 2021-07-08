@@ -129,6 +129,15 @@ extension URL {
         components.forEach { url.appendPathComponent($0) }
         return url
     }
+    
+    /// URLのディレクトリを準備する
+    public func prepareDirectory() throws {
+        let fm = FileManager.default
+        let dir = self.deletingLastPathComponent()
+        if dir.isExists == false {
+            try fm.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
+        }
+    }
 }
 
 #if os(macOS)

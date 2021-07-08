@@ -57,6 +57,8 @@ class 使用資材型 {
 
 extension 使用資材型 {
     static func find(query: FileMakerQuery, session: FileMakerSession? = nil) throws -> [使用資材型] {
+        if query.isEmpty { return [] }
+
         let list: [FileMakerRecord]
         if let session = session {
             list = try session.find(layout: 使用資材型.dbName, query: [query])
@@ -80,7 +82,34 @@ extension 使用資材型 {
         if let number = 伝票番号 {
             query["伝票番号"] = number.整数文字列
         }
-        if query.isEmpty { return [] }
+        return try find(query: query)
+    }
+    
+    static func find(登録日時: Date, 伝票番号: 伝票番号型, 作業者: 社員型?, 工程: 工程型?, 用途: 用途型?, 図番: 図番型, 表示名: String, 使用量: String, 面積: String?,印刷対象: 印刷対象型?, 単位量: Double?, 単位数: Double?, 金額: Double?, 原因工程: 工程型?) throws -> [使用資材型] {
+        var query = FileMakerQuery()
+        query["登録日"] = 登録日時.day.fmString
+        query["登録日時"] = 登録日時.time.fmImportString
+        query["伝票番号"] = 伝票番号.整数文字列
+        query["社員コード"] = 作業者?.Hなし社員コード
+        query["工程コード"] = 工程?.code
+        query["用途コード"] = 用途?.用途コード
+        query["資材番号"] = 図番
+        query["表示名"] = 表示名
+        query["使用量"] = 使用量
+        if let area = 面積 {
+            query["面積"] = area
+        }
+        query["印刷対象"] = 印刷対象?.rawValue
+        if let value = 単位量 {
+            query["単位量"] = "\(value)"
+        }
+        if let value = 単位数 {
+            query["単位数"] = "\(value)"
+        }
+        if let charge = 金額 {
+            query["金額"] = "\(charge)"
+        }
+        query["原因部署"] = 原因工程?.code
         return try find(query: query)
     }
 }

@@ -272,6 +272,9 @@ extension 資材使用記録型 {
         let db = FileMakerDB.system
         let _ = try db.insert(layout: 資材使用記録Data型.dbName, fields: data)
         資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
+        
+        let output = 使用資材出力型(self)
+        try [output].exportToDB()
     }
     
     public func synchronize() throws {

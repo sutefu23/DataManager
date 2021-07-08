@@ -136,9 +136,9 @@ public struct 使用資材出力型 {
             self.伝票番号 == order.伝票番号 &&
             self.作業者 == order.作業者 &&
             self.使用量 == order.使用量 &&
-            self.単位数 == order.単位数 &&
+            (self.単位数 ?? 1.0) == (order.単位数 ?? 1.0) &&
             self.単位量 == order.単位量 &&
-            self.印刷対象 == order.印刷対象 &&
+            (self.印刷対象 ?? .なし) == (order.印刷対象 ?? .なし) &&
             self.原因工程 == order.原因工程 &&
             self.図番 == order.図番 &&
             self.工程 == order.工程 &&
@@ -147,6 +147,16 @@ public struct 使用資材出力型 {
             self.表示名 == order.表示名 &&
             self.金額 == order.金額 &&
             self.面積 == order.面積
+    }
+    
+    /// サーバーに登録済みならtrue。サーバーに繋がらないなど判定不能時はnilを返す
+    public func registered() -> Bool? {
+        do {
+            let list = try 使用資材キャッシュ型.shared.キャッシュ使用資材一覧(伝票番号: self.伝票番号)
+            return list.contains { self.isEqual(to: $0) }
+        } catch {
+            return nil
+        }
     }
 }
 
