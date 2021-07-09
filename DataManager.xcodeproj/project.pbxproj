@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB9102595D9A500ACB725 /* SendMail.swift */; };
 		1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1409A34326783B9800B4530A /* 送り状エラー.swift */; };
+		140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140DC63F2696D3920010F86E /* 送状番号出力.swift */; };
+		140DC6422696E3FD0010F86E /* 送状管理.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140DC6412696E3FD0010F86E /* 送状管理.swift */; };
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
@@ -267,6 +269,8 @@
 		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		1409A34326783B9800B4530A /* 送り状エラー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送り状エラー.swift"; sourceTree = "<group>"; };
+		140DC63F2696D3920010F86E /* 送状番号出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状番号出力.swift"; sourceTree = "<group>"; };
+		140DC6412696E3FD0010F86E /* 送状管理.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状管理.swift"; sourceTree = "<group>"; };
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
@@ -608,6 +612,7 @@
 				1498B066252429CB001698DF /* IDカード型.swift */,
 				14EF40362548170300DA8FF9 /* 食事時間帯.swift */,
 				1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */,
+				140DC6412696E3FD0010F86E /* 送状管理.swift */,
 			);
 			path = "記録";
 			sourceTree = "<group>";
@@ -901,6 +906,7 @@
 				OBJ_103 /* 資材要求出力.swift */,
 				OBJ_104 /* 進捗出力.swift */,
 				142149DD268D8F7200A13F6A /* 使用資材出力.swift */,
+				140DC63F2696D3920010F86E /* 送状番号出力.swift */,
 			);
 			path = "出力";
 			sourceTree = "<group>";
@@ -1064,6 +1070,7 @@
 				OBJ_228 /* NSAttributedString.swift in Sources */,
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
+				140DC6422696E3FD0010F86E /* 送状管理.swift in Sources */,
 				142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */,
 				141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */,
 				OBJ_231 /* TextWriter.swift in Sources */,
@@ -1154,6 +1161,7 @@
 				OBJ_296 /* 箱文字優先度.swift in Sources */,
 				OBJ_297 /* 箱文字日報.swift in Sources */,
 				OBJ_298 /* 記録.swift in Sources */,
+				140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */,
 				OBJ_299 /* 資材使用記録.swift in Sources */,
 				OBJ_300 /* 資材入庫状況.swift in Sources */,
 				OBJ_301 /* 板加工在庫.swift in Sources */,

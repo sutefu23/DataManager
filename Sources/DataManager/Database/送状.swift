@@ -11,13 +11,16 @@ public class 送状型: Identifiable {
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {
+        guard let 送り状番号 = record.string(forKey: "送り状番号") else { return nil }
+        self.送り状番号 = 送り状番号
         self.record = record
     }
-    
+
+    public var 送り状番号: String
+
     public var 管理番号: String { record.string(forKey: "管理番号")! }
     public var 同送情報: String { record.string(forKey: "同送情報")! }
     public var 種類: String { record.string(forKey: "種類")! }
-    public var 送り状番号: String { record.string(forKey: "送り状番号")! }
     public var 運送会社: String { record.string(forKey: "運送会社")! }
     public var 着指定日: Day? { record.day(forKey: "着指定日") }
     public var 着指定時間: String { record.string(forKey: "着指定時間")! }
