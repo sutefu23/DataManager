@@ -110,13 +110,13 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {
         var request = try HTTPClient.Request(url: url, method: method.nioMethod)
         if let authorization = authorization?.string {
-            request.headers.add(name: "Authorization", value: authorization)
+            request.headers.add(社名: "Authorization", value: authorization)
         }
         if let contentType = contentType?.string {
-            request.headers.add(name: "Content-Type", value: contentType)
+            request.headers.add(社名: "Content-Type", value: contentType)
         }
-        if let data = body {
-            request.body = .data(data)
+        if let rawValue = body {
+            request.body = .data(rawValue)
         }
         let future = self.session.execute(request: request)
         let response = try future.wait()

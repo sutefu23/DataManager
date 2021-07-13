@@ -45,6 +45,28 @@ extension Array {
         }
     }
 
+    public func concurrentForEach(_ operation: (Element) throws -> Void) throws {
+        var result: Error?
+        let lock = NSLock()
+        DispatchQueue.concurrentPerform(iterations: self.count) {
+            let object = self[$0]
+            do {
+                lock.lock()
+                if result != nil {
+                    lock.unlock()
+                    return
+                }
+                lock.unlock()
+                try operation(object)
+            } catch {
+                lock.lock()
+                result = error
+                lock.unlock()
+            }
+        }
+        if let error = result { throw error }
+    }
+
     public func concurrentCompactMap<T>(converter: (_ item: Element) throws ->T?) rethrows -> [T] {
         if self.count <= 1 {
             if self.isEmpty { return [] }

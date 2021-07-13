@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - 生産管理 -> 福山
 extension 送状型 {
     public static let 運送会社名_福山 = "福山"
 }
@@ -51,6 +52,40 @@ private extension 送状型 {
     var 登録日付: String  { "" }
 }
 
+extension Sequence where Element == 送状型 {
+    public func export福山システムCSV(to url: URL) throws {
+        let generator = TableGenerator<送状型>()
+            .string("荷受人コード") { $0.荷受人コード }
+            .string("電話番号") { $0.届け先電話番号 }
+            .string("住所") { $0.届け先住所1 }
+            .string("住所2") { $0.届け先住所2 }
+            .string("住所3") { $0.届け先住所3 }
+            .string("名前") { $0.名前 }
+            .string("名前2") { $0.名前2 }
+            .string("郵便番号") { $0.届け先郵便番号 }
+            .string("特殊計") { $0.特殊計 }
+            .string("着店コード") { $0.着店コード }
+            .string("送人コード") { $0.福山依頼主コード }
+            .integer("個数") { $0.個数 }
+            .string("才数") { $0.才数 }
+            .string("重量") { $0.重量 }
+            .string("輸送商品1") { $0.輸送商品1 }
+            .string("輸送商品2") { $0.輸送商品2 }
+            .string("品名記事1") { $0.品名記事1 }
+            .string("品名記事2") { $0.品名記事2 }
+            .string("品名記事3") { $0.品名記事3 }
+            .day("配達指定日", .yearMonthDayNumber) { $0.配達指定日 }
+            .string("お客様管理番号") { $0.管理番号 }
+            .string("予備") { $0.予備 }
+            .string("元払区分") { $0.元払区分 }
+            .string("保険金額") { $0.保険金額 }
+            .day("出荷日付", .yearMonthDayNumber) { $0.出荷日付 }
+            .string("登録日付") { $0.登録日付 }
+        try generator.write(self, format: .excel(header: false), to: url)
+    }
+}
+
+// MARK: -
 public struct 福山ご依頼主型 {
     public var 荷受人コード: String
     public var 電話番号: String
@@ -222,6 +257,12 @@ public struct 福山出荷実績型: Identifiable {
     public var 対応送状: 送状型? {
         return try? 送状型.findDirect(送状管理番号: お客様管理番号)
     }
+    
+    public func update生産管理送状番号() throws {
+        guard let order = try 送状型.findDirect(送状管理番号: self.お客様管理番号), !order.is送り状番号設定済 && order.運送会社 == .福山 else { return }
+        order.送り状番号 = self.送り状番号
+        try order.upload送状番号()
+    }
 }
 
 extension Array where Element == 福山出荷実績型 {
@@ -242,6 +283,11 @@ extension Array where Element == 福山出荷実績型 {
         self.init(result)
     }
     
+    public func append送り状記録(at url: URL) throws {
+        let records = self.compactMap { 送状出荷実績型($0) }
+        try records.export受け渡し送状(at: url)
+    }
+
     public func checkAll(day: Day?, isDebugMode: Bool = false) throws -> (result: [福山出荷実績検証結果型], nodata: [送状型]) {
         var result: [福山出荷実績検証結果型] = []
         var orderMap: [String: 送状型] = [:]

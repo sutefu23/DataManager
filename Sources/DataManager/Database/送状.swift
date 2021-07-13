@@ -7,21 +7,64 @@
 
 import Foundation
 
+/// 運送会社を規定する
+public enum 運送会社型: Hashable {
+    case ヤマト
+    case セイノー
+    case 福山
+    case 佐川
+    case その他(String)
+    
+    init(name: String) {
+        switch name.toJapaneseNormal {
+        case "ヤマト":
+            self = .ヤマト
+        case "セイノー":
+            self = .セイノー
+        case "福山":
+            self = .福山
+        case "佐川":
+            self = .佐川
+        default:
+            self = .その他(name)
+        }
+    }
+    
+    public var 社名: String {
+        switch self {
+        case .ヤマト:
+            return "ヤマト"
+        case .セイノー:
+            return "セイノー"
+        case .福山:
+            return "福山"
+        case .佐川:
+            return "佐川"
+        case .その他(let name):
+            return name
+        }
+    }
+}
+
 public class 送状型: Identifiable {
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {
-        guard let 送り状番号 = record.string(forKey: "送り状番号") else { return nil }
+        guard let 管理番号 = record.string(forKey: "管理番号"),
+            let 送り状番号 = record.string(forKey: "送り状番号"),
+              let 運送会社 = record.string(forKey: "運送会社") else { return nil }
+        self.管理番号 = 管理番号
         self.送り状番号 = 送り状番号
+        self.運送会社 = 運送会社型(name: 運送会社)
         self.record = record
     }
 
+    public var 管理番号: String
     public var 送り状番号: String
+    public var 運送会社: 運送会社型
 
-    public var 管理番号: String { record.string(forKey: "管理番号")! }
     public var 同送情報: String { record.string(forKey: "同送情報")! }
     public var 種類: String { record.string(forKey: "種類")! }
-    public var 運送会社: String { record.string(forKey: "運送会社")! }
     public var 着指定日: Day? { record.day(forKey: "着指定日") }
     public var 着指定時間: String { record.string(forKey: "着指定時間")! }
     public var 指示書UUID: String { record.string(forKey: "指示書UUID")! }
@@ -42,6 +85,7 @@ public class 送状型: Identifiable {
     public var 依頼主電話番号: String { record.string(forKey: "依頼主電話番号")! }
     public var 地域: String { record.string(forKey: "地域")! }
     public var ヤマトお客様コード: String { record.string(forKey: "ヤマトお客様コード")! }
+    public var 福山依頼主コード: String { record.string(forKey: "福山依頼主コード")! }
     
     public lazy var 指示書: 指示書型? = {
         try? 指示書型.findDirect(uuid: self.指示書UUID)
@@ -71,10 +115,13 @@ extension 送状型 {
         return result
     }
     
-    public static func find(伝票番号: String, 運送会社名: String = "") throws -> [送状型] {
+    public static func find(伝票番号: String? = nil, 送状番号: String? = nil, 運送会社名: String = "") throws -> [送状型] {
         var query = FileMakerQuery()
-        if let order = try 指示書型.findDirect(伝票番号文字列: 伝票番号) {
+        if let number = 伝票番号, let order = try 指示書型.findDirect(伝票番号文字列: number) {
             query["指示書UUID"] = order.uuid
+        }
+        if let number = 送状番号 {
+            query["送り状番号"] = "=\(number)"
         }
         if !運送会社名.isEmpty {
             query["運送会社"] = 運送会社名

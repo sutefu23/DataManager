@@ -66,7 +66,7 @@ extension UITableView {
         self.layoutIfNeeded()
         let pdfData = createPDF()
         self.bounds = priorBounds
-        return pdfData.copy() as? ProgressTVData
+        return pdfData.copyProject() as? ProgressTVData
     }
 
     private func getContentFrame() -> CGRect {

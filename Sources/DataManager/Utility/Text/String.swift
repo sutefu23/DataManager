@@ -467,7 +467,7 @@ extension StringProtocol {
     }
     
     /// カラムの先頭が'だった場合削除する
-    var dashStribbped: String {
+    public var dashStribbped: String {
         if self.hasPrefix("'") {
             return String(self.dropFirst())
         } else {
