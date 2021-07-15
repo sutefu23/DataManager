@@ -23,8 +23,8 @@
 /* Begin PBXBuildFile section */
 		00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB9102595D9A500ACB725 /* SendMail.swift */; };
 		1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1409A34326783B9800B4530A /* 送り状エラー.swift */; };
+		140C4E31269D6E150066E221 /* 作業区間.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4E30269D6E150066E221 /* 作業区間.swift */; };
 		140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140DC63F2696D3920010F86E /* 送状番号出力.swift */; };
-		140E74FA26983C48001D1628 /* Testヤマト送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140E74F926983C48001D1628 /* Testヤマト送状.swift */; };
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
 		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
@@ -272,8 +272,8 @@
 		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
 		1409A34326783B9800B4530A /* 送り状エラー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送り状エラー.swift"; sourceTree = "<group>"; };
+		140C4E30269D6E150066E221 /* 作業区間.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業区間.swift"; sourceTree = "<group>"; };
 		140DC63F2696D3920010F86E /* 送状番号出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状番号出力.swift"; sourceTree = "<group>"; };
-		140E74F926983C48001D1628 /* Testヤマト送状.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Testヤマト送状.swift"; sourceTree = "<group>"; };
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "オブジェ資材一覧.csv"; sourceTree = "<group>"; };
@@ -568,6 +568,7 @@
 				OBJ_106 /* 作業パターン.swift */,
 				OBJ_107 /* 工程必要チェック.swift */,
 				OBJ_108 /* 箱文字工程優先度.swift */,
+				140C4E30269D6E150066E221 /* 作業区間.swift */,
 			);
 			path = "工程分析";
 			sourceTree = "<group>";
@@ -690,7 +691,6 @@
 				148CA55B25367E50002CE1D4 /* TestICCardID.swift */,
 				1474BD242613FEA80068947E /* TestRegressor.swift */,
 				142149E3268DA0B600A13F6A /* Test使用資材.swift */,
-				140E74F926983C48001D1628 /* Testヤマト送状.swift */,
 				143C9B19269D1BC900D69D3E /* Test送状.swift */,
 			);
 			name = DataManagerTests;
@@ -1058,6 +1058,7 @@
 				OBJ_207 /* FileMakerRecord.swift in Sources */,
 				OBJ_208 /* FileMakerSession.swift in Sources */,
 				OBJ_209 /* Alert.swift in Sources */,
+				140C4E31269D6E150066E221 /* 作業区間.swift in Sources */,
 				OBJ_210 /* Bundle.swift in Sources */,
 				OBJ_211 /* ChangeLog.swift in Sources */,
 				OBJ_212 /* Concurrent.swift in Sources */,
@@ -1206,7 +1207,6 @@
 				OBJ_329 /* TestSerialCache.swift in Sources */,
 				143C9B1A269D1BC900D69D3E /* Test送状.swift in Sources */,
 				OBJ_330 /* TestString.swift in Sources */,
-				140E74FA26983C48001D1628 /* Testヤマト送状.swift in Sources */,
 				OBJ_331 /* TestTextReader.swift in Sources */,
 				OBJ_332 /* TestTextWriter.swift in Sources */,
 				148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */,

@@ -24,15 +24,30 @@ extension 送状型 {
     }
     
     fileprivate var ヤマト配達時間帯: String { self.isAM ? "1200" : "" }
+    
+    public func makeヤマト子伝票() -> [送状型] {
+        var count = self.個数
+        var result: [送状型] = []
+        while count > 1 {
+            guard let number = ヤマト送状管理システム型.shared.子伝票番号割り当て() else { return [] }
+            let child = self.clone()
+            child.送り状番号 = 送り状番号型(状態: .仮設定, 送り状番号: number)
+            result.append(child)
+            count -= 1
+        }
+        return result
+    }
 }
 
 public extension Sequence where Element == 送状型 {
     func exportヤマト送状CSV(to url: URL) throws {
+        try url.prepareDirectory()
+
         let today = Day().yearMonthDayNumberString
+        let children = self.reduce([]) { $0 + $1.makeヤマト子伝票() } // 複数小口に関しては子伝票が必要
         let generator = TableGenerator<送状型>()
             .string("お客様管理番号") { $0.管理番号 } // 送り状レコードのレコードID
-            .string("送状番号") { $0.送り状番号 } // ヤマトのソフトで送状管理
-//            .string("伝票番号") { $0.送り状番号 } // YamatoCSVで割り当て
+            .string("送状番号") { $0.送り状番号.送り状番号 } // ヤマトのソフトで送状管理
             .day("出荷予定日", .yearMonthDay) { $0.出荷納期 } // 先送りは想定していない
             .fix("届け先JISコード") { "" }
             .fix("届け先コード") { "" }
@@ -82,7 +97,7 @@ public extension Sequence where Element == 送状型 {
             .fix("記事4") { "" }
             .fix("記事5") { "" }
             .fix("予備") { "" }
-        try generator.write(self, format: .excel(header: false), to: url, concurrent: true)
+        try generator.write(self + children, format: .excel(header: false), to: url, concurrent: true)
     }
 }
 
@@ -106,8 +121,10 @@ public struct ヤマト出荷実績型 {
     }
     
     public func update生産管理送状番号() throws {
-        guard let order = try 送状型.findDirect(送状管理番号: self.お客様管理番号), !order.is送り状番号設定済 && order.運送会社 == .ヤマト else { return }
-        order.送り状番号 = self.宅急便伝票番号
+        guard 宅急便伝票番号 == 親伝票番号, // 親伝票のみ出力する
+              let order = try 送状型.findDirect(送状管理番号: self.お客様管理番号),
+              order.ヤマト出荷実績戻し待ち else { return }
+        order.送り状番号 = 送り状番号型(状態: .確定, 送り状番号: self.親伝票番号)
         try order.upload送状番号()
     }
 }

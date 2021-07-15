@@ -7,6 +7,108 @@
 
 import Foundation
 
+public enum 送り状番号状態型 {
+    /// 送り状番号指定もれ
+    case 入力なし
+    /// システムによる送り状番号割り当て処理を待っている状態
+    case 処理待ち
+    ///　運送会社の割り当てを待っている
+    case 運送会社割当待ち
+    /// 仮に割り当ててあり、出荷情報による確定待ち
+    case 仮設定
+    /// 仮に割り当ててある送り状番号は運送会社システムに転送されている
+    case 仮番号印刷済み
+    /// 送り状番号確定済み
+    case 確定
+}
+
+public struct 送り状番号型 {
+    /// 生データ
+    public let rawValue: String
+    /// 送り状番号
+    public let 送り状番号: String?
+    /// 種類
+    public let 状態: 送り状番号状態型
+
+    init(rawValue: String) {
+        self.rawValue = rawValue
+        var check = rawValue.toJapaneseNormal.spaceStripped
+        if check.contains("出力済") {
+            self.状態 = .運送会社割当待ち
+            self.送り状番号 = nil
+            return
+        }
+        if check.hasPrefix("仮:") {
+            self.状態 = .仮設定
+            check.removeFirst(2)
+            self.送り状番号 = check
+            return
+        }
+        if check.hasPrefix("印刷:") {
+            self.状態 = .仮番号印刷済み
+            check.removeFirst(3)
+            self.送り状番号 = check
+            return
+        }
+        if let value = Int(self.rawValue) {
+            if value > 0 {
+                self.状態 = .確定
+                self.送り状番号 = self.rawValue
+            } else {
+                self.状態 = .処理待ち
+                self.送り状番号 = nil
+            }
+        } else {
+            self.状態 = .入力なし
+            self.送り状番号 = nil
+        }
+    }
+    
+    public var ヤマト送状元番号: Int? {
+        guard let str = self.送り状番号 else { return nil }
+        return Int(str.dropLast())
+    }
+    
+    public init(状態: 送り状番号状態型, 送り状番号: String? = nil, 運送会社: 運送会社型? = nil) {
+        switch 状態 {
+        case .入力なし:
+            self.状態 = .入力なし
+            self.送り状番号 = nil
+            self.rawValue = ""
+            return
+        case .処理待ち:
+            break
+        case .運送会社割当待ち:
+            let 社名 = 運送会社?.社名 ?? ""
+            self.状態 = .運送会社割当待ち
+            self.送り状番号 = nil
+            self.rawValue = "\(社名)出力済"
+            return
+        case .仮設定:
+            guard let str = 送り状番号, let value = Int(str), value > 0 else { break }
+            self.rawValue = "仮: \(str)"
+            self.状態 = .仮設定
+            self.送り状番号 = str
+            return
+        case .仮番号印刷済み:
+            guard let str = 送り状番号, let value = Int(str), value > 0 else { break }
+                self.rawValue = "印刷: \(str)"
+            self.状態 = .仮番号印刷済み
+            self.送り状番号 = str
+            return
+        case .確定:
+            guard let str = 送り状番号, let value = Int(str), value > 0 else { break }
+            self.rawValue = str
+            self.状態 = .確定
+            self.送り状番号 = str
+            return
+        }
+        self.状態 = .処理待ち
+        self.rawValue = "0"
+        self.送り状番号 = nil
+    }
+}
+
 /// 運送会社を規定する
 public enum 運送会社型: Hashable {
     case ヤマト
@@ -54,13 +156,21 @@ public class 送状型: Identifiable {
             let 送り状番号 = record.string(forKey: "送り状番号"),
               let 運送会社 = record.string(forKey: "運送会社") else { return nil }
         self.管理番号 = 管理番号
-        self.送り状番号 = 送り状番号
+        self.送り状番号 = 送り状番号型(rawValue: 送り状番号)
         self.運送会社 = 運送会社型(name: 運送会社)
         self.record = record
     }
 
+    public func clone() -> 送状型 {
+        let clone = 送状型(record)!
+        clone.管理番号 = 管理番号
+        clone.送り状番号 = 送り状番号
+        clone.運送会社 = 運送会社
+        return clone
+    }
+    
     public var 管理番号: String
-    public var 送り状番号: String
+    public var 送り状番号: 送り状番号型
     public var 運送会社: 運送会社型
 
     public var 同送情報: String { record.string(forKey: "同送情報")! }
@@ -127,6 +237,30 @@ extension 送状型 {
             query["運送会社"] = 運送会社名
         }
         return try find(query)
+    }
+
+    public static func find最近登録(基準登録日: Day, 運送会社: 運送会社型) throws -> [送状型] {
+        var query = FileMakerQuery()
+        query["登録日"] = ">\(基準登録日.fmString)"
+        query["運送会社"] = 運送会社.社名
+        return try find(query)
+    }
+
+    public static func find採番待ち(運送会社: 運送会社型) throws -> [送状型] {
+        let today = Day()
+        var query = FileMakerQuery()
+        query["送り状番号"] = "=0"
+        query["運送会社"] = 運送会社.社名
+        return try find(query).filter {
+            guard let order = $0.指示書 else { return false }
+            if order.承認状態 == .未承認 { return false }
+            switch order.伝票状態 {
+            case .未製作, .製作中:
+                return order.出荷納期 >= today
+            case .キャンセル, .発送済:
+                return false
+            }
+        }
     }
     
     public static func find(出荷納期: Day, 運送会社名: String = "") throws -> [送状型] {

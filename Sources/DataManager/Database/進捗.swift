@@ -46,6 +46,7 @@ public final class 進捗型: Equatable, Identifiable {
         self.登録時間 = time
         self.登録日時 = Date(day, time)
     }
+    
     init(record: FileMakerRecord, recordID: String, 工程: 工程型, 作業内容: 作業内容型, 登録日時: Date, 社員名称: String, 登録日: Day, 登録時間: Time, 伝票番号: 伝票番号型) {
         self.record = record
         self.recordID = recordID
@@ -57,6 +58,19 @@ public final class 進捗型: Equatable, Identifiable {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
     }
+    
+    init(original: 進捗型, 工程: 工程型? = nil, 作業内容: 作業内容型? = nil) {
+        self.record = original.record
+        self.recordID = original.recordID
+        self.工程 = 工程 ?? original.工程
+        self.作業内容 = 作業内容 ?? original.作業内容
+        self.社員名称 = original.社員名称
+        self.登録日 = original.登録日
+        self.登録時間 = original.登録時間
+        self.登録日時 = original.登録日時
+        self.伝票番号 = original.伝票番号
+    }
+    
     
     public func makeClone() -> 進捗型 {
         return 進捗型(record: self.record, recordID: self.recordID, 工程: self.工程, 作業内容: self.作業内容, 登録日時: self.登録日時, 社員名称: self.社員名称, 登録日: self.登録日, 登録時間: self.登録時間, 伝票番号: self.伝票番号)

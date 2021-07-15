@@ -216,6 +216,17 @@ public struct Day: Hashable, Strideable, Codable {
         let date = Date(self)
         return date.prevDay.day
     }
+    
+    func prev(month: Int) -> Day {
+        var year = self.year
+        var month = self.month-month
+        if month == 0 {
+            month += 12
+            year -= 1
+        }
+        let day = min(self.day, 28)
+        return Day(year, month, day)
+    }
 
     public var prevWorkDay: Day {
         var day = self.prevDay

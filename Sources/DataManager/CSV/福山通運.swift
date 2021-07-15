@@ -54,6 +54,8 @@ private extension 送状型 {
 
 extension Sequence where Element == 送状型 {
     public func export福山システムCSV(to url: URL) throws {
+        try url.prepareDirectory()
+
         let generator = TableGenerator<送状型>()
             .string("荷受人コード") { $0.荷受人コード }
             .string("電話番号") { $0.届け先電話番号 }
@@ -260,7 +262,7 @@ public struct 福山出荷実績型: Identifiable {
     
     public func update生産管理送状番号() throws {
         guard let order = try 送状型.findDirect(送状管理番号: self.お客様管理番号), !order.is送り状番号設定済 && order.運送会社 == .福山 else { return }
-        order.送り状番号 = self.送り状番号
+        order.送り状番号 = 送り状番号型(rawValue: self.送り状番号)
         try order.upload送状番号()
     }
 }
@@ -305,11 +307,13 @@ extension Array where Element == 福山出荷実績型 {
             nodataMap[key] = nil
             guard let data = send.指示書 else { return .対応する指示書が存在しない }
             guard data.伝票状態 != .キャンセル else { return .キャンセルされた伝票の送状 }
-            let number = send.送り状番号
-            if number.isEmpty || Int(number) == 0 {
+            switch send.送り状番号.状態 {
+            case .処理待ち, .入力なし:
                 return .問題なし（送状番号未登録）
-            } else {
-                if number == order.送り状番号 {
+            case .運送会社割当待ち:
+                return .出力済み
+            case .仮設定, .確定, .仮番号印刷済み:
+                if send.送り状番号.送り状番号 == order.送り状番号 {
                     return .問題なし（送状番号登録済み）
                 } else {
                     return .異なる送状番号が登録されている
@@ -348,6 +352,7 @@ public class 福山出荷実績検証結果型: Identifiable{
         case 異なる送状番号が登録されている
         case 送状管理番号がかぶっている
         case キャンセルされた伝票の送状
+        case 出力済み
         
         public var text: String { self.rawValue }
     }
@@ -365,7 +370,7 @@ public class 福山出荷実績検証結果型: Identifiable{
         switch self.検証結果 {
         case .問題なし（送状番号未登録）, .問題なし（送状番号登録済み）:
             return true
-        case .対応する送状が存在しない, .対応する指示書が存在しない, .異なる送状番号が登録されている, .送状管理番号がかぶっている, .キャンセルされた伝票の送状:
+        case .対応する送状が存在しない, .対応する指示書が存在しない, .異なる送状番号が登録されている, .送状管理番号がかぶっている, .キャンセルされた伝票の送状, .出力済み:
             return false
         }
     }
@@ -374,7 +379,7 @@ public class 福山出荷実績検証結果型: Identifiable{
         switch self.検証結果 {
         case .問題なし（送状番号未登録）:
             return true
-        case .問題なし（送状番号登録済み）, .対応する送状が存在しない, .対応する指示書が存在しない, .異なる送状番号が登録されている, .送状管理番号がかぶっている, .キャンセルされた伝票の送状:
+        case .問題なし（送状番号登録済み）, .対応する送状が存在しない, .対応する指示書が存在しない, .異なる送状番号が登録されている, .送状管理番号がかぶっている, .キャンセルされた伝票の送状, .出力済み:
             return false
         }
     }

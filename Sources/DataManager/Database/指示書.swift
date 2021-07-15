@@ -15,9 +15,10 @@ import Foundation
 #endif
 
 let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
-private let lock = NSLock()
 
 public final class 指示書型 {
+    private let lock = NSRecursiveLock()
+    
     let record: FileMakerRecord
     
     init?(_ record: FileMakerRecord) {
@@ -315,11 +316,20 @@ public final class 指示書型 {
         return 社員型(社員番号: num, 社員名称: name)
     }
     
-    public lazy var 保留校正一覧: [作業型] = {
-        return (self.保留一覧 + self.校正一覧).sorted { $0.開始日時 < $1.開始日時 }
-    }()
+    public var 保留校正一覧: [作業型] {
+        lock.lock()
+        defer { lock.unlock() }
+        if let cache = 保留校正一覧Cache { return cache }
+        let list = (self.保留一覧 + self.校正一覧).sorted { $0.開始日時 < $1.開始日時 }
+        保留校正一覧Cache = list
+        return list
+    }
+    private var 保留校正一覧Cache: [作業型]?
     
-    public lazy var 保留一覧: [作業型] = {
+    public var 保留一覧: [作業型] {
+        lock.lock()
+        defer { lock.unlock() }
+        if let cache = 保留一覧Cache { return cache }
         var list = [作業型]()
         var from: Date?
         for change in self.変更一覧 {
@@ -336,10 +346,15 @@ public final class 指示書型 {
                     break
             }
         }
+        保留一覧Cache = list
         return list
-    }()
+    }
+    private var 保留一覧Cache: [作業型]?
     
-    public lazy var 校正一覧: [作業型] = {
+    public var 校正一覧: [作業型] {
+        lock.lock()
+        defer { lock.unlock() }
+        if let cache = 校正一覧Cache { return cache }
         var list = [作業型]()
         var from: Date?
         for change in self.変更一覧 {
@@ -356,9 +371,11 @@ public final class 指示書型 {
                 break
             }
         }
+        校正一覧Cache = list
         return list
-    }()
-    
+    }
+    private var 校正一覧Cache: [作業型]?
+
     public lazy var 半田溶接振り分け: String = {
         let str = self.上段中央 + self.下段中央
         if !is溶接あり && !is半田あり {

@@ -36,6 +36,7 @@ public struct 送状出荷実績型 {
     public var 依頼主電話番号: String
 
     public init?(_ source: ヤマト出荷実績型) {
+        guard source.宅急便伝票番号 == source.親伝票番号 else { return nil } // 子伝票は扱わない
         self.init(管理番号: source.お客様管理番号, 送状番号: source.宅急便伝票番号, 出荷日: source.荷札発行年月日, 個数: source.個口数)
     }
     
