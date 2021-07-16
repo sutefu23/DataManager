@@ -203,3 +203,13 @@ class CompletingCalculator: ProgressCalculator {
         }
     }
 }
+
+class 進捗キャッシュ型 {
+    var range: ClosedRange<Date>
+    
+    var list: [進捗型] = []
+    
+    init(range: ClosedRange<Date>) {
+        self.range = range
+    }
+}

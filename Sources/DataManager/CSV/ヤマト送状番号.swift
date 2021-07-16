@@ -53,7 +53,7 @@ public class ヤマト送状管理システム型 {
     }
 
     public func registNGNumbers() {
-        let day = Day().prev(month: 3) // 過去３ヶ月に登録　
+        let day = Day().prev(month: 2) // 過去2ヶ月に登録　
         guard let orders = try? 送状型.find最近登録(基準登録日: day, 運送会社: .ヤマト) else { return }
         for order in orders {
             guard let number = order.送り状番号.ヤマト送状元番号 else { continue }

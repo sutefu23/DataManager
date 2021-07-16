@@ -44,7 +44,7 @@ public struct 送り状番号型 {
             self.送り状番号 = check
             return
         }
-        if check.hasPrefix("印刷:") {
+        if check.hasPrefix("出力:") || check.hasPrefix("印刷:") {
             self.状態 = .仮番号印刷済み
             check.removeFirst(3)
             self.送り状番号 = check
@@ -92,7 +92,7 @@ public struct 送り状番号型 {
             return
         case .仮番号印刷済み:
             guard let str = 送り状番号, let value = Int(str), value > 0 else { break }
-                self.rawValue = "印刷: \(str)"
+                self.rawValue = "出力: \(str)"
             self.状態 = .仮番号印刷済み
             self.送り状番号 = str
             return
@@ -230,9 +230,7 @@ extension 送状型 {
         if let number = 伝票番号, let order = try 指示書型.findDirect(伝票番号文字列: number) {
             query["指示書UUID"] = order.uuid
         }
-        if let number = 送状番号 {
-            query["送り状番号"] = "=\(number)"
-        }
+        query["送り状番号"] = 送状番号
         if !運送会社名.isEmpty {
             query["運送会社"] = 運送会社名
         }
