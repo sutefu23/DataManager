@@ -27,7 +27,7 @@
 		140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140DC63F2696D3920010F86E /* 送状番号出力.swift */; };
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
-		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
+		141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */; };
 		142149DE268D8F7200A13F6A /* 使用資材出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DD268D8F7200A13F6A /* 使用資材出力.swift */; };
 		142149E0268D975300A13F6A /* 使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DF268D975300A13F6A /* 使用資材.swift */; };
 		142149E2268D9D1F00A13F6A /* 用途.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E1268D9D1F00A13F6A /* 用途.swift */; };
@@ -42,24 +42,24 @@
 		143C9B1A269D1BC900D69D3E /* Test送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C9B19269D1BC900D69D3E /* Test送状.swift */; };
 		143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143DC50B265CAF4A009D547F /* ProgressChecker.swift */; };
 		1449B1B9256DED1C00FB6C0B /* 月間目標型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1449B1B8256DED1C00FB6C0B /* 月間目標型.swift */; };
-		146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
+		146F88A9253E7022001F8AF1 /* FB一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 146F88A8253E7019001F8AF1 /* FB一覧.csv */; };
 		1474BD252613FEA80068947E /* TestRegressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474BD242613FEA80068947E /* TestRegressor.swift */; };
 		14767118251D577A00429C17 /* DMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767117251D577A00429C17 /* DMColor.swift */; };
-		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
+		1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 14767126251D5CA600429C17 /* 板加工在庫一覧.csv */; };
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		14767166251D630C00429C17 /* CharacterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* CharacterType.swift */; };
-		14788CCB2538267900995762 /* 丸パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14788CCA2538266F00995762 /* 丸パイプ一覧.csv */; };
+		14788CCB2538267900995762 /* 丸パイプ一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 14788CCA2538266F00995762 /* 丸パイプ一覧.csv */; };
 		147A63132559277B0077634B /* 工程分解.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147A63122559277B0077634B /* 工程分解.swift */; };
 		1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1485E4932553DA570006DA8D /* 進捗集計.swift */; };
 		148CA55225367D98002CE1D4 /* ICCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55125367D98002CE1D4 /* ICCard.swift */; };
 		148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55B25367E50002CE1D4 /* TestICCardID.swift */; };
-		148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
+		148CA5612536801C002CE1D4 /* scanICCard.py in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
 		148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */; };
-		148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */; };
+		148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* 角パイプ一覧.csv */; };
 		148D0F4A264C9EF4009A6B0C /* ヤマト運輸.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */; };
 		148DBA6925B939B100721484 /* 送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148DBA6825B939B100721484 /* 送状.swift */; };
-		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
-		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
+		1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 1498B052252413FA001698DF /* 全角カナto半角カナ.txt */; };
+		1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 1498B05725241B45001698DF /* 全角ASCIIto半角ASCII.txt */; };
 		1498B067252429CB001698DF /* IDカード型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B066252429CB001698DF /* IDカード型.swift */; };
 		1498B07B25254743001698DF /* 13939.dxf in Resources */ = {isa = PBXBuildFile; fileRef = 1498B07A25254743001698DF /* 13939.dxf */; };
 		149D95F225B95FAB000F97B5 /* 福山通運.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149D95F125B95FAB000F97B5 /* 福山通運.swift */; };
@@ -68,8 +68,8 @@
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
-		67227BF625D65663003D6C50 /* sendMail.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00AAB90F2595D91E00ACB725 /* sendMail.py */; };
-		67227BFB25D6566D003D6C50 /* mailConfig.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00AAB90B2595D90C00ACB725 /* mailConfig.py */; };
+		67227BF625D65663003D6C50 /* sendMail.py in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 00AAB90F2595D91E00ACB725 /* sendMail.py */; };
+		67F36F6F26A15F4F0051C411 /* mailConfig.json in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 67F36F6E26A143110051C411 /* mailConfig.json */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
 		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
@@ -245,29 +245,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1476712B251D5CE600429C17 /* CopyFiles */ = {
+		1476712B251D5CE600429C17 /* Copy Files (10 items) */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				67227BFB25D6566D003D6C50 /* mailConfig.py in CopyFiles */,
-				67227BF625D65663003D6C50 /* sendMail.py in CopyFiles */,
-				141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in CopyFiles */,
-				146F88A9253E7022001F8AF1 /* FB一覧.csv in CopyFiles */,
-				14788CCB2538267900995762 /* 丸パイプ一覧.csv in CopyFiles */,
-				148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in CopyFiles */,
-				148CA5612536801C002CE1D4 /* scanICCard.py in CopyFiles */,
-				1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in CopyFiles */,
-				1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in CopyFiles */,
-				1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in CopyFiles */,
+				67F36F6F26A15F4F0051C411 /* mailConfig.json in Copy Files (10 items) */,
+				67227BF625D65663003D6C50 /* sendMail.py in Copy Files (10 items) */,
+				141CFF24253FD10B002F17D2 /* オブジェ資材一覧.csv in Copy Files (10 items) */,
+				146F88A9253E7022001F8AF1 /* FB一覧.csv in Copy Files (10 items) */,
+				14788CCB2538267900995762 /* 丸パイプ一覧.csv in Copy Files (10 items) */,
+				148CA5852536E4A7002CE1D4 /* 角パイプ一覧.csv in Copy Files (10 items) */,
+				148CA5612536801C002CE1D4 /* scanICCard.py in Copy Files (10 items) */,
+				1498B0612524260F001698DF /* 全角ASCIIto半角ASCII.txt in Copy Files (10 items) */,
+				1498B05C2524260B001698DF /* 全角カナto半角カナ.txt in Copy Files (10 items) */,
+				1476712C251D5CEC00429C17 /* 板加工在庫一覧.csv in Copy Files (10 items) */,
 			);
+			name = "Copy Files (10 items)";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00AAB90B2595D90C00ACB725 /* mailConfig.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = mailConfig.py; sourceTree = "<group>"; };
 		00AAB90F2595D91E00ACB725 /* sendMail.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = sendMail.py; sourceTree = "<group>"; };
 		00AAB9102595D9A500ACB725 /* SendMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMail.swift; sourceTree = "<group>"; };
 		14083ED625CD07E900A326ED /* NAS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAS.swift; sourceTree = "<group>"; };
@@ -317,6 +317,7 @@
 		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
+		67F36F6E26A143110051C411 /* mailConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mailConfig.json; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
 		8E9A4E522526045600476B2E /* DMHttpConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMHttpConnection.swift; sourceTree = "<group>"; };
 		8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事メニュー.swift"; sourceTree = "<group>"; };
@@ -515,8 +516,8 @@
 				14788CCA2538266F00995762 /* 丸パイプ一覧.csv */,
 				141CFF23253FD0FE002F17D2 /* オブジェ資材一覧.csv */,
 				146F88A8253E7019001F8AF1 /* FB一覧.csv */,
+				67F36F6E26A143110051C411 /* mailConfig.json */,
 				148CA55025367D73002CE1D4 /* scanICCard.py */,
-				00AAB90B2595D90C00ACB725 /* mailConfig.py */,
 				00AAB90F2595D91E00ACB725 /* sendMail.py */,
 			);
 			path = Resources;
@@ -929,7 +930,7 @@
 			buildPhases = (
 				OBJ_187 /* Sources */,
 				OBJ_306 /* Frameworks */,
-				1476712B251D5CE600429C17 /* CopyFiles */,
+				1476712B251D5CE600429C17 /* Copy Files (10 items) */,
 			);
 			buildRules = (
 			);
@@ -982,7 +983,7 @@
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					"DataManager::DataManager" = {
-						DevelopmentTeam = 4EX9H95FTD;
+						DevelopmentTeam = LVA4CJGB2J;
 					};
 					"DataManager::DataManagerPackageTests::ProductTarget" = {
 						LastSwiftMigration = 1200;
@@ -1259,7 +1260,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1290,7 +1291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = 4EX9H95FTD;
+				DEVELOPMENT_TEAM = LVA4CJGB2J;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
