@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct MailServer: Codable {
     var host: String
     var username: String
@@ -20,6 +19,11 @@ public struct MailServer: Codable {
         self.password = password
         self.port = port
         self.method = method
+    }
+    
+    @available(OSX 10.13, *)
+    public func sendMail(mail: MailBody) throws {
+        try DataManager.sendMail(mail: mail, server: self)
     }
 }
 

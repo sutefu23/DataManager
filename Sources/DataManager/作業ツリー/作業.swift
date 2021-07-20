@@ -94,14 +94,14 @@ public class 作業型 {
 }
 
 public class 作業記録型 {
-    public var 作業種類: 作業種類型
-    public var 工程: 工程型
-    public var 開始日時: Date?
-    public var 完了日時: Date?
-    public var 作業者: 社員型
-    public var 伝票番号: 伝票番号型
+    public let 作業種類: 作業種類型
+    public let 工程: 工程型
+    public let 開始日時: Date?
+    public let 完了日時: Date?
+    public let 作業者: 社員型
+    public let 伝票番号: 伝票番号型
     
-    public var 進捗度: Int?
+    public let 進捗度: Int? = nil
     public var 関連保留校正: [作業型] = []
     public var 管理戻し: [作業型] = []
     public lazy var 作業期間: ClosedRange<Date>? = {
@@ -109,6 +109,9 @@ public class 作業記録型 {
         return from...to
     }()
 
+    public private(set) var 開始進捗: 進捗型?
+    public private(set) var 完了進捗: 進捗型?
+    
     /// rangeに含まれる時間を含む
     public func isOverlap(range: ClosedRange<Day>) -> Bool {
         if let from = self.開始日時?.day {
@@ -119,6 +122,12 @@ public class 作業記録型 {
         }
         guard let from = self.開始日時?.day, let to = self.完了日時?.day else { return false }
         return (from...to).contains(range.lowerBound)
+    }
+
+    convenience init?(_ progress: 進捗型? = nil, state: 工程型? = nil, 開始進捗: 進捗型?, 完了進捗: 進捗型?) {
+        self.init(progress, state: state, from: 開始進捗?.登録日時, to: 完了進捗?.登録日時)
+        self.開始進捗 = 開始進捗
+        self.完了進捗 = 完了進捗
     }
     
     init?(_ progress: 進捗型? = nil, type: 作業種類型 = .通常, state: 工程型? = nil, from: Date?, to: Date?, worker: 社員型? = nil, 伝票番号 number: 伝票番号型? = nil) {
@@ -142,6 +151,12 @@ public class 作業記録型 {
     }
     
     public lazy var 作業時間: TimeInterval? = self.calc作業時間()
+    public var 補正済作業時間: TimeInterval? {
+        guard let baseTime = self.作業時間 else { return nil }
+        let count = self.同時作業数
+        assert(count >= 1)
+        return baseTime / TimeInterval(count)
+    }
 
     public func calc作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
         guard let from = maxDate(from, self.開始日時), let to = minDate(to, self.完了日時) else { return nil }
@@ -207,6 +222,53 @@ public class 作業記録型 {
         let sec = self.calc作業時間(from: from, to: to)
         return sec
     }
+    
+    /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
+    public lazy var 同時作業数: Int = {
+        var set = Set<String>()
+        if let from = self.開始進捗 {
+            set.insert(from.recordID)
+            let list = 同期進捗キャッシュ型.shared.関連進捗(for: from)
+            if let centerIndex = list.firstIndex(where: { $0.recordID == from.recordID }) {
+                var index = centerIndex
+                while index != list.startIndex {
+                    index = list.index(before: index)
+                    let progress = list[index]
+                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
+                    set.insert(progress.recordID)
+                }
+                index = list.index(after: centerIndex)
+                while index < list.endIndex {
+                    let progress = list[index]
+                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
+                    set.insert(progress.recordID)
+                    index = list.index(after: index)
+                }
+            }
+        }
+        if let to = self.完了進捗 {
+            set.insert(to.recordID)
+            let list = 同期進捗キャッシュ型.shared.関連進捗(for: to)
+            if let centerIndex = list.firstIndex(where: { $0.recordID == to.recordID }) {
+                var index = centerIndex
+                while index != list.startIndex {
+                    index = list.index(before: index)
+                    let progress = list[index]
+                    if progress.作業内容 != .完了 { break }
+                    set.insert(progress.recordID)
+                }
+                index = list.index(after: centerIndex)
+                while index < list.endIndex {
+                    let progress = list[index]
+                    if progress.作業内容 != .完了 { break }
+                    set.insert(progress.recordID)
+                    index = list.index(after: index)
+                }
+            }
+        }
+        let count = set.count
+        return (count == 0) ? 1 : count
+    }()
 }
 
 extension Array where Element == 作業記録型 {
@@ -355,14 +417,14 @@ extension 指示書型 {
                 switch progress.作業内容 {
                 case .受取:
                     if let to = フォーミングto {
-                        if let work = 作業記録型(progress, from: フォーミングfrom?.登録日時, to: to.登録日時) { works.append(work) }
+                        if let work = 作業記録型(progress, 開始進捗: フォーミングfrom, 完了進捗: to) { works.append(work) }
                         フォーミングto = nil
                     }
                     フォーミングfrom = progress
                 case .開始, .仕掛:
                     break
                 case .完了:
-                    if let work = 作業記録型(progress, from: フォーミングfrom?.登録日時, to: progress.登録日時) { works.append(work) }
+                    if let work = 作業記録型(progress, 開始進捗: フォーミングfrom, 完了進捗: progress) { works.append(work) }
                     フォーミングfrom = nil
                     フォーミングto = nil
                 }
@@ -380,11 +442,11 @@ extension 指示書型 {
                 if state != 後工程 || countMap[前工程]?.lessComp != true { return }
                 switch progress.作業内容 {
                 case .受取:
-                    if let from = froms[前工程], let work = 作業記録型(from, from: from.登録日時, to: progress.登録日時) {
+                    if let from = froms[前工程], let work = 作業記録型(from, 開始進捗: from, 完了進捗: progress) {
                         regist(work: work, state: 前工程)
                     }
                 case .開始:
-                    if let from = froms[前工程], let work = 作業記録型(from, from: from.登録日時, to: progress.登録日時) {
+                    if let from = froms[前工程], let work = 作業記録型(from, 開始進捗: from, 完了進捗: progress) {
                         regist(work: work, state: 前工程)
                     }
                 case .仕掛, .完了:
@@ -405,7 +467,7 @@ extension 指示書型 {
             case .開始:
                 if let mid = pending[state], let from = froms[state] {
                     pending[state] = nil
-                    if let work = 作業記録型(progress, from: from.登録日時, to: mid.登録日時) {
+                    if let work = 作業記録型(progress, 開始進捗: from, 完了進捗: mid) {
                         regist(work: work, state: state)
                     }
                 }
@@ -417,7 +479,7 @@ extension 指示書型 {
             case .完了:
                 pending[state] = nil
                 if let from = froms[state] {
-                    if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
+                    if let work = 作業記録型(progress, 開始進捗: from, 完了進捗: progress) {
                         regist(work: work, state: state)
                     }
                 } else {
@@ -426,7 +488,7 @@ extension 指示書型 {
                     }
                     func 開始補完(前工程: 工程型, 後工程: 工程型) -> Bool {
                         if state != 後工程 || countMap[前工程]?.lessStart != true { return false }
-                        if let coms = lastMarked[前工程], coms.作業内容 == .完了, let work = 作業記録型(progress, from: coms.登録日時, to: progress.登録日時) {
+                        if let coms = lastMarked[前工程], coms.作業内容 == .完了, let work = 作業記録型(progress, 開始進捗: coms, 完了進捗: progress) {
                             regist(work: work, state: state)
                             return true
                         }
@@ -446,14 +508,14 @@ extension 指示書型 {
                             regist(work: work, state: state)
                         }
                     case .管理:
-                        if let accept = firstAccepts[state], let work = 作業記録型(progress, from: accept.登録日時, to: progress.登録日時)  {
+                        if let accept = firstAccepts[state], let work = 作業記録型(progress, 開始進捗: accept, 完了進捗: progress)  {
                             regist(work: work, state: state)
                         } else {
                             completed[state] = progress
                         }
                     case .レーザー（アクリル）:
                         if let from = froms[.レーザー] {
-                            if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
+                            if let work = 作業記録型(progress, 開始進捗: from, 完了進捗: progress) {
                                 regist(work: work, state: state)
                                 sharedFroms[.レーザー] = from
                                 froms[.レーザー] = nil
@@ -461,12 +523,12 @@ extension 指示書型 {
                         } else {
                             completed[state] = progress
                         }
-                        if let work = 作業記録型(progress, from: nil, to: progress.登録日時) {
+                        if let work = 作業記録型(progress, 開始進捗: nil, 完了進捗: progress) {
                             regist(work: work, state: state)
                         }
                     case .レーザー:
                         if let from = froms[.レーザー（アクリル）] ?? sharedFroms[.レーザー] {
-                            if let work = 作業記録型(progress, from: from.登録日時, to: progress.登録日時) {
+                            if let work = 作業記録型(progress, 開始進捗: from, 完了進捗: progress) {
                                 regist(work: work, state: state)
                                 froms[.レーザー（アクリル）] = nil
                                 sharedFroms[.レーザー] = nil
@@ -481,18 +543,18 @@ extension 指示書型 {
             }
             lastMarked[state] = progress
         }
-        if フォーミングfrom != nil || フォーミングto != nil, let work = 作業記録型(フォーミングto ?? フォーミングfrom, state: .フォーミング, from: フォーミングfrom?.登録日時, to: フォーミングto?.登録日時) { works.append(work) }
+        if フォーミングfrom != nil || フォーミングto != nil, let work = 作業記録型(フォーミングto ?? フォーミングfrom, state: .フォーミング, 開始進捗: フォーミングfrom, 完了進捗: フォーミングto) { works.append(work) }
         self.setup関連保留校正処理(works)
         for (state, progress) in froms {
             guard !registMap.contains(state) else { continue }
-            if let work = 作業記録型(progress, from: progress.登録日時, to: nil) {
+            if let work = 作業記録型(progress, 開始進捗: progress, 完了進捗: nil) {
                 works.append(work)
                 registMap.insert(state)
             }
         }
         for (state, progress) in completed {
             guard !registMap.contains(state) else { continue }
-            if let work = 作業記録型(progress, from: nil, to: progress.登録日時) {
+            if let work = 作業記録型(progress, 開始進捗: nil, 完了進捗: progress) {
                 works.append(work)
                 registMap.insert(state)
             }

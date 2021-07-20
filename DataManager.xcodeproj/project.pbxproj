@@ -65,6 +65,7 @@
 		149D95F225B95FAB000F97B5 /* 福山通運.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149D95F125B95FAB000F97B5 /* 福山通運.swift */; };
 		14A0C10025BA9DE800C44167 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */; };
 		14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */; };
+		14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */; };
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
@@ -314,6 +315,7 @@
 		149D95F125B95FAB000F97B5 /* 福山通運.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "福山通運.swift"; sourceTree = "<group>"; };
 		14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
 		14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableGenerator.swift; sourceTree = "<group>"; };
+		14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "同期進捗キャッシュ.swift"; sourceTree = "<group>"; };
 		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 				OBJ_128 /* 資材キャッシュ.swift */,
 				OBJ_129 /* 資材発注キャッシュ.swift */,
 				142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */,
+				14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */,
 			);
 			path = "状況キャッシュ";
 			sourceTree = "<group>";
@@ -1175,6 +1178,7 @@
 				OBJ_298 /* 記録.swift in Sources */,
 				140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */,
 				OBJ_299 /* 資材使用記録.swift in Sources */,
+				14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */,
 				OBJ_300 /* 資材入庫状況.swift in Sources */,
 				OBJ_301 /* 板加工在庫.swift in Sources */,
 				OBJ_302 /* 資材(コイル情報).swift in Sources */,

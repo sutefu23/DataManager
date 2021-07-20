@@ -9,13 +9,15 @@
 import Foundation
 public typealias 会社コード型 = String
 
-public enum 分類型 : String{
+public enum 分類型: String{
     case 見込み = "見込み"
     case 顧客 = "顧客"
     case 発注先 = "発注先"
 }
 
 public final class 取引先型: Identifiable {
+    static let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
+
     let record: FileMakerRecord
 
     init?(_ record: FileMakerRecord) {
@@ -100,11 +102,9 @@ extension 会社コード型 {
     }
 }
 
-var 管理用会社コードSet: Set<会社コード型> = {
-    Set<会社コード型>(管理用会社コード一覧)
-}()
+let 管理用会社コードSet: Set<会社コード型> = Set<会社コード型>(管理用会社コード一覧)
 
-var 管理用会社コード一覧: [会社コード型] = [
+let 管理用会社コード一覧: [会社コード型] = [
     "3105", // 自社分
     "3205", // 個人
     "0333", // 宮下部長
@@ -122,11 +122,9 @@ var 管理用会社コード一覧: [会社コード型] = [
     "4896", // 下拂
 ]
 // MARK: - 原稿名不要
-var 原稿社名不要会社コードSet: Set<会社コード型> = {
-    Set<会社コード型>(原稿社名不要会社コード一覧)
-}()
+let 原稿社名不要会社コードSet: Set<会社コード型> = Set<会社コード型>(原稿社名不要会社コード一覧)
 
-var 原稿社名不要会社コード一覧: [会社コード型] = [
+let 原稿社名不要会社コード一覧: [会社コード型] = [
     "2014", // 西田塗料
     "1647", // 高松ホットスタンプ
     "2093", // ハマジ北九州

@@ -307,6 +307,14 @@ public extension 進捗型 {
         }
         return result
     }
+
+    static func find(工程 state: 工程型, 作業者: 社員型, 登録日 day: Day, 登録期間 range: Range<Time>) throws -> [進捗型] {
+        var query = FileMakerQuery()
+        query["工程コード"] = "==\(state.code)"
+        query["登録日"] = day.fmString
+        query["登録時間"] = "\(range.lowerBound.fmImportString)..<\(range.upperBound.fmImportString)"
+        return try self.find(query: query)
+    }
     
     static func find(工程 state: 工程型? = nil, 伝票種類 type: 伝票種類型? = nil, 登録日 day: Day, 作業種別: 作業種別型? = nil) throws -> [進捗型] {
         var query = FileMakerQuery()

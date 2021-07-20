@@ -82,7 +82,7 @@ public extension Sequence where Element == 送状型 {
             .fix("サイズ品目コード") { "1101" }
             .day("配達指定日", .yearMonthDay) { $0.着指定日 }
             .string("配達時間帯") { $0.ヤマト配達時間帯 } // 指定がある場合、ヤマト形式で出力
-            .integer("発行枚数") { $0.個数 }
+            .fix("発行枚数") { "1" }
             .fix("OMSフラグ") { "0" }
             .fix("更新日付") { today } // 出力日を入れる
             .fix("重量") { "1000" }

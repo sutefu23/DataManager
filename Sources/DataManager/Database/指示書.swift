@@ -14,8 +14,6 @@ import Cocoa
 import Foundation
 #endif
 
-let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
-
 public final class 指示書型 {
     private let lock = NSRecursiveLock()
     
@@ -29,6 +27,7 @@ public final class 指示書型 {
         let num = record.integer(forKey: "伝票番号")!
         return 伝票番号型(validNumber: num)
     }()
+    
     public lazy var 比較用伝票番号: Int = {
         let div = self.表示用伝票番号.split(separator: "-")
         if div.count != 2 { return -1 }
@@ -40,6 +39,7 @@ public final class 指示書型 {
             return high * 1_000_000 + low
         }
     }()
+    
     public lazy var 表示用伝票番号: String = { record.string(forKey: "表示用伝票番号")! }()
     public lazy var 略号: Set<略号型> = { make略号(record.string(forKey: "略号")!) }()
     
@@ -248,7 +248,7 @@ public final class 指示書型 {
     }
     
     public var is外注塗装あり: Bool {
-        return self.外注一覧.contains { 外注先会社コード.contains($0.会社コード) }
+        return self.外注一覧.contains { 取引先型.外注先会社コード.contains($0.会社コード) }
     }
     
     public var is内作塗装あり: Bool {
@@ -804,7 +804,7 @@ public extension 指示書型 {
     }
 
     /// 通常種類の指示書を検索する
-    internal static func normalFind(_ query: FileMakerQuery) throws -> [指示書型] {
+    internal static func normalFind(_ query: FileMakerQuery, filter: (指示書型) -> Bool) throws -> [指示書型] {
         let db = FileMakerDB.pm_osakaname
         var result: [指示書型] = []
         var error2: Error? = nil
@@ -828,16 +828,15 @@ public extension 指示書型 {
             query2["伝票種類"] = type.fmString
             lock.unlock()
             do {
-                let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
+                let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query2])
                 let orders: [指示書型] = list.compactMap {
                     guard let order = 指示書型($0) else { return nil }
                     switch order.伝票状態 {
                     case .キャンセル:
                         return nil
                     case .未製作, .発送済, .製作中:
-                        break
+                        return filter(order) ? order : nil
                     }
-                    return order
                 }
                 lock.lock()
                 result.append(contentsOf: orders)
@@ -1084,12 +1083,19 @@ public extension 指示書型 {
         }
     }
     
-    static func normalFind(作業範囲 range: ClosedRange<Day>) throws -> [指示書型] {
+    static func normalFind(作業範囲 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
         var query = FileMakerQuery()
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
-        return try normalFind(query)
+        return try normalFind(query, filter: filter)
     }
+    
+    static func normalFind(製作納期 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["製作納期"] = makeQueryDayString(range)
+        return try normalFind(query, filter: filter)
+    }
+    
 }
 
 // MARK: - 出荷時間チェック文言
