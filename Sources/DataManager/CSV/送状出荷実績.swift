@@ -171,7 +171,10 @@ extension Sequence where Element == 送状出荷実績型 {
         let map = Dictionary(grouping: self) { $0.出荷日 }
         
         for (day, list) in map {
-            let base = dir.appendingPathComponent(day.yearString).appendingPathComponent(day.monthString).appendingPathComponent(day.dayString)
+            let base = dir
+                .appendingPathComponent(day.yearString)
+                .appendingPathComponent(day.monthString)
+                .appendingPathComponent(day.dayString)
             try list.export受け渡し送状(at: base.appendingPathComponent("会社コード別")) { $0.会社コード }
             try list.export受け渡し送状(at: base.appendingPathComponent("伝票番号別")) { $0.伝票番号?.整数文字列 }
         }

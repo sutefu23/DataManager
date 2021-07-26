@@ -17,8 +17,8 @@ private extension 送状型 {
     var 電話番号: String { 届け先電話番号 }
     var 住所: String { 届け先住所1 }
     var 住所2: String { 届け先住所2 }
-    var 住所3: String { 届け先住所3 }
-    var 名前: String { 届け先受取者名 }
+    var 住所3: String { 届け先受取者名.isEmpty ? "" : 届け先住所3 }
+    var 名前: String { 届け先受取者名.isEmpty ? 届け先住所3 : 届け先受取者名 }
     var 名前2: String { "" }
     var 郵便番号: String { 届け先郵便番号 }
     var 特殊計: String { "" }

@@ -17,6 +17,16 @@ public struct 送り状エラー型 {
     }
     
     public init?(_ order: 送状型) {
+        func standardError() -> 送状CheckError? {
+            guard let source = order.指示書 else { return nil }
+            if !source.isActive { return .指示書が不正 }
+            if let 着指定日 = order.着指定日, 着指定日 <= min(Day(), source.出荷納期) { return .着指定日が不正 } // 着指定日が早すぎる
+            return nil
+        }
+        if let error = standardError() {
+            self.init(送り状: order, エラー: error)
+            return
+        }
         switch order.運送会社 {
         case .ヤマト:
             self.init(ヤマト送状: order)

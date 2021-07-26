@@ -60,8 +60,8 @@ try:
     # 添付ファイル
     if len(attach) != 0:
         with open(attach, "rb") as a:
-            mb = MIMEApplication(a.read(), Name="出荷実績.txt")
-        mb.add_header("Content-Disposition", "attachment", filename="出荷実績.txt")
+            mb = MIMEApplication(a.read(), Name="yotei.txt")
+        mb.add_header("Content-Disposition", "attachment", filename="yotei.txt")
         msg.attach(mb)
 
     """

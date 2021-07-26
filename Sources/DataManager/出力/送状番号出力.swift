@@ -25,6 +25,9 @@ enum 送状CheckError: String, LocalizedError {
     case 記事の文字数が多い
     case 着指定日が未入力
     case 福山依頼主コードが空欄
+    case 指示書が不正
+    case 着指定日が不正
+    case 送り状管理番号が不明
 
     var errorDescription: String? { self.rawValue }
 }

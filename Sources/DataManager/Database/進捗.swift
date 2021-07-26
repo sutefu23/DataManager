@@ -95,6 +95,56 @@ public final class 進捗型: Equatable, Identifiable {
     public lazy var 作業系列: 作業系列型? = {
         作業系列型(系列コード: self.record.string(forKey: "作業系列コード") ?? "")
     }()
+    
+    public lazy var 同時作業レコード: Set<String> = {
+        var set = Set<String>()
+        set.insert(self.recordID)
+        switch self.作業内容 {
+        case .受取, .開始:
+            let list = 同期進捗キャッシュ型.shared.関連進捗(for: self)
+            if let centerIndex = list.firstIndex(where: { $0.recordID == self.recordID }) {
+                var index = centerIndex
+                while index != list.startIndex {
+                    index = list.index(before: index)
+                    let progress = list[index]
+                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
+                    set.insert(progress.recordID)
+                }
+                index = list.index(after: centerIndex)
+                while index < list.endIndex {
+                    let progress = list[index]
+                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
+                    set.insert(progress.recordID)
+                    index = list.index(after: index)
+                }
+            }
+        case .仕掛:
+            break
+        case .完了:
+            set.insert(self.recordID)
+            let list = 同期進捗キャッシュ型.shared.関連進捗(for: self)
+            if let centerIndex = list.firstIndex(where: { $0.recordID == self.recordID }) {
+                var index = centerIndex
+                while index != list.startIndex {
+                    index = list.index(before: index)
+                    let progress = list[index]
+                    if progress.作業内容 != .完了 { break }
+                    set.insert(progress.recordID)
+                }
+                index = list.index(after: centerIndex)
+                while index < list.endIndex {
+                    let progress = list[index]
+                    if progress.作業内容 != .完了 { break }
+                    set.insert(progress.recordID)
+                    index = list.index(after: index)
+                }
+            }
+        }
+        return set
+    }()
+    
+    /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
+    public var 同時作業数: Int { self.同時作業レコード.count }
 }
 
 public extension 進捗型 {

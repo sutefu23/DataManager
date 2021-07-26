@@ -13,6 +13,12 @@ import Cocoa
 import UIKit
 #endif
 
+public func asyncShowMessage(message: String, info: String = "", ok: String = "Ok") {
+    DispatchQueue.main.async {
+        showMessage(message: message, info: info, ok: ok)
+    }
+}
+
 public func showMessage(message: String, info: String = "", ok: String = "Ok") {
     #if os(macOS)
     let alert = NSAlert()

@@ -226,48 +226,13 @@ public class 作業記録型 {
     /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
     public lazy var 同時作業数: Int = {
         var set = Set<String>()
-        if let from = self.開始進捗 {
-            set.insert(from.recordID)
-            let list = 同期進捗キャッシュ型.shared.関連進捗(for: from)
-            if let centerIndex = list.firstIndex(where: { $0.recordID == from.recordID }) {
-                var index = centerIndex
-                while index != list.startIndex {
-                    index = list.index(before: index)
-                    let progress = list[index]
-                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
-                    set.insert(progress.recordID)
-                }
-                index = list.index(after: centerIndex)
-                while index < list.endIndex {
-                    let progress = list[index]
-                    if progress.作業内容 != .開始 && progress.作業内容 != .受取 { break }
-                    set.insert(progress.recordID)
-                    index = list.index(after: index)
-                }
-            }
+        if let fromRecords = self.開始進捗?.同時作業レコード {
+            set.formUnion(fromRecords)
         }
-        if let to = self.完了進捗 {
-            set.insert(to.recordID)
-            let list = 同期進捗キャッシュ型.shared.関連進捗(for: to)
-            if let centerIndex = list.firstIndex(where: { $0.recordID == to.recordID }) {
-                var index = centerIndex
-                while index != list.startIndex {
-                    index = list.index(before: index)
-                    let progress = list[index]
-                    if progress.作業内容 != .完了 { break }
-                    set.insert(progress.recordID)
-                }
-                index = list.index(after: centerIndex)
-                while index < list.endIndex {
-                    let progress = list[index]
-                    if progress.作業内容 != .完了 { break }
-                    set.insert(progress.recordID)
-                    index = list.index(after: index)
-                }
-            }
+        if let toRecords = self.完了進捗?.同時作業レコード {
+            set.formUnion(toRecords)
         }
-        let count = set.count
-        return (count == 0) ? 1 : count
+        return max(set.count, 1)
     }()
 }
 

@@ -146,7 +146,7 @@ extension Array where Element == ヤマト出荷実績型 {
         }
         self.init(result)
     }
-    
+
     public func append送り状記録(at url: URL) throws {
         let records = self.compactMap { 送状出荷実績型($0) }
         try records.export受け渡し送状(at: url)
