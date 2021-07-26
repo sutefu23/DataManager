@@ -42,27 +42,30 @@ public let ProgressChecker待ち工程リスト: [工程型: 工程型] = [
 
 class CountCell {
     let 種類: 伝票種類型
+    let 工程: 工程型
     
     let totalOrders: [指示書型]
     let completeOrders: [指示書型]
     let holdingOrders: [指示書型]
     let waitingOrders: [指示書型]
     let todayOrders: [指示書型]
-
+    
     let totalOrders1: [指示書型]
     let completeOrders1: [指示書型]
     let holdingOrders1: [指示書型]
     let waitingOrders1: [指示書型]
     let todayOrders1: [指示書型]
-
+    
     let totalOrders2: [指示書型]
     let completeOrders2: [指示書型]
     let holdingOrders2: [指示書型]
     let waitingOrders2: [指示書型]
     let todayOrders2: [指示書型]
-
+    
     init(工程:工程型, 日付:Day, 種類:伝票種類型, 略号:略号型?) {
         self.種類 = 種類
+        self.工程 = 工程
+        
         let source = (try? 指示書型.find(伝票種類: 種類, 製作納期: 日付)) ?? []
         let orders : [指示書型] = source.filter {
             if let ryaku = 略号 {
@@ -74,7 +77,7 @@ class CountCell {
         var holdingOrders: [指示書型] = []
         var waitingOrders: [指示書型] = []
         var todayOrders: [指示書型] = []
-
+        
         let toNext = 日付.nextDay
         let now = Date().day
         for order in orders {
@@ -160,15 +163,40 @@ class CountCell {
             var main: [指示書型] = []
             var sub: [指示書型] = []
             for order in source {
-                switch order.伝票種類 {
-                case .加工:
-                    if order.isオブジェ {
-                        sub.append(order)
-                    } else {
+                switch 工程 {
+                case .レーザー:
+                    switch order.伝票種類 {
+                    case .加工, .エッチング:
+                        if order.isフォーミングのみ {
+                            sub.append(order)
+                        } else {
+                            main.append(order)
+                        }
+                    case .切文字, .外注, .校正, .箱文字:
                         main.append(order)
                     }
-                case .エッチング, .切文字, .外注, .校正, .箱文字:
-                    main.append(order)
+                case .フォーミング:
+                    switch order.伝票種類 {
+                    case .加工, .エッチング:
+                        if order.isレーザーのみ {
+                            sub.append(order)
+                        } else {
+                            main.append(order)
+                        }
+                    case .切文字, .外注, .校正, .箱文字:
+                        main.append(order)
+                    }
+                default:
+                    switch order.伝票種類 {
+                    case .加工:
+                        if order.isオブジェ {
+                            sub.append(order)
+                        } else {
+                            main.append(order)
+                        }
+                    case .切文字, .外注, .校正, .箱文字, .エッチング:
+                        main.append(order)
+                    }
                 }
             }
             return (main, sub)
@@ -249,7 +277,7 @@ class CountColumn {
     var 切文字 : CountCell?
     var エッチング : CountCell?
     var 加工 : CountCell?
-
+    
     init(工程:工程型, 日付:Day, 略号:略号型?, queue:OperationQueue, completionHandler:@escaping ()->()) {
         assert(日付.日付タイプ() == .出勤日)
         self.日付 = 日付
@@ -346,7 +374,6 @@ public class CountMatrix {
         let subIndex = (row-1) % labelCount
         let type = (row-1)/labelCount
         return self[col].makeOutline(row: type, index: subIndex)
-
     }
     
     public func detailOrders(row:Int, col:Int) -> DetailInfo? {

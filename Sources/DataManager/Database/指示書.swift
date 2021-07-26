@@ -291,6 +291,14 @@ public final class 指示書型 {
         return self.伝票種類 == .加工 && self.仕様.toJapaneseNormal.contains("オブジェ") == true
     }
     
+    public var isフォーミングのみ: Bool {
+        return self.略号.contains(.フォーミング) && !self.略号.contains(.レーザー)
+    }
+    
+    public var isレーザーのみ: Bool {
+        return !self.略号.contains(.フォーミング) && self.略号.contains(.レーザー)
+    }
+    
     public var 金額: Double {
         var value = self.合計金額
         if value <= 0 {
