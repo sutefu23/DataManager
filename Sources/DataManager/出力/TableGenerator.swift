@@ -111,6 +111,7 @@ final class TableColumn<S> {
 
 public final class TableGenerator<S> {
     let columns: [TableColumn<S>]
+    public var complete: (S)->Void = { _ in }
     
     public init() {
         self.columns = []
@@ -141,6 +142,7 @@ public final class TableGenerator<S> {
                         $0.aggregator?.sum(rowSource) // 集計
                         return $0.value(for: rowSource) // セルの表示内容の生成
                     }
+                    self.complete(rowSource)
                     return format.makeLine(cols)
                 }
                 return line

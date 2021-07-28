@@ -236,11 +236,33 @@ public class 作業記録型 {
     }()
 }
 
+extension Sequence where Element == 進捗型 {
+    /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
+    public var 同時作業数: Int {
+        return Swift.max(self.同時作業レコード.count, 1)
+    }
+    
+    /// 同時にまとめて行われた進捗入力・進捗出力（レコードID）
+    public var 同時作業レコード: Set<String> {
+        return self.reduce([]) { $0.union($1.同時作業レコード) }
+    }
+}
+
+extension Sequence where Element == 進捗型? {
+    /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
+    public var 同時作業数: Int {
+        return Swift.max(self.compactMap { $0 }.同時作業レコード.count, 1)
+    }
+}
+
 extension Array where Element == 作業記録型 {
-    public func calc累積作業時間(from: Date? = nil, to: Date? = nil) -> TimeInterval? {
+    public func calc累積作業時間(from: Date? = nil, to: Date? = nil, 同時補正: Bool = false) -> TimeInterval? {
         var result: TimeInterval? = nil
         for work in self {
-            if let time = work.calc作業時間(to: to) {
+            if var time = work.calc作業時間(to: to) {
+                if 同時補正 {
+                    time /= TimeInterval(work.同時作業数)
+                }
                 if let current = result {
                     result = current + time
                 } else {
@@ -570,9 +592,9 @@ extension 指示書型 {
         return works
     }
 
-    public func calc作業時間(state: 工程型, from: (process: 工程型, state: 作業内容型), to: (process: 工程型, state: 作業内容型)) -> TimeInterval? {
+    public func calc作業時間(state: 工程型, from: (process: 工程型, state: 作業内容型), to: (process: 工程型, state: 作業内容型), 同時補正: Bool = false) -> TimeInterval? {
         let works = self.make作業区間(state: state, from: from, to: to)
-        return works.calc累積作業時間()
+        return works.calc累積作業時間(同時補正: 同時補正)
     }
 
     public func make箱文字滞留期間() -> [箱文字期間型: 作業記録型]? {

@@ -235,42 +235,25 @@ extension StringProtocol {
 }
 
 func make2dig(_ value: Int) -> String {
-    let str = String(value)
-    switch str.count {
-    case 0:
-        return "00"
-    case 1:
-        return "0" + str
-    default:
-        return str
-    }
+    return value >= 0 && value <= 9 ? "0\(value)" : String(value)
 }
 
 func make2digS(_ value: Int) -> String {
-    let str = String(value)
-    switch str.count {
-    case 0:
-        return "  "
-    case 1:
-        return " " + str
-    default:
-        return str
-    }
+    return value >= 0 && value <= 9 ? " \(value)" : String(value)
 }
 
 func make4dig(_ value: Int) -> String {
-    let str = String(value)
-    switch str.count {
-    case 0:
-        return "0000"
-    case 1:
-        return "000" + str
-    case 2:
-        return "00" + str
-    case 3:
-        return "0" + str
+    switch value {
+    case 1000...:
+        return String(value)
+    case 0...9:
+        return "000\(value)"
+    case 10...99:
+        return "00\(value)"
+    case 100...999:
+        return "0\(value)"
     default:
-        return str
+        return String(value)
     }
 }
 

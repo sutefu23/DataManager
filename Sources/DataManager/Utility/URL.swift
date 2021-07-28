@@ -36,6 +36,8 @@ public let applicationSupportURL: URL = {
     return url
 }()
 
+let tmpSerial = SerialGenerator()
+
 extension URL {
     /// 指定された拡張子の一時ファイルを作成する
     /// - Parameters:
@@ -43,11 +45,10 @@ extension URL {
     ///   - maxCount: この回数試して一時ファイルが作れないと失敗とする
     @available(OSX 10.12, *)
     public init?(temporaryFileWithExtension ext: String, maxCount: Int = 1000) {
-        var serial = 0
         let dir = FileManager.default.temporaryDirectory
         var url: URL
         repeat {
-            serial += 1
+            let serial = Int(tmpSerial.generateID())
             var name = UUID().uuidString + String(serial)
             if serial == maxCount { return nil }
             if !ext.isEmpty { name += "." + ext }

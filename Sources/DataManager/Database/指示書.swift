@@ -1092,10 +1092,12 @@ public extension 指示書型 {
     }
     
     static func normalFind(作業範囲 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
-        var query = FileMakerQuery()
-        query["受注日"] = "<=\(range.upperBound.fmString)"
-        query["出荷納期"] = ">=\(range.lowerBound.fmString)"
-        return try normalFind(query, filter: filter)
+        var query1 = FileMakerQuery()
+        var query2 = FileMakerQuery()
+        query1["出荷納期"] = ">\(range.upperBound.fmString)"
+        query1["受注日"] = "<=\(range.upperBound.fmString)"
+        query2["出荷納期"] = makeQueryDayString(range)
+        return try (normalFind(query1, filter: filter) + normalFind(query2, filter: filter)).sorted { $0.伝票番号 < $1.伝票番号 }
     }
     
     static func normalFind(製作納期 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {

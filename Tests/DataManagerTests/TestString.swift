@@ -171,4 +171,31 @@ class TestString: XCTestCase {
         XCTAssertEqual(columns[2], "")
     }
 
+    func testMake2dig() {
+        XCTAssertEqual(make2dig(0), "00")
+        XCTAssertEqual(make2dig(9), "09")
+        XCTAssertEqual(make2dig(10), "10")
+        XCTAssertEqual(make2dig(-1), "-1")
+        XCTAssertEqual(make2dig(100), "100")
+        
+        XCTAssertEqual(make2digS(0), " 0")
+        XCTAssertEqual(make2digS(9), " 9")
+        XCTAssertEqual(make2digS(10), "10")
+        XCTAssertEqual(make2digS(-1), "-1")
+        XCTAssertEqual(make2digS(100), "100")
+    }
+    
+    func testMake4dig() {
+        XCTAssertEqual(make4dig(0), "0000")
+        XCTAssertEqual(make4dig(9), "0009")
+        XCTAssertEqual(make4dig(10), "0010")
+        XCTAssertEqual(make4dig(99), "0099")
+        XCTAssertEqual(make4dig(100), "0100")
+        XCTAssertEqual(make4dig(999), "0999")
+        XCTAssertEqual(make4dig(1000), "1000")
+        XCTAssertEqual(make4dig(9999), "9999")
+        XCTAssertEqual(make4dig(10000), "10000")
+        XCTAssertEqual(make4dig(99999), "99999")
+        XCTAssertEqual(make4dig(-1), "-1")
+    }
 }
