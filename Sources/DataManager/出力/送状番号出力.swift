@@ -87,7 +87,7 @@ extension 送状型 {
     public func upload送状番号() throws {
         guard let recordID = self.recordID, !recordID.isEmpty else { throw FileMakerError.update(message: "送状管理番号:\(self.管理番号) レコードIDが見つからない")}
         var fieldData = FileMakerQuery()
-        fieldData["送り状番号"] = self.送り状番号.rawValue
+        fieldData["送り状番号"] = self.送り状番号.ハイフンなし生データ
 
         let db = FileMakerDB.pm_osakaname
         try db.update(layout: 送状型.dbName, recordId: recordID, fields: fieldData)

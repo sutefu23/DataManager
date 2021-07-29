@@ -107,6 +107,8 @@ public struct 送り状番号型 {
         self.rawValue = "0"
         self.送り状番号 = nil
     }
+    
+    public var ハイフンなし生データ: String { return rawValue.filter { $0 != "-" } }
 }
 
 /// 運送会社を規定する

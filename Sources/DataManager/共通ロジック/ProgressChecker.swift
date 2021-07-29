@@ -178,7 +178,7 @@ class CountCell {
                 case .フォーミング:
                     switch order.伝票種類 {
                     case .加工, .エッチング:
-                        if order.isレーザーのみ {
+                        if order.isレーザーのみ || (order.isオブジェ && !order.略号.contains(.フォーミング)) {
                             sub.append(order)
                         } else {
                             main.append(order)
