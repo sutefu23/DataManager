@@ -40,14 +40,16 @@ public struct MailBody {
     var cc: String = ""
     var title: String
     var body: String
-    var file: URL?
-    public init(from: String, to: String, cc: String, title: String, body:String, file: URL? = nil){
+    var file: URL? ///添付ファイル
+    var fileName: String? /// 添付ファイルに任意の名前をつけたい場合　引数fileがある場合はそのファイル名を取得
+    public init(from: String, to: String, cc: String, title: String, body:String, file: URL? = nil, fileName: String? = nil){
         self.from = from
         self.to = to
         self.cc = cc
         self.title = title
         self.body = body
         self.file = file
+        self.fileName = fileName ?? file?.lastPathComponent
     }
 }
 
@@ -110,8 +112,9 @@ public func sendMail(mail: MailBody, server: MailServer) throws {
         try FileManager.default.copyItem(at: file, to: tmp)
         attach = tmp.path
     }
+    
 
-    process.arguments = [app.path, mail.from, mail.to, mail.cc, attach, mail.title, mail.body ]
+    process.arguments = [app.path, mail.from, mail.to, mail.cc, attach, mail.fileName ?? "", mail.title, mail.body ]
 
     let pipe = Pipe()
     process.standardOutput = pipe

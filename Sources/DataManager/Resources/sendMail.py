@@ -15,7 +15,7 @@ import json
 
 try:
     if len(sys.argv) < 5:
-        raise AttributeError("コマンドライン引数は最低5つ必要です（送信元メール、受信先メール、CC、タイトル、本文、(オプション)添付ファイル）")
+        raise AttributeError("コマンドライン引数は最低5つ必要です（送信元メール、受信先メール、CC、(オプション)添付ファイル、（オプション）ファイル名、タイトル、本文）")
 
 
     mail_from = sys.argv[1]
@@ -26,9 +26,11 @@ try:
 
     attach = sys.argv[4]
 
-    title = sys.argv[5]
+    attachName = sys.argv[5]
 
-    body = " ".join(sys.argv[6:]) #本文中に半角スペースが入ってる可能性を勘案
+    title = sys.argv[6]
+
+    body = " ".join(sys.argv[7:]) #本文中に半角スペースが入ってる可能性を勘案
 
     msg = MIMEMultipart()
 
@@ -60,8 +62,8 @@ try:
     # 添付ファイル
     if len(attach) != 0:
         with open(attach, "rb") as a:
-            mb = MIMEApplication(a.read(), Name="yotei.txt")
-        mb.add_header("Content-Disposition", "attachment", filename="yotei.txt")
+            mb = MIMEApplication(a.read(), Name=attachName)
+        mb.add_header("Content-Disposition", "attachment", filename=attachName)
         msg.attach(mb)
 
     """
