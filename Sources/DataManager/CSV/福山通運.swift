@@ -115,7 +115,32 @@ public struct 福山ご依頼主型 {
             電話番号:  self.電話番号
         )
     }
+    
+    public init?( 取引先: 取引先型) {
+        self.荷受人コード = 取引先.会社コード
+        self.電話番号 = 取引先.電話番号
+        self.住所1 = 取引先.住所1
+        self.住所2 = 取引先.住所2 + 取引先.住所3
+        self.予備1 = ""
+        self.名前1 = 取引先.会社名
+        self.名前2 = ""
+        self.予備2 = ""
+        self.郵便番号 = 取引先.郵便番号
+        self.カナ略称 = ""
+        self.才数 = "0"
+        self.重量 = "0"
+        self.メールアドレス = ""
+        self.請求先コード = "0925181131"
+        self.請求先部課コード = ""
 
+        if self.必須フィールド空チェック() { return nil }
+
+    }
+    /// 送り主として必須のフィールドをチェック。満たさないものがあればtrue
+    private func 必須フィールド空チェック() -> Bool{
+        return self.名前1.isEmpty || self.住所1.isEmpty || self.電話番号.isEmpty || self.郵便番号.isEmpty
+    }
+    
     public init(会社コード: String, 住所: 住所型) {
         self.荷受人コード = 会社コード
         self.電話番号 = 住所.電話番号
