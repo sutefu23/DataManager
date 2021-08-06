@@ -986,7 +986,7 @@
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					"DataManager::DataManager" = {
-						DevelopmentTeam = LVA4CJGB2J;
+						DevelopmentTeam = 4EX9H95FTD;
 					};
 					"DataManager::DataManagerPackageTests::ProductTarget" = {
 						LastSwiftMigration = 1200;
@@ -1264,7 +1264,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = LVA4CJGB2J;
+				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1295,7 +1295,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				DEVELOPMENT_TEAM = LVA4CJGB2J;
+				DEVELOPMENT_TEAM = 4EX9H95FTD;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1373,6 +1373,7 @@
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZE_OBJECT_LIFETIME = YES;
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
@@ -1513,6 +1514,7 @@
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZE_OBJECT_LIFETIME = YES;
 				USE_HEADERMAP = NO;
 			};
 			name = Release;

@@ -67,7 +67,8 @@ extension Sequence where Element == 送状型 {
             .string("郵便番号") { $0.届け先郵便番号 }
             .string("特殊計") { $0.特殊計 }
             .string("着店コード") { $0.着店コード }
-            .string("送人コード") { $0.福山依頼主コード }
+            .string("荷送人コード") { $0.福山依頼主コード }
+//            .fix("荷送担当者") { "" }
             .integer("個数") { $0.個数 }
             .string("才数") { $0.才数 }
             .string("重量") { $0.重量 }
