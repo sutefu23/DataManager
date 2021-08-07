@@ -1105,7 +1105,12 @@ public extension 指示書型 {
         query["製作納期"] = makeQueryDayString(range)
         return try normalFind(query, filter: filter)
     }
-    
+
+    static func normalFind(出荷納期 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
+        var query = FileMakerQuery()
+        query["出荷納期"] = makeQueryDayString(range)
+        return try normalFind(query, filter: filter)
+    }
 }
 
 // MARK: - 出荷時間チェック文言

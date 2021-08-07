@@ -175,6 +175,23 @@ class CountCell {
                     case .切文字, .外注, .校正, .箱文字:
                         main.append(order)
                     }
+                case .照合検査:
+                    switch order.伝票種類 {
+                    case .加工:
+                        if order.isフォーミングのみ || order.isオブジェ {
+                            sub.append(order)
+                        } else {
+                            main.append(order)
+                        }
+                    case .エッチング:
+                        if order.isフォーミングのみ {
+                            sub.append(order)
+                        } else {
+                            main.append(order)
+                        }
+                    case .切文字, .外注, .校正, .箱文字:
+                        main.append(order)
+                    }
                 case .フォーミング:
                     switch order.伝票種類 {
                     case .加工, .エッチング:
