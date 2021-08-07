@@ -354,6 +354,17 @@ extension String {
             return ""
         }
     }
+    /// idから26進数を除外した部分を取得。最後が数字でなければ空文字
+    func filter26進数除外ID()-> String{
+        let pattern = "[0-9]+$"
+        let machies = self.matchFilter(pattern)
+        if machies.count > 0 {
+            return machies[0]
+        }else{
+            return ""
+        }
+    }
+
 }
 
 /// 正規表現パターンマッチ

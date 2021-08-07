@@ -230,5 +230,9 @@ class TestString: XCTestCase {
         XCTAssertEqual("a11".filter26進数ID(), "a")
         XCTAssertEqual("abc11zz".filter26進数ID(), "abc")
 
+        XCTAssertEqual("abc11".filter26進数除外ID(), "11")
+        XCTAssertEqual("11".filter26進数除外ID(), "11")
+        XCTAssertEqual("a11".filter26進数除外ID(), "11")
+        XCTAssertEqual("abc11zz".filter26進数除外ID(), "")
     }
 }
