@@ -198,4 +198,26 @@ class TestString: XCTestCase {
         XCTAssertEqual(make4dig(99999), "99999")
         XCTAssertEqual(make4dig(-1), "-1")
     }
+    
+    func test26base(){
+        XCTAssertEqual(from数字to26進数(1), "a")
+        XCTAssertEqual(from数字to26進数(2), "b")
+        XCTAssertEqual(from数字to26進数(26), "z")
+        XCTAssertEqual(from数字to26進数(27), "aa")
+        XCTAssertEqual(from数字to26進数(28), "ab")
+        XCTAssertEqual(from数字to26進数(52), "az")
+        XCTAssertEqual(from数字to26進数(53), "ba")
+        XCTAssertEqual(from数字to26進数(0), "")
+        XCTAssertEqual(from数字to26進数(-1), "")
+
+        XCTAssertEqual(from26進数to数字("a"), 1)
+        XCTAssertEqual(from26進数to数字("b"), 2)
+        XCTAssertEqual(from26進数to数字("z"), 26)
+        XCTAssertEqual(from26進数to数字("aa"), 27)
+        XCTAssertEqual(from26進数to数字("ab"), 28)
+        XCTAssertEqual(from26進数to数字("az"), 52)
+        XCTAssertEqual(from26進数to数字("ba"), 53)
+        XCTAssertEqual(from26進数to数字("あ"), 0)
+        XCTAssertEqual(from26進数to数字("1"), 0)
+    }
 }

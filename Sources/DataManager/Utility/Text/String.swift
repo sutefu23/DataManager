@@ -303,6 +303,42 @@ func calc寸法サイズ(_ line: String) -> [Double] {
     return result
 }
 
+/// 1から始まる数字をアルファベット順に直します。26を超えるものはaa、ab、、など桁を増やしていきます
+/// 0以下は想定していないので空文字を返します
+func from数字to26進数(_ num: Int, chars: [Character] = []) -> String{
+    if num <= 0 { return ""}
+
+    let newNum = num - 1
+    let alphabets = [Character]("abcdefghijklmnopqrstuvwxyz")
+    let 商 = newNum / 26
+    let 剰余 = newNum % 26
+    var newChars = chars
+    newChars.append(alphabets[剰余])
+    if 商 == 0 {
+        return newChars.reversed().map{String($0)}.joined()
+    } else {
+        return from数字to26進数(商, chars: newChars)
+    }
+}
+/// abなどのアルファベット文字列から数値を出力
+/// アルファベットでない場合は0を返す。大文字小文字を区別しない
+func from26進数to数字(_ digit: String) -> Int{
+    let alphabets = [Character]("abcdefghijklmnopqrstuvwxyz")
+    var result = 0
+    for i in (0 ..< digit.count).reversed() { // 1の位から処理
+        let ch = Array(digit.lowercased().reversed())[i]
+        guard let n = alphabets.firstIndex(of: ch) else { return 0 }
+
+        let number = n + 1
+        if i == 0 { // １の位
+            result += number
+        } else {
+            result += Int(pow(Double(26) , Double(i))) * number
+        }
+    }
+    return result
+}
+
 //　NCEngineから移行
 extension String {
     /// 文字列をパスに見立てたときの末尾のファイル名（絶対パスで区切り文字は"/"）
