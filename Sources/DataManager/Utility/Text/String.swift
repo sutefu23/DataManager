@@ -338,6 +338,43 @@ func from26進数to数字(_ digit: String) -> Int{
     }
     return result
 }
+extension String {
+    /// idがabcなどの26進数付きかどうかを判別
+    func is26進数付きID()-> Bool{
+        let pattern = "[a-zA-Z]+[0-9]+"
+        return self.contain(pattern)
+    }
+    /// idから26進数を取得。存在しなければ空文字
+    func filter26進数ID()-> String{
+        let pattern = "^[a-zA-Z]+"
+        let machies = self.matchFilter(pattern)
+        if machies.count > 0 {
+            return machies[0]
+        }else{
+            return ""
+        }
+    }
+}
+
+/// 正規表現パターンマッチ
+extension String {
+    /// 正規表現を含むか否か
+    func contain(_ pattern: String) -> Bool {
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options()) else {
+            return false
+        }
+        return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(), range: NSMakeRange(0, self.count)) != nil
+    }
+    ///マッチした部分の抽出
+    func matchFilter(_ pattern: String) -> [String] {
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let matched = regex.firstMatch(in: self, range: NSRange(location: 0, length: self.count))
+        else { return [] }
+        return (0 ..< matched.numberOfRanges).map {
+            NSString(string: self).substring(with: matched.range(at: $0))
+        }
+    }
+}
 
 //　NCEngineから移行
 extension String {

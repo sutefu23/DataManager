@@ -219,5 +219,16 @@ class TestString: XCTestCase {
         XCTAssertEqual(from26進数to数字("ba"), 53)
         XCTAssertEqual(from26進数to数字("あ"), 0)
         XCTAssertEqual(from26進数to数字("1"), 0)
+
+        XCTAssertTrue("zdc2578".is26進数付きID())
+        XCTAssertTrue("ab11".is26進数付きID())
+        XCTAssertFalse("ab".is26進数付きID())
+        XCTAssertFalse("11".is26進数付きID())
+
+        XCTAssertEqual("abc11".filter26進数ID(), "abc")
+        XCTAssertEqual("11".filter26進数ID(), "")
+        XCTAssertEqual("a11".filter26進数ID(), "a")
+        XCTAssertEqual("abc11zz".filter26進数ID(), "abc")
+
     }
 }
