@@ -9,7 +9,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public enum メニュー種類: 図番型, Comparable, CaseIterable{
+public enum メニュー種類型: 図番型, Comparable, CaseIterable{
     
     public typealias RawValue = String
     case 朝食
@@ -18,7 +18,7 @@ public enum メニュー種類: 図番型, Comparable, CaseIterable{
     case C定食
     
     
-    public static func ==(left: メニュー種類, right: メニュー種類) -> Bool {
+    public static func ==(left: メニュー種類型, right: メニュー種類型) -> Bool {
         left.rawValue == right.rawValue
     }
     
@@ -31,7 +31,7 @@ public enum メニュー種類: 図番型, Comparable, CaseIterable{
         }
     }
     
-    public static func <(left: メニュー種類, right: メニュー種類) -> Bool {
+    public static func <(left: メニュー種類型, right: メニュー種類型) -> Bool {
         left.code < right.code
     }
 }
@@ -57,8 +57,8 @@ public enum 食事種類型: String, Comparable {
     }
 }
 
-public enum 食事カテゴリー: String, Comparable, CaseIterable{
-    public static func < (lhs: 食事カテゴリー, rhs: 食事カテゴリー) -> Bool {
+public enum 食事カテゴリー型: String, Comparable, CaseIterable{
+    public static func < (lhs: 食事カテゴリー型, rhs: 食事カテゴリー型) -> Bool {
         lhs.code < rhs.code
     }
     
@@ -69,10 +69,10 @@ public enum 食事カテゴリー: String, Comparable, CaseIterable{
     
     public var code: 図番型 {
         switch self {
-        case .朝食: return メニュー種類.朝食.code
-        case .一汁三菜ランチＡ: return メニュー種類.A定食.code
-        case .一汁三菜ランチＢ: return メニュー種類.B定食.code
-        case .お好みランチ: return メニュー種類.C定食.code
+        case .朝食: return メニュー種類型.朝食.code
+        case .一汁三菜ランチＡ: return メニュー種類型.A定食.code
+        case .一汁三菜ランチＢ: return メニュー種類型.B定食.code
+        case .お好みランチ: return メニュー種類型.C定食.code
         }
     }
 }

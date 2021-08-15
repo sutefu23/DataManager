@@ -364,11 +364,11 @@ class CountColumn {
 
 public class CountMatrix {
     let labelCount = 6
-    public var numberOfRows : Int { return 4*labelCount+1 }
+    public var numberOfRows: Int { return 4*labelCount+1 }
     
-    var columns : [CountColumn]
+    var columns: [CountColumn]
     
-    public init(工程:工程型, 略号:略号型?, queue:OperationQueue, completionHandler:@escaping ()->()) {
+    public init(工程: 工程型, 略号:略号型?, queue: OperationQueue, completionHandler: @escaping ()->()) {
         var day = Day().prevDay
         
         var rows = [CountColumn]()
@@ -380,11 +380,11 @@ public class CountMatrix {
         self.columns = rows
     }
     
-    private subscript(index:Int) -> CountColumn {
+    private subscript(index: Int) -> CountColumn {
         return columns[index]
     }
     
-    public func makeOutline(row:Int, col:Int) -> NSAttributedString {
+    public func makeOutline(row: Int, col: Int) -> NSAttributedString {
         if row == 0 {
             return NSAttributedString(string: self[col].日付.dayWeekString)
         }
@@ -393,7 +393,7 @@ public class CountMatrix {
         return self[col].makeOutline(row: type, index: subIndex)
     }
     
-    public func detailOrders(row:Int, col:Int) -> DetailInfo? {
+    public func detailOrders(row: Int, col: Int) -> DetailInfo? {
         if row == 0 { return nil }
         
         let subIndex = (row-1) % labelCount
@@ -409,12 +409,12 @@ public struct DetailInfo {
     public var type = ""
     public var work = ""
     public var mark = ""
-    public var limit : Day = Day()
-    public var date : Day = Day()
-    public var after : Int = 0
+    public var limit: Day = Day()
+    public var date: Day = Day()
+    public var after: Int = 0
     public var 工程: 工程型?
     public var 伝票種類: 伝票種類型 = .箱文字
-    public var orders : [指示書型] = []
+    public var orders: [指示書型] = []
     
     public var 表示モード: ProgressChecker表示モード型 {
         switch self.伝票種類 {
@@ -444,7 +444,7 @@ let processNameKey = "processName"
 extension UserDefaults {
     /// ProgressChecker関連のデフォルト値
     public func registerProgressCheckerDefaults() {
-        let dic : [String : Any] = [
+        let dic: [String : Any] = [
             isShowTotalKey : true,
             isShowCompleteKey : true,
             isShowHoldingKey : true,
