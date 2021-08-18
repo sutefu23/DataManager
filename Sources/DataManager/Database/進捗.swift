@@ -22,7 +22,7 @@ public final class 進捗型: Equatable, Identifiable {
     public var 登録日: Day
     public var 登録時間: Time
 
-    public var 伝票番号文字列: String { self.record.string(forKey: "伝票番号")! }
+    public var 伝票番号文字列: String { self.record.string(forKey: "伝票番号") ?? "" }
     public var 伝票番号: 伝票番号型
     
     init(_ record: FileMakerRecord) throws {
@@ -221,25 +221,21 @@ public extension Sequence where Element == 進捗型 {
     }
     
     func contains作り直し仕掛かり(工程: 工程型, 作直開始日時: Date) -> Bool {
-        let targets = self.filter { $0.登録日時 < 作直開始日時 }.sorted { $0.登録日時 > $1.登録日時 }
+        let targets = self.filter { $0.工程 == 工程 && $0.登録日時 < 作直開始日時 }.sorted { $0.登録日時 > $1.登録日時 }
         for progress in targets {
-            if progress.工程 == 工程 {
-                return true
-            }
             switch progress.作業種別 {
             case .先行, .在庫, .通常, .その他:
                 break
             case .作直, .手直:
                 switch progress.作業内容 {
                 case .仕掛:
-                    if progress.工程 == 工程 {
-                        return true
-                    }
+                    return true
                 default:
                     break
                 }
                 return false
             }
+            if progress.作業内容 == .完了 { return false }
         }
         return false
     }
