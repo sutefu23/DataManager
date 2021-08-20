@@ -60,7 +60,17 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
     private let sem = DispatchSemaphore(value: 0)
 
     deinit {
-        session.finishTasksAndInvalidate()
+        if isInvalidated == false {
+            session.finishTasksAndInvalidate()
+        }
+    }
+    private var isInvalidated: Bool = false
+    
+    func invalidate() {
+        if isInvalidated == false {
+            isInvalidated = true
+            session.finishTasksAndInvalidate()
+        }
     }
     
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {

@@ -87,6 +87,11 @@ final class FileMakerSession {
         return true
     }
     
+    func invalidate() {
+        self.logout(force: true)
+        self.connection.invalidate()
+    }
+    
     // MARK: - レコード操作
     /// レコードを取り出す
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {

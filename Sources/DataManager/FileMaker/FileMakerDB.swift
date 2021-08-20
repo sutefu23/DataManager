@@ -141,7 +141,7 @@ final class FileMakerServer: Hashable {
         }
         while pool.count > maxConnection, let session = pool.first {
             pool.removeFirst(1)
-            session.logout()
+            session.invalidate()
         }
         if let first = pool.first {
             pool.removeFirst()
@@ -180,11 +180,11 @@ final class FileMakerServer: Hashable {
     func logout(force: Bool) {
         guard FileMakerDB.isEnabled else { return }
         lock.lock(); defer { lock.unlock() }
+        if pool.isEmpty { return }
         if !force {
-            if connectingCount > 0 { return }
             if abs(self.logoutBaseLine.timeIntervalSinceNow) < lastAccessInterval { return }
         }
-        pool.forEach { $0.logout() }
+        pool.forEach { $0.invalidate() }
         pool.removeAll()
         updateLogoutBaseLine()
     }
