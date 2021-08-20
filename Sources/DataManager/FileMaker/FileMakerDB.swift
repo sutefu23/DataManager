@@ -127,19 +127,32 @@ final class FileMakerServer: Hashable {
         defer { lock.unlock() }
         if connecting.isEmpty { updateLogoutBaseLine() }
         for (index, session) in pool.enumerated().reversed() {
-            if session.url == url {
+            if session.url.host == url.host {
                 pool.remove(at: index)
                 connecting[ObjectIdentifier(session)] = session
                 return session
+            } else if session.hasValidToken == false {
+                session.logout()
+                let newSession = FileMakerSession(url: url, user: user, password: password, session: session)
+                pool.remove(at: index)
+                connecting[ObjectIdentifier(newSession)] = newSession
+                return newSession
             }
         }
-        while pool.count >= maxConnection, let session = pool.first {
+        while pool.count > maxConnection, let session = pool.first {
             pool.removeFirst(1)
-            session.logout()
+            session.invalidate()
         }
-        let session = FileMakerSession(url: url, user: user, password: password)
-        connecting[ObjectIdentifier(session)] = session
-        return session
+        if let first = pool.first {
+            pool.removeFirst()
+            let newSession = FileMakerSession(url: url, user: user, password: password, session: first)
+            connecting[ObjectIdentifier(newSession)] = newSession
+            return newSession
+        } else {
+            let newSession = FileMakerSession(url: url, user: user, password: password)
+            connecting[ObjectIdentifier(newSession)] = newSession
+            return newSession
+        }
     }
     
     /// セッションを返却する
@@ -167,11 +180,11 @@ final class FileMakerServer: Hashable {
     func logout(force: Bool) {
         guard FileMakerDB.isEnabled else { return }
         lock.lock(); defer { lock.unlock() }
+        if pool.isEmpty { return }
         if !force {
-            if connectingCount > 0 { return }
             if abs(self.logoutBaseLine.timeIntervalSinceNow) < lastAccessInterval { return }
         }
-        pool.forEach { $0.logout() }
+        pool.forEach { $0.invalidate() }
         pool.removeAll()
         updateLogoutBaseLine()
     }

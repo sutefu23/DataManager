@@ -8,19 +8,10 @@
 
 import Foundation
 
-private var sessionCache: FileMakerSession? = nil
-private var session: FileMakerSession {
-    if let cache = sessionCache { return cache }
-    let session = FileMakerDB.system.retainSession()
-    sessionCache = session
-    return session
+private var session: FileMakerDB {
+    return FileMakerDB.system
 }
-private func releaseSession() {
-    if let session = sessionCache {
-        sessionCache = nil
-        FileMakerDB.system.releaseSession(session)
-    }
-}
+
 private let serialQueue: OperationQueue = {
    let queue = OperationQueue()
     queue.maxConcurrentOperationCount = 1
@@ -148,14 +139,14 @@ public final class 指示書文字数型 {
         guard let recordId = self.recordId else { return }
         let data = self.fieldData
         serialQueue.addOperation {
-            try? session.update(layout: 指示書文字数型.dbName, recordID: recordId, fields: data)
+            try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
         }
     }
     
     func delete() {
         guard let recordId = self.recordId else { return }
         serialQueue.addOperation {
-            try? session.delete(layout: 指示書文字数型.dbName, recordID: recordId)
+            try? session.delete(layout: 指示書文字数型.dbName, recordId: recordId)
         }
     }
     
@@ -168,7 +159,7 @@ public final class 指示書文字数型 {
         if let recordId = self.recordId {
             let data = self.fieldData
             serialQueue.addOperation {
-                try? session.update(layout: 指示書文字数型.dbName, recordID: recordId, fields: data)
+                try? session.update(layout: 指示書文字数型.dbName, recordId: recordId, fields: data)
             }
         } else {
             self.insert()

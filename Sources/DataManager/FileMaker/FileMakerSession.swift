@@ -18,16 +18,17 @@ final class FileMakerSession {
     /// 接続パスワード
     private let password: String
     /// サーバーへの接続
-    private let connection = DMHttpConnection()
+    private let connection: DMHttpConnection
     /// tokenの寿命
     private let expireSeconds: Double = 15 * 60 - 60 // 本来は15分だが余裕を見て60秒減らしている
     /// 一度に取り出すレコードの数
     private let pageCount = 100
     
-    init(url: URL, user: String, password: String) {
+    init(url: URL, user: String, password: String, session: FileMakerSession? = nil) {
         self.url = url
         self.user = user
         self.password = password
+        self.connection = session?.connection ?? DMHttpConnection()
     }
     
     deinit {
@@ -43,6 +44,11 @@ final class FileMakerSession {
             return ticket.token
         }
         return nil
+    }
+    
+    var hasValidToken: Bool {
+        guard let expire = self.ticket?.expire else { return false }
+        return expire < Date()
     }
     
     /// 接続可能な状態にする
@@ -79,6 +85,11 @@ final class FileMakerSession {
         }
         self.ticket = nil
         return true
+    }
+    
+    func invalidate() {
+        self.logout(force: true)
+        self.connection.invalidate()
     }
     
     // MARK: - レコード操作
