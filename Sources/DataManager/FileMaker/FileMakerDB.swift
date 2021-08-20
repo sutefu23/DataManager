@@ -127,7 +127,7 @@ final class FileMakerServer: Hashable {
         defer { lock.unlock() }
         if connecting.isEmpty { updateLogoutBaseLine() }
         for (index, session) in pool.enumerated().reversed() {
-            if session.url.host == url.host {
+            if session.url == url {
                 pool.remove(at: index)
                 connecting[ObjectIdentifier(session)] = session
                 return session
