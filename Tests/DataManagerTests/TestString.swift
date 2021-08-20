@@ -234,5 +234,14 @@ class TestString: XCTestCase {
         XCTAssertEqual("11".filter26進数除外ID(), "11")
         XCTAssertEqual("a11".filter26進数除外ID(), "11")
         XCTAssertEqual("abc11zz".filter26進数除外ID(), "")
+        
+    }
+    
+    func test26baseNextId(){
+        let codeSet1:Set = ["a123","b123","c4","321","d123"]
+        XCTAssertEqual(next26進数コード("123", codeSet: codeSet1), "e123")
+
+        let codeSet2:Set = ["c123","a123","354","321","d123","e123"]
+        XCTAssertEqual(next26進数コード("123", codeSet: codeSet2), "f123")
     }
 }
