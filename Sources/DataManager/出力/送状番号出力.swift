@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum 送状CheckError: String, LocalizedError {
+public enum 送状CheckError: String, LocalizedError {
     case 送り主郵便番号が空欄
     case 送り主電話番号が空欄
     case 送り主住所1が空欄
@@ -28,8 +28,8 @@ enum 送状CheckError: String, LocalizedError {
     case 指示書が不正
     case 着指定日が不正
     case 送り状管理番号が不明
-
-    var errorDescription: String? { self.rawValue }
+    case 古い住所で出力
+    public var errorDescription: String? { self.rawValue }
 }
 
 extension 送状型 {
@@ -99,4 +99,5 @@ extension 送状型 {
         self.送り状番号 = 送り状番号型(状態: .運送会社割当待ち, 運送会社: self.運送会社)
         try self.upload送状番号()
     }
+    
 }
