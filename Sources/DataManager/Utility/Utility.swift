@@ -28,7 +28,7 @@ public final class DataManagerController {
 
 public let dataManager = DataManagerController()
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 
 extension Error {
@@ -112,7 +112,7 @@ extension Error {
 
 #endif
 
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(tvOS)
 extension Error {
     public func asyncShowAlert() {
         DispatchQueue.main.async {
