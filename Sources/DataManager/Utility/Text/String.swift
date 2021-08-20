@@ -339,15 +339,21 @@ func from26進数to数字(_ digit: String) -> Int{
     return result
 }
 
-/// 与えられたIDとSetから次の26進数コードを取得
-/// 例：コード1234の中にa1234があったら次のb1234を返す
-public func next26進数コード(_ code: String, codeSet: Set<String>) -> String{
+/// 与えられたIDとSetから最後の26進数コードを取得
+/// 例：コード1234の中にa1234、b1234があったら次のb1234を返す
+public func last26進数コード(_ code: String, codeSet: Set<String>) -> String?{
     let lastId = codeSet.filter{
         let id = $0.filter26進数除外ID()
         return id == code
     }.sorted{ $0 < $1 }.last
     
-    if let lastId = lastId {
+    return lastId
+}
+/// 与えられたIDとSetから次の26進数コードを取得
+/// 例：コード1234の中にa1234、b1234があったら次のc1234を返す
+public func next26進数コード(_ code: String, codeSet: Set<String>) -> String{
+    
+    if let lastId = last26進数コード(code, codeSet: codeSet){
         let abc = lastId.filter26進数ID()
         let nextNum = from26進数to数字(abc) + 1
         let nextAbc = from数字to26進数(nextNum)
