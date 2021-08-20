@@ -127,19 +127,32 @@ final class FileMakerServer: Hashable {
         defer { lock.unlock() }
         if connecting.isEmpty { updateLogoutBaseLine() }
         for (index, session) in pool.enumerated().reversed() {
-            if session.url == url {
+            if session.url.host == url.host {
                 pool.remove(at: index)
                 connecting[ObjectIdentifier(session)] = session
                 return session
+            } else if session.hasValidToken == false {
+                session.logout()
+                let newSession = FileMakerSession(url: url, user: user, password: password, session: session)
+                pool.remove(at: index)
+                connecting[ObjectIdentifier(newSession)] = newSession
+                return newSession
             }
         }
-        while pool.count >= maxConnection, let session = pool.first {
+        while pool.count > maxConnection, let session = pool.first {
             pool.removeFirst(1)
             session.logout()
         }
-        let session = FileMakerSession(url: url, user: user, password: password)
-        connecting[ObjectIdentifier(session)] = session
-        return session
+        if let first = pool.first {
+            pool.removeFirst()
+            let newSession = FileMakerSession(url: url, user: user, password: password, session: first)
+            connecting[ObjectIdentifier(newSession)] = newSession
+            return newSession
+        } else {
+            let newSession = FileMakerSession(url: url, user: user, password: password)
+            connecting[ObjectIdentifier(newSession)] = newSession
+            return newSession
+        }
     }
     
     /// セッションを返却する

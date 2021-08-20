@@ -48,6 +48,7 @@ typealias DMHttpConnection = DMHttpAppleConnection
 class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProtocol {
     private lazy var session: URLSession = {
         let config = URLSessionConfiguration.default
+        config.httpMaximumConnectionsPerHost = 1
 //        if #available(iOS 13.0, *) {
 //            config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
 //        } else {
@@ -58,6 +59,10 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
     }()
     private let sem = DispatchSemaphore(value: 0)
 
+    deinit {
+        session.finishTasksAndInvalidate()
+    }
+    
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {
         var request = URLRequest(url: url)
         request.httpMethod = method.string
