@@ -156,9 +156,11 @@ public class 送状型: Identifiable {
     init?(_ record: FileMakerRecord) {
         guard let 管理番号 = record.string(forKey: "管理番号"),
             let 送り状番号 = record.string(forKey: "送り状番号"),
+              let 福山依頼主コード = record.string(forKey: "福山依頼主コード"),
               let 運送会社 = record.string(forKey: "運送会社") else { return nil }
         self.管理番号 = 管理番号
         self.送り状番号 = 送り状番号型(rawValue: 送り状番号)
+        self.福山依頼主コード = 福山依頼主コード
         self.運送会社 = 運送会社型(name: 運送会社)
         self.record = record
     }
@@ -174,6 +176,7 @@ public class 送状型: Identifiable {
     public var 管理番号: String
     public var 送り状番号: 送り状番号型
     public var 運送会社: 運送会社型
+    public var 福山依頼主コード: String
 
     public var 同送情報: String { record.string(forKey: "同送情報")! }
     public var 種類: String { record.string(forKey: "種類")! }
@@ -197,7 +200,6 @@ public class 送状型: Identifiable {
     public var 依頼主電話番号: String { record.string(forKey: "依頼主電話番号")! }
     public var 地域: String { record.string(forKey: "地域")! }
     public var ヤマトお客様コード: String { record.string(forKey: "ヤマトお客様コード")! }
-    public var 福山依頼主コード: String { record.string(forKey: "福山依頼主コード")! }
     
     public lazy var 指示書: 指示書型? = {
         try? 指示書型.findDirect(uuid: self.指示書UUID)
