@@ -365,12 +365,12 @@ public func next26進数コード(_ code: String, codeSet: Set<String>) -> Strin
 
 extension String {
     /// idがabcなどの26進数付きかどうかを判別
-    func is26進数付きID()-> Bool{
+    public func is26進数付きID()-> Bool{
         let pattern = "[a-zA-Z]+[0-9]+"
         return self.contain(pattern)
     }
     /// idから26進数を取得。存在しなければ空文字
-    func filter26進数ID()-> String{
+    public func filter26進数ID()-> String{
         let pattern = "^[a-zA-Z]+"
         let machies = self.matchFilter(pattern)
         if machies.count > 0 {
@@ -380,7 +380,7 @@ extension String {
         }
     }
     /// idから26進数を除外した部分を取得。最後が数字でなければ空文字
-    func filter26進数除外ID()-> String{
+    public func filter26進数除外ID()-> String{
         let pattern = "[0-9]+$"
         let machies = self.matchFilter(pattern)
         if machies.count > 0 {
@@ -395,14 +395,14 @@ extension String {
 /// 正規表現パターンマッチ
 extension String {
     /// 正規表現を含むか否か
-    func contain(_ pattern: String) -> Bool {
+    public func contain(_ pattern: String) -> Bool {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options()) else {
             return false
         }
         return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(), range: NSMakeRange(0, self.count)) != nil
     }
     ///マッチした部分の抽出
-    func matchFilter(_ pattern: String) -> [String] {
+    public func matchFilter(_ pattern: String) -> [String] {
         guard let regex = try? NSRegularExpression(pattern: pattern),
               let matched = regex.firstMatch(in: self, range: NSRange(location: 0, length: self.count))
         else { return [] }
