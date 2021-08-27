@@ -16,7 +16,7 @@ public struct 送り状エラー型 {
         self.エラー = エラー
     }
     
-    public init?(_ order: 送状型) {
+    public init?(_ order: 送状型, senders: [福山ご依頼主型]?) {
         func standardError() -> 送状CheckError? {
             guard let source = order.指示書 else { return nil }
             if !source.isActive { return .指示書が不正 }
@@ -31,7 +31,8 @@ public struct 送り状エラー型 {
         case .ヤマト:
             self.init(ヤマト送状: order)
         case .福山:
-            self.init(福山送り状: order)
+            guard let senders = senders else { return nil }
+            self.init(福山送り状: order, 福山ご依頼主一覧: senders)
         default:
             return nil
         }
@@ -58,9 +59,10 @@ public struct 送り状エラー型 {
         self.init(送り状: order, エラー: error)
     }
     
-    init?(福山送り状 order: 送状型) {
+    init?(福山送り状 order: 送状型, 福山ご依頼主一覧: [福山ご依頼主型]) {
         let error: 送状CheckError
-        if order.福山依頼主コード.isEmpty { error = 送状CheckError.福山依頼主コードが空欄 } else { return nil }
+        if order.福山依頼主コード.isEmpty { error = 送状CheckError.福山依頼主コードが空欄 } else
+        if 福山ご依頼主一覧.findOld依頼主(住所: order.依頼主住所) == nil { error = 送状CheckError.古い住所で出力 } else { return nil }
         self.init(送り状: order, エラー: error)
     }
 }
@@ -82,11 +84,11 @@ public extension Sequence where Element == 送り状エラー型 {
 }
 
 extension Sequence where Element == 送状型 {
-    public func check送り状() -> (ok: [送状型], ng: [送り状エラー型]) {
+    public func check送り状(senders: [福山ご依頼主型]?) -> (ok: [送状型], ng: [送り状エラー型]) {
         var ok: [送状型] = []
         var ng: [送り状エラー型] = []
         for order in self {
-            if let error = 送り状エラー型(order) {
+            if let error = 送り状エラー型(order, senders: senders) {
                 ng.append(error)
             } else {
                 ok.append(order)
