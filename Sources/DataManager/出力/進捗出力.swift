@@ -199,7 +199,6 @@ extension Sequence where Element == 進捗出力型 {
                 return true
             }
             if target.isEmpty { return }
-            if loopCount.isMultiple(of: 2) { FileMakerDB.logoutAll() }
             loopCount += 1
         } while loopCount <= 4
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")

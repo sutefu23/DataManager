@@ -32,7 +32,7 @@ final class FileMakerSession {
     }
     
     deinit {
-        self.logout(force: true)
+        self.logout()
     }
     
     // MARK: - 接続管理
@@ -61,7 +61,14 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("sessions")
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
-        guard response.code == 0, case let token as String = response["token"] else { throw FileMakerError.tokenCreate(message: response.message) }
+        guard response.code == 0, case let token as String = response["token"] else {
+            Thread.sleep(forTimeInterval: 15)
+            if response.code == 812 {
+                throw FileMakerError.exceedHostCapacity
+            } else {
+                throw FileMakerError.tokenCreate(message: response.message)
+            }
+        }
         self.ticket = (token: token, expire: expire)
         return token
     }
@@ -74,9 +81,8 @@ final class FileMakerSession {
 
     /// 接続を切断状態にする
     @discardableResult
-    func logout(force: Bool = true) -> Bool {
+    func logout() -> Bool {
         guard let token = self.ticket?.token else { return false }
-//        guard let token = self.activeToken else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
         do {
             _ = try connection.callFileMaker(url: url, method: .DELETE)
@@ -88,7 +94,7 @@ final class FileMakerSession {
     }
     
     func invalidate() {
-        self.logout(force: true)
+        self.logout()
         self.connection.invalidate()
     }
     
@@ -174,7 +180,9 @@ final class FileMakerSession {
         let token = try self.prepareToken()
         while true {
             let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Bearer(token: token), object: request)
-            guard response.code == 0 || response.code == 401 else { throw FileMakerError.find(message: response.message) }
+            guard response.code == 0 || response.code == 401 else {
+                throw FileMakerError.find(message: response.message)
+            }
             if response.message.contains("Field") {
                 throw FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)")
             }

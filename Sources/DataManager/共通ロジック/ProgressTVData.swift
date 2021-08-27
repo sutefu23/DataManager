@@ -460,7 +460,7 @@ public final class ProgressTVCore {
         if count2 != 0 {
             startUpdateTimer()
         }
-        FileMakerDB.logoutAll()
+//        FileMakerDB.logoutAll()
     }
     
     // TableView表示用
@@ -531,7 +531,7 @@ public final class ProgressTVCore {
         default:
             break
         }
-        FileMakerDB.logoutAll()
+//        FileMakerDB.logoutAll()
         if let color = color {
             return text.makeAttributedString(color: color, font: font)
         } else {
@@ -581,7 +581,7 @@ extension ProgressTVCore{
         self.updateLabel(view: view, row: row, col: "LaserStart")
         self.updateLabel(view: view, row: row, col: "LaserEnd")
         view.backgroundColor = self.tableViewRowBackgroundColor(row: row)
-        FileMakerDB.logoutAll()
+//        FileMakerDB.logoutAll()
     }
 }
 #endif

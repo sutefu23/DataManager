@@ -76,8 +76,8 @@ enum FileMakerSortType: String, Encodable {
 
 /// １台のサーバーへの最大同時接続数
 private var maxConnection = 3
-/// 最低180秒はアクセスする
-private let lastAccessInterval: TimeInterval = 60
+/// 最低300秒はアクセスする
+private let lastAccessInterval: TimeInterval = 300
 
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: Hashable {
@@ -131,7 +131,7 @@ final class FileMakerServer: Hashable {
                 pool.remove(at: index)
                 connecting[ObjectIdentifier(session)] = session
                 return session
-            } else if session.hasValidToken == false {
+            } else {
                 session.logout()
                 let newSession = FileMakerSession(url: url, user: user, password: password, session: session)
                 pool.remove(at: index)
@@ -166,10 +166,8 @@ final class FileMakerServer: Hashable {
 
     /// セッションを解放する
     func releaseSession(_ session: FileMakerSession) {
-        lock.lock()
-        connecting[ObjectIdentifier(session)] = nil
-        lock.unlock()
-        sem.signal()
+        session.invalidate()
+        self.putSession(session)
     }
     
     private func updateLogoutBaseLine() {
@@ -239,10 +237,10 @@ public final class FileMakerDB {
                 try work(session)
             } catch {
                 if case let error as FileMakerError = error, error.canRetry {
-                    session.logout()
                     server.releaseSession(session)
                     Thread.sleep(forTimeInterval: 0.5)
                     let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+                    defer { server.putSession(newSession) }
                     try work(newSession)
                 } else {
                     throw error
@@ -262,10 +260,10 @@ public final class FileMakerDB {
                 return try work(session)
             } catch {
                 if case let error as FileMakerError = error, error.canRetry {
-                    session.logout()
                     server.releaseSession(session)
                     Thread.sleep(forTimeInterval: 0.5)
                     let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
+                    defer { server.putSession(newSession) }
                     return try work(newSession)
                 } else {
                     throw error

@@ -14,7 +14,7 @@ import Foundation
 import UIKit
 #endif
 
-private var lock = NSLock()
+private let lock = NSLock()
 
 /// 存在確認された伝票の伝票番号
 private var testCache: Set<Int> = Set<Int>()

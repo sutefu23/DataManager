@@ -41,7 +41,7 @@ public extension RunLoop {
     
     static func execeOnceNow<T: AnyObject>(_ target: T?) {
         assert(Thread.isMainThread)
-        guard let target = target else { return }
+        guard Thread.isMainThread, let target = target else { return }
         let id = ObjectIdentifier(target)
         guard targets.remove(id) != nil else { return }
         for (index, data) in execs.enumerated() {
@@ -55,7 +55,7 @@ public extension RunLoop {
     
     static func cancelOnce<T: AnyObject>(_ target: T?) {
         assert(Thread.isMainThread)
-        guard let target = target else { return }
+        guard Thread.isMainThread, let target = target else { return }
         let id = ObjectIdentifier(target)
         guard targets.remove(id) != nil else { return }
         for (index, data) in execs.enumerated() {
