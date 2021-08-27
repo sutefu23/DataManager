@@ -166,7 +166,7 @@ final class FileMakerServer: Hashable {
 
     /// セッションを解放する
     func releaseSession(_ session: FileMakerSession) {
-        session.invalidate()
+        session.logout()
         self.putSession(session)
     }
     
