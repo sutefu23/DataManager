@@ -205,6 +205,10 @@ public class 送状型: Identifiable {
         try? 指示書型.findDirect(uuid: self.指示書UUID)
     }()
     
+    public lazy var 依頼主住所: 住所型 = {
+        return 住所型(郵便番号: self.依頼主郵便番号 , 住所1: self.依頼主住所1, 住所2: self.依頼主住所2, 住所3: self.依頼主住所3, 名前: self.依頼主受取者名 , 電話番号: self.依頼主電話番号)
+    }()
+    
     public var 伝票番号: 伝票番号型? { record.伝票番号(forKey: "エッチング指示書テーブル::伝票番号") }
     public var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "エッチング指示書テーブル::伝票種類") }
     public var 出荷納期: Day? { record.day(forKey: "エッチング指示書テーブル::出荷納期") }

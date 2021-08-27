@@ -176,6 +176,13 @@ extension Array where Element == 福山ご依頼主型 {
         self.init(result)
     }
     
+    ///　住所から旧住所マスタを取得
+    ///　旧住所のマスタには26進数でIDに接頭辞が振られている
+    public func findOld依頼主(住所: 住所型) -> 福山ご依頼主型?{
+        guard let data =  self.first(where: {$0.住所型.比較用データ.contains(to:住所.比較用データ)}), data.荷受人コード.is26進数付きID()
+        else { return nil }
+        return data
+    }
 }
 
 extension Sequence where Element == 福山ご依頼主型 {
