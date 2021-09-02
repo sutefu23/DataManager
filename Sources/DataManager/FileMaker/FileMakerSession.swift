@@ -8,9 +8,17 @@
 
 import Foundation
 
+/// tokenの寿命
+private let expireSeconds: Double = 10
+/// token解放後のtcp/ipセッションの寿命
+private let expireSeconds2: Double = 30
+
+private let sessionIDGenerator = SerialGenerator()
+
 // MARK: -
 /// FileMaker Serverとの通信
-final class FileMakerSession {
+final class FileMakerSession: Loggable {
+    typealias ID = ObjectID
     /// ベースとなるURL
     let url: URL
     /// 接続ユーザー名
@@ -18,13 +26,14 @@ final class FileMakerSession {
     /// 接続パスワード
     private let password: String
     /// サーバーへの接続
-    private let connection: DMHttpConnection
-    /// tokenの寿命
-    private let expireSeconds: Double = 15 * 60 - 60 // 本来は15分だが余裕を見て60秒減らしている
+    private var connection: DMHttpConnection
     /// 一度に取り出すレコードの数
     private let pageCount = 100
     
+    let id: ObjectID = sessionIDGenerator.generateID()
+
     init(url: URL, user: String, password: String, session: FileMakerSession? = nil) {
+        session?.logout(waitAfterLogout: false)
         self.url = url
         self.user = user
         self.password = password
@@ -32,23 +41,49 @@ final class FileMakerSession {
     }
     
     deinit {
-        self.logout()
+        // tokenを保持している場合、解放する
+        self.logout(waitAfterLogout: false)
     }
     
     // MARK: - 接続管理
-    private var ticket: (token: String, expire: Date)?
+    /// (token, 自動切断までの時間, 自動切断時間後にtokenを使いたくなった場合のロスタイム)
+    private var ticket: (token: String, expire: Date, extendExpire: Date)? {
+        didSet {
+            if ticket == nil {
+                sessionExpire = Date(timeIntervalSinceNow: expireSeconds2)
+            } else {
+                sessionExpire = nil
+            }
+        }
+    }
+    /// logout後のセッションの有効期限
+    private var sessionExpire: Date? // logout後のexpire
     private var activeToken: String? {
         guard let ticket = self.ticket else { return nil }
-        let now = Date()
-        if now < ticket.expire {
+        if Date() < ticket.extendExpire {
             return ticket.token
         }
         return nil
     }
+
+    /// token期限を延長する
+    func updateTokenExpire() {
+        ticket?.extendExpire = Date(timeIntervalSinceNow: expireSeconds * 2)
+        ticket?.expire = Date(timeIntervalSinceNow: expireSeconds)
+    }
+
+    /// tokenを保有している場合true
+    var hasToken: Bool { return self.ticket?.token != nil }
     
+    /// 有効期限内のtokenを保有している場合true
     var hasValidToken: Bool {
         guard let expire = self.ticket?.expire else { return false }
-        return expire < Date()
+        return expire > Date()
+    }
+    /// 有効期限内のTCP/IPセッションを保有している場合true
+    var hasValidConnection: Bool {
+        guard self.ticket == nil, let expire = self.sessionExpire else { return true }
+        return expire > Date()
     }
     
     /// 接続可能な状態にする
@@ -56,20 +91,20 @@ final class FileMakerSession {
         if reuse {
             if let token = self.activeToken { return token }
         } else {
-            self.logout()
+            self.logout(waitAfterLogout: true)
         }
+        log("token作成")
         let url = self.url.appendingPathComponent("sessions")
-        let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
         guard response.code == 0, case let token as String = response["token"] else {
             Thread.sleep(forTimeInterval: 15)
-            if response.code == 812 {
-                throw FileMakerError.exceedHostCapacity
-            } else {
-                throw FileMakerError.tokenCreate(message: response.message)
-            }
+            throw FileMakerError.tokenCreate(message: response.message, code: response.code)
+                .log(self, .critical)
         }
-        self.ticket = (token: token, expire: expire)
+        Thread.sleep(forTimeInterval: 0.5)
+        let extendExpire: Date = Date(timeIntervalSinceNow: expireSeconds * 2)
+        let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
+        self.ticket = (token: token, expire: expire, extendExpire: extendExpire)
         return token
     }
     
@@ -81,20 +116,28 @@ final class FileMakerSession {
 
     /// 接続を切断状態にする
     @discardableResult
-    func logout() -> Bool {
+    func logout(waitAfterLogout: Bool) -> Bool {
         guard let token = self.ticket?.token else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
         do {
-            _ = try connection.callFileMaker(url: url, method: .DELETE)
+            log("token削除")
+            let response = try connection.callFileMaker(url: url, method: .DELETE)
+            if response.code != 0 {
+                self.log("token削除失敗（\(response.message)）", level: .warning)
+            }
+            if waitAfterLogout {
+                Thread.sleep(forTimeInterval: 0.1)
+            }
         } catch {
             error.asyncShowAlert()
         }
         self.ticket = nil
         return true
     }
-    
+    /// セッションを無効化する
     func invalidate() {
-        self.logout()
+        self.logout(waitAfterLogout: false)
+        log("セッション終了")
         self.connection.invalidate()
     }
     
@@ -106,7 +149,7 @@ final class FileMakerSession {
         if !sortItems.isEmpty {
             let request = sortItems.map { FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
             let encoder = JSONEncoder()
-            guard let data = try? encoder.encode(request) else { throw FileMakerError.fetch(message: "sortItem encoding") }
+            guard let data = try? encoder.encode(request) else { throw FileMakerError.fetch(message: "sortItem encoding").log(self, .critical) }
             let str = String(data: data, encoding: .utf8)
             sortQueryItem = URLQueryItem(name: "_sort", value: str)
         } else {
@@ -143,7 +186,9 @@ final class FileMakerSession {
             comp.queryItems = queryItems
             
             let response = try connection.callFileMaker(url: comp.url!, method: .GET, authorization: .Bearer(token: token))
-            guard response.code == 0 else { throw FileMakerError.fetch(message: response.message) }
+            guard response.code == 0 else {
+                throw FileMakerDetailedError(table: layout, work: .fetch, response: response).log(self)
+            }
             guard let newRecords = response.records else { break }
             result.append(contentsOf: newRecords)
             let count = newRecords.count
@@ -181,10 +226,10 @@ final class FileMakerSession {
         while true {
             let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Bearer(token: token), object: request)
             guard response.code == 0 || response.code == 401 else {
-                throw FileMakerError.find(message: response.message)
+                throw FileMakerDetailedError(table: layout, work: .find(query: query), response: response).log(self)
             }
             if response.message.contains("Field") {
-                throw FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)")
+                throw FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)").log(self, .critical)
             }
             guard let newRecords = response.records else { break }
             result.append(contentsOf: newRecords)
@@ -202,7 +247,9 @@ final class FileMakerSession {
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
         let response = try connection.callFileMaker(url: url, method: .DELETE, authorization: .Bearer(token: token))
-        if response.code != 0 { throw FileMakerError.delete(message: response.message) }
+        if response.code != 0 {
+            throw FileMakerDetailedError(table: layout, work: .delete(recordID: recordID), response: response).log(self)
+        }
     }
     
     /// レコードを更新する
@@ -211,7 +258,9 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
         let request = ["fieldData" : fields]
         let response = try connection.callFileMaker(url: url, method: .PATCH, authorization: .Bearer(token: token), object: request)
-        if response.code != 0 { throw FileMakerError.update(message: response.message) }
+        if response.code != 0 {
+            throw FileMakerDetailedError(table: layout, work: .update(recordID: recordID, fields: fields), response: response).log(self)
+        }
     }
     
     /// レコードを追加する
@@ -221,7 +270,9 @@ final class FileMakerSession {
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         let request = ["fieldData": fields]
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Bearer(token: token), object: request)
-        guard response.code == 0, case let recordId as String = response["recordId"] else { throw FileMakerError.insert(message: response.message) }
+        guard response.code == 0, case let recordId as String = response["recordId"] else {
+            throw FileMakerDetailedError(table: layout, work: .insert(fields: fields), response: response).log(self)
+        }
         return recordId
     }
     
@@ -234,13 +285,41 @@ final class FileMakerSession {
     func executeScript(layout: String, script: String, param: String) throws {
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components") }
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components", code: nil).log(self, .critical) }
         components.queryItems = [
             URLQueryItem(name: "script", value: script),
             URLQueryItem(name: "script.param", value: param)
         ]
         let response = try connection.callFileMaker(url: components.url!, method: .GET, authorization: .Bearer(token: token))
-        if response.code != 0 { throw FileMakerError.execute(message: response.message) }
+        if response.code != 0 {
+            throw FileMakerDetailedError(table: layout, work: .exec(script: script, param: param), response: response).log(self)
+        }
+    }
+    
+    /// missingField発生時のリトライ
+    func checkMissing() {
+        debugLog("recover field missing")
+        self.logout(waitAfterLogout: false)
+        let waitTime: TimeInterval
+        if let date = lastMissingDate, date > Date() {
+            debugLog("wait field missing")
+            waitTime = expireSeconds
+        } else {
+            waitTime = 1.0
+        }
+        Thread.sleep(forTimeInterval: waitTime)
+        lastMissingDate = Date(timeIntervalSinceNow: expireSeconds + expireSeconds2)
+    }
+    var lastMissingDate: Date?
+    
+    func allResetSession() {
+        self.logout(waitAfterLogout: false)
+        self.connection.invalidate()
+        self.connection = DMHttpConnection()
+    }
+    
+    func log(_ text: String, level: DMLogLevel = .information) {
+        logSystem.registText(title: text, detail: "セッション\(id)", level: level)
     }
 }
 
@@ -279,7 +358,8 @@ extension DMHttpConnectionProtocol {
         try autoreleasepool {
             let encoder = JSONEncoder()
             let data = try encoder.encode(object)
-            return try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
+            let response = try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
+            return response
         }
     }
 }

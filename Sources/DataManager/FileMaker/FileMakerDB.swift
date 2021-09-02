@@ -8,6 +8,15 @@
 
 import Foundation
 
+/// １台のサーバーへの最大同時接続数
+private var maxConnection = 3
+/// 最低300秒はアクセスする
+private let lastAccessInterval: TimeInterval = 300
+/// 有効期限一括チェックの周期
+private let timerInterval: Int = 10
+/// 再実行前の待機時間
+private let retryInterval: TimeInterval = 1.0
+
 public extension UserDefaults {
     /// FileMakerへのアクセスを停止したいときはtrue
     var filemakerIsDisabled: Bool {
@@ -74,17 +83,13 @@ enum FileMakerSortType: String, Encodable {
     case 降順 = "descend"
 }
 
-/// １台のサーバーへの最大同時接続数
-private var maxConnection = 3
-/// 最低300秒はアクセスする
-private let lastAccessInterval: TimeInterval = 300
-
 /// サーバーオブジェクト（セッションの管理）
-final class FileMakerServer: Hashable {
+final class FileMakerServer: Hashable, Loggable {
     private var pool: [FileMakerSession] = []
-    private var connecting: [ObjectIdentifier: FileMakerSession] = [:]
+    private var connecting: [FileMakerSession.ID: FileMakerSession] = [:]
     private let lock = NSRecursiveLock()
     private let sem: DispatchSemaphore
+    private var timerSet: Bool = false
 
     let serverURL: URL
     let name: String
@@ -99,7 +104,7 @@ final class FileMakerServer: Hashable {
     /// 現在の待機数
     var poolCount: Int {
         lock.lock(); defer { lock.unlock() }
-        return pool.count
+        return pool.reduce(0) { $1.hasValidToken ? $0+1 : $0 }
     }
     /// 現在の接続数
     var connectingCount: Int {
@@ -126,48 +131,34 @@ final class FileMakerServer: Hashable {
         lock.lock()
         defer { lock.unlock() }
         if connecting.isEmpty { updateLogoutBaseLine() }
-        for (index, session) in pool.enumerated().reversed() {
-            if session.url == url {
-                pool.remove(at: index)
-                connecting[ObjectIdentifier(session)] = session
-                return session
-            } else {
-                session.logout()
-                let newSession = FileMakerSession(url: url, user: user, password: password, session: session)
-                pool.remove(at: index)
-                connecting[ObjectIdentifier(newSession)] = newSession
-                return newSession
-            }
+        // 使い回し
+        for (index, session) in pool.enumerated().reversed() where session.url == url {
+            pool.remove(at: index)
+            connecting[session.id] = session
+            return session
         }
-        while pool.count > maxConnection, let session = pool.first {
-            pool.removeFirst(1)
-            session.invalidate()
+        // 作成
+        let newSession: FileMakerSession
+        let totalCount = pool.count + connecting.count
+        if totalCount >= maxConnection, let last = pool.popLast() { // 再生する
+            debugLog("reset session")
+            newSession = FileMakerSession(url: url, user: user, password: password, session: last)
+        } else { // 完全新規作成
+            newSession = FileMakerSession(url: url, user: user, password: password)
         }
-        if let first = pool.first {
-            pool.removeFirst()
-            let newSession = FileMakerSession(url: url, user: user, password: password, session: first)
-            connecting[ObjectIdentifier(newSession)] = newSession
-            return newSession
-        } else {
-            let newSession = FileMakerSession(url: url, user: user, password: password)
-            connecting[ObjectIdentifier(newSession)] = newSession
-            return newSession
-        }
+        connecting[newSession.id] = newSession
+        return newSession
     }
     
     /// セッションを返却する
     func putSession(_ session: FileMakerSession) {
+        session.updateTokenExpire()
         lock.lock()
         self.pool.append(session)
-        connecting[ObjectIdentifier(session)] = nil
+        connecting[session.id] = nil
         lock.unlock()
         sem.signal()
-    }
-
-    /// セッションを解放する
-    func releaseSession(_ session: FileMakerSession) {
-        session.logout()
-        self.putSession(session)
+        startTimer()
     }
     
     private func updateLogoutBaseLine() {
@@ -182,14 +173,60 @@ final class FileMakerServer: Hashable {
         if !force {
             if abs(self.logoutBaseLine.timeIntervalSinceNow) < lastAccessInterval { return }
         }
-        pool.forEach { $0.invalidate() }
+        DispatchQueue.concurrentPerform(iterations: pool.count) {
+            let pool = pool[$0]
+            pool.invalidate()
+        }
         pool.removeAll()
         updateLogoutBaseLine()
+    }
+    
+    // MARK: - logganle
+    func log(_ text: String, level: DMLogLevel) {
+        logSystem.registText(title: text, detail: "db: \(name)", level: level)
+    }
+
+    // MARK: - タイマー管理
+    /// 有効期限処理タイマーを起動する。起動済みなら何もしない
+    func startTimer() {
+        lock.lock(); defer { lock.unlock() }
+        if timerSet || pool.isEmpty { return }
+        timerSet = true
+        debugLog("start timer")
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + .seconds(timerInterval)) {
+            self.checkSessions()
+        }
+    }
+    /// セッションの有効期限処理を実行する
+    func checkSessions() {
+        lock.lock(); defer { lock.unlock() }
+        debugLog("start check")
+        timerSet = false
+        /// 別スレッドで処理するログアウト処理の同期用
+        let group = DispatchGroup()
+        for (index, session) in pool.enumerated().reversed() {
+            if session.hasToken {
+                if !session.hasValidToken {
+                    DispatchQueue.global().async(group: group) {
+                        session.debugLog("expire logout")
+                        session.logout(waitAfterLogout: false)
+                    }
+                }
+            } else if !session.hasValidConnection {
+                DispatchQueue.global(qos: .background).async {
+                    session.debugLog("expire invalidate")
+                    session.invalidate()
+                }
+                pool.remove(at: index)
+            }
+        }
+        group.wait()
+        if !pool.isEmpty { self.startTimer() } // poolが存在 = チェックすることがある
     }
 }
 
 /// サーバー上のデータベースファイル
-public final class FileMakerDB {
+public final class FileMakerDB: Loggable {
     /// 生産管理DB
     static let pm_osakaname: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
     /// 生産管理テストDB
@@ -207,12 +244,14 @@ public final class FileMakerDB {
     
     let dbURL: URL
     var server: FileMakerServer
+    let filename: String
     let user: String
     let password: String
 
     init(server: String, filename: String, user: String, password: String) {
         self.server = serverCache.server(server)
         self.dbURL = self.server.makeURL(with: filename)
+        self.filename = filename
         self.user = user
         self.password = password
     }
@@ -228,44 +267,26 @@ public final class FileMakerDB {
     }
     
     /// セッションを一時的に取得して作業を行う
-    /// - Parameter work: セッション上で行う作業
-    private func execute(_ work: (FileMakerSession) throws -> Void) rethrows {
-        try autoreleasepool {
-            let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
-            defer { server.putSession(session) }
-            do {
-                try work(session)
-            } catch {
-                if case let error as FileMakerError = error, error.canRetry {
-                    server.releaseSession(session)
-                    Thread.sleep(forTimeInterval: 0.5)
-                    let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
-                    defer { server.putSession(newSession) }
-                    try work(newSession)
-                } else {
-                    throw error
-                }
-            }
-        }
-    }
-    
-    /// セッションを一時的に取得して作業を行う
     /// - Parameter work: セッション上で行う作業。なんらかの値を返す
-    /// - Returns: 作業の返り値
-    private func execute2<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
+    /// - Returns: 作業の返り値。Voidの時もある
+    private func execute<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
         try autoreleasepool {
             let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
             defer { server.putSession(session) }
             do {
                 return try work(session)
             } catch {
-                if case let error as FileMakerError = error, error.canRetry {
-                    server.releaseSession(session)
-                    Thread.sleep(forTimeInterval: 0.5)
-                    let newSession = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
-                    defer { server.putSession(newSession) }
-                    return try work(newSession)
+                guard error.canRetry else { throw error }
+                if error.resetToken {
+                    session.checkMissing()
                 } else {
+                    Thread.sleep(forTimeInterval: retryInterval)
+                }
+                do {
+                    debugLog("retry")
+                    return try work(session)
+                } catch var error {
+                    error.retryCount = 2
                     throw error
                 }
             }
@@ -274,7 +295,7 @@ public final class FileMakerDB {
     
     /// サーバーが停止中ならtrueを返す
     private func checkStop() throws {
-        if !FileMakerDB.isEnabled { throw FileMakerError.dbIsDisabled }
+        if !FileMakerDB.isEnabled { throw FileMakerError.dbIsDisabled.log(.critical) }
     }
 
     /// スクリプトを実行する
@@ -289,7 +310,7 @@ public final class FileMakerDB {
 
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
         try checkStop()
-        return try self.execute2 { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
+        return try self.execute { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
     }
     
     func find(layout: String, recordId: Int) throws -> FileMakerRecord? {
@@ -299,18 +320,12 @@ public final class FileMakerDB {
     
     func find(layout: String, query: [[String: String]], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
         try checkStop()
-        do {
-            return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
-        } catch {
-            server.logout(force: false)
-            Thread.sleep(forTimeInterval: 0.5)
-            return try self.execute2 { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
-        }
+        return try self.execute { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
     }
     
     func downloadObject(url: URL) throws -> Data? {
         try checkStop()
-        return try self.execute2 { try $0.download(url) }
+        return try self.execute { try $0.download(url) }
     }
     
     func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
@@ -326,17 +341,17 @@ public final class FileMakerDB {
     @discardableResult
     func insert(layout: String, fields: FileMakerQuery) throws -> String {
         try checkStop()
-        return try self.execute2 { try $0.insert(layout: layout, fields: fields) }
+        return try self.execute { try $0.insert(layout: layout, fields: fields) }
     }
     
     /// DBの接続状態を確認し接続できないなら例外を出す
     public static func checkConnection() throws {
         if defaults.filemakerIsDisabled {
-            throw FileMakerError.dbIsDisabled
+            throw FileMakerError.dbIsDisabled.log(.critical)
         }
-        let isOk = pm_osakaname.execute2 { $0.checkDBAccess() }
+        let isOk = pm_osakaname.execute { $0.checkDBAccess() }
         if isOk == false {
-            throw FileMakerError.noConnection
+            throw FileMakerError.noConnection.log(.critical)
         }
     }
     /// DBにアクセス可能ならtrueを返す
@@ -364,5 +379,8 @@ public final class FileMakerDB {
     public static var poolCount: Int { serverCache.poolCount }
     /// 全てのサーバーの現在の接続数の合計
     public static var connectionCount: Int { serverCache.connectingCount }
-
+    
+    public func log(_ text: String, level: DMLogLevel = .information) {
+        logSystem.registText(title: "\(filename):text", level: level)
+    }
 }

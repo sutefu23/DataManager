@@ -178,6 +178,7 @@ extension Sequence where Element == 進捗出力型 {
         if target.isEmpty { return }
         var loopCount = 1
         repeat {
+            if loopCount == 3 { session.allResetSession() }
             let uuid = UUID()
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
@@ -201,7 +202,7 @@ extension Sequence where Element == 進捗出力型 {
             if target.isEmpty { return }
             loopCount += 1
         } while loopCount <= 4
-        throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件")
+        throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件,sid:\(session.id)").log(.critical)
     }
     
     /// 参照リストとの重複を削除する

@@ -100,6 +100,11 @@ public struct Day: Hashable, Strideable, Codable {
             return nil
         }
     }
+    // MARK: - <Hashable>
+    public static func ==(left: Day, right: Day) -> Bool {
+        return left.day == right.day && left.month == right.month && left.year == right.year
+    }
+    
     // MARK: - <Codable>
     enum CodingKeys: String, CodingKey {
         case year = "Year"

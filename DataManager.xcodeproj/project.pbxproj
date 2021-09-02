@@ -67,6 +67,8 @@
 		14A0C10025BA9DE800C44167 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */; };
 		14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */; };
 		14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */; };
+		14DF962926E050B5003CC5BE /* LogSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DF962826E050B5003CC5BE /* LogSystem.swift */; };
+		14DF962B26E050BF003CC5BE /* LogData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DF962A26E050BF003CC5BE /* LogData.swift */; };
 		14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* 食事時間帯.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestSession.swift */; };
 		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
@@ -318,6 +320,8 @@
 		14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
 		14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableGenerator.swift; sourceTree = "<group>"; };
 		14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "同期進捗キャッシュ.swift"; sourceTree = "<group>"; };
+		14DF962826E050B5003CC5BE /* LogSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSystem.swift; sourceTree = "<group>"; };
+		14DF962A26E050BF003CC5BE /* LogData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogData.swift; sourceTree = "<group>"; };
 		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
@@ -567,6 +571,16 @@
 			path = CSV;
 			sourceTree = "<group>";
 		};
+		14DF962726E05098003CC5BE /* エラー処理 */ = {
+			isa = PBXGroup;
+			children = (
+				14DF962826E050B5003CC5BE /* LogSystem.swift */,
+				14DF962A26E050BF003CC5BE /* LogData.swift */,
+				OBJ_29 /* FileMakerError.swift */,
+			);
+			path = "エラー処理";
+			sourceTree = "<group>";
+		};
 		OBJ_105 /* 工程分析 */ = {
 			isa = PBXGroup;
 			children = (
@@ -718,7 +732,6 @@
 				OBJ_28 /* FileMakerDB.swift */,
 				OBJ_30 /* FileMakerRecord.swift */,
 				OBJ_31 /* FileMakerSession.swift */,
-				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = FileMaker;
 			sourceTree = "<group>";
@@ -828,6 +841,7 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				14DF962726E05098003CC5BE /* エラー処理 */,
 				14310E6C2643D3CE00F062CA /* アクションライン */,
 				149D95F025B95F68000F97B5 /* CSV */,
 				147A6311255927610077634B /* 工程分解 */,
@@ -1087,6 +1101,7 @@
 				OBJ_228 /* NSAttributedString.swift in Sources */,
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
+				14DF962926E050B5003CC5BE /* LogSystem.swift in Sources */,
 				142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */,
 				143C9B14269C055000D69D3E /* ヤマト送状番号.swift in Sources */,
 				141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */,
@@ -1168,6 +1183,7 @@
 				OBJ_289 /* 指示書キャッシュ.swift in Sources */,
 				OBJ_290 /* 指示書進捗キャッシュ.swift in Sources */,
 				1424B4E726C1F154002C5B72 /* DatManager.docc in Sources */,
+				14DF962B26E050BF003CC5BE /* LogData.swift in Sources */,
 				1498B067252429CB001698DF /* IDカード型.swift in Sources */,
 				OBJ_291 /* 最終発注単価キャッシュ.swift in Sources */,
 				OBJ_292 /* 箱文字優先度キャッシュ.swift in Sources */,
@@ -1279,7 +1295,6 @@
 				INSTALL_PATH = "@rpath/";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1310,7 +1325,6 @@
 				INSTALL_PATH = "@rpath/";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1369,7 +1383,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1511,7 +1525,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

@@ -168,11 +168,12 @@ extension Sequence where Element == 使用資材出力型 {
         try self.exportToDB(loopCount: 0, session: session)
     }
     
-    private func exportToDB(loopCount: Int, session: FileMakerSession) throws {
+    private func exportToDB(loopCount: Int, session: FileMakerSession, uuid: UUID? = nil) throws {
+        if loopCount == 2 { session.allResetSession() }
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_UseMaterialInput"
-        if loopCount >= 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件") }
+        if loopCount > 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
         let uuid = UUID()
         do {
             // 発注処理
@@ -188,10 +189,10 @@ extension Sequence where Element == 使用資材出力型 {
             }
             if result.count > 0 { // 部分的に登録成功
                 let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
-                try rest.exportToDB(loopCount: loopCount+1, session: session)
+                try rest.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
                 return
             } else { // 完全に登録失敗
-                try targets.exportToDB(loopCount: loopCount+1, session: session)
+                try targets.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
             }
         } catch {
             throw error

@@ -20,10 +20,13 @@ extension UserDefaults {
         guard let url = self.newVersionURL, let isDirectory = url.isDirectory else { return nil }
         return isDirectory ? url : url.deletingLastPathComponent()
     }
-
-    public static let dataManagerDefaultValues: [String: Any] = [
-        "programName": mainBundleName
-    ]
+    
+    public static var dataManagerDefaultValues: [String: Any] {
+        dataManagerDefaultValuesRegistered = true
+        return [
+            "programName": mainBundleName,
+        ]
+    }
     /// 起動時にNAS自動接続
     public var launchAutoMountNAS: Bool {
         get { self.bool(forKey: "launchAutoMountNAS") }
@@ -63,6 +66,10 @@ extension UserDefaults {
 
 let defaults: UserDefaults = {
     let defaults = UserDefaults.standard
-    defaults.register(defaults: UserDefaults.dataManagerDefaultValues)
+    if !dataManagerDefaultValuesRegistered {
+        defaults.register(defaults: UserDefaults.dataManagerDefaultValues)
+    }
     return defaults
 }()
+
+var dataManagerDefaultValuesRegistered: Bool = false

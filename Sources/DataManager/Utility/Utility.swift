@@ -104,10 +104,10 @@ import Cocoa
 
 extension Error {
     public func showAlert() {
+        logSystem.errorDump()
         let alert = NSAlert(error: self)
         alert.runModal()
     }
-    
 }
 
 #endif
@@ -116,6 +116,7 @@ extension Error {
 extension Error {
     public func asyncShowAlert() {
         DispatchQueue.main.async {
+            logSystem.errorDump()
             self.showAlert()
         }
     }
