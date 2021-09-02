@@ -7,35 +7,42 @@
 
 import Foundation
 
+/// ログシステム（簡易アクセス）
 let logSystem = DMLogSystem.shared
+
+/// ログシステム
 public class DMLogSystem {
+    /// ログシステム
+    public static let shared: DMLogSystem = DMLogSystem()
+
     private let lock = NSRecursiveLock()
-    private(set) var log: [DMLogRecord] = []
+    /// ログデータ本体
+    private var log: [DMLogRecord] = []
+    /// エラーダイアログ時に自動でログダンプしたい時はtrueをする
     public var autoDumpLevel: DMLogLevel? = nil
     
-    public static let shared: DMLogSystem = DMLogSystem()
-    
+    /// ログを登録する
     public func registRecord(_ data: DMRecordData, _ level: DMLogLevel) {
         let log = DMLogRecord(level: level, data: data)
         lock.lock(); defer { lock.unlock() }
         self.log.append(log)
     }
-    
+    /// エラーをログとして登録する
     public func registError(_ error: Error, _ level: DMLogLevel) {
         let data = DMErrorRecord(error: error)
         registRecord(data, level)
     }
-
+    /// テキストをログとして登録する
     public func registText(title: String, detail: String = "", level: DMLogLevel) {
         let data = DMTextRecord(title: title, detail: detail)
         registRecord(data, level)
     }
-    
+    /// 指定されたレベル以上のログを取り出す
     public func currentLog(minLevel: DMLogLevel = .all) -> [DMLogRecord] {
         lock.lock(); defer { lock.unlock() }
         return self.log.filter { $0.level >= minLevel }
     }
-    
+    /// 指定されたレベル以上のログがあればtrueを返す
     public func hasRecord(level: DMLogLevel) -> Bool {
         lock.lock(); defer { lock.unlock() }
         return log.contains { $0.level >= level }
