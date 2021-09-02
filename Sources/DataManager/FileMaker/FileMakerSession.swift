@@ -93,7 +93,6 @@ final class FileMakerSession: Loggable {
         } else {
             self.logout(waitAfterLogout: true)
         }
-        log("token作成")
         let url = self.url.appendingPathComponent("sessions")
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
         guard response.code == 0, case let token as String = response["token"] else {
@@ -101,6 +100,7 @@ final class FileMakerSession: Loggable {
             throw FileMakerError.tokenCreate(message: response.message, code: response.code)
                 .log(self, .critical)
         }
+        log("token作成: \(token)")
         Thread.sleep(forTimeInterval: 0.5)
         let extendExpire: Date = Date(timeIntervalSinceNow: expireSeconds * 2)
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
