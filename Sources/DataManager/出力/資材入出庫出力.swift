@@ -118,8 +118,7 @@ extension Sequence where Element == 資材入出庫出力型 {
                 try errorResult.exportToDB(loopCount: loopCount + 1, session: session)
             }
         } catch {
-            NSLog(error.localizedDescription)
-            throw error
+            throw error.log(.critical)
         }
     }
 }

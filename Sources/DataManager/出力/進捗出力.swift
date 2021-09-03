@@ -180,6 +180,7 @@ extension Sequence where Element == 進捗出力型 {
         repeat {
             if loopCount == 3 { session.allResetSession() }
             let uuid = UUID()
+            session.log("進捗出力開始", detail: "uuid: \(uuid.uuidString)", level: .information)
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
@@ -189,7 +190,10 @@ extension Sequence where Element == 進捗出力型 {
             Thread.sleep(forTimeInterval: TimeInterval(loopCount) * 1.5 + 0.5)
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
-            if checked.count == target.count { return }
+            if checked.count == target.count {
+                session.log("進捗出力完了", detail: "uuid: \(uuid.uuidString)", level: .information)
+                return
+            }
             target = target.filter {
                 for (index, progress) in checked.enumerated() {
                     if $0.伝票番号 == progress.伝票番号 && $0.工程 == progress.工程 && $0.作業内容 == progress.作業内容 && $0.作業種別 == progress.作業種別 && $0.作業系列 == progress.作業系列 && $0.社員 == progress.作業者 && $0.登録日 == progress.登録日 && $0.登録時間.isSameHourMinutes(to: progress.登録時間) {
@@ -199,7 +203,10 @@ extension Sequence where Element == 進捗出力型 {
                 }
                 return true
             }
-            if target.isEmpty { return }
+            if target.isEmpty {
+                session.log("進捗出力完了",  detail: "uuid: \(uuid.uuidString)", level: .information)
+                return
+            }
             loopCount += 1
         } while loopCount <= 4
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件,sid:\(session.id)").log(.critical)

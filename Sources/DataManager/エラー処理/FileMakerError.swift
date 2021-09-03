@@ -126,7 +126,12 @@ class FileMakerDetailedError: FilemakerErrorProtocol {
             mes += " recordID:\(recordID)"
         }
         if let query = work.query, !query.isEmpty {
-            mes += " keys:\(query.map{$0.keys.joined(separator: ",")}.joined(separator: "|"))"
+            let encoder = JSONEncoder()
+            if let data = try? encoder.encode(query), let text = String(data: data, encoding: .utf8)?.encodeLF() {
+                mes += " query:\(text)"
+            } else {
+                mes += " keys:\(query.map{ Array<String>($0.keys).joined(separator: ",") }.joined(separator: "|"))"
+            }
         }
         if let script = work.script, !script.isEmpty {
             mes += " script:\(script)"

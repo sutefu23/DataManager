@@ -100,7 +100,7 @@ final class FileMakerSession: Loggable {
             throw FileMakerError.tokenCreate(message: response.message, code: response.code)
                 .log(self, .critical)
         }
-        log("token作成: \(token)")
+        log("token取得", detail: token)
         Thread.sleep(forTimeInterval: 0.5)
         let extendExpire: Date = Date(timeIntervalSinceNow: expireSeconds * 2)
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
@@ -317,9 +317,17 @@ final class FileMakerSession: Loggable {
         self.connection.invalidate()
         self.connection = DMHttpConnection()
     }
-    
+
     func log(_ text: String, level: DMLogLevel = .information) {
-        logSystem.registText(title: text, detail: "セッション\(id)", level: level)
+        self.log(text, detail: "", level: level)
+    }
+
+    func log(_ text: String, detail: String, level: DMLogLevel = .information) {
+        if detail.isEmpty {
+            logSystem.registText(title: text, detail: "セッション\(id)", level: level)
+        } else {
+            logSystem.registText(title: text, detail: "セッション\(id) \(detail)", level: level)
+        }
     }
 }
 

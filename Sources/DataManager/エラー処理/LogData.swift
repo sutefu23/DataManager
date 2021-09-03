@@ -70,7 +70,7 @@ struct DMSessionRecord: DMRecordData {
         if detail.isEmpty {
             return "セッション\(sessionID)"
         } else {
-            return "セッション\(sessionID): \(detail)"
+            return "セッション\(sessionID) \(detail)"
         }
     }
 }

@@ -176,6 +176,7 @@ extension Sequence where Element == 使用資材出力型 {
         if loopCount > 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
         let uuid = UUID()
         do {
+            session.log("使用資材出力開始", detail: "uuid: \(uuid.uuidString)", level: .information)
             // 発注処理
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
@@ -185,17 +186,18 @@ extension Sequence where Element == 使用資材出力型 {
             Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
             let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
+                session.log("使用資材出力完了", detail: "uuid: \(uuid.uuidString)", level: .information)
                 return
             }
             if result.count > 0 { // 部分的に登録成功
                 let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
                 try rest.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
-                return
             } else { // 完全に登録失敗
                 try targets.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
             }
         } catch {
-            throw error
+            session.log("登録失敗", detail: "uuid: \(uuid)", level: .information)
+            throw error.log(.critical)
         }
     }
 }

@@ -89,7 +89,7 @@ extension Sequence where Element == 資材要求出力型 {
                 try targets.exportToDB(loopCount: loopCount+1, session: session)
             }
         } catch {
-            throw error
+            throw error.log(.critical)
         }
     }
 }
