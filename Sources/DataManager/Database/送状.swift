@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 public enum 送り状番号状態型 {
     /// 送り状番号指定もれ
@@ -344,10 +345,20 @@ extension 住所型 {
 
 extension 住所型 {
     public func contains(to: 住所型) -> Bool {
-//        if self.電話番号.contains("63360823") {
-//            print("")
-//        }
         return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 名前.contains(to.名前) && 電話番号 == 電話番号
+    }
+
+    public static func 郵便番号存在チェック(_ zip: String) -> ([CLPlacemark]?, error: Error?){
+        let sem = DispatchSemaphore(value: 0)
+        let geocoder = CLGeocoder()
+        var result: (place: [CLPlacemark]?, error: Error?) = (nil, nil)
+        DispatchQueue.global().async {
+            geocoder.geocodeAddressString(zip, completionHandler: {(placemarks, error) -> Void in
+                result = (placemarks, error)
+                sem.signal()
+            })
+        }
+        return result
     }
 }
 

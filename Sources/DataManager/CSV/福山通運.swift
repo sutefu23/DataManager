@@ -117,38 +117,13 @@ public struct 福山ご依頼主型 {
         )
     }
     
-    public init?( 取引先: 取引先型) {
-        self.荷受人コード = 取引先.会社コード
-        self.電話番号 = 取引先.電話番号
-        self.住所1 = 取引先.住所1
-        self.住所2 = 取引先.住所2 + 取引先.住所3
-        self.予備1 = ""
-        self.名前1 = 取引先.会社名
-        self.名前2 = ""
-        self.予備2 = ""
-        self.郵便番号 = 取引先.郵便番号
-        self.カナ略称 = ""
-        self.才数 = "0"
-        self.重量 = "0"
-        self.メールアドレス = ""
-        self.請求先コード = "0925181131"
-        self.請求先部課コード = ""
-
-        if self.必須フィールド空チェック() { return nil }
-
-    }
-    /// 送り主として必須のフィールドをチェック。満たさないものがあればtrue
-    private func 必須フィールド空チェック() -> Bool{
-        return self.名前1.isEmpty || self.住所1.isEmpty || self.電話番号.isEmpty || self.郵便番号.isEmpty
-    }
-    
-    public init(会社コード: String, 住所: 住所型) {
+    public init?(会社コード: String, 住所: 住所型) {
         self.荷受人コード = 会社コード
         self.電話番号 = 住所.電話番号
         self.住所1 = 住所.住所1
         self.住所2 = 住所.住所2 + 住所.住所3
         self.予備1 = ""
-        self.名前1 = 住所.名前
+        self.名前1 = 会社コード == "3105" ? "株式会社オオサカネーム" : 住所.名前
         self.名前2 = ""
         self.予備2 = ""
         self.郵便番号 = 住所.郵便番号
@@ -158,6 +133,11 @@ public struct 福山ご依頼主型 {
         self.メールアドレス = ""
         self.請求先コード = "0925181131"
         self.請求先部課コード = ""
+        if self.必須フィールド空チェック() { return nil }
+    }
+    /// 送り主として必須のフィールドをチェック。満たさないものがあればtrue
+    private func 必須フィールド空チェック() -> Bool{
+        return self.名前1.isEmpty || self.住所1.isEmpty || self.電話番号.isEmpty || self.郵便番号.isEmpty
     }
 }
 extension Array where Element == 福山ご依頼主型 {
@@ -168,8 +148,10 @@ extension Array where Element == 福山ご依頼主型 {
             (line, _) in
             let fields = line.csvColumns
             if !fields.isEmpty && !fields[0].isEmpty {
-                let ご依頼主 = 福山ご依頼主型(会社コード: fields[0].dashStribbped, 住所: 住所型(郵便番号: fields[8].dashStribbped, 住所1: fields[2].dashStribbped, 住所2: fields[3].dashStribbped + fields[4].dashStribbped, 住所3: "", 名前: fields[5].dashStribbped, 電話番号: fields[1].dashStribbped))
-                result.append(ご依頼主)
+                if let ご依頼主 = 福山ご依頼主型(会社コード: fields[0].dashStribbped, 住所: 住所型(郵便番号: fields[8].dashStribbped, 住所1: fields[2].dashStribbped, 住所2: fields[3].dashStribbped + fields[4].dashStribbped, 住所3: "", 名前: fields[5].dashStribbped, 電話番号: fields[1].dashStribbped))
+                {
+                    result.append(ご依頼主)
+                }
             }
 
         }

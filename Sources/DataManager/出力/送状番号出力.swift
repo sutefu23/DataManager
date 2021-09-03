@@ -12,6 +12,7 @@ public enum 送状CheckError: String, LocalizedError {
     case 送り主電話番号が空欄
     case 送り主住所1が空欄
     case 届け先郵便番号が空欄
+    case 届け先郵便番号が存在しない
     case 届け先電話番号が空欄
     case 届け先住所1が空欄
     case 送り主住所1の文字数が多い
@@ -24,6 +25,8 @@ public enum 送状CheckError: String, LocalizedError {
     case 品名の文字数が多い
     case 記事の文字数が多い
     case 着指定日が未入力
+    case 福山マスタに住所が存在しない
+    case 福山マスタの住所と異なる
     case 福山依頼主コードが空欄
     case 指示書が不正
     case 着指定日が不正

@@ -16,7 +16,7 @@ public struct 送り状エラー型 {
         self.エラー = エラー
     }
     
-    public init?(_ order: 送状型, senders: [福山ご依頼主型]?) {
+    public init?(_ order: 送状型, checkZip: Bool, senders: [福山ご依頼主型]?) {
         func standardError() -> 送状CheckError? {
             guard let source = order.指示書 else { return nil }
             if !source.isActive { return .指示書が不正 }
@@ -27,19 +27,22 @@ public struct 送り状エラー型 {
             self.init(送り状: order, エラー: error)
             return
         }
+        
+        
         switch order.運送会社 {
         case .ヤマト:
-            self.init(ヤマト送状: order)
+            self.init(ヤマト送状: order, checkZip: checkZip)
         case .福山:
             guard let senders = senders else { return nil }
-            self.init(福山送り状: order, 福山ご依頼主一覧: senders)
+            self.init(福山送り状: order, checkZip: checkZip, 福山ご依頼主一覧: senders)
         default:
             return nil
         }
     }
     
-    init?(ヤマト送状 order: 送状型) {
+    init?(ヤマト送状 order: 送状型, checkZip: Bool) {
         let error: 送状CheckError
+        
         if order.依頼主郵便番号.isEmpty { error = .送り主郵便番号が空欄 } else
         if order.依頼主電話番号.isEmpty { error = .送り主電話番号が空欄 } else
         if order.依頼主住所1.isEmpty { error = .送り主住所1が空欄 } else
@@ -55,14 +58,26 @@ public struct 送り状エラー型 {
         if order.届け先住所3.shiftJISBytes > 32 { error = .届け先住所3の文字数が多い } else
         if order.届け先受取者名.shiftJISBytes > 32 { error = .届け先名称の文字数が多い } else
         if order.品名.shiftJISBytes > 98 { error = .品名の文字数が多い } else
-        if order.記事.shiftJISBytes > 20 { error = .記事の文字数が多い } else { return nil }
+        if order.記事.shiftJISBytes > 20 { error = .記事の文字数が多い } else
+            // if(checkZip && 住所型.郵便番号存在チェック(order.届け先郵便番号).error != nil) { error = .届け先郵便番号が存在しない } else
+        { return nil }
         self.init(送り状: order, エラー: error)
     }
     
-    init?(福山送り状 order: 送状型, 福山ご依頼主一覧: [福山ご依頼主型]) {
+    init?(福山送り状 order: 送状型, checkZip: Bool, 福山ご依頼主一覧: [福山ご依頼主型]) {
         let error: 送状CheckError
+        
+        /// 住所チェック
+        let 依頼主住所 = 住所型(郵便番号: order.依頼主郵便番号, 住所1: order.依頼主住所1, 住所2: order.依頼主住所2, 住所3: order.依頼主住所3, 名前: order.依頼主受取者名, 電話番号: order.依頼主電話番号)
+        let 依頼主マスタ住所 = 福山ご依頼主一覧.first(where: { $0.荷受人コード == order.福山依頼主コード })?.住所型
+
+        
         if order.福山依頼主コード.isEmpty { error = 送状CheckError.福山依頼主コードが空欄 } else
-        if 福山ご依頼主一覧.findOld依頼主(住所: order.依頼主住所) != nil { error = 送状CheckError.古い住所で出力 } else { return nil }
+        if 依頼主マスタ住所 == nil { error = 送状CheckError.福山マスタに住所が存在しない} else
+        if !依頼主住所.比較用データ.contains(to: 依頼主マスタ住所!.比較用データ ){ error = 送状CheckError.福山マスタの住所と異なる } else
+        if 福山ご依頼主一覧.findOld依頼主(住所: order.依頼主住所) != nil { error = 送状CheckError.古い住所で出力 } else
+        // if(checkZip && 住所型.郵便番号存在チェック(order.届け先郵便番号).error != nil) { error = .届け先郵便番号が存在しない } else
+        { return nil }
         self.init(送り状: order, エラー: error)
     }
 }
@@ -84,11 +99,11 @@ public extension Sequence where Element == 送り状エラー型 {
 }
 
 extension Sequence where Element == 送状型 {
-    public func check送り状(senders: [福山ご依頼主型]?) -> (ok: [送状型], ng: [送り状エラー型]) {
+    public func check送り状(checkZip: Bool, senders: [福山ご依頼主型]?) -> (ok: [送状型], ng: [送り状エラー型]) {
         var ok: [送状型] = []
         var ng: [送り状エラー型] = []
         for order in self {
-            if let error = 送り状エラー型(order, senders: senders) {
+            if let error = 送り状エラー型(order, checkZip: checkZip, senders: senders) {
                 ng.append(error)
             } else {
                 ok.append(order)
