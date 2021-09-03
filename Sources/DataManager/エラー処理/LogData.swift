@@ -58,7 +58,12 @@ struct DMTextRecord: DMRecordData {
 struct DMSessionRecord: DMRecordData {
     let data: DMRecordData
     let sessionID: FileMakerSession.ID
-    
+
+    init(_ session: FileMakerSession, title: String, detail: String = "") {
+        let data = DMTextRecord(title: title, detail: detail)
+        self.init(session, data: data)
+    }
+
     init(_ session: FileMakerSession, data: DMRecordData) {
         self.sessionID = session.id
         self.data = data
@@ -74,4 +79,3 @@ struct DMSessionRecord: DMRecordData {
         }
     }
 }
-

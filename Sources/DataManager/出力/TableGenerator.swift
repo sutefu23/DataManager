@@ -52,9 +52,20 @@ public enum ExportType {
         set.insert(charactersIn: ",'\"\r\n\t\\")
         return set
     }()
+    private static let ngCharacters2: CharacterSet = {
+        var set = CharacterSet()
+        set.insert(charactersIn: ",'\"\r\n\t\\")
+        return set
+    }()
 
     private func clamp(_ string: String) -> String {
-        let ng = ExportType.ngCharacters
+        let ng: CharacterSet
+        switch self {
+        case .excel, .libreoffice, .excel_utf8:
+            ng = ExportType.ngCharacters2
+        case .utf8, .filemaker, .numbers, .html:
+            ng = ExportType.ngCharacters
+        }
         return string.filter {
             for sc in $0.unicodeScalars {
                 if ng.contains(sc) { return false}

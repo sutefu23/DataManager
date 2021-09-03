@@ -323,11 +323,8 @@ final class FileMakerSession: Loggable {
     }
 
     func log(_ text: String, detail: String, level: DMLogLevel = .information) {
-        if detail.isEmpty {
-            logSystem.registText(title: text, detail: "セッション\(id)", level: level)
-        } else {
-            logSystem.registText(title: text, detail: "セッション\(id) \(detail)", level: level)
-        }
+        let record = DMSessionRecord(self, title: text, detail: detail)
+        logSystem.registRecord(record, level)
     }
 }
 
