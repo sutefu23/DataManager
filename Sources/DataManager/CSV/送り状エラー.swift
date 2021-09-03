@@ -62,7 +62,7 @@ public struct 送り状エラー型 {
     init?(福山送り状 order: 送状型, 福山ご依頼主一覧: [福山ご依頼主型]) {
         let error: 送状CheckError
         if order.福山依頼主コード.isEmpty { error = 送状CheckError.福山依頼主コードが空欄 } else
-        if 福山ご依頼主一覧.findOld依頼主(住所: order.依頼主住所) == nil { error = 送状CheckError.古い住所で出力 } else { return nil }
+        if 福山ご依頼主一覧.findOld依頼主(住所: order.依頼主住所) != nil { error = 送状CheckError.古い住所で出力 } else { return nil }
         self.init(送り状: order, エラー: error)
     }
 }
