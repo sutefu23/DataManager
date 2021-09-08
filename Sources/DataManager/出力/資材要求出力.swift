@@ -67,18 +67,20 @@ extension Sequence where Element == 資材要求出力型 {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_MaterialRequirementsInput"
-        if loopCount >= 5 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件") }
+        if loopCount >= 3 { throw FileMakerError.upload発注(message: "\(targets.first!.資材.図番)など\(targets.count)件") }
         let uuid = UUID()
         do {
+            session.log("発注\(targets.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
             // 発注処理
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
-            try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
+            let waitTime = TimeInterval(loopCount)*1.0+1.0
+            Thread.sleep(forTimeInterval: waitTime)
+            try session.executeScript(layout: layout, script: "DataAPI_MaterialRequestments_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(targets.count)))
             let result = try 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
+                session.log("発注出力完了[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
                 return
             }
             if result.count > 0 { // 部分的に登録成功

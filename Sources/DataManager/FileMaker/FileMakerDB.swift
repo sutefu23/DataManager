@@ -84,14 +84,16 @@ enum FileMakerSortType: String, Encodable {
 }
 
 /// サーバーオブジェクト（セッションの管理）
-final class FileMakerServer: Hashable, Loggable {
+final class FileMakerServer: Hashable, DMLoggable {
     private var pool: [FileMakerSession] = []
     private var connecting: [FileMakerSession.ID: FileMakerSession] = [:]
     private let lock = NSRecursiveLock()
     private let sem: DispatchSemaphore
     private var timerSet: Bool = false
 
+    /// サーバーのURL
     let serverURL: URL
+    /// サーバーのホスト名またはIPアドレス
     let name: String
     
     fileprivate init(_ server: String) {
@@ -112,6 +114,7 @@ final class FileMakerServer: Hashable, Loggable {
         return connecting.count
     }
     
+    /// 指定された名称のDBファイルのURLを生成する
     func makeURL(with filename: String) -> URL {
         return self.serverURL.appendingPathComponent(filename)
     }
@@ -182,8 +185,12 @@ final class FileMakerServer: Hashable, Loggable {
     }
     
     // MARK: - logganle
-    func log(_ text: String, level: DMLogLevel) {
-        logSystem.registText(title: text, detail: "db: \(name)", level: level)
+    func log(_ text: String, detail: String?, level: DMLogLevel) {
+        if let detail = detail, !detail.isEmpty {
+            mainLogSystem.log(text, detail: "db=\(name):\(detail)", level: level)
+        } else {
+            mainLogSystem.log(text, detail: "db=\(name)", level: level)
+        }
     }
 
     // MARK: - タイマー管理
@@ -209,7 +216,7 @@ final class FileMakerServer: Hashable, Loggable {
                 if !session.hasValidToken {
                     DispatchQueue.global().async(group: group) {
                         session.debugLog("expire logout")
-                        session.logout(waitAfterLogout: false)
+                        session.logout(waitAfterLogout: nil)
                     }
                 }
             } else if !session.hasValidConnection {
@@ -226,7 +233,7 @@ final class FileMakerServer: Hashable, Loggable {
 }
 
 /// サーバー上のデータベースファイル
-public final class FileMakerDB: Loggable {
+public final class FileMakerDB: DMLoggable {
     /// 生産管理DB
     static let pm_osakaname: FileMakerDB = FileMakerDB(server: "192.168.1.153", filename: "pm_osakaname", user: "api", password: "@pi")
     /// 生産管理テストDB
@@ -241,14 +248,18 @@ public final class FileMakerDB: Loggable {
         get { isEnabledValue && !defaults.filemakerIsDisabled}
         set { isEnabledValue = newValue }
     }
-    
-    let dbURL: URL
-    var server: FileMakerServer
-    let filename: String
-    let user: String
-    let password: String
+    /// DBファイルのURL
+    private let dbURL: URL
+    /// サーバー
+    private let server: FileMakerServer
+    /// ファイル名
+    private let filename: String
+    /// ユーザー名
+    private let user: String
+    /// パスワード
+    private let password: String
 
-    init(server: String, filename: String, user: String, password: String) {
+    private init(server: String, filename: String, user: String, password: String) {
         self.server = serverCache.server(server)
         self.dbURL = self.server.makeURL(with: filename)
         self.filename = filename
@@ -303,41 +314,44 @@ public final class FileMakerDB: Loggable {
     ///   - layout: スクリプトを実行するレイアウト
     ///   - script: スクリプト名
     ///   - param: スクリプトのパラメータ
-    func executeScript(layout: String, script: String, param: String) throws {
+    func executeScript(layout: String, script: String, param: String, waitTime: (main: TimeInterval, extra: TimeInterval)?) throws {
         try checkStop()
-        try self.execute { try $0.executeScript(layout: layout, script: script, param: param) }
+        try self.execute { try $0.executeScript(layout: layout, script: script, param: param, waitTime: waitTime) }
     }
 
+    /// 指定されたレイアウトから全レコードを取得する
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
         try checkStop()
         return try self.execute { try $0.fetch(layout: layout, sortItems: sortItems, portals: portals) }
     }
-    
+
+    /// 指定されたレイアウトからreckordIdのレコードを取得する
     func find(layout: String, recordId: Int) throws -> FileMakerRecord? {
         try checkStop()
         return try self.find(layout: layout, query: [["recordId" : "\(recordId)"]]).first
     }
-    
+    /// 指定されたレコードからqueryに合致するレコードを取得する
     func find(layout: String, query: [[String: String]], sortItems: [(String, FileMakerSortType)] = [], max: Int? = nil) throws -> [FileMakerRecord] {
         try checkStop()
         return try self.execute { try $0.find(layout: layout, query: query, sortItems: sortItems, max: max) }
     }
-    
+    /// urlからオブジェクトをダウンロードする
     func downloadObject(url: URL) throws -> Data? {
         try checkStop()
         return try self.execute { try $0.download(url) }
     }
-    
+    /// 指定されたレイアウトのrecordIdのレコードについてfiledsの項目を更新する
     func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
         try checkStop()
         return try self.execute { try $0.update(layout: layout, recordID: recordId,fields: fields) }
     }
-    
+    ///指定されたレイアウトのrecordIdのレコードを削除する
     func delete(layout: String, recordId: String) throws {
         try checkStop()
         return try self.execute { try $0.delete(layout: layout, recordID: recordId) }
     }
     
+    /// 指定されたレイアウトにfieldsを用いてレコードを作成する
     @discardableResult
     func insert(layout: String, fields: FileMakerQuery) throws -> String {
         try checkStop()
@@ -379,8 +393,8 @@ public final class FileMakerDB: Loggable {
     public static var poolCount: Int { serverCache.poolCount }
     /// 全てのサーバーの現在の接続数の合計
     public static var connectionCount: Int { serverCache.connectingCount }
-    
-    public func log(_ text: String, level: DMLogLevel = .information) {
-        logSystem.registText(title: "\(filename):text", level: level)
+    /// DBについてログをとる
+    public func log(_ text: String, detail: String?, level: DMLogLevel = .information) {
+        mainLogSystem.log("\(filename):\(text)", detail: detail, level: level)
     }
 }

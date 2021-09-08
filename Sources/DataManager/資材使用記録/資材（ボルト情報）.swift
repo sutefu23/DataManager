@@ -60,13 +60,19 @@ public struct 選択ボルト等型 {
         self.長さ = 長さ?.toJapaneseNormal.lowercased()
         self.サイズ = サイズ.toJapaneseNormal.lowercased()
         var prefix: String = ""
+        var middle: String = ""
         var suffix: String = ""
         var name: String
         if let title = 表示名 {
             name = title
         } else {
             name = 種類.rawValue
-            prefix = "M"
+            switch 種類 {
+            case .浮かしパイプ, .丸パイプ, .配線パイプ:
+                middle = "φ"
+            default:
+                prefix = "M"
+            }
             suffix = "L"
             switch 種類 {
             case .ボルト:
@@ -92,9 +98,9 @@ public struct 選択ボルト等型 {
             self.分割表示名2 = ""
         default:
             if let length = 長さ {
-                self.分割表示名2 = "\(prefix)\(サイズ)x\(length)\(suffix)"
+                self.分割表示名2 = "\(prefix)\(サイズ)\(middle)x\(length)\(suffix)"
             } else {
-                self.分割表示名2 = "\(prefix)\(サイズ)"
+                self.分割表示名2 = "\(prefix)\(サイズ)\(middle)"
             }
         }
         self.表示名 = 分割表示名1 + 分割表示名2

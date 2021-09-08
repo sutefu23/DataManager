@@ -12,11 +12,15 @@ public enum レーザー加工機型: Equatable, Comparable {
     public static func < (lhs: レーザー加工機型, rhs: レーザー加工機型) -> Bool {
         lhs.name < rhs.name
     }
-    
+    /// 三菱HV
     case hv
+    /// 三菱eX
     case ex
+    /// 渋谷HP
     case hp
+    /// 渋谷ウォーター
     case sws
+    /// 三菱gX
     case gx
     
     public var name: String {

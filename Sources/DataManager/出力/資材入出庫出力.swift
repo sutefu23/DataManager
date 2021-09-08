@@ -92,23 +92,21 @@ extension Sequence where Element == 資材入出庫出力型 {
     }
     
     func exportToDB(loopCount: Int, session: FileMakerSession) throws {
-        if loopCount >= 5 {
+        let targets = Array(self)
+        if targets.isEmpty { return }
+        if loopCount >= 3 {
             throw FileMakerError.insert(message: "資材入出庫出力失敗(回数オーバー)", code: nil)
         }
         
         let uuid = UUID()
-        var count = 0
         do {
-            for progress in self {
+            session.log("入出庫\(targets.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
+            for progress in targets {
                 try session.insert(layout: "DataAPI_MaterialEntry", fields: progress.makeRecord(識別キー: uuid))
-                count += 1
             }
-            
-            Thread.sleep(forTimeInterval: TimeInterval(count)+0.5)
-            if count > 0 {
-                try session.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString)
-            }
-            Thread.sleep(forTimeInterval: TimeInterval(count)+0.5)
+            let waitTime = TimeInterval(targets.count)+0.5
+            Thread.sleep(forTimeInterval: waitTime)
+            try session.executeScript(layout: "DataAPI_MaterialEntry", script: "DataAPI_MaterialEntry_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(loopCount)))
             var errorResult: [資材入出庫出力型] = []
             for progress in self {
                 let result = try 資材入出庫型.find(登録日: progress.登録日, 登録時間: progress.登録時間, 社員: progress.社員, 入力区分: progress.入力区分, 資材: progress.資材, 入庫数: progress.入庫数, 出庫数: progress.出庫数)
@@ -117,6 +115,7 @@ extension Sequence where Element == 資材入出庫出力型 {
             if !errorResult.isEmpty {
                 try errorResult.exportToDB(loopCount: loopCount + 1, session: session)
             }
+            session.log("入出庫出力完了[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
         } catch {
             throw error.log(.critical)
         }

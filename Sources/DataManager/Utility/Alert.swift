@@ -13,6 +13,14 @@ import Cocoa
 import UIKit
 #endif
 
+public func execAndShowAlert(_ exec: () throws -> Void) {
+    do {
+        try exec()
+    } catch {
+        error.showAlert()
+    }
+}
+
 public func asyncShowMessage(message: String, info: String = "", ok: String = "Ok") {
     DispatchQueue.main.async {
         showMessage(message: message, info: info, ok: ok)

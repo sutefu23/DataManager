@@ -8,7 +8,9 @@
 import Foundation
 
 public enum DMLogLevel: Int, Comparable {    
-    public static let all: DMLogLevel = .information
+    public static let all: DMLogLevel = .debug
+    /// デバッグ
+    case debug = -10
     /// 情報
     case information = 0
     /// 続行可能なエラー
@@ -53,13 +55,18 @@ struct DMErrorRecord: DMRecordData {
 struct DMTextRecord: DMRecordData {
     var title: String
     var detail: String
+
+    init(title: String, detail: String?) {
+        self.title = title
+        self.detail = detail ?? ""
+    }
 }
 
 struct DMSessionRecord: DMRecordData {
     let data: DMRecordData
     let sessionID: FileMakerSession.ID
 
-    init(_ session: FileMakerSession, title: String, detail: String = "") {
+    init(_ session: FileMakerSession, title: String, detail: String?) {
         let data = DMTextRecord(title: title, detail: detail)
         self.init(session, data: data)
     }
@@ -75,7 +82,7 @@ struct DMSessionRecord: DMRecordData {
         if detail.isEmpty {
             return "セッション\(sessionID)"
         } else {
-            return "セッション\(sessionID) \(detail)"
+            return "セッション\(sessionID): \(detail)"
         }
     }
 }

@@ -178,20 +178,21 @@ extension Sequence where Element == 進捗出力型 {
         if target.isEmpty { return }
         var loopCount = 1
         repeat {
-            if loopCount == 3 { session.allResetSession() }
             let uuid = UUID()
-            session.log("進捗出力開始", detail: "uuid: \(uuid.uuidString)", level: .information)
+            session.log("進捗\(target.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount) * 1.5 + 0.5)
-            try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount) * 1.5 + 0.5)
+            let waitTime = TimeInterval(loopCount) * 1.5 + 0.5
+            Thread.sleep(forTimeInterval: waitTime * TimeInterval(target.count))
+            session.log("進捗出力スクリプト実行開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
+            try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(target.count)))
+            session.log("進捗出力チェック開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
             if checked.count == target.count {
-                session.log("進捗出力完了", detail: "uuid: \(uuid.uuidString)", level: .information)
+                session.log("進捗出力完了[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
                 return
             }
             target = target.filter {
@@ -204,7 +205,7 @@ extension Sequence where Element == 進捗出力型 {
                 return true
             }
             if target.isEmpty {
-                session.log("進捗出力完了",  detail: "uuid: \(uuid.uuidString)", level: .information)
+                session.log("進捗出力完了(\(loopCount))",  detail: "uuid: \(uuid.uuidString)", level: .information)
                 return
             }
             loopCount += 1

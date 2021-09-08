@@ -9,15 +9,24 @@
 import Foundation
 
 /// tokenの寿命
+#if os(macOS)
+private let expireSeconds: Double = 10 * 2
+#else
 private let expireSeconds: Double = 10
+#endif
+
 /// token解放後のtcp/ipセッションの寿命
 private let expireSeconds2: Double = 30
 
+/// 一度に取り出すレコードの数
+private let pageCount = 100
+
+/// セッションの通し番号を生成する
 private let sessionIDGenerator = SerialGenerator()
 
 // MARK: -
 /// FileMaker Serverとの通信
-final class FileMakerSession: Loggable {
+final class FileMakerSession: DMLoggable {
     typealias ID = ObjectID
     /// ベースとなるURL
     let url: URL
@@ -26,14 +35,13 @@ final class FileMakerSession: Loggable {
     /// 接続パスワード
     private let password: String
     /// サーバーへの接続
-    private var connection: DMHttpConnection
-    /// 一度に取り出すレコードの数
-    private let pageCount = 100
+    private let connection: DMHttpConnection
     
     let id: ObjectID = sessionIDGenerator.generateID()
 
+    /// 指定されたサーバーURLとユーザー名・パスワードでセッションを生成する。sessionを指定した場合sessionからconnectionを流用する形で初期化を行う
     init(url: URL, user: String, password: String, session: FileMakerSession? = nil) {
-        session?.logout(waitAfterLogout: false)
+        session?.logout(waitAfterLogout: nil) // sessionについて、tokenは解放しておく
         self.url = url
         self.user = user
         self.password = password
@@ -42,7 +50,7 @@ final class FileMakerSession: Loggable {
     
     deinit {
         // tokenを保持している場合、解放する
-        self.logout(waitAfterLogout: false)
+        self.logout(waitAfterLogout: nil)
     }
     
     // MARK: - 接続管理
@@ -87,23 +95,22 @@ final class FileMakerSession: Loggable {
     }
     
     /// 接続可能な状態にする
-    private func prepareToken(reuse: Bool = true) throws -> String {
-        if reuse {
-            if let token = self.activeToken { return token }
-        } else {
-            self.logout(waitAfterLogout: true)
-        }
+    private func prepareToken() throws -> String {
+        // 使えるtokengああるなら、再利用する
+        if let token = self.activeToken { return token }
+        // token申請
         let url = self.url.appendingPathComponent("sessions")
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
-        guard response.code == 0, case let token as String = response["token"] else {
+        guard response.code == 0 && response.message == "OK", case let token as String = response["token"] else {
             Thread.sleep(forTimeInterval: 15)
             throw FileMakerError.tokenCreate(message: response.message, code: response.code)
                 .log(self, .critical)
         }
         log("token取得", detail: token)
-        Thread.sleep(forTimeInterval: 0.5)
+        // 有効期限計算
         let extendExpire: Date = Date(timeIntervalSinceNow: expireSeconds * 2)
         let expire: Date = Date(timeIntervalSinceNow: expireSeconds)
+        // tokenと有効期限を保存する
         self.ticket = (token: token, expire: expire, extendExpire: extendExpire)
         return token
     }
@@ -116,7 +123,7 @@ final class FileMakerSession: Loggable {
 
     /// 接続を切断状態にする
     @discardableResult
-    func logout(waitAfterLogout: Bool) -> Bool {
+    func logout(waitAfterLogout: TimeInterval? = 0.1) -> Bool {
         guard let token = self.ticket?.token else { return false }
         let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
         do {
@@ -125,8 +132,8 @@ final class FileMakerSession: Loggable {
             if response.code != 0 {
                 self.log("token削除失敗（\(response.message)）", level: .warning)
             }
-            if waitAfterLogout {
-                Thread.sleep(forTimeInterval: 0.1)
+            if let waitAfterLogout = waitAfterLogout {
+                Thread.sleep(forTimeInterval: max(waitAfterLogout, 0.1))
             }
         } catch {
             error.asyncShowAlert()
@@ -136,7 +143,7 @@ final class FileMakerSession: Loggable {
     }
     /// セッションを無効化する
     func invalidate() {
-        self.logout(waitAfterLogout: false)
+        self.logout(waitAfterLogout: nil)
         log("セッション終了")
         self.connection.invalidate()
     }
@@ -144,7 +151,7 @@ final class FileMakerSession: Loggable {
     // MARK: - レコード操作
     /// レコードを取り出す
     func fetch(layout: String, sortItems: [(String, FileMakerSortType)] = [], portals: [FileMakerPortal] = []) throws -> [FileMakerRecord] {
-        var result: [FileMakerRecord] = []
+        log(layout: layout, "全件読み込み", detail: "", level: .information)
         let sortQueryItem: URLQueryItem?
         if !sortItems.isEmpty {
             let request = sortItems.map { FileMakerSortItem(fieldName: $0.0, sortOrder: $0.1) }
@@ -162,6 +169,7 @@ final class FileMakerSession: Loggable {
 
         var offset = 1
         let limit = pageCount
+        var result: [FileMakerRecord] = []
         while true {
             var queryItems: [URLQueryItem] = [
                 URLQueryItem(name: "_offset", value: "\(offset)"),
@@ -213,7 +221,7 @@ final class FileMakerSession: Loggable {
             let limit: Int
         }
         var result: [FileMakerRecord] = []
-
+        log(layout: layout, "検索開始", detail: query.makeText() ?? query.makeKeys(), level: .information)
         let limit: Int
         if let max = max, max < pageCount { limit = max } else { limit = pageCount }
         assert(limit >= 1)
@@ -244,6 +252,7 @@ final class FileMakerSession: Loggable {
     
     /// レコードを削除する
     func delete(layout: String, recordID: String) throws {
+        self.log(layout: layout, "削除", detail: "レコードID=\(recordID)", level: .information)
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
         let response = try connection.callFileMaker(url: url, method: .DELETE, authorization: .Bearer(token: token))
@@ -266,6 +275,8 @@ final class FileMakerSession: Loggable {
     /// レコードを追加する
     @discardableResult
     func insert(layout: String, fields: FileMakerQuery) throws -> String {
+        self.log(layout: layout, "追加", detail: fields.makeText(), level: .information)
+
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         let request = ["fieldData": fields]
@@ -275,14 +286,17 @@ final class FileMakerSession: Loggable {
         }
         return recordId
     }
-    
+
     /// オブジェクトをダウンロードする
     func download(_ url: URL) throws -> Data {
+        self.log("ダウンロード", detail: "url=\(url.path)", level: .information)
         return try connection.call(url: url, method: .GET, authorization: nil, contentType: nil, body: nil) ?? Data()
     }
     
     /// スクリプトを実行する
-    func executeScript(layout: String, script: String, param: String) throws {
+    func executeScript(layout: String, script: String, param: String, waitTime: (main: TimeInterval, extra: TimeInterval)?) throws {
+        let fromDate = Date()
+        self.log(layout: layout, "実行", detail: "script=\(script), param=\(param)", level: .information)
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { throw FileMakerError.execute(message: "URL Components", code: nil).log(self, .critical) }
@@ -294,37 +308,47 @@ final class FileMakerSession: Loggable {
         if response.code != 0 {
             throw FileMakerDetailedError(table: layout, work: .exec(script: script, param: param), response: response).log(self)
         }
+        if let (mainTime, extraTime) = waitTime {
+            let execTime = Date().timeIntervalSince(fromDate)
+            self.logout(waitAfterLogout: max(execTime, mainTime) + extraTime)
+        }
     }
     
     /// missingField発生時のリトライ
     func checkMissing() {
-        debugLog("recover field missing")
-        self.logout(waitAfterLogout: false)
+        log("recover field missing対策実行")
         let waitTime: TimeInterval
         if let date = lastMissingDate, date > Date() {
             debugLog("wait field missing")
-            waitTime = expireSeconds
+            waitTime = 10
         } else {
             waitTime = 1.0
         }
-        Thread.sleep(forTimeInterval: waitTime)
+        self.logout(waitAfterLogout: waitTime)
         lastMissingDate = Date(timeIntervalSinceNow: expireSeconds + expireSeconds2)
     }
-    var lastMissingDate: Date?
+    /// 次回にリトライ対策をする時間
+    private var lastMissingDate: Date?
     
-    func allResetSession() {
-        self.logout(waitAfterLogout: false)
-        self.connection.invalidate()
-        self.connection = DMHttpConnection()
-    }
-
+    // MARK: - ログ関連
+    /// テキストをログに残す
     func log(_ text: String, level: DMLogLevel = .information) {
         self.log(text, detail: "", level: level)
     }
 
-    func log(_ text: String, detail: String, level: DMLogLevel = .information) {
+    /// セッション情報と共にログを残す
+    func log(_ text: String, detail: String?, level: DMLogLevel = .information) {
         let record = DMSessionRecord(self, title: text, detail: detail)
-        logSystem.registRecord(record, level)
+        self.log(record, level)
+    }
+
+    /// レイアウト情報とともにログを残す
+    private func log(layout: String, _ title: String, detail: String?, level: DMLogLevel = .information) {
+        if title.isEmpty {
+            self.log("\(layout):", detail: detail, level: level)
+        } else {
+            self.log("\(layout): \(title)", detail: detail, level: level)
+        }
     }
 }
 
@@ -333,32 +357,47 @@ final class FileMakerSession: Loggable {
 struct FileMakerPortal {
     let name: String
     let limit: Int?
-    
-    init(name: String, limit: Int? = nil) {
-        self.name = name
-        self.limit = limit
-    }
 }
 
 /// FileMaker検索条件
 typealias FileMakerQuery = [String: String]
-
-extension DMHttpConnectionProtocol {
-    /// FileMakerSeverと通信する
-    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
-        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data)
-            else { return FileMakerResponse(code: nil, message: "レスポンスがない", response: [:]) }
-        guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data)
-            else { return FileMakerResponse(code: nil, message: "レスポンスをJSONに変換できない", response: [:]) }
-        guard case let messages as [[String: Any]] = json["messages"]
-            else { return FileMakerResponse(code: nil, message: "レスポンスにmessagesが存在しない", response: [:]) }
-        guard case let codeString as String = messages[0]["code"]
-            else { return FileMakerResponse(code: nil, message: "レスポンスにcodeが存在しない", response: [:]) }
-        let response = (json["response"] as? [String: Any]) ?? [:]
-        let message = (messages[0]["message"] as? String) ?? ""
-        return FileMakerResponse(code: Int(codeString), message: message, response: response)
+extension Array where Element == FileMakerQuery {
+    func makeText() -> String? {
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
+        return text
     }
     
+    func makeKeys() -> String {
+        return self.map{ $0.makeKeys() }.joined(separator: "|")
+    }
+}
+
+extension FileMakerQuery {
+    func makeText() -> String? {
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
+        return text
+    }
+    
+    func makeKeys() -> String {
+        return self.keys.joined(separator: ",")
+    }
+}
+
+extension DMHttpConnectionProtocol {
+    /// FileMakerSeverと通信する。その際dataを渡す
+    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
+        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data) else { throw FileMakerResponseError.レスポンスがない }
+        guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data) else { throw FileMakerResponseError.レスポンスをJSONに変換できない }
+        guard case let messages as [[String: Any]] = json["messages"] else { throw FileMakerResponseError.レスポンスにmessagesが存在しない }
+        guard case let codeString as String = messages[0]["code"], let code = Int(codeString) else { throw FileMakerResponseError.レスポンスにcodeが存在しない }
+        let response = (json["response"] as? [String: Any]) ?? [:]
+        let message = (messages[0]["message"] as? String) ?? ""
+        return FileMakerResponse(code: code, message: message, response: response)
+    }
+    
+    /// FileMakerSeverと通信する。その際objectをJSONでエンコードして渡す
     func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {
         try autoreleasepool {
             let encoder = JSONEncoder()
@@ -369,14 +408,27 @@ extension DMHttpConnectionProtocol {
     }
 }
 
+/// DataAPIのレスポンス
 struct FileMakerResponse {
-    let code: Int?
+    /// レスポンスコード
+    let code: Int
+    /// レスポンスメッセージ
     let message: String
+    /// レスポンスデータ
     let response: [String: Any]
-    
+
     subscript(key: String) -> Any? { response[key] }
+    
     var records: [FileMakerRecord]? {
         guard case let dataArray as [Any] = self["data"] else { return nil }
         return dataArray.compactMap { FileMakerRecord(json: $0) }
     }
+}
+
+enum FileMakerResponseError: String, LocalizedError {
+    case レスポンスがない
+    case レスポンスをJSONに変換できない
+    case レスポンスにmessagesが存在しない
+    case レスポンスにcodeが存在しない
+    var errorDescription: String? { self.rawValue }
 }

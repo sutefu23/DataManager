@@ -126,11 +126,10 @@ class FileMakerDetailedError: FilemakerErrorProtocol {
             mes += " recordID:\(recordID)"
         }
         if let query = work.query, !query.isEmpty {
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(query), let text = String(data: data, encoding: .utf8)?.encodeLF() {
+            if let text = query.makeText() {
                 mes += " query:\(text)"
             } else {
-                mes += " keys:\(query.map{ Array<String>($0.keys).joined(separator: ",") }.joined(separator: "|"))"
+                mes += " query:\(query.makeKeys())"
             }
         }
         if let script = work.script, !script.isEmpty {

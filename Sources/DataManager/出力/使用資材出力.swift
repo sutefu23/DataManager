@@ -169,24 +169,23 @@ extension Sequence where Element == 使用資材出力型 {
     }
     
     private func exportToDB(loopCount: Int, session: FileMakerSession, uuid: UUID? = nil) throws {
-        if loopCount == 2 { session.allResetSession() }
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_UseMaterialInput"
         if loopCount > 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
         let uuid = UUID()
         do {
-            session.log("使用資材出力開始", detail: "uuid: \(uuid.uuidString)", level: .information)
+            session.log("使用資材\(targets.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
             // 発注処理
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
-            try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString)
-            Thread.sleep(forTimeInterval: TimeInterval(loopCount)*1.0+1.0)
+            let waitTime = TimeInterval(loopCount)*1.0+1.0
+            Thread.sleep(forTimeInterval: waitTime)
+            try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(targets.count)))
             let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
             if result.count == targets.count { // 登録成功
-                session.log("使用資材出力完了", detail: "uuid: \(uuid.uuidString)", level: .information)
+                session.log("使用資材出力完了[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
                 return
             }
             if result.count > 0 { // 部分的に登録成功
@@ -196,7 +195,7 @@ extension Sequence where Element == 使用資材出力型 {
                 try targets.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
             }
         } catch {
-            session.log("登録失敗", detail: "uuid: \(uuid)", level: .information)
+            session.log("登録失敗[\(loopCount)]", detail: "uuid: \(uuid)", level: .information)
             throw error.log(.critical)
         }
     }
