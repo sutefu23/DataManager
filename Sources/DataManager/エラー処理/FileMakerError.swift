@@ -173,6 +173,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
     case execute(message: String, code: Int?)
     case download(message: String)
     case response(message: String)
+    case upload(message: String)
     case upload進捗入力(message: String)
     case upload発注(message: String)
     case upload資材入出庫(message: String)
@@ -215,6 +216,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
                 .update(message: let mes),
                 .download(message: let mes),
                 .response(message: let mes),
+                .upload(message: let mes),
                 .upload進捗入力(message: let mes),
                 .upload発注(message: let mes),
                 .upload使用資材(message: let mes),
@@ -239,6 +241,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
         case .execute: return "データベースのスクリプトが実行できなかった(\(self.message))"
         case .download(message: let mes): return "データベースからのダウンロードができなかった(\(mes))"
         case .response(message: let mes): return "正常な情報処理がされていません(\(mes))"
+        case .upload(message: let mes): return "レコード登録失敗(\(mes))"
         case .upload進捗入力(message: let mes): return "進捗入力登録失敗(\(mes))"
         case .upload発注(message: let mes): return "発注登録失敗(\(mes))"
         case .upload資材入出庫(message: let mes): return "資材入出庫登録失敗(\(mes))"

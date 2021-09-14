@@ -94,6 +94,10 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
         return "\(make2dig(self.hour)):\(make2dig(self.minute))"
     }
 
+    public var hourMinuteJString: String {
+        return "\(make2dig(self.hour))時\(make2dig(self.minute))分"
+    }
+
     public var hourMinuteSecondString: String {
         return "\(make2dig(self.hour)):\(make2dig(self.minute)):\(make2dig(self.second))"
     }

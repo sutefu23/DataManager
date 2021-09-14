@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class 資材入出庫型 {
+public final class 資材入出庫型: FileMakerImportRecord {
     let record: FileMakerRecord
     public let 登録日: Day
     public let 登録時間: Time
@@ -21,7 +21,7 @@ public final class 資材入出庫型 {
     public let 部署: 部署型
     public let 修正社員名: String
     
-    init?(_ record: FileMakerRecord) {
+    public required init(_ record: FileMakerRecord) throws {
         self.record = record
         guard let day = record.day(forKey: "登録日"),
               let time = record.time(forKey: "登録時間"),
@@ -29,7 +29,7 @@ public final class 資材入出庫型 {
               let type = record.入力区分(forKey: "入力区分"),
               let item = record.資材(forKey: "資材番号"),
               let name = record.string(forKey: "修正社員名"),
-              let sec = record.キャッシュ部署(forKey: "部署記号") else { return nil }
+              let sec = record.キャッシュ部署(forKey: "部署記号") else { throw FileMakerError.invalidData(message: "recordId:[\(record.recordID ?? "")]不正な内容") }
         let input = record.integer(forKey: "入庫数") ?? 0
         let output = record.integer(forKey: "出庫数") ?? 0
         self.登録日 = day
@@ -46,7 +46,12 @@ public final class 資材入出庫型 {
     public var 出庫金額: Double? {
         guard let num = 資材.単価 else { return nil }
         return num * Double(出庫数)
-    }    
+    }
+    
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static var importLayout: String { "DataAPI_12" }
+    public static var title: String { "資材入出庫" }
+    
 }
 
 extension 資材入出庫型 {
@@ -55,7 +60,7 @@ extension 資材入出庫型 {
     public static func fetchAll() throws -> [資材入出庫型] {
         let db = FileMakerDB.pm_osakaname
         let list = try db.fetch(layout: 資材入出庫型.dbName)
-        return list.compactMap { 資材入出庫型($0) }
+        return try list.map { try 資材入出庫型($0) }
     }
     
     public static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil) throws -> [資材入出庫型] {
@@ -74,9 +79,7 @@ extension 資材入出庫型 {
         if query.isEmpty {
             return []
         }
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 資材入出庫型.dbName, query: [query])
-        return list.compactMap { 資材入出庫型($0) }
+        return try self.find(query: query)
     }
 
     static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil, session: FileMakerSession?) throws -> [資材入出庫型] {
@@ -101,7 +104,7 @@ extension 資材入出庫型 {
         } else {
             list = try FileMakerDB.pm_osakaname.find(layout: 資材入出庫型.dbName, query: [query])
         }
-        return list.compactMap { 資材入出庫型($0) }
+        return try list.map { try 資材入出庫型($0) }
     }
 
     public static func find(期間: ClosedRange<Day>, 入力区分: 入力区分型? = nil, 部署: 部署型? = nil, 図番: String? = nil) throws -> [資材入出庫型] {
@@ -115,8 +118,6 @@ extension 資材入出庫型 {
         if query.isEmpty {
             return []
         }
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 資材入出庫型.dbName, query: [query])
-        return list.compactMap { 資材入出庫型($0) }
+        return try self.find(query: query)
     }
 }

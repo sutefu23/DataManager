@@ -33,7 +33,7 @@ import UIKit
 
 extension Error {
     public func showAlert() {
-        dumpErrorLogSystem()
+        currentLogSystem.errorDump()
         let message = self.localizedDescription
         showMessage(message: message)
     }
@@ -105,7 +105,7 @@ import Cocoa
 
 extension Error {
     public func showAlert() {
-        mainLogSystem.errorDump()
+        currentLogSystem.errorDump()
         let alert = NSAlert(error: self)
         alert.runModal()
     }
@@ -117,7 +117,7 @@ extension Error {
 extension Error {
     public func asyncShowAlert() {
         DispatchQueue.main.async {
-            mainLogSystem.errorDump()
+            currentLogSystem.errorDump()
             self.showAlert()
         }
     }

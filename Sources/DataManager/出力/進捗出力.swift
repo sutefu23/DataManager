@@ -8,7 +8,11 @@
 
 import Foundation
 
-public struct 進捗出力型: Hashable, Codable {
+public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
+    public typealias ImportBuddyType = 進捗型
+    public static var exportLayout: String { return "DataAPI_ProcessInput" }
+    public static var exportScript: String { return "DataAPI_ProcessInput_RecordSet" }
+    
     public let 登録日: Day
     public let 登録時間: Time
 
@@ -101,6 +105,10 @@ public struct 進捗出力型: Hashable, Codable {
         return "\(登録日.fmImportString),\(登録時間.fmImportString),\(伝票番号),\(工程.code),\(作業内容.code),\(社員.Hなし社員コード),\(作業種別.code),\(作業系列?.系列コード ?? "")\n"
     }
     
+    public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
+        return self.makeRecord(識別キー: exportUUID)
+    }
+    
     func makeRecord(識別キー key: UUID) -> [String: String] {
         var record: [String: String] = [
             "識別キー": key.uuidString,
@@ -139,6 +147,23 @@ public struct 進捗出力型: Hashable, Codable {
         }
         return false
     }
+    
+    public func find重複候補() throws -> [進捗型] {
+        return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧
+    }
+    
+//    public func isUploaded(data: 進捗型) -> Bool {
+//        return self.is内容重複(with: data) &&
+//        self.作業系列 == data.作業系列 && self.社員 == data.作業者 && self.登録日 == data.登録日 && self.登録時間.isSameHourMinutes(to: data.登録時間)
+//    }
+//    
+    public func is内容重複(with data: 進捗型) -> Bool {
+        return self.伝票番号 == data.伝票番号 && self.工程 == data.工程 && self.作業内容 == data.作業内容 && self.作業種別 == data.作業種別
+    }
+    
+    public func flushCache() {
+        return 指示書進捗キャッシュ型.shared.flushCache(伝票番号: self.伝票番号)
+    }
 }
 
 // MARK: -
@@ -168,26 +193,40 @@ public struct 進捗出力内容型: Hashable {
 }
 
 // MARK: -
-extension Sequence where Element == 進捗出力型 {
+extension Collection where Element == 進捗出力型 {
+    /*
     /// 生産管理に直接出力する
-    public func exportToDB(重複チェック: Bool = false) throws {
-        let db2 = FileMakerDB.pm_osakaname
-        let session = db2.retainSession()
-        defer { db2.releaseSession(session) }
+    public func exportToDB_old(重複チェック: Bool = false) throws {
+//        if self.count >= 4 {
+//            let array = Array(self)
+//            try array[..<2].exportToDB(重複チェック: 重複チェック)
+//            try array[2...].exportToDB(重複チェック: 重複チェック)
+//        } else {
+            try exportToDB_local(重複チェック: 重複チェック)
+//        }
+    }
+
+    public func exportToDB_local(重複チェック: Bool = false) throws {
         var target = self.filter { !重複チェック || $0.isDBに重複あり == false }
+
+        let db2 = FileMakerDB.pm_osakaname
+        let session = db2.retainExportSession()
+        defer { db2.releaseExportSession(session) }
         if target.isEmpty { return }
         var loopCount = 1
         repeat {
             let uuid = UUID()
             session.log("進捗\(target.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
+            let fromTime = Date()
             for progress in target {
                 try session.insert(layout: "DataAPI_ProcessInput", fields: progress.makeRecord(識別キー: uuid))
                 指示書進捗キャッシュ型.shared.flushCache(伝票番号: progress.伝票番号)
             }
-            let waitTime = TimeInterval(loopCount) * 1.5 + 0.5
+            let uploadTime = Date().timeIntervalSince(fromTime)
+            let waitTime = TimeInterval(loopCount) + 1.0
             Thread.sleep(forTimeInterval: waitTime * TimeInterval(target.count))
             session.log("進捗出力スクリプト実行開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
-            try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(target.count)))
+            try session.executeScript(layout: "DataAPI_ProcessInput", script: "DataAPI_ProcessInput_RecordSet", param: uuid.uuidString, waitTime: (Swift.max(uploadTime, waitTime), TimeInterval(target.count)))
             session.log("進捗出力チェック開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
             var checked = try 進捗型.find(指示書進捗入力UUID: uuid, session: session)
             assert(checked.startIndex == 0)
@@ -201,6 +240,7 @@ extension Sequence where Element == 進捗出力型 {
                         checked.remove(at: index)
                         return false
                     }
+                    
                 }
                 return true
             }
@@ -209,10 +249,11 @@ extension Sequence where Element == 進捗出力型 {
                 return
             }
             loopCount += 1
-        } while loopCount <= 4
+            session.log("進捗出力失敗、残り\(target.count)件")
+        } while loopCount <= 2
         throw FileMakerError.upload進捗入力(message: "\(target.first!.伝票番号.表示用文字列)など\(target.count)件,sid:\(session.id)").log(.critical)
     }
-    
+    */
     /// 参照リストとの重複を削除する
     func 重複登録削除(参照 list: [進捗出力型]) -> [進捗出力型] {
         var map = Dictionary(grouping: list) { 進捗出力内容型($0) }

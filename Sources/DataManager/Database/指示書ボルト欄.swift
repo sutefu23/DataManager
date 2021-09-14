@@ -516,6 +516,8 @@ func scanSource(ボルト欄: String, 伝票種類: 伝票種類型) throws -> (
         switch data.種類 {
         case .特寸ワッシャー(サイズ: _, 外径: _, 内径: _):
             size = scanner.substring.lowercased()
+        case .インサートナット(サイズ: let sizeStr):
+            size = "M\(sizeStr)"
         default:
             size = scanner.string
         }
@@ -1019,20 +1021,14 @@ private extension DMScanner {
         }
         return ("鬼目ナット", .鬼目ナット(サイズ: size, 長さ: length), 30)
     }
-
+    
     mutating func scanインサートナット() -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
-        let size: String
-        switch self.string {
-        case "M2IS":
-            size = "2"
-        case "M3IS":
-            size = "3"
-        default:
-            return nil
-        }
+        guard self.scanCharacter("M"),
+              let size = self.scanStringAsDouble()?.string,
+              self.scanString("IS") && self.isAtEnd else { return nil }
         return ("インサートナット", .インサートナット(サイズ: size), 90)
     }
-
+    
     mutating func scan丸パイプ(伝票種類: 伝票種類型) -> (名称: String, 種類: 資材種類型, ソート順: Double)? {
         func makePipe2(サイズ: String, 長さ: Double) -> 資材種類型 {
             if searchボルト等(種類: .浮かしパイプ, サイズ: サイズ, 長さ: 長さ) != nil {

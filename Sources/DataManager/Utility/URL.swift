@@ -95,14 +95,23 @@ extension URL {
     }
     
     public var contentModificationDate: Date? {
-        do {
+        get {
+            do {
+                var url = self
+                url.removeCachedResourceValue(forKey: .contentModificationDateKey)
+                let res = try url.resourceValues(forKeys: [.contentModificationDateKey])
+                let date = res.contentModificationDate
+                return date
+            } catch {
+                return nil
+            }
+        }
+        set {
             var url = self
             url.removeCachedResourceValue(forKey: .contentModificationDateKey)
-            let res = try url.resourceValues(forKeys: [.contentModificationDateKey])
-            let date = res.contentModificationDate
-            return date
-        } catch {
-            return nil
+            guard var values = try? url.resourceValues(forKeys: [.contentModificationDateKey, .creationDateKey]) else { return }
+            values.contentModificationDate = newValue
+            try? url.setResourceValues(values)
         }
     }
     

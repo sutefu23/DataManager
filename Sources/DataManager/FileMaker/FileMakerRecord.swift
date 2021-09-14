@@ -17,7 +17,7 @@ private enum RecordType {
 }
 
 /// 1レコードに対応するデータ
-struct FileMakerRecord {
+public struct FileMakerRecord {
     /// フィールドデータ
     private let fieldData: [String: Any]
     /// レコードの種類

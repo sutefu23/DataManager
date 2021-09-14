@@ -8,7 +8,9 @@
 
 import Foundation
 
-public struct 資材入出庫出力型 {
+public struct 資材入出庫出力型: FileMakerExportRecord {
+    public typealias ImportBuddyType = 資材入出庫型
+    
     public let 登録日: Day
     public let 登録時間: Time
     public let 資材: 資材型
@@ -58,9 +60,32 @@ public struct 資材入出庫出力型 {
         self.入力区分 = .通常入出庫
     }
     
-    func makeRecord(識別キー key: UUID) -> [String: String] {
+//    func makeRecord(識別キー key: UUID) -> [String: String] {
+//        var record: [String: String] = [
+//            "識別キー": key.uuidString,
+//            "登録日": self.登録日.fmString,
+//            "登録時間": self.登録時間.fmImportString,
+//            "資材番号": self.資材.図番,
+//            "部署記号" : self.部署.部署記号,
+//            "社員番号": self.社員.Hなし社員コード,
+//            "入力区分": self.入力区分.name
+//        ]
+//        let isZero = self.入庫数 == 0 && self.出庫数 == 0
+//        if self.入庫数 > 0 || isZero {
+//            record["入庫数"] = "\(self.入庫数)"
+//        }
+//        if self.出庫数 > 0 || isZero {
+//            record["出庫数"] = "\(self.出庫数)"
+//        }
+//        return record
+//    }
+    
+    public static var exportLayout: String { "DataAPI_MaterialEntry" }
+    public static var exportScript: String { "DataAPI_MaterialEntry_RecordSet" }
+    
+    public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
         var record: [String: String] = [
-            "識別キー": key.uuidString,
+            "識別キー": exportUUID.uuidString,
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,
             "資材番号": self.資材.図番,
@@ -78,17 +103,23 @@ public struct 資材入出庫出力型 {
         return record
     }
 }
-
-extension Sequence where Element == 資材入出庫出力型 {
+/*
+extension Collection where Element == 資材入出庫出力型 {
     public func exportToDB() throws {
-        forEach {
-            在庫数キャッシュ型.shared.flushCache($0.資材.図番)
-            入出庫キャッシュ型.shared.flushCache($0.資材.図番)
-        }
-        let db = FileMakerDB.pm_osakaname
-        let session = db.retainSession()
-        defer { db.releaseSession(session) }
-        return try self.exportToDB(loopCount: 0, session: session)
+//        if self.count >= 4 {
+//            let array = Array(self)
+//            try array[0..<2].exportToDB()
+//            try array[2...].exportToDB()
+//        } else {
+            forEach {
+                在庫数キャッシュ型.shared.flushCache($0.資材.図番)
+                入出庫キャッシュ型.shared.flushCache($0.資材.図番)
+            }
+            let db = FileMakerDB.pm_osakaname
+            let session = db.retainExportSession()
+            defer { db.releaseExportSession(session) }
+            try self.exportToDB(loopCount: 0, session: session)
+//        }
     }
     
     func exportToDB(loopCount: Int, session: FileMakerSession) throws {
@@ -121,3 +152,4 @@ extension Sequence where Element == 資材入出庫出力型 {
         }
     }
 }
+*/

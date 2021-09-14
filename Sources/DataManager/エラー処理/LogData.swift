@@ -6,26 +6,27 @@
 //
 
 import Foundation
+import AVFoundation
 
 public enum DMLogLevel: Int, Comparable {    
     public static let all: DMLogLevel = .debug
     /// デバッグ
-    case debug = -10
+    case debug = 0
     /// 情報
-    case information = 0
+    case information = 1
     /// 続行可能なエラー
-    case warning = 10
+    case warning = 2
     /// 致命的で続行不能
-    case critical = 20
+    case critical = 3
     
     public static func < (lhs: DMLogLevel, rhs: DMLogLevel) -> Bool { return lhs.rawValue < rhs.rawValue }
 }
 
 public struct DMLogRecord: DMRecordData {
     public let date: Date = Date()
-    public let level: DMLogLevel
     let data: DMRecordData
-    
+    public let level: DMLogLevel
+
     public var title: String { data.title }
     public var detail: String { data.detail }
 }
@@ -52,37 +53,67 @@ struct DMErrorRecord: DMRecordData {
     }
 }
 
-struct DMTextRecord: DMRecordData {
-    var title: String
-    var detail: String
+public struct DMTextRecord: DMRecordData {
+    public let title: String
+    public let detail: String
 
-    init(title: String, detail: String?) {
+    public init(title: String, detail: String?) {
         self.title = title
         self.detail = detail ?? ""
     }
 }
 
-struct DMSessionRecord: DMRecordData {
-    let data: DMRecordData
-    let sessionID: FileMakerSession.ID
-
-    init(_ session: FileMakerSession, title: String, detail: String?) {
-        let data = DMTextRecord(title: title, detail: detail)
-        self.init(session, data: data)
-    }
-
-    init(_ session: FileMakerSession, data: DMRecordData) {
-        self.sessionID = session.id
+open class DMHeaderRecordData<T: DMRecordData>: DMRecordData {
+    let data: T
+    
+    public init(_ data: T) {
         self.data = data
     }
     
-    var title: String { return data.title }
-    var detail: String {
-        let detail = data.detail
-        if detail.isEmpty {
-            return "セッション\(sessionID)"
-        } else {
-            return "セッション\(sessionID): \(detail)"
-        }
+    open var titleHeader: String { "" }
+    open var detailHeader: String { "" }
+    
+    /// ヘッダと本文を合成する
+    private func makeString(header: String, body: String) -> String {
+        if header.isEmpty { return body }
+        if body.isEmpty { return header }
+        return "\(header): \(body)"
     }
+    
+    public var title: String { return makeString(header: titleHeader, body: data.title) }
+    
+    public var detail: String { return makeString(header: detailHeader, body: data.detail) }
+}
+
+final class DMFileMakerDBRecord<T: DMRecordData>: DMHeaderRecordData<T> {
+    let filename: String
+
+    init(_ db: FileMakerDB, data: T) {
+        self.filename = db.filename
+        super.init(data)
+    }
+    
+    override var titleHeader: String { "db=\(filename)" }
+}
+
+final class DMFileMakerSessionRecord<T: DMRecordData>: DMHeaderRecordData<T> {
+    let sessionID: FileMakerSession.ID
+
+    init(_ session: FileMakerSession, data: T) {
+        self.sessionID = session.id
+        super.init(data)
+    }
+    
+    override var detailHeader: String { "セッション\(sessionID)" }
+}
+
+final class DMFileMakerServerRecord<T: DMRecordData>: DMHeaderRecordData<T> {
+    let name: String
+
+    init(_ server: FileMakerServer, data: T) {
+        self.name = server.name
+        super.init(data)
+    }
+    
+    override var detailHeader: String { "db=\(name)" }
 }

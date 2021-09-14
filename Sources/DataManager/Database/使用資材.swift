@@ -7,7 +7,11 @@
 
 import Foundation
 
-class 使用資材型 {
+public class 使用資材型: FileMakerImportRecord {
+    public static var title: String { "使用資材" }
+    public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
+    public static var importLayout: String { "DataAPI_17" }
+    
     static let dbName = "DataAPI_17"
 
     public var 登録日: Day
@@ -29,13 +33,13 @@ class 使用資材型 {
 
     public var 登録日時: Date { Date(self.登録日, self.登録時間) }
     
-    init?(_ record: FileMakerRecord) {
+    public required init(_ record: FileMakerRecord) throws {
         guard let day = record.day(forKey: "登録日"),
               let time = record.time(forKey: "登録時間"),
               let order = record.伝票番号(forKey: "伝票番号"),
               let item = record.string(forKey: "図番"),
               let title = record.string(forKey: "表示名"),
-              let use = record.string(forKey: "使用量") else { return nil }
+              let use = record.string(forKey: "使用量") else { throw FileMakerError.invalidData(message: "不正な使用資材データ: レコードID\(record.recordID ?? "")") }
         self.登録日 = day
         self.登録時間 = time
         self.伝票番号 = order
@@ -53,9 +57,11 @@ class 使用資材型 {
         self.面積 = record.string(forKey: "面積")
         self.登録セッションUUID = record.string(forKey: "登録セッションUUID") ?? ""
     }
-}
 
-extension 使用資材型 {
+//    public static func makeExportCheckQuery(exportUUID: UUID) -> FileMakerQuery {
+//        return ["登録セッションUUID": "==\(exportUUID.uuidString)"]
+//    }
+
     static func find(query: FileMakerQuery, session: FileMakerSession? = nil) throws -> [使用資材型] {
         if query.isEmpty { return [] }
 
@@ -65,7 +71,7 @@ extension 使用資材型 {
         } else {
             list = try FileMakerDB.pm_osakaname.find(layout: 使用資材型.dbName, query: [query])
         }
-        return list.compactMap { 使用資材型($0) }
+        return try list.map { try 使用資材型($0) }
     }
     
     static func find(API識別キー: UUID, session: FileMakerSession) throws -> [使用資材型] {

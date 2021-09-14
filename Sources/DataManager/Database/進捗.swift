@@ -8,8 +8,9 @@
 
 import Foundation
 
-public final class 進捗型: Equatable, Identifiable {
+public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
+    public static var title: String { "進捗" }
 
     let record: FileMakerRecord
     let recordID: String
@@ -25,7 +26,7 @@ public final class 進捗型: Equatable, Identifiable {
     public var 伝票番号文字列: String { self.record.string(forKey: "伝票番号") ?? "" }
     public var 伝票番号: 伝票番号型
     
-    init(_ record: FileMakerRecord) throws {
+    public init(_ record: FileMakerRecord) throws {
         self.record = record
         guard let recordID = record.recordID else { throw FileMakerError(invalidData: "伝票番号", "登録日", "登録時間", record: record) }
         self.recordID = recordID
@@ -274,6 +275,7 @@ public extension Sequence where Element == 進捗型 {
 // MARK: - 検索
 public extension 進捗型 {
     static let dbName = "DataAPI_3"
+    static let importLayout = "DataAPI_3"
     static func find(伝票番号 num: 伝票番号型, 工程 state: 工程型? = nil, 作業内容 work: 作業内容型? = nil, 作業種別 type: 作業種別型? = nil) throws -> [進捗型] {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(num)"
@@ -383,11 +385,15 @@ public extension 進捗型 {
 }
 
 extension 進捗型 {
-    static func find(query: FileMakerQuery) throws -> [進捗型] {
+    public static func find(querys: [FileMakerQuery]) throws -> [進捗型] {
         let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: [query])
+        let list: [FileMakerRecord] = try db.find(layout: 進捗型.dbName, query: querys)
         return try list.map { try 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
     }
+    
+//    public static func makeExportCheckQuery(exportUUID: UUID) -> FileMakerQuery {
+//        return ["指示書進捗入力UUID": "==\(exportUUID.uuidString)"]
+//    }
     
     static func find(指示書進捗入力UUID: UUID, session: FileMakerSession) throws -> [進捗型] {
         var query = FileMakerQuery()

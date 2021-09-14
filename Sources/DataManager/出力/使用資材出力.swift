@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct 使用資材出力型 {
+public struct 使用資材出力型: FileMakerExportRecord {
     public var 登録日時: Date
     
     public var 伝票番号: 伝票番号型
@@ -101,36 +101,36 @@ public struct 使用資材出力型 {
         self.原因工程 = record.原因工程
     }
     
-    func makeRecord(識別キー key: UUID) -> [String: String] {
-        var record: [String: String] = [
-            "登録セッションUUID": key.uuidString,
-            "登録日": 登録日時.day.fmString,
-            "登録時間": 登録日時.time.fmImportString,
-            "伝票番号": "\(伝票番号.整数値)",
-            "資材番号": 図番,
-            "表示名": 表示名,
-            "使用量": 使用量,
-        ]
-        record["工程コード"] = 工程?.code
-        record["社員コード"] = 作業者?.Hなし社員コード
-        record["原因部署"] = 原因工程?.code
-        record["用途コード"] = 用途?.用途コード
-        record["印刷対象"] = 印刷対象?.rawValue
-        if let area = self.面積 {
-            record["面積"] = area
-        }
-        if let value = self.単位量 {
-            record["単位量"] = "\(value)"
-        }
-        if let value = self.単位数 {
-            record["単位数"] = "\(value)"
-        }
-        if let charge = self.金額 {
-            record["金額"] = "\(charge)"
-        }
-        return record
-    }
-    
+//    func makeRecord(識別キー key: UUID) -> [String: String] {
+//        var record: [String: String] = [
+//            "登録セッションUUID": key.uuidString,
+//            "登録日": 登録日時.day.fmString,
+//            "登録時間": 登録日時.time.fmImportString,
+//            "伝票番号": "\(伝票番号.整数値)",
+//            "資材番号": 図番,
+//            "表示名": 表示名,
+//            "使用量": 使用量,
+//        ]
+//        record["工程コード"] = 工程?.code
+//        record["社員コード"] = 作業者?.Hなし社員コード
+//        record["原因部署"] = 原因工程?.code
+//        record["用途コード"] = 用途?.用途コード
+//        record["印刷対象"] = 印刷対象?.rawValue
+//        if let area = self.面積 {
+//            record["面積"] = area
+//        }
+//        if let value = self.単位量 {
+//            record["単位量"] = "\(value)"
+//        }
+//        if let value = self.単位数 {
+//            record["単位数"] = "\(value)"
+//        }
+//        if let charge = self.金額 {
+//            record["金額"] = "\(charge)"
+//        }
+//        return record
+//    }
+//
     func isEqual(to order: 使用資材型) -> Bool {
         return
             self.伝票番号 == order.伝票番号 &&
@@ -158,21 +158,68 @@ public struct 使用資材出力型 {
             return nil
         }
     }
+    
+    public typealias ImportBuddyType = 使用資材型
+    public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
+    public static var exportLayout: String { "DataAPI_UseMaterialInput" }
+    public static var exportScript: String { "DataAPI_UseMaterialInput_RecordSet" }
+    public static var uuidField: String { "登録セッションUUID" }
+
+    public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
+        var record: [String: String] = [
+            "登録セッションUUID": exportUUID.uuidString,
+            "登録日": 登録日時.day.fmString,
+            "登録時間": 登録日時.time.fmImportString,
+            "伝票番号": "\(伝票番号.整数値)",
+            "資材番号": 図番,
+            "表示名": 表示名,
+            "使用量": 使用量,
+        ]
+        record["工程コード"] = 工程?.code
+        record["社員コード"] = 作業者?.Hなし社員コード
+        record["原因部署"] = 原因工程?.code
+        record["用途コード"] = 用途?.用途コード
+        record["印刷対象"] = 印刷対象?.rawValue
+        if let area = self.面積 {
+            record["面積"] = area
+        }
+        if let value = self.単位量 {
+            record["単位量"] = "\(value)"
+        }
+        if let value = self.単位数 {
+            record["単位数"] = "\(value)"
+        }
+        if let charge = self.金額 {
+            record["金額"] = "\(charge)"
+        }
+        return record
+    }
+    
+//    public func isUploaded(data: 使用資材型) -> Bool {
+//        return self.isEqual(to: data)
+//    }    
 }
 
-extension Sequence where Element == 使用資材出力型 {
-    public func exportToDB() throws {
-        let db = FileMakerDB.pm_osakaname
-        let session = db.retainSession()
-        defer { db.releaseSession(session) }
-        try self.exportToDB(loopCount: 0, session: session)
+/*
+extension Collection where Element == 使用資材出力型 {
+    public func exportToDB_old() throws {
+//        if self.count >= 4 {
+//            let array = Array(self)
+//            try array[..<2].exportToDB()
+//            try array[2...].exportToDB()
+//        } else {
+            let db = FileMakerDB.pm_osakaname
+            let session = db.retainExportSession()
+            defer { db.releaseExportSession(session) }
+            try self.exportToDB(loopCount: 0, session: session)
+//        }
     }
     
     private func exportToDB(loopCount: Int, session: FileMakerSession, uuid: UUID? = nil) throws {
         let targets = Array(self)
         if targets.isEmpty { return }
         let layout = "DataAPI_UseMaterialInput"
-        if loopCount > 3 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
+        if loopCount > 2 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
         let uuid = UUID()
         do {
             session.log("使用資材\(targets.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
@@ -180,7 +227,7 @@ extension Sequence where Element == 使用資材出力型 {
             for progress in targets {
                 try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
             }
-            let waitTime = TimeInterval(loopCount)*1.0+1.0
+            let waitTime = TimeInterval(loopCount)+1.0
             Thread.sleep(forTimeInterval: waitTime)
             try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(targets.count)))
             let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
@@ -189,9 +236,11 @@ extension Sequence where Element == 使用資材出力型 {
                 return
             }
             if result.count > 0 { // 部分的に登録成功
+                session.log("部分的に登録成功[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
                 let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
                 try rest.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
             } else { // 完全に登録失敗
+                session.log("完全に登録失敗[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
                 try targets.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
             }
         } catch {
@@ -200,3 +249,4 @@ extension Sequence where Element == 使用資材出力型 {
         }
     }
 }
+*/

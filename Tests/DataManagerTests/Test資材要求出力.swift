@@ -10,7 +10,7 @@ import XCTest
 @testable import DataManager
 
 class TestExportOrder: XCTestCase {
-    let execDBTest = false
+    let execDBTest = true
     
     func testOutput() {
         if self.execDBTest == false { return }
@@ -23,7 +23,7 @@ class TestExportOrder: XCTestCase {
 private func makeOrder1() -> 資材要求出力型 {
     let order1 = 注文番号型.レーザ･ウォーター
     let client1 = 社員型(社員番号: 23)!
-    let item1 = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990180M")! // Cup 1.5t 1x2
+    let item1 = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990180B")! // Cup 1.5t 1x2
     let count1  = 3
     let limit1 = Day(2020, 5, 20)
     let memo1 = "発注登録テスト"
@@ -34,7 +34,7 @@ private func makeOrder2() -> 資材要求出力型 {
     let day2 = Day(year: 2020, month: 1, day: 30)
     let time2 = Time(8, 00)
     let order2 = 注文番号型.管理・資材
-    let client2 = 社員型(社員番号: 953)!
+    let client2 = 社員型.井手_法昭
     let item2 = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "5904")! // セメダイン
     let count2 = 15
     let limit2 = Day(2020, 2, 16)

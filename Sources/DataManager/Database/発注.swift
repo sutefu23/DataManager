@@ -10,25 +10,25 @@ import Foundation
 
 public class 外注型 {
 }
-public final class 発注型 {
+public final class 発注型: FileMakerImportRecord {
     let record: FileMakerRecord
     public let 発注種類: 発注種類型
     public let 資材: 資材型
     public let 指定注文番号: 指定注文番号型
     
-    init?(_ record: FileMakerRecord) {
+    public required init(_ record: FileMakerRecord) throws {
         self.record = record
-        guard let type = record.発注種類(forKey: "発注種類") else { return nil }
+        guard let type = record.発注種類(forKey: "発注種類") else { throw FileMakerError.invalidData(message: "発注種類") }
         self.発注種類 = type
         switch type {
         case .資材:
-            guard let item = record.資材(forKey: "図番") else { return nil }
+            guard let item = record.資材(forKey: "図番") else { throw FileMakerError.invalidData(message: "図番") }
             self.資材 = item
-            guard let number = record.指定注文番号(forKey: "指定注文番号") else { return nil }
+            guard let number = record.指定注文番号(forKey: "指定注文番号") else { throw FileMakerError.invalidData(message: "指定注文番号") }
             self.指定注文番号 = number
         case .外注:
             self.資材 = 資材型.empty
-            guard let text = record.string(forKey: "指定注文番号") else { return nil }
+            guard let text = record.string(forKey: "指定注文番号") else { throw FileMakerError.invalidData(message: "指定注文番号") }
             self.指定注文番号 = 指定注文番号型(text: text)
         }
     }
@@ -36,6 +36,10 @@ public final class 発注型 {
         guard let type = record.発注状態(forKey: "状態") else { return .処理済み } // 未設定(外注資材)は処理済み扱いとする
         return type
     }
+    
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static var importLayout: String { "DataAPI_4" }
+    public static var title: String { "発注" }
 }
 
 public extension 発注型 {
@@ -112,16 +116,14 @@ extension 発注型 {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号.整数値)"
         query["発注種類"] = 発注種類?.description
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
-        return list.compactMap { 発注型($0) }
+        return try find(query: query)
     }
 
     static func find(API識別キー: UUID, session: FileMakerSession) throws -> [発注型] {
         var query = FileMakerQuery()
         query["API識別キー"] = "==\(API識別キー.uuidString)"
         let list: [FileMakerRecord] = try session.find(layout: 発注型.dbName, query: [query])
-        return list.compactMap { 発注型($0) }
+        return try list.map { try 発注型($0) }
     }
     
     public static func find(登録期間: ClosedRange<Day>, 発注種類: 発注種類型, 版数: String?) throws -> [発注型] {
@@ -131,9 +133,7 @@ extension 発注型 {
         if let han = 版数 {
             query["版数"] = "==\(han)"
         }
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
-        return list.compactMap { 発注型($0) }
+        return try find(query: query)
     }
     
     public static func check指定注文番号(登録期間: ClosedRange<Day>) throws -> [(登録日: Day, 注文番号: String)] {
@@ -164,18 +164,14 @@ extension 発注型 {
         if let num = 数量 {
             query["発注数量"] = "\(num)"
         }
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
-        return list.compactMap { 発注型($0) }
+        return try find(query: query)
     }
     
     public static func findDirect(送り状指定注文番号 str: String) throws -> 発注型? {
         guard let num = 指定注文番号型(str, day: Day()) else { return nil }
         var query = FileMakerQuery()
         query["指定注文番号"] = num.テキスト
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
-        return list.compactMap { 発注型($0) }.last
+        return try find(query: query).last
     }
 }
 

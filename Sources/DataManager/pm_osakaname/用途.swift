@@ -22,7 +22,7 @@ public struct 用途型: Equatable {
         self.用途名 = 用途名
     }
 
-    init?(用途名: String?) {
+    public init?(用途名: String?) {
         guard let name = 用途名, let yoto = map2[name] else { return nil }
         self = yoto
     }

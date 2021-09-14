@@ -39,7 +39,7 @@ public final class 社員型: Hashable, Codable {
             return cache
         } catch {
             NSLog(error.localizedDescription)
-            return []
+            return 仮社員一覧
         }
     }()
 
@@ -215,7 +215,9 @@ public extension 社員型 {
     static let 川原_夏彦 = prepare社員(社員番号: 017, 社員名称: "川原 夏彦")
     static let 室中_哲郎 = prepare社員(社員番号: 019, 社員名称: "室中 哲郎")
     static let 関_雄也 = prepare社員(社員番号: 034, 社員名称: "関 雄也")
+    static let 佐伯_潤一 = prepare社員(社員番号: 038, 社員名称: "佐伯　潤一")
     static let 田中_希望 = prepare社員(社員番号: 059, 社員名称: "田中　希望")
+    static let 荒川_謙二 = prepare社員(社員番号: 095, 社員名称: "荒川　謙二")
     static let 井手_法昭 = prepare社員(社員番号: 102, 社員名称: "井手 法昭")
     static let 岸原_秀昌 = prepare社員(社員番号: 112, 社員名称: "岸原 秀昌")
     static let 川﨑_誠 = prepare社員(社員番号: 120, 社員名称: "川﨑　誠")
@@ -223,8 +225,31 @@ public extension 社員型 {
     static let 森藤_年栄 = prepare社員(社員番号: 717, 社員名称: "森藤 年栄")
     static let 森_未来 = prepare社員(社員番号: 734, 社員名称: "森　未来")
     static let 平上_未奈 = prepare社員(社員番号: 748, 社員名称: "平上　未奈")
+    static let 坂本_祐樹 = prepare社員(社員番号: 920, 社員名称: "坂本　祐樹")
     static let 和田_千秋 = prepare社員(社員番号: 955, 社員名称: "和田 千秋")
 }
+private var 仮社員一覧: [社員型] {
+    return [
+        .稗田_司,
+        .伊川_浩,
+        .川原_夏彦,
+        .室中_哲郎,
+        .関_雄也,
+        .佐伯_潤一,
+        .田中_希望,
+        .荒川_謙二,
+        .井手_法昭,
+        .岸原_秀昌,
+        .川﨑_誠,
+        .葏口_徹,
+        .森藤_年栄,
+        .森_未来,
+        .平上_未奈,
+        .坂本_祐樹,
+        .和田_千秋,
+    ]
+}
+
 
 // MARK: - 保存
 public extension UserDefaults {

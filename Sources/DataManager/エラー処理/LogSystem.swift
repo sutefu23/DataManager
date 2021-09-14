@@ -9,59 +9,65 @@ import Foundation
 
 // MARK: - ログシステムインターフェース
 /// ログシステムのインターフェース。デフォルト実装完備
-public protocol DMLoggable {
+public protocol DMLogger {
     /// ログシステムにレコードを記録する
-    func log(_ data: DMRecordData, _ level: DMLogLevel)
+    func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel)
     /// 指定されたレベルか、それ以上のレベルのログが存在する場合trueを返す
     func hasLogRecord(level: DMLogLevel) -> Bool
     /// 指定されたレベル以上のログを取り出す
     func currentLog(minLevel: DMLogLevel) -> [DMLogRecord]
     
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    func dumplog(base: DirType, minLevel: DMLogLevel) throws
+    func dumplog(base: DirType, name: String, minLevel: DMLogLevel, shareButton: DMButton?) throws
     /// エラー時の自動ダンプ
     func errorDump()
+    
+    var currentLogSystem: DMLogger { get set }
 }
 
-public extension DMLoggable {
-    /// デフォルトのログシステムを登録する。nilだと標準のログシステムに切り替わる
-    static func registDefaultLogSystem(_ system: DMLoggable?) {
-        defaultLogSystem = system
+public extension DMLogger {
+    var currentLogSystem: DMLogger {
+        get { return DataManager.currentLogSystem }
+        set { DataManager.currentLogSystem = newValue }
+    }
+
+    var defaultLogSystem: DMLogger {
+        return DataManager.localLogSystem
     }
 
     // MARK: 基本実装（ログの管理場所を変えたい場合や挙動を変えたい場合、この4メソッドを独自実装する）
     /// ログシステムにレコードを記録する
-    func log(_ data: DMRecordData, _ level: DMLogLevel) {
-        mainLogSystem.log(data, level)
+    func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
+        currentLogSystem.registLogData(data, level)
     }
 
     /// 指定されたレベルか、それ以上のレベルのログが存在する場合trueを返す
     func currentLog(minLevel: DMLogLevel) -> [DMLogRecord] {
-        return mainLogSystem.currentLog(minLevel: minLevel)
+        return currentLogSystem.currentLog(minLevel: minLevel)
     }
 
     /// 指定されたレベル以上のログを取り出す
     func hasLogRecord(level: DMLogLevel) -> Bool {
-        return mainLogSystem.hasLogRecord(level: level)
+        return currentLogSystem.hasLogRecord(level: level)
     }
 
     /// エラー時の自動ダンプ
     func errorDump() {
         // デフォルトではデスクトップ環境時のみ自動ダンプ
         #if os(macOS) || os(Linux) || os(Windows) || targetEnvironment(macCatalyst)
-        try? dumplog()
+        try? dumplog(base: .desktop, name: "[エラー]", minLevel: .all, shareButton: nil)
         #endif
     }
     // MARK: 派生実装
     /// テキストログを記録する
-    func log(_ text: String, detail: String?, level: DMLogLevel) {
+    func log(_ text: String, detail: String? = nil, level: DMLogLevel = .information) {
         let data = DMTextRecord(title: text, detail: detail)
-        self.log(data, level)
+        self.registLogData(data, level)
     }
     /// エラーログを記録する
     func log(_ error: Error, _ level: DMLogLevel) {
         let data = DMErrorRecord(error: error)
-        self.log(data, level)
+        self.registLogData(data, level)
     }
 
     /// デバッグモード時にデバッグログを記録する
@@ -72,24 +78,6 @@ public extension DMLoggable {
     }
     
     // MARK: デフォルト引数
-    /// テキストログを情報レベルで記録する
-    func log(_ text: String) {
-        log(text, detail: nil, level: .information)
-    }
-
-    /// 全エラーをデスクトップに出力する
-    func dumplog() throws {
-        try self.dumplog(base: .desktop, minLevel: .all)
-    }
-    /// minLevel以上のログをデスクトップに出力する
-    func dumplog(minLevel: DMLogLevel) throws {
-        try self.dumplog(base: .desktop, minLevel: minLevel)
-    }
-    /// 全ログを指定場所に出力する
-    func dumplog(dir: DirType) throws {
-        try self.dumplog(base: dir, minLevel: .all)
-    }
-
     /// 何らかのログがあればtrueを返す
     var hasLogRecord: Bool {
         self.hasLogRecord(level: .all)
@@ -107,14 +95,14 @@ extension Error {
     
     /// セッションエラーログを登録する
     func log(_ session: FileMakerSession, _ level: DMLogLevel? = nil) -> Error {
-        let data = DMSessionRecord(session, data: DMErrorRecord(error: self))
-        mainLogSystem.log(data, level ?? calcLogLevel())
+        let data = DMFileMakerSessionRecord(session, data: DMErrorRecord(error: self))
+        currentLogSystem.registLogData(data, level ?? calcLogLevel())
         return self
     }
 
     /// エラーログを登録する
     public func log(_ level: DMLogLevel? = nil) -> Error {
-        mainLogSystem.log(self, level ?? calcLogLevel())
+        currentLogSystem.log(self, level ?? calcLogLevel())
         return self
     }
 }
@@ -123,12 +111,15 @@ extension Error {
 /// 標準実装のログシステム
 private let localLogSystem = DMLogSystem()
 /// デフォルトのログシステム
-private var defaultLogSystem: DMLoggable? = nil
+private var defaultLogSystem: DMLogger? = nil
 /// 選択中のログシステム
-var mainLogSystem: DMLoggable { return defaultLogSystem ?? localLogSystem }
+var currentLogSystem: DMLogger {
+    get { return defaultLogSystem ?? localLogSystem }
+    set { defaultLogSystem = newValue }
+}
 
 /// 標準実装のログシステム
-final class DMLogSystem: DMLoggable {
+final class DMLogSystem: DMLogger {
     /// ログシステム
     private let lock = NSRecursiveLock()
     /// ログデータ本体
@@ -146,8 +137,8 @@ final class DMLogSystem: DMLoggable {
         #endif
     }
     /// ログを登録する
-    func log(_ data: DMRecordData, _ level: DMLogLevel) {
-        let log = DMLogRecord(level: level, data: data)
+    func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
+        let log = DMLogRecord(data: data, level: level)
         lock.lock(); defer { lock.unlock() }
         if self.records.count ==  maxLogCount {
             self.records.removeFirst()
@@ -168,9 +159,9 @@ final class DMLogSystem: DMLoggable {
 }
 
 // MARK: - テキスト出力
-extension DMLoggable {
+extension DMLogger {
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    public func dumplog(base: DirType = .desktop, minLevel: DMLogLevel = .all) throws {
+    public func dumplog(base: DirType, name: String, minLevel: DMLogLevel, shareButton: DMButton?) throws {
         let gen = TableGenerator<DMLogRecord>()
             .string("種類") {
                 switch $0.level {
@@ -186,6 +177,6 @@ extension DMLoggable {
             .string("詳細") { $0.detail }
         let hostname = ProcessInfo.processInfo.hostName
         let log = self.currentLog(minLevel: minLevel)
-        try gen.share(log, format: .excel(header: true), base: base, title: "\(defaults.programName)動作履歴(\(hostname)).csv")
+        try gen.share(log, format: .excel(header: true), base: base, title: "\(defaults.programName)\(name)(\(hostname)).csv", shareButton: shareButton)
     }
 }

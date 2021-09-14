@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 資材要求出力型 {
+public struct 資材要求出力型: FileMakerExportRecord {
     public let 登録日: Day
     public let 登録時間: Time
     public let 注文番号: 注文番号型
@@ -29,9 +29,35 @@ public struct 資材要求出力型 {
         self.備考 = 備考
     }    
 
-    func makeRecord(識別キー key: UUID) -> [String: String] {
+//    func makeRecord(識別キー key: UUID) -> [String: String] {
+//        var record: [String: String] = [
+//            "識別キー": key.uuidString,
+//            "登録日": self.登録日.fmString,
+//            "登録時間": self.登録時間.fmImportString,
+//            "注文番号": self.注文番号.記号,
+//            "社員番号": self.社員.Hなし社員コード,
+//            "資材番号": self.資材.図番,
+//            "数量": "\(self.数量)",
+//            "備考": self.備考
+//        ]
+//        if let day = self.希望納期 {
+//            record["希望納期"] = day.fmString
+//        }
+//        return record
+//    }
+    
+//    func isEqual(to order: 発注型) -> Bool {
+//        return self.登録日 == order.登録日 && self.注文番号 == order.注文番号 && self.社員 == order.依頼社員 && self.資材 == order.資材 && self.数量 == order.発注数量 && self.備考 == order.備考
+//    }
+    
+    public typealias ImportBuddyType = 発注型
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static var exportLayout: String { "DataAPI_MaterialRequirementsInput" }
+    public static var exportScript: String { "DataAPI_MaterialRequestments_RecordSet" }
+    
+    public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
         var record: [String: String] = [
-            "識別キー": key.uuidString,
+            "識別キー": exportUUID.uuidString,
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,
             "注文番号": self.注文番号.記号,
@@ -46,21 +72,39 @@ public struct 資材要求出力型 {
         return record
     }
     
-    func isEqual(to order: 発注型) -> Bool {
-        return self.登録日 == order.登録日 && self.注文番号 == order.注文番号 && self.社員 == order.依頼社員 && self.資材 == order.資材 && self.数量 == order.発注数量 && self.備考 == order.備考
+//    public func isUploaded(data: 発注型) -> Bool {
+//        return self.登録日 == data.登録日 && self.注文番号 == data.注文番号 && self.社員 == data.依頼社員 && self.資材 == data.資材 && self.数量 == data.発注数量 && self.備考 == data.備考
+//    }
+//    
+    public func flushCache() {
+        資材発注キャッシュ型.shared.flushCache(図番: self.資材.図番)
+    }
+    
+    public static func countUploads(uuid: UUID, session: FileMakerSession) throws -> Int {
+        var query = FileMakerQuery()
+        query["API識別キー"] = "==\(uuid.uuidString)"
+        let list = try session.find(layout: 発注型.dbName, query: [query]) 
+        return list.count
+//        _ = try? 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
     }
 }
-
-extension Sequence where Element == 資材要求出力型 {
-    public func exportToDB() throws {
-        let db = FileMakerDB.pm_osakaname
-        let session = db.retainSession()
-        defer { db.releaseSession(session) }
-        try self.exportToDB(loopCount: 0, session: session)
-        /// 発注キャッシュをクリアしないと表示がおかしくなる
-        let set = Set<図番型>(self.map { $0.資材.図番 })
-        let cache = 資材発注キャッシュ型.shared
-        set.forEach { cache.flushCache(図番: $0) }
+/*
+extension Collection where Element == 資材要求出力型 {
+    public func exportToDB_old() throws {
+//        if self.count >= 4 {
+//            let array = Array(self)
+//            try array[..<2].exportToDB()
+//            try array[2...].exportToDB()
+//        } else {
+            let db = FileMakerDB.pm_osakaname
+            let session = db.retainExportSession()
+            defer { db.releaseExportSession(session) }
+            try self.exportToDB(loopCount: 0, session: session)
+            /// 発注キャッシュをクリアしないと表示がおかしくなる
+            let set = Set<図番型>(self.map { $0.資材.図番 })
+            let cache = 資材発注キャッシュ型.shared
+            set.forEach { cache.flushCache(図番: $0) }
+//        }
     }
     
     private func exportToDB(loopCount: Int, session: FileMakerSession) throws {
@@ -95,3 +139,4 @@ extension Sequence where Element == 資材要求出力型 {
         }
     }
 }
+*/
