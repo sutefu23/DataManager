@@ -60,26 +60,6 @@ public struct 資材入出庫出力型: FileMakerExportRecord {
         self.入力区分 = .通常入出庫
     }
     
-//    func makeRecord(識別キー key: UUID) -> [String: String] {
-//        var record: [String: String] = [
-//            "識別キー": key.uuidString,
-//            "登録日": self.登録日.fmString,
-//            "登録時間": self.登録時間.fmImportString,
-//            "資材番号": self.資材.図番,
-//            "部署記号" : self.部署.部署記号,
-//            "社員番号": self.社員.Hなし社員コード,
-//            "入力区分": self.入力区分.name
-//        ]
-//        let isZero = self.入庫数 == 0 && self.出庫数 == 0
-//        if self.入庫数 > 0 || isZero {
-//            record["入庫数"] = "\(self.入庫数)"
-//        }
-//        if self.出庫数 > 0 || isZero {
-//            record["出庫数"] = "\(self.出庫数)"
-//        }
-//        return record
-//    }
-    
     public static var exportLayout: String { "DataAPI_MaterialEntry" }
     public static var exportScript: String { "DataAPI_MaterialEntry_RecordSet" }
     

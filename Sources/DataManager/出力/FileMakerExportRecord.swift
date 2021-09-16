@@ -76,7 +76,7 @@ public protocol FileMakerImportRecord {
 }
 
 extension FileMakerImportRecord {
-    public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
+    public static var db: FileMakerDB { .pm_osakaname }
 
     public static func find(query: FileMakerQuery) throws -> [Self] {
         return try self.find(querys: [query])
@@ -99,6 +99,7 @@ extension Array where Element: FileMakerExportRecord {
         let session = db.retainExportSession()
         defer { db.releaseExportSession(session) }
         session.log("\(Element.exportLayout)へ\(Element.ImportBuddyType.title)重複チェック開始[\(self.count)]件")
+        /// 重複を除去した登録予定のレコード
         let targets: [Element]
         if 重複チェック {
             targets = try self.filter { try !$0.test重複() }
@@ -110,6 +111,7 @@ extension Array where Element: FileMakerExportRecord {
             return
         }
         
+        /// ループの回数
         var loopCount = 1
         repeat {
             let uuid = UUID()
@@ -139,20 +141,6 @@ extension Array where Element: FileMakerExportRecord {
                 session.log("\(Element.ImportBuddyType.title)出力完了[\(loopCount)]", detail: detail, level: .information)
                 return
             }
-//            let checkQuery = Element.ImportBuddyType.makeExportCheckQuery(exportUUID: uuid)
-//            var checked = try Element.ImportBuddyType.find(query: checkQuery)
-//            if checked.count == targets.count {
-//                session.log("\(Element.ImportBuddyType.title)出力完了[\(loopCount)]", detail: detail, level: .information)
-//                return
-//            }
-//            targets = targets.filter { target in
-//                if let index = checked.firstIndex(where: { target.isUploaded(data: $0) }) {
-//                    checked.remove(at: index)
-//                    return false
-//                } else {
-//                    return true
-//                }
-//            }
           loopCount += 1
         } while loopCount <= 2
         throw FileMakerError.upload(message: "\(Element.exportLayout)へ\(targets.count)件").log(.critical)

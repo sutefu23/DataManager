@@ -395,12 +395,12 @@ extension 進捗型 {
 //        return ["指示書進捗入力UUID": "==\(exportUUID.uuidString)"]
 //    }
     
-    static func find(指示書進捗入力UUID: UUID, session: FileMakerSession) throws -> [進捗型] {
-        var query = FileMakerQuery()
-        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
-        let list : [FileMakerRecord] = try session.find(layout: 進捗型.dbName, query: [query])
-        return try list.map { try 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
-    }
+//    static func find(指示書進捗入力UUID: UUID, session: FileMakerSession) throws -> [進捗型] {
+//        var query = FileMakerQuery()
+//        query["指示書進捗入力UUID"] = 指示書進捗入力UUID.uuidString
+//        let list : [FileMakerRecord] = try session.find(layout: 進捗型.dbName, query: [query])
+//        return try list.map { try 進捗型($0) }.sorted { $0.登録日時 < $1.登録日時 }
+//    }
 
     public static func find(工程: 工程型, 伝票種類: 伝票種類型?, 基準製作納期: Day) throws -> [進捗型] {
         var query = FileMakerQuery()
