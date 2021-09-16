@@ -83,6 +83,10 @@ public extension DMLogger {
         self.hasLogRecord(level: .all)
     }
 
+    func dumplog(name: String, minLevel: DMLogLevel, shareButton: DMButton? = nil) throws {
+        try dumplog(base: .desktop, name: name, minLevel: minLevel, shareButton: shareButton)
+    }
+
     /// 全ログを返す
     func currentLog() -> [DMLogRecord] { return currentLog(minLevel: .all) }
 }

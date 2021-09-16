@@ -80,12 +80,10 @@ public struct 資材要求出力型: FileMakerExportRecord {
         資材発注キャッシュ型.shared.flushCache(図番: self.資材.図番)
     }
     
-    public static func countUploads(uuid: UUID, session: FileMakerSession) throws -> Int {
+    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
         var query = FileMakerQuery()
         query["API識別キー"] = "==\(uuid.uuidString)"
-        let list = try session.find(layout: 発注型.dbName, query: [query]) 
-        return list.count
-//        _ = try? 発注型.find(API識別キー: uuid, session: session) // 結果読み込み
+        _ = try session.find(layout: 発注型.dbName, query: [query])
     }
 }
 /*

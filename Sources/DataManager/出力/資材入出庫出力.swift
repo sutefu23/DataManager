@@ -102,6 +102,10 @@ public struct 資材入出庫出力型: FileMakerExportRecord {
         }
         return record
     }
+    
+    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
+        let _  = try session.find(layout: 資材入出庫型.dbName, query: [["UUID": "==\(uuid.uuidString)"]])
+    }
 }
 /*
 extension Collection where Element == 資材入出庫出力型 {

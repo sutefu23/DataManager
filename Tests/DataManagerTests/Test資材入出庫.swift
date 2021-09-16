@@ -10,7 +10,7 @@ import XCTest
 @testable import DataManager
 
 class TestInOutObjects: XCTestCase {
-    let execDBTest = false
+    let execDBTest = true
 
     func testInput() {
         if self.execDBTest == false { return }
@@ -20,7 +20,7 @@ class TestInOutObjects: XCTestCase {
 }
 
 private func makeTest1() -> 資材入出庫出力型 {
-    let sizai = 資材型(図番: "990180M")!
+    let sizai = 資材型(図番: "990180B")!
     let busyo = 部署型.加工
     let inCount = 5
     let outCount = 0

@@ -11,20 +11,27 @@ import Foundation
 public protocol FileMakerExportRecord {
     /// 出力結果を参照できる入力レコード
     associatedtype ImportBuddyType: FileMakerImportRecord
+    /// 出力先のDBファイル
     static var db: FileMakerDB { get }
+    /// 出力先のレイアウト名
     static var exportLayout: String { get }
+    /// 出力用スクリプト名
     static var exportScript: String { get }
+    /// 出力先のUUIDフィールド名
     static var uuidField: String { get }
+    /// 出力先のエラーフイールド名
     static var errorField: String { get }
     
-    func makeExportRecord(exportUUID: UUID) -> FileMakerQuery
     /// 登録済みかどうかチェック対象リストを取得する
     func find重複候補() throws -> [ImportBuddyType]
     /// 登録済みと判定できた場合true
     func is内容重複(with data: ImportBuddyType) -> Bool
+    /// 出力準備する
+    static func prepareUploads(uuid: UUID, session: FileMakerSession) throws
+    /// 出力データ作成
+    func makeExportRecord(exportUUID: UUID) -> FileMakerQuery
     /// 出力後のキャッシュのクリア
     func flushCache()
-    static func countUploads(uuid: UUID, session: FileMakerSession) throws -> Int
 }
 
 extension FileMakerExportRecord {
@@ -35,7 +42,9 @@ extension FileMakerExportRecord {
     public func find重複候補() throws -> [ImportBuddyType] { return [] }
     public func is内容重複(with data: ImportBuddyType) -> Bool { return false }
     public func flushCache() {}
-    
+
+    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {}
+
     public static func countUploads(uuid: UUID, session: FileMakerSession) throws -> Int {
         let records = try session.find(layout: Self.exportLayout, query: [[Self.uuidField: uuid.uuidString]])
             .filter {
@@ -84,18 +93,28 @@ extension FileMakerImportRecord {
     }
 }
 
-extension Collection where Element: FileMakerExportRecord {
+extension Array where Element: FileMakerExportRecord {
     public func exportToDB(重複チェック: Bool = false) throws {
         let db = Element.db
         let session = db.retainExportSession()
         defer { db.releaseExportSession(session) }
-        let targets = try self.filter { try !重複チェック || $0.test重複() }
-        if targets.isEmpty { return }
+        session.log("\(Element.exportLayout)へ\(Element.ImportBuddyType.title)重複チェック開始[\(self.count)]件")
+        let targets: [Element]
+        if 重複チェック {
+            targets = try self.filter { try !$0.test重複() }
+        } else {
+            targets = self
+        }
+        if targets.isEmpty {
+            session.log("\(Element.exportLayout)へ\(Element.ImportBuddyType.title)重複チェックで完了")
+            return
+        }
         
         var loopCount = 1
         repeat {
             let uuid = UUID()
             let detail = "uuid: \(uuid.uuidString)"
+            try Element.prepareUploads(uuid: uuid, session: session)
             session.log("\(Element.exportLayout)へ\(targets.count)件\(Element.ImportBuddyType.title)出力開始[\(loopCount)]", detail: detail, level: .information)
             let startTime = Date()
             // アップロード
@@ -104,11 +123,15 @@ extension Collection where Element: FileMakerExportRecord {
                 progress.flushCache()
             }
             let uploadTime = Date().timeIntervalSince(startTime)
-            let waitTime = TimeInterval(loopCount) * 2
+            let waitTime, extendTime: TimeInterval
+            waitTime = 1.0
+            extendTime = 1.0
+//            waitTime = TimeInterval(loopCount) * 2
+//            extendTime = TimeInterval(loopCount)
             Thread.sleep(forTimeInterval: waitTime + 1.0)
             // 更新
             session.log("\(Element.ImportBuddyType.title)出力スクリプト実行開始[\(loopCount)]", detail: detail, level: .information)
-            try session.executeScript(layout: Element.exportLayout, script: Element.exportScript, param: uuid.uuidString, waitTime: (Swift.max(uploadTime, waitTime), TimeInterval(targets.count)))
+            try session.executeScript(layout: Element.exportLayout, script: Element.exportScript, param: uuid.uuidString, waitTime: (Swift.max(uploadTime, waitTime), extendTime))
             // チェック
             session.log("\(Element.ImportBuddyType.title)出力チェック開始[\(loopCount)]", detail: detail, level: .information)
             let count = try Element.countUploads(uuid: uuid, session: session)

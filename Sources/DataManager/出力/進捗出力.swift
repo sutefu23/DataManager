@@ -126,6 +126,12 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
         return record
     }
     
+    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
+        var query = FileMakerQuery()
+        query["指示書進捗入力UUID"] = "==\(uuid.uuidString)"
+        _ = try session.find(layout: 進捗型.dbName, query: [query])
+    }
+
     /// 重複登録ならtrue
     public func is内容重複(with progress: 進捗出力型) -> Bool {
         if self.伝票番号 != progress.伝票番号 { return false }

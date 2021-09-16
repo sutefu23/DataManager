@@ -73,13 +73,13 @@ public final class FileMakerDB: DMLogger {
 
     /// 接続セッションを取得する
     private func retainSession() -> FileMakerSession {
-        exportLock.lock(); defer { exportLock.unlock() }
+//        exportLock.lock(); defer { exportLock.unlock() }
         return server.pullSession(url: self.dbURL, user: self.user, password: self.password)
     }
     
     /// セッションを解放する
     private func releaseSession(_ session: FileMakerSession) {
-        exportLock.lock(); defer { exportLock.unlock() }
+//        exportLock.lock(); defer { exportLock.unlock() }
         server.putSession(session)
     }
     

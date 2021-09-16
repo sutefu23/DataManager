@@ -195,6 +195,12 @@ public struct 使用資材出力型: FileMakerExportRecord {
         return record
     }
     
+    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
+        var query = FileMakerQuery()
+        query["登録セッションUUID"] = "==\(uuid.uuidString)"
+        _ = try session.find(layout: 進捗型.dbName, query: [query])
+    }
+
 //    public func isUploaded(data: 使用資材型) -> Bool {
 //        return self.isEqual(to: data)
 //    }    
