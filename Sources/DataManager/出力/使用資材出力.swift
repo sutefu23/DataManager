@@ -101,36 +101,6 @@ public struct 使用資材出力型: FileMakerExportRecord {
         self.原因工程 = record.原因工程
     }
     
-//    func makeRecord(識別キー key: UUID) -> [String: String] {
-//        var record: [String: String] = [
-//            "登録セッションUUID": key.uuidString,
-//            "登録日": 登録日時.day.fmString,
-//            "登録時間": 登録日時.time.fmImportString,
-//            "伝票番号": "\(伝票番号.整数値)",
-//            "資材番号": 図番,
-//            "表示名": 表示名,
-//            "使用量": 使用量,
-//        ]
-//        record["工程コード"] = 工程?.code
-//        record["社員コード"] = 作業者?.Hなし社員コード
-//        record["原因部署"] = 原因工程?.code
-//        record["用途コード"] = 用途?.用途コード
-//        record["印刷対象"] = 印刷対象?.rawValue
-//        if let area = self.面積 {
-//            record["面積"] = area
-//        }
-//        if let value = self.単位量 {
-//            record["単位量"] = "\(value)"
-//        }
-//        if let value = self.単位数 {
-//            record["単位数"] = "\(value)"
-//        }
-//        if let charge = self.金額 {
-//            record["金額"] = "\(charge)"
-//        }
-//        return record
-//    }
-//
     func isEqual(to order: 使用資材型) -> Bool {
         return
             self.伝票番号 == order.伝票番号 &&
@@ -198,61 +168,6 @@ public struct 使用資材出力型: FileMakerExportRecord {
     public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
         var query = FileMakerQuery()
         query["登録セッションUUID"] = "==\(uuid.uuidString)"
-        _ = try session.find(layout: 進捗型.dbName, query: [query])
-    }
-
-//    public func isUploaded(data: 使用資材型) -> Bool {
-//        return self.isEqual(to: data)
-//    }    
-}
-
-/*
-extension Collection where Element == 使用資材出力型 {
-    public func exportToDB_old() throws {
-//        if self.count >= 4 {
-//            let array = Array(self)
-//            try array[..<2].exportToDB()
-//            try array[2...].exportToDB()
-//        } else {
-            let db = FileMakerDB.pm_osakaname
-            let session = db.retainExportSession()
-            defer { db.releaseExportSession(session) }
-            try self.exportToDB(loopCount: 0, session: session)
-//        }
-    }
-    
-    private func exportToDB(loopCount: Int, session: FileMakerSession, uuid: UUID? = nil) throws {
-        let targets = Array(self)
-        if targets.isEmpty { return }
-        let layout = "DataAPI_UseMaterialInput"
-        if loopCount > 2 { throw FileMakerError.upload使用資材(message: "\(targets.first!.図番)など\(targets.count)件,sid:\(session.id)").log(.critical) }
-        let uuid = UUID()
-        do {
-            session.log("使用資材\(targets.count)件出力開始[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
-            // 発注処理
-            for progress in targets {
-                try session.insert(layout: layout, fields: progress.makeRecord(識別キー: uuid))
-            }
-            let waitTime = TimeInterval(loopCount)+1.0
-            Thread.sleep(forTimeInterval: waitTime)
-            try session.executeScript(layout: layout, script: "DataAPI_UseMaterialInput_RecordSet", param: uuid.uuidString, waitTime: (waitTime, TimeInterval(targets.count)))
-            let result = try 使用資材型.find(API識別キー: uuid, session: session) // 結果読み込み
-            if result.count == targets.count { // 登録成功
-                session.log("使用資材出力完了[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
-                return
-            }
-            if result.count > 0 { // 部分的に登録成功
-                session.log("部分的に登録成功[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
-                let rest = targets.filter { target in return !result.contains(where: { target.isEqual(to: $0) }) }
-                try rest.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
-            } else { // 完全に登録失敗
-                session.log("完全に登録失敗[\(loopCount)]", detail: "uuid: \(uuid.uuidString)", level: .information)
-                try targets.exportToDB(loopCount: loopCount+1, session: session, uuid: uuid)
-            }
-        } catch {
-            session.log("登録失敗[\(loopCount)]", detail: "uuid: \(uuid)", level: .information)
-            throw error.log(.critical)
-        }
+        _ = try session.find(layout: 使用資材型.dbName, query: [query])
     }
 }
-*/

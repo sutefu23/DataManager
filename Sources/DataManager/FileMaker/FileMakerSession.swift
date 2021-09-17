@@ -13,8 +13,11 @@ public final class FileMakerSession: DMLogger {
     // MARK: - 定数
     /// tokenの寿命
     static let expireSeconds: TimeInterval = 10
+    /// スリープ復帰想定の追加のexpire時間
+    static let expireSeconds2: TimeInterval = 10 * 60 - expireSeconds
     /// token解放後のtcp/ipセッションの寿命
     static let tcpExpireSeconds: TimeInterval = 30
+    
     /// ウエイトの最大値
     static let maxWaitTime: TimeInterval = 3 * 10
     /// ウエイトの最小時間
@@ -57,50 +60,84 @@ public final class FileMakerSession: DMLogger {
     }
     
     // MARK: - 接続管理
-    /// (token, 自動切断までの時間, 自動切断時間後にtokenを使いたくなった場合のロスタイム)
-    private var ticket: (token: String, expire: Date, extendExpire: Date)? {
-        didSet {
-            if ticket == nil {
-                sessionExpire = Date(timeIntervalSinceNow: FileMakerSession.tcpExpireSeconds)
-            } else {
-                sessionExpire = nil
-            }
-        }
-    }
-    /// logout後のセッションの有効期限
-    private var sessionExpire: Date? // logout後のexpire
-    private var activeToken: String? {
-        guard let ticket = self.ticket else { return nil }
-        if Date() < ticket.extendExpire {
-            return ticket.token
-        }
-        return nil
-    }
 
     /// token期限を延長する
     func updateTokenExpire() {
-        ticket?.extendExpire = Date(timeIntervalSinceNow: FileMakerSession.expireSeconds * 2)
-        ticket?.expire = Date(timeIntervalSinceNow: FileMakerSession.expireSeconds)
+        switch state {
+        case .login(token: let token, expire: _):
+            self.state = .login(token: token, expire: Date(timeIntervalSinceNow: FileMakerSession.expireSeconds))
+        default:
+            break
+        }
     }
 
+    /// セッションの状態
+    enum State {
+        /// 初期化直後。セッション待機中
+        case initialState
+        /// token作成中。expireを過ぎるとlogpout
+        case login(token: String, expire: Date)
+        /// token削除後だが接続は存在している。expireを過ぎると切断
+        case logout(expire: Date)
+        /// セッションが切断されている
+        case invalid
+    }
+    private var state: State = .initialState
+    
     /// tokenを保有している場合true
-    var hasToken: Bool { return self.ticket?.token != nil }
+    var hasToken: Bool {
+        switch state {
+        case .login:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    /// expireを過ぎたtokenがある場合true
+    var hasDirtyToken: Bool {
+        switch state {
+        case .login(token: _, expire: let expire):
+            return expire <= Date()
+        default:
+            return false
+        }
+    }
     
     /// 有効期限内のtokenを保有している場合true
     var hasValidToken: Bool {
-        guard let expire = self.ticket?.expire else { return false }
-        return expire > Date()
+        switch state {
+        case .login(token: _, expire: let expire):
+            return expire > Date()
+        default:
+            return false
+        }
     }
     /// 有効期限内のTCP/IPセッションを保有している場合true
-    var hasValidConnection: Bool {
-        guard self.ticket == nil, let expire = self.sessionExpire else { return true }
-        return expire > Date()
+    var hasExpiredConnection: Bool {
+        switch state {
+        case .logout(expire: let expire):
+            return expire <= Date()
+        default:
+            return false
+        }
     }
     
     /// 接続可能な状態にする
     private func prepareToken() throws -> String {
-        // 使えるtokengああるなら、再利用する
-        if let token = self.activeToken { return token }
+        // 使えるtokenがあるなら、再利用する
+        switch state {
+        case .login(token: let token, expire: let expire):
+            let now = Date()
+            if expire > now { return token }
+            if expire.addingTimeInterval(FileMakerSession.expireSeconds2) > now { return token }
+            log("スリープ復帰検知")
+            self.logout(waitAfterLogout: FileMakerSession.minWaitTime)
+        case .invalid:
+            throw FileMakerError.internalError(message: "無効化されたTCPセッションを再利用しようとした")
+        case .logout, .initialState:
+            break
+        }
         // token申請
         let url = self.url.appendingPathComponent("sessions")
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
@@ -110,11 +147,8 @@ public final class FileMakerSession: DMLogger {
                 .log(self, .critical)
         }
         log("token取得", detail: token)
-        // 有効期限計算
-        let extendExpire: Date = Date(timeIntervalSinceNow: FileMakerSession.expireSeconds * 2)
-        let expire: Date = Date(timeIntervalSinceNow: FileMakerSession.expireSeconds)
         // tokenと有効期限を保存する
-        self.ticket = (token: token, expire: expire, extendExpire: extendExpire)
+        self.state = .login(token: token, expire: Date(timeIntervalSinceNow: FileMakerSession.expireSeconds))
         return token
     }
     
@@ -125,31 +159,41 @@ public final class FileMakerSession: DMLogger {
     }
 
     /// 接続を切断状態にする
-    @discardableResult
-    func logout(waitAfterLogout: TimeInterval?) -> Bool {
-        guard let token = self.ticket?.token else { return false }
-        let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
-        do {
-            log("token削除")
-            let response = try connection.callFileMaker(url: url, method: .DELETE)
-            if response.code != 0 {
-                log("token削除失敗（\(response.message)）", level: .warning)
+    func logout(waitAfterLogout: TimeInterval?) {
+        switch state {
+        case .login(token: let token, expire: _):
+            let url = self.url.appendingPathComponent("sessions").appendingPathComponent(token)
+            do {
+                log("token削除")
+                let response = try connection.callFileMaker(url: url, method: .DELETE)
+                if response.code != 0 {
+                    log("token削除失敗（\(response.message)）", level: .warning)
+                }
+                if let waitAfterLogout = waitAfterLogout {
+                    let waitTime = FileMakerSession.clampWaitTime(waitAfterLogout)
+                    Thread.sleep(forTimeInterval: waitTime)
+                }
+            } catch {
+                error.asyncShowAlert()
             }
-            if let waitAfterLogout = waitAfterLogout {
-                let waitTime = FileMakerSession.clampWaitTime(waitAfterLogout)
-                Thread.sleep(forTimeInterval: waitTime)
-            }
-        } catch {
-            error.asyncShowAlert()
+            self.state = .logout(expire: Date(timeIntervalSinceNow: FileMakerSession.tcpExpireSeconds))
+            return
+        default:
+            return
         }
-        self.ticket = nil
-        return true
     }
     /// セッションを無効化する
     func invalidate() {
-        self.logout(waitAfterLogout: nil)
-        log("セッション終了")
+        switch state {
+        case .login:
+            self.logout(waitAfterLogout: nil)
+        case .logout, .initialState:
+            break
+        case .invalid:
+            return
+        }
         self.connection.invalidate()
+        log("セッション無効化")
     }
     
     // MARK: - レコード操作

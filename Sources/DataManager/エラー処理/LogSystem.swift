@@ -86,7 +86,7 @@ public extension DMLogger {
     func dumplog(name: String, minLevel: DMLogLevel, shareButton: DMButton? = nil) throws {
         try dumplog(base: .desktop, name: name, minLevel: minLevel, shareButton: shareButton)
     }
-
+    
     /// 全ログを返す
     func currentLog() -> [DMLogRecord] { return currentLog(minLevel: .all) }
 }
@@ -123,7 +123,9 @@ var currentLogSystem: DMLogger {
 }
 
 /// 標準実装のログシステム
-final class DMLogSystem: DMLogger {
+public final class DMLogSystem: DMLogger {
+    public static var shared: DMLogger { DataManager.currentLogSystem }
+    
     /// ログシステム
     private let lock = NSRecursiveLock()
     /// ログデータ本体
@@ -141,7 +143,7 @@ final class DMLogSystem: DMLogger {
         #endif
     }
     /// ログを登録する
-    func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
+    public func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
         let log = DMLogRecord(data: data, level: level)
         lock.lock(); defer { lock.unlock() }
         if self.records.count ==  maxLogCount {
@@ -151,12 +153,12 @@ final class DMLogSystem: DMLogger {
         self.records.append(log)
     }
     /// 指定されたレベル以上のログを取り出す
-    func currentLog(minLevel: DMLogLevel) -> [DMLogRecord] {
+    public func currentLog(minLevel: DMLogLevel) -> [DMLogRecord] {
         lock.lock(); defer { lock.unlock() }
         return self.records.filter { $0.level >= minLevel }
     }
     /// 指定されたレベル以上のログがあればtrueを返す
-    func hasLogRecord(level: DMLogLevel) -> Bool {
+    public func hasLogRecord(level: DMLogLevel) -> Bool {
         lock.lock(); defer { lock.unlock() }
         return records.contains { $0.level >= level }
     }

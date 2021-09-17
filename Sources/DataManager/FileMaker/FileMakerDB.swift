@@ -185,16 +185,16 @@ public final class FileMakerDB: DMLogger {
     }
 
     /// 現在使用していないアイドル状態のセッションを閉じる
-    public static func logoutAll(force: Bool = false) {
-        serverCache.logoutAll(force: force)
+    public static func logoutAll() {
+        serverCache.logoutAll()
     }
     
     /// 現在使用していないアイドル状態のセッションを非同期で閉じる
-    public static func logoutAllAsync(force: Bool = false) {
-        DispatchQueue.global(qos: .utility).async {
-            serverCache.logoutAll(force: force)
-        }
-    }
+//    public static func logoutAllAsync() {
+//        DispatchQueue.global(qos: .utility).async {
+//            serverCache.logoutAll()
+//        }
+//    }
     /// 全てのサーバーの現在の待機数の合計
     public static var poolCount: Int { serverCache.poolCount }
     /// 全てのサーバーの現在の接続数の合計

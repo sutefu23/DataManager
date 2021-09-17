@@ -181,6 +181,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
 
     case invalidData(message: String)
     case notFound(message: String)
+    case internalError(message: String)
     
     init(invalidData keys: String..., record: FileMakerRecord) {
         let list: [String] = keys.map { "\($0): \(record.string(forKey: $0) ?? "")" }
@@ -223,7 +224,8 @@ public enum FileMakerError: FilemakerErrorProtocol {
                 .upload資材入出庫(message: let mes),
                 .invalidData(message: let mes),
                 .fetch(message: let mes),
-                .notFound(message: let mes):
+                .notFound(message: let mes),
+                .internalError(message: let mes):
             return mes
         }
     }
@@ -248,6 +250,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
         case .upload使用資材(message: let mes): return "使用資材登録失敗(\(mes))"
         case .invalidData(message: let mes): return "読み込みフィールド形式不正(\(mes))"
         case .notFound(message: let mes): return "必要なレコードが見つからなかった(\(mes))"
+        case .internalError(message: let mes): return "内部ロジックエラー[\(message)]"
         }
     }
     

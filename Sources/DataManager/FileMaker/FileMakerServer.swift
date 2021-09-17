@@ -31,7 +31,7 @@ final class FileMakerServer: Hashable, DMLogger {
     /// 最低180秒はアクセスする
     static let lastAccessInterval: TimeInterval = 180
     /// 有効期限一括チェックの周期。整数で単位は秒
-    static let timerInterval: Int = 10
+    static let timerInterval: Int = 5
 
     // MARK: - プロパティ
     private var pool: [FileMakerSession] = []
@@ -82,7 +82,6 @@ final class FileMakerServer: Hashable, DMLogger {
         sem.wait()
         lock.lock()
         defer { lock.unlock() }
-        if connecting.isEmpty { updateLogoutBaseLine() }
         // 使い回し
         for (index, session) in pool.enumerated().reversed() where session.url == url {
             pool.remove(at: index)
@@ -113,24 +112,16 @@ final class FileMakerServer: Hashable, DMLogger {
         startTimer()
     }
     
-    private func updateLogoutBaseLine() {
-        self.logoutBaseLine = Date()
-    }
-    private var logoutBaseLine: Date = Date() // 前回ログアウト時間。ある程度間隔を空けないとログアウトできない
     /// セッションを閉じる
-    func logout(force: Bool) {
+    func logout() {
         guard FileMakerDB.isEnabled else { return }
         lock.lock(); defer { lock.unlock() }
         if pool.isEmpty { return }
-        if !force {
-            if abs(self.logoutBaseLine.timeIntervalSinceNow) < FileMakerServer.lastAccessInterval { return }
-        }
         DispatchQueue.concurrentPerform(iterations: pool.count) {
             let pool = pool[$0]
             pool.invalidate()
         }
         pool.removeAll()
-        updateLogoutBaseLine()
     }
     
     // MARK: - logger
@@ -158,13 +149,13 @@ final class FileMakerServer: Hashable, DMLogger {
         let group = DispatchGroup()
         for (index, session) in pool.enumerated().reversed() {
             if session.hasToken {
-                if !session.hasValidToken {
+                if session.hasDirtyToken {
                     DispatchQueue.global().async(group: group) {
                         session.debugLog("expire logout")
                         session.logout(waitAfterLogout: nil)
                     }
                 }
-            } else if !session.hasValidConnection {
+            } else if session.hasExpiredConnection {
                 DispatchQueue.global(qos: .background).async {
                     session.debugLog("expire invalidate")
                     session.invalidate()
@@ -211,8 +202,8 @@ final class FileMakerServerCache {
     }
     
     /// 全てのサーバーへの接続を解除する
-    func logoutAll(force: Bool) {
+    func logoutAll() {
         lock.lock(); defer { lock.unlock() }
-        cache.values.forEach { $0.logout(force: force) }
+        cache.values.forEach { $0.logout() }
     }
 }
