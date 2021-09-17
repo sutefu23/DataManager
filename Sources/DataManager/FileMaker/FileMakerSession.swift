@@ -444,12 +444,19 @@ extension DMHttpConnectionProtocol {
     /// FileMakerSeverと通信する。その際dataを渡す
     func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
         guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data) else { throw FileMakerResponseError.レスポンスがない }
-        guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data) else { throw FileMakerResponseError.レスポンスをJSONに変換できない }
-        guard case let messages as [[String: Any]] = json["messages"] else { throw FileMakerResponseError.レスポンスにmessagesが存在しない }
-        guard case let codeString as String = messages[0]["code"], let code = Int(codeString) else { throw FileMakerResponseError.レスポンスにcodeが存在しない }
-        let response = (json["response"] as? [String: Any]) ?? [:]
-        let message = (messages[0]["message"] as? String) ?? ""
-        return FileMakerResponse(code: code, message: message, response: response)
+        do {
+            guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data) else { throw FileMakerResponseError.レスポンスをJSONに変換できない }
+            guard case let messages as [[String: Any]] = json["messages"] else { throw FileMakerResponseError.レスポンスにmessagesが存在しない }
+            guard case let codeString as String = messages[0]["code"], let code = Int(codeString) else { throw FileMakerResponseError.レスポンスにcodeが存在しない }
+            let response = (json["response"] as? [String: Any]) ?? [:]
+            let message = (messages[0]["message"] as? String) ?? ""
+            return FileMakerResponse(code: code, message: message, response: response)
+        } catch {
+            if let str = String(data: data, encoding: .utf8) {
+                DMLogSystem.shared.log("JSON変換異常", detail: String(str.prefix(200)), level: .critical)
+            }
+            throw error
+        }
     }
     
     /// FileMakerSeverと通信する。その際objectをJSONでエンコードして渡す

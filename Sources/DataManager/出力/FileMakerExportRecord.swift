@@ -47,11 +47,13 @@ extension FileMakerExportRecord {
 
     public static func countUploads(uuid: UUID, session: FileMakerSession) throws -> Int {
         let records = try session.find(layout: Self.exportLayout, query: [[Self.uuidField: uuid.uuidString]])
-            .filter {
-                guard let error = $0.string(forKey: Self.errorField) else { return false }
-                return error.isEmpty
+        var count = 0
+        for record in records {
+            if let error = record.string(forKey: Self.errorField), error.isEmpty {
+                count += 1
             }
-        return records.count
+        }
+        return count
     }
     
     /// 登録済みかチェックする

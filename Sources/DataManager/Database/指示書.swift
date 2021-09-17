@@ -63,6 +63,7 @@ public final class 指示書型 {
     public var セット数: String { record.string(forKey: "セット数")! }
     public var 備考: String { record.string(forKey: "備考")! }
     public var 管理用メモ: String { record.string(forKey: "管理用メモ")! }
+    public var 営業用メモ: String { record.string(forKey: "営業用メモ")! }
 
     public var 材質1: String { record.string(forKey: "材質1")! }
     public var 材質2: String { record.string(forKey: "材質2")! }
@@ -154,6 +155,20 @@ public final class 指示書型 {
         return list.sorted { $0.日時 < $1.日時 }
     }()
     
+    public var is原稿社名不要: Bool {
+        return self.管理用メモ.contains(oneOf: "原稿社名不要", "原稿封筒社名不要") || self.備考.contains(oneOf: "原稿社名不要", "原稿封筒社名不要")
+    }
+    public var is封筒社名不要: Bool {
+        return self.管理用メモ.contain("封筒社名不要") || self.備考.contain("封筒社名不要")
+    }
+
+    public var is原稿社名必要: Bool {
+        return self.管理用メモ.contains(oneOf: "原稿社名必要", "原稿封筒社名必要") || self.備考.contains(oneOf: "原稿社名必要", "原稿封筒社名必要")
+    }
+    public var is封筒社名必要: Bool {
+        return self.管理用メモ.contain("封筒社名必要") || self.備考.contain("封筒社名必要")
+    }
+
     var 図URL: URL? { record.url(forKey: "図") }
     #if os(Linux) || os(Windows)
     #else
