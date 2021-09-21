@@ -14,20 +14,276 @@ import Cocoa
 import Foundation
 #endif
 
-public final class 指示書型 {
+public final class 指示書型: FileMakerImportRecord {
+    public static let layout: String = "DataAPI_1"
+    public static let name: String = "指示書"
+
     private let lock = NSRecursiveLock()
     
-    let record: FileMakerRecord
+    public let recordId: String?
+    public let uuid: UUID
+    let 図URL: URL?
+
+    public var 表示用伝票番号: String { 伝票番号.表示用文字列 }
+    public let 略号: Set<略号型>
+    public let 伝票番号: 伝票番号型
+
+    public let 登録日時: Date
+    public let 受注日: Day
+    public let 出荷時間: Time?
+    public let 伝票種類: 伝票種類型
+    public let 伝票状態: 伝票状態型
+
+    public let 工程状態: 工程状態型
+    public let 承認状態: 承認状態型
+    public let 伝票種別: 伝票種別型
+    public let 経理状態: 経理状態型
+    public let 部門: 部門型
+
+    public let 製作納期: Day
+    public let 出荷納期: Day
+
+    public let 品名: String
+    public let 仕様: String
+    public let 寸法: String
     
-    init?(_ record: FileMakerRecord) {
-        self.record = record
+    public let 社名: String
+    public let 文字数: String
+    public let セット数: String
+    public let 備考: String
+    public let 管理用メモ: String
+    public let 営業用メモ: String
+
+    public let 材質1: String
+    public let 材質2: String
+    public let 表面仕上1: String
+    public let 表面仕上2: String
+    public let 側面仕上1: String
+    public let 側面仕上2: String
+    public let 側面の高さ1: String
+    public let 側面の高さ2: String
+
+    public let 板厚1: String
+    public let 板厚2: String
+
+    public let 上段左: String
+    public let 上段中央: String
+    public let 上段右: String
+    public let 下段左: String
+    public let 下段中央: String
+    public let 下段右: String
+
+    public let 会社コード: String
+
+    public let 単価1: Double
+    public let 数量1: Int
+    public let 単価4: Double
+    public let 単価5: Double
+    
+    public let ボルト等1: String
+    public let ボルト等2: String
+    public let ボルト等3: String
+    public let ボルト等4: String
+    public let ボルト等5: String
+    public let ボルト等6: String
+    public let ボルト等7: String
+    public let ボルト等8: String
+    public let ボルト等9: String
+    public let ボルト等10: String
+    public let ボルト等11: String
+    public let ボルト等12: String
+    public let ボルト等13: String
+    public let ボルト等14: String
+    public let ボルト等15: String
+
+    public let ボルト本数1: String
+    public let ボルト本数2: String
+    public let ボルト本数3: String
+    public let ボルト本数4: String
+    public let ボルト本数5: String
+    public let ボルト本数6: String
+    public let ボルト本数7: String
+    public let ボルト本数8: String
+    public let ボルト本数9: String
+    public let ボルト本数10: String
+    public let ボルト本数11: String
+    public let ボルト本数12: String
+    public let ボルト本数13: String
+    public let ボルト本数14: String
+    public let ボルト本数15: String
+
+    public let 付属品1: String
+    public let 付属品2: String
+    public let 付属品3: String
+    public let 付属品4: String
+    public let 付属品5: String
+    
+    public let その他1: String
+    public let その他2: String
+
+    public let 枠材質: String
+    public let 台板材質: String
+    public let 裏仕様: String
+
+    public let 枠仕上: String
+    public let 枠寸法1: String
+    public let 枠寸法2: String
+    public let 枠寸法3: String
+    public let 台板寸法: String
+    
+    public let 合計金額: Double
+    
+    public let 担当者1: 社員型?
+    public let 担当者2: 社員型?
+    public let 担当者3: 社員型?
+
+    public let 発送事項: String
+    
+    public var memoryFootPrint: Int { return 200 * 8 } // 仮設定のため適当
+    
+    public required init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
+        func getString(_ key: String) throws -> String {
+            guard let string = record.string(forKey: key) else { throw makeError(key) }
+            return string
+        }
+        func getInteger(_ key: String) throws -> Int {
+            guard let value = record.integer(forKey: key) else { throw makeError(key) }
+            return value
+        }
+        func getDay(_ key: String) throws -> Day {
+            guard let day = record.day(forKey: key) else { throw makeError(key) }
+            return day
+        }
+        func get社員(_ numberKey: String, _ nameKey: String) -> 社員型? {
+            guard let num = record.integer(forKey: numberKey), let name = record.string(forKey: nameKey), num > 0 && num < 1000 && !name.isEmpty else { return nil }
+            return prepare社員(社員番号: num, 社員名称: name)
+        }
+        guard let 登録日時 = record.date(dayKey: "登録日", timeKey: "登録時間") else { throw makeError("登録日時") }
+        guard let 受注日 = record.day(forKey: "受注日") ?? record.day(forKey: "登録日") else { throw makeError("受注日")}
+        guard let 伝票種類 = record.伝票種類(forKey: "伝票種類") else { throw makeError("伝票種類") }
+        guard let 工程状態 = record.工程状態(forKey: "工程状態") else { throw makeError("工程状態") }
+        guard let 承認状態 = record.承認状態(forKey: "承認状態") else { throw makeError("承認状態") }
+        guard let 製作納期 = record.day(forKey: "製作納期") ?? record.day(forKey: "出荷納期") else { throw makeError("製作納期") }
+        guard let 出荷納期 = record.day(forKey: "出荷納期") ?? record.day(forKey: "製作納期") else { throw makeError("出荷納期") }
+        guard let 部門 = record.部門(forKey: "部門コード") else { throw makeError("部門") }
+        guard let 伝票種別str = record.string(forKey: "伝票種別"), let 伝票種別 = 伝票種別型(伝票種別str) else { throw makeError("伝票種別") }
+        guard let 経理状態 = record.経理状態(forKey: "経理状態") else { throw makeError("経理状態") }
+        guard let uuidStr = record.string(forKey: "UUID"), let uuid = UUID(uuidString: uuidStr) else { throw makeError("UUID") }
+        self.登録日時 = 登録日時
+        self.受注日 = 受注日
+        self.伝票種類 = 伝票種類
+        self.工程状態 = 工程状態
+        self.承認状態 = 承認状態
+        self.製作納期 = 製作納期
+        self.出荷納期 = 出荷納期
+        self.部門 = 部門
+        self.伝票種別 = 伝票種別
+        self.経理状態 = 経理状態
+        self.uuid = uuid
+        
+        self.略号 = try make略号(getString("略号"))
+        self.伝票番号 = try 伝票番号型(validNumber: getInteger("伝票番号"))
+        self.品名 = try getString("品名")
+        self.仕様 = try getString("仕様")
+        self.寸法 = try getString("寸法")
+        
+        self.社名 = try getString("社名")
+        self.文字数 = try getString("文字数")
+        self.セット数 = try getString("セット数")
+        self.備考 = try getString("備考")
+        self.管理用メモ = try getString("管理用メモ")
+        self.営業用メモ = try getString("営業用メモ")
+
+        self.材質1 = try getString("材質1")
+        self.材質2 = try getString("材質2")
+        self.表面仕上1 = try getString("表面仕上1")
+        self.表面仕上2 = try getString("表面仕上2")
+        self.側面仕上1 = try getString("側面仕上1")
+        self.側面仕上2 = try getString("側面仕上2")
+        self.側面の高さ1 = try getString("側面の高さ1")
+        self.側面の高さ2 = try getString("側面の高さ2")
+
+        self.板厚1 = try getString("板厚1")
+        self.板厚2 = try getString("板厚2")
+
+        self.上段左 = try getString("上段左")
+        self.上段中央 = try getString("上段中央")
+        self.上段右 = try getString("上段右")
+        self.下段左 = try getString("下段左")
+        self.下段中央 = try getString("下段中央")
+        self.下段右 = try getString("下段右")
+
+        self.担当者1 = get社員("社員番号1", "担当者1")
+        self.担当者2 = get社員("社員番号2", "担当者2")
+        self.担当者3 = get社員("社員番号3", "担当者3")
+        
+        
+        self.ボルト等1 = try getString("ボルト等1")
+        self.ボルト等2 = try getString("ボルト等2")
+        self.ボルト等3 = try getString("ボルト等3")
+        self.ボルト等4 = try getString("ボルト等4")
+        self.ボルト等5 = try getString("ボルト等5")
+        self.ボルト等6 = try getString("ボルト等6")
+        self.ボルト等7 = try getString("ボルト等7")
+        self.ボルト等8 = try getString("ボルト等8")
+        self.ボルト等9 = try getString("ボルト等9")
+        self.ボルト等10 = try getString("ボルト等10")
+        self.ボルト等11 = try getString("ボルト等11")
+        self.ボルト等12 = try getString("ボルト等12")
+        self.ボルト等13 = try getString("ボルト等13")
+        self.ボルト等14 = try getString("ボルト等14")
+        self.ボルト等15 = try getString("ボルト等15")
+
+        self.ボルト本数1 = try getString("ボルト本数1")
+        self.ボルト本数2 = try getString("ボルト本数2")
+        self.ボルト本数3 = try getString("ボルト本数3")
+        self.ボルト本数4 = try getString("ボルト本数4")
+        self.ボルト本数5 = try getString("ボルト本数5")
+        self.ボルト本数6 = try getString("ボルト本数6")
+        self.ボルト本数7 = try getString("ボルト本数7")
+        self.ボルト本数8 = try getString("ボルト本数8")
+        self.ボルト本数9 = try getString("ボルト本数9")
+        self.ボルト本数10 = try getString("ボルト本数10")
+        self.ボルト本数11 = try getString("ボルト本数11")
+        self.ボルト本数12 = try getString("ボルト本数12")
+        self.ボルト本数13 = try getString("ボルト本数13")
+        self.ボルト本数14 = try getString("ボルト本数14")
+        self.ボルト本数15 = try getString("ボルト本数15")
+
+        self.付属品1 = try getString("付属品1")
+        self.付属品2 = try getString("付属品2")
+        self.付属品3 = try getString("付属品3")
+        self.付属品4 = try getString("付属品4")
+        self.付属品5 = try getString("付属品5")
+
+        self.その他1 = try getString("その他1")
+        self.その他2 = try getString("その他2")
+
+        self.枠材質 = try getString("枠材質")
+        self.台板材質 = try getString("台板材質")
+        self.裏仕様 = try getString("裏仕様")
+
+        self.枠仕上 = try getString("枠仕上")
+        self.枠寸法1 = try getString("枠寸法1")
+        self.枠寸法2 = try getString("枠寸法2")
+        self.枠寸法3 = try getString("枠寸法3")
+        self.台板寸法 = try getString("台板寸法")
+        
+        self.図URL = record.url(forKey: "図")
+        self.伝票状態 = record.伝票状態(forKey: "伝票状態") ?? .未製作
+        self.会社コード = record.string(forKey: "会社コード") ?? ""
+        
+        self.単価1 = record.double(forKey: "単価1") ?? 0
+        self.数量1 = record.integer(forKey: "数量1") ?? 0
+        self.単価4 = record.double(forKey: "単価4") ?? 0
+        self.単価5 = record.double(forKey: "単価5") ?? 0
+        self.合計金額 = record.double(forKey: "合計金額") ?? 0
+        self.出荷時間 = try Time(fmTime: getString("連絡欄1"))
+        self.発送事項 = record.string(forKey: "発送事項") ?? ""
+        self.recordId = record.recordId
     }
-    
-    public lazy var 伝票番号: 伝票番号型 = {
-        let num = record.integer(forKey: "伝票番号")!
-        return 伝票番号型(validNumber: num)
-    }()
-    
+        
     public lazy var 比較用伝票番号: Int = {
         let div = self.表示用伝票番号.split(separator: "-")
         if div.count != 2 { return -1 }
@@ -40,136 +296,27 @@ public final class 指示書型 {
         }
     }()
     
-    public lazy var 表示用伝票番号: String = { record.string(forKey: "表示用伝票番号")! }()
-    public lazy var 略号: Set<略号型> = { make略号(record.string(forKey: "略号")!) }()
-    
-    public lazy var 登録日時: Date = { record.date(dayKey: "登録日", timeKey: "登録時間")! }()
-    public lazy var 受注日: Day = { record.day(forKey: "受注日") ?? record.day(forKey: "登録日")! }()
-    public lazy var 伝票種類: 伝票種類型  = { record.伝票種類(forKey: "伝票種類")! }()
-    public lazy var 伝票状態: 伝票状態型 = { record.伝票状態(forKey: "伝票状態") ?? .未製作 }()
-    public lazy var 工程状態: 工程状態型 = { record.工程状態(forKey: "工程状態")! }()
-    public lazy var 承認状態: 承認状態型 = { record.承認状態(forKey: "承認状態")! }()
-    public lazy var 製作納期: Day = { record.day(forKey: "製作納期") ?? record.day(forKey: "出荷納期")! }()
-    public lazy var 出荷納期: Day = { record.day(forKey: "出荷納期") ?? record.day(forKey: "製作納期")! }()
-    
     public lazy var 取引先: 取引先型? = { try? 取引先型.find(会社コード: self.会社コード) }()
-    
-    public var 品名: String { record.string(forKey: "品名")! }
-    public var 仕様: String { record.string(forKey: "仕様")! }
-    public var 寸法: String { record.string(forKey: "寸法")! }
-    public lazy var 寸法サイズ: [Double] = { calc寸法サイズ(self.寸法) }()
-    public var 社名: String { record.string(forKey: "社名")! }
-    public var 文字数: String { record.string(forKey: "文字数")! }
-    public var セット数: String { record.string(forKey: "セット数")! }
-    public var 備考: String { record.string(forKey: "備考")! }
-    public var 管理用メモ: String { record.string(forKey: "管理用メモ")! }
-    public var 営業用メモ: String { record.string(forKey: "営業用メモ")! }
 
-    public var 材質1: String { record.string(forKey: "材質1")! }
-    public var 材質2: String { record.string(forKey: "材質2")! }
-    public var 表面仕上1: String { record.string(forKey: "表面仕上1")! }
-    public var 表面仕上2: String { record.string(forKey: "表面仕上2")! }
-    public var 側面仕上1: String { record.string(forKey: "側面仕上1")! }
-    public var 側面仕上2: String { record.string(forKey: "側面仕上2")! }
-    public lazy var 側面の高さ1: String = { self.record.string(forKey: "側面の高さ1")! }()
-    public lazy var 側面の高さ2: String = { self.record.string(forKey: "側面の高さ2")! }()
+    public lazy var 寸法サイズ: [Double] = { calc寸法サイズ(self.寸法) }()
+
     public lazy var 箱文字側面高さ: [Double] = { calc箱文字側面高さ(self.側面の高さ1) + calc箱文字側面高さ(self.側面の高さ2) }()
     public lazy var 箱文字以外側面高さ: [Double] = { calc箱文字以外側面高さ(self.側面の高さ1) + calc箱文字以外側面高さ(self.側面の高さ2) }()
 
-    public var 板厚1: String { record.string(forKey: "板厚1")! }
-    public var 板厚2: String { record.string(forKey: "板厚2")! }
-
-    public var 上段左: String { record.string(forKey: "上段左")! }
-    public var 上段中央: String { record.string(forKey: "上段中央")! }
-    public var 上段右: String { record.string(forKey: "上段右")! }
-    public var 下段左: String { record.string(forKey: "下段左")! }
-    public var 下段中央: String { record.string(forKey: "下段中央")! }
-    public var 下段右: String { record.string(forKey: "下段右")! }
-
-    public var 部門: 部門型 { record.部門(forKey: "部門コード")! }
-    public var 会社コード: String { record.string(forKey: "会社コード") ?? "" }
     
-    public var 単価1: Double { record.double(forKey: "単価1") ?? 0 }
-    public var 数量1: Int { record.integer(forKey: "数量1") ?? 0 }
-    public var 単価4: Double { record.double(forKey: "単価4") ?? 0 }
-    public var 単価5: Double { record.double(forKey: "単価5") ?? 0 }
-    public lazy var 伝票種別: 伝票種別型 = { 伝票種別型(self.record.string(forKey: "伝票種別")!)! }()
-    public var 経理状態: 経理状態型 {
-        if let state = record.経理状態(forKey: "経理状態") { return state }
-        return self.進捗一覧.contains(工程: .経理, 作業内容: .完了) ? .売上処理済 : .未登録
-    }
-    public var ボルト等1: String { record.string(forKey: "ボルト等1")! }
-    public var ボルト等2: String { record.string(forKey: "ボルト等2")! }
-    public var ボルト等3: String { record.string(forKey: "ボルト等3")! }
-    public var ボルト等4: String { record.string(forKey: "ボルト等4")! }
-    public var ボルト等5: String { record.string(forKey: "ボルト等5")! }
-    public var ボルト等6: String { record.string(forKey: "ボルト等6")! }
-    public var ボルト等7: String { record.string(forKey: "ボルト等7")! }
-    public var ボルト等8: String { record.string(forKey: "ボルト等8")! }
-    public var ボルト等9: String { record.string(forKey: "ボルト等9")! }
-    public var ボルト等10: String { record.string(forKey: "ボルト等10")! }
-    public var ボルト等11: String { record.string(forKey: "ボルト等11")! }
-    public var ボルト等12: String { record.string(forKey: "ボルト等12")! }
-    public var ボルト等13: String { record.string(forKey: "ボルト等13")! }
-    public var ボルト等14: String { record.string(forKey: "ボルト等14")! }
-    public var ボルト等15: String { record.string(forKey: "ボルト等15")! }
-
-    public var ボルト本数1: String { record.string(forKey: "ボルト本数1")! }
-    public var ボルト本数2: String { record.string(forKey: "ボルト本数2")! }
-    public var ボルト本数3: String { record.string(forKey: "ボルト本数3")! }
-    public var ボルト本数4: String { record.string(forKey: "ボルト本数4")! }
-    public var ボルト本数5: String { record.string(forKey: "ボルト本数5")! }
-    public var ボルト本数6: String { record.string(forKey: "ボルト本数6")! }
-    public var ボルト本数7: String { record.string(forKey: "ボルト本数7")! }
-    public var ボルト本数8: String { record.string(forKey: "ボルト本数8")! }
-    public var ボルト本数9: String { record.string(forKey: "ボルト本数9")! }
-    public var ボルト本数10: String { record.string(forKey: "ボルト本数10")! }
-    public var ボルト本数11: String { record.string(forKey: "ボルト本数11")! }
-    public var ボルト本数12: String { record.string(forKey: "ボルト本数12")! }
-    public var ボルト本数13: String { record.string(forKey: "ボルト本数13")! }
-    public var ボルト本数14: String { record.string(forKey: "ボルト本数14")! }
-    public var ボルト本数15: String { record.string(forKey: "ボルト本数15")! }
-
-    public var 付属品1: String { record.string(forKey: "付属品1")! }
-    public var 付属品2: String { record.string(forKey: "付属品2")! }
-    public var 付属品3: String { record.string(forKey: "付属品3")! }
-    public var 付属品4: String { record.string(forKey: "付属品4")! }
-    public var 付属品5: String { record.string(forKey: "付属品5")! }
-    
-    public var その他1: String { record.string(forKey: "その他1")! }
-    public var その他2: String { record.string(forKey: "その他2")! }
-
-    public var 枠材質: String { record.string(forKey: "枠材質")! }
-    public var 台板材質: String { record.string(forKey: "台板材質")! }
-    public var 裏仕様: String { record.string(forKey: "裏仕様")! }
-
-    public var 枠仕上: String { record.string(forKey: "枠仕上")! }
-    public var 枠寸法1: String { record.string(forKey: "枠寸法1")! }
-    public var 枠寸法2: String { record.string(forKey: "枠寸法2")! }
-    public var 枠寸法3: String { record.string(forKey: "枠寸法3")! }
-    public var 台板寸法: String { record.string(forKey: "台板寸法")! }
-    
-    public var 合計金額: Double { record.double(forKey: "合計金額") ?? 0}
     public lazy var インシデント一覧: [インシデント型] = {
         let list = self.進捗一覧.map { インシデント型($0) } + self.変更一覧.map { インシデント型($0) }
         return list.sorted { $0.日時 < $1.日時 }
     }()
     
-    public var is原稿社名不要: Bool {
-        return self.管理用メモ.contains(oneOf: "原稿社名不要", "原稿封筒社名不要") || self.備考.contains(oneOf: "原稿社名不要", "原稿封筒社名不要")
+    public var is原稿封筒社名印刷あり: Bool {
+        if self.管理用メモ.contain("原稿封筒社名必要") { return true }
+        if self.管理用メモ.contain("原稿封筒社名不要") { return false }
+        if self.備考.contain("原稿封筒社名必要") { return true }
+        if self.備考.contain("原稿封筒社名不要") { return false }
+        return self.取引先?.is原稿社名不要 != true
     }
-    public var is封筒社名不要: Bool {
-        return self.管理用メモ.contain("封筒社名不要") || self.備考.contain("封筒社名不要")
-    }
-
-    public var is原稿社名必要: Bool {
-        return self.管理用メモ.contains(oneOf: "原稿社名必要", "原稿封筒社名必要") || self.備考.contains(oneOf: "原稿社名必要", "原稿封筒社名必要")
-    }
-    public var is封筒社名必要: Bool {
-        return self.管理用メモ.contain("封筒社名必要") || self.備考.contain("封筒社名必要")
-    }
-
-    var 図URL: URL? { record.url(forKey: "図") }
+    
     #if os(Linux) || os(Windows)
     #else
     public lazy var 図: DMImage? = {
@@ -185,7 +332,6 @@ public final class 指示書型 {
     public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧) ?? [] }
     public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧) ?? [:] }
     public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).作業進捗一覧) ?? [] }
-    public lazy var uuid: String = { self.record.string(forKey: "UUID")! }()
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {
         let list = (try? 指示書変更内容履歴型.find(指示書uuid: self.uuid))?.sorted { $0.日時 < $1.日時 } ?? []
@@ -322,21 +468,6 @@ public final class 指示書型 {
             if count > 0 { value += count }
         }
         return value
-    }
-    
-    public var 担当者1: 社員型? {
-        guard let num = record.integer(forKey: "社員番号1"), let name = record.string(forKey: "担当者1"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
-    }
-    
-    public var 担当者2: 社員型? {
-        guard let num = record.integer(forKey: "社員番号2"), let name = record.string(forKey: "担当者2"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
-    }
-    
-    public var 担当者3: 社員型? {
-        guard let num = record.integer(forKey: "社員番号3"), let name = record.string(forKey: "担当者3"), num > 0 && num < 1000 && !name.isEmpty else { return nil }
-        return 社員型(社員番号: num, 社員名称: name)
     }
     
     public var 保留校正一覧: [作業型] {
@@ -547,11 +678,6 @@ public final class 指示書型 {
         }
         return nil
     }()
-
-    public lazy var 出荷時間: Time? = {
-        guard let string = record.string(forKey: "連絡欄1") else { return nil }
-        return Time(fmTime: string.toJapaneseNormal)
-    }()
 }
 
 extension 指示書型 {
@@ -564,8 +690,6 @@ extension 指示書型 {
         guard let width = scanner.scanDouble() else { return nil }
         return (height: height, width: width)
     }
-    
-    public var 発送事項: String { record.string(forKey: "発送事項") ?? "" }
     
     public func is分納相手完納済み(自工程: 工程型) throws -> Bool? {
         var result: Bool? = nil
@@ -818,17 +942,16 @@ public enum 立ち上がりランク型: Int, Comparable, Hashable {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
-    static let dbName = "DataAPI_1"
-    internal static func find(_ query: FileMakerQuery) throws -> [指示書型] {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-        let orders = list.compactMap { 指示書型($0) }
-        return orders
-    }
+//    static let dbName = "DataAPI_1"
+//    static func find(_ query: FileMakerQuery) throws -> [指示書型] {
+//        let db = FileMakerDB.pm_osakaname
+//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
+//        let orders = try list.map { try 指示書型($0) }
+//        return orders
+//    }
 
     /// 通常種類の指示書を検索する
     internal static func normalFind(_ query: FileMakerQuery, filter: (指示書型) -> Bool) throws -> [指示書型] {
-        let db = FileMakerDB.pm_osakaname
         var result: [指示書型] = []
         var error2: Error? = nil
         let lock = NSLock()
@@ -851,14 +974,12 @@ public extension 指示書型 {
             query2["伝票種類"] = type.fmString
             lock.unlock()
             do {
-                let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query2])
-                let orders: [指示書型] = list.compactMap {
-                    guard let order = 指示書型($0) else { return nil }
-                    switch order.伝票状態 {
+                let orders = try 指示書型.find(query: query2).filter {
+                    switch $0.伝票状態 {
                     case .キャンセル:
-                        return nil
+                        return false
                     case .未製作, .発送済, .製作中:
-                        return filter(order) ? order : nil
+                        return filter($0)
                     }
                 }
                 lock.lock()
@@ -883,7 +1004,7 @@ public extension 指示書型 {
         }
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
-        return try find(query)
+        return try find(query: query)
     }
     
     static func find2(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 製作納期: Day? = nil, limit: Int = 100) throws -> [指示書型] {
@@ -893,7 +1014,7 @@ public extension 指示書型 {
         }
         query["伝票種類"] = 伝票種類?.fmString
         query["製作納期"] = 製作納期?.fmString
-        return try find(query)
+        return try find(query: query)
     }
     
     static func find(伝票番号: 伝票番号型? = nil, 伝票種類: 伝票種類型? = nil, 受注日 range0: ClosedRange<Day>? = nil, 製作納期 range: ClosedRange<Day>? = nil,  出荷納期 range2: ClosedRange<Day>? = nil, 伝票状態: 伝票状態型? = nil, 進捗準備: Bool = false) throws -> [指示書型] {
@@ -912,7 +1033,7 @@ public extension 指示書型 {
             query["出荷納期"] = makeQueryDayString(range2)
         }
         query["伝票状態"] = 伝票状態?.description
-        let list = try find(query)
+        let list = try find(query: query)
         if 進捗準備 { list.forEach { let _ = $0.工程別進捗一覧 } }
         return list
     }
@@ -952,7 +1073,7 @@ public extension 指示書型 {
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
-        return try find(query)
+        return try find(query: query)
     }
 
     static func find(有効日: Day, 伝票種類: 伝票種類型? = nil) throws -> [指示書型] {
@@ -962,7 +1083,7 @@ public extension 指示書型 {
         if let type = 伝票種類 {
             query["伝票種類"] = "==\(type.fmString)"
         }
-        return try find(query)
+        return try find(query: query)
     }
 
     static func find(最小製作納期 day: Day, 伝票種類 type: 伝票種類型?) throws -> [指示書型] {
@@ -970,7 +1091,7 @@ public extension 指示書型 {
         query["製作納期"] = ">=\(day.fmString)"
         query["伝票種類"] = type?.fmString
         
-        return try find(query)
+        return try find(query: query)
     }
     
     static func find(最小製作納期 day: Day, short: 略号型) throws -> [指示書型] {
@@ -978,21 +1099,21 @@ public extension 指示書型 {
         query["製作納期"] = ">=\(day.fmString)"
         query["略号"] = "=*\(short.code)*"
         
-        return try find(query)
+        return try find(query: query)
     }
     
     static func find(出荷納期: Day, 発送事項: String) throws -> [指示書型] {
         var query = FileMakerQuery()
         query["出荷納期"] = 出荷納期.fmString
         query["発送事項"] = 発送事項
-        return try find(query)
+        return try find(query: query)
     }
 
     static func find(出荷納期: ClosedRange<Day>, 発送事項: String) throws -> [指示書型] {
         var query = FileMakerQuery()
         query["出荷納期"] = makeQueryDayString(出荷納期)
         query["発送事項"] = 発送事項
-        return try find(query)
+        return try find(query: query)
     }
 
     static func find(進捗入力日 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil, 工程: 工程型? = nil, 作業内容: 作業内容型? = nil) throws -> [指示書型] {
@@ -1031,7 +1152,7 @@ public extension 指示書型 {
         let today = Date()
         query["製作納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
-        return try find(query).filter { $0.isActive }
+        return try find(query: query).filter { $0.isActive }
     }
 
     static func findActive(伝票種類: 伝票種類型? = nil) throws -> [指示書型] {
@@ -1039,7 +1160,7 @@ public extension 指示書型 {
         let today = Date()
         query["出荷納期"] = ">=\(today.day.fmString)"
         query["伝票種類"] = 伝票種類?.fmString
-        return try find(query).filter { $0.isActive }
+        return try find(query: query).filter { $0.isActive }
     }
     
     static func old_find2(作業範囲 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
@@ -1047,14 +1168,14 @@ public extension 指示書型 {
         query["受注日"] = "<=\(range.upperBound.fmString)"
         query["出荷納期"] = ">=\(range.lowerBound.fmString)"
         query["伝票種類"] = type?.fmString
-        return try find(query)
+        return try find(query: query)
     }
     
     static func find(登録日 range: ClosedRange<Day>, 伝票種類 type: 伝票種類型? = nil) throws -> [指示書型] {
         var query = FileMakerQuery()
         query ["登録日"] = makeQueryDayString(range)
         query["伝票種類"] = type?.fmString
-        return try find(query)
+        return try find(query: query)
     }
 
     static func findDirect(伝票番号文字列: String?) throws -> 指示書型? {
@@ -1065,22 +1186,20 @@ public extension 指示書型 {
     static func findDirect(伝票番号: 伝票番号型) throws -> 指示書型? {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号)"
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-        if list.count == 1, let record = list.first, let order = 指示書型(record) {
-            return order
+        let orders = try 指示書型.find(query: query)
+        if orders.count == 1 {
+            return orders[0]
         } else {
             return nil
         }
     }
     
-    static func findDirect(uuid: String) throws -> 指示書型? {
+    static func findDirect(uuid: UUID) throws -> 指示書型? {
         var query = FileMakerQuery()
-        query["UUID"] = uuid
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-        if list.count == 1, let record = list.first, let order = 指示書型(record) {
-            return order
+        query["UUID"] = uuid.uuidString
+        let orders = try 指示書型.find(query: query)
+        if orders.count == 1 {
+            return orders[0]
         } else {
             return nil
         }

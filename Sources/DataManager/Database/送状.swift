@@ -151,56 +151,129 @@ public enum 運送会社型: Hashable {
     }
 }
 
-public class 送状型: Identifiable {
-    let record: FileMakerRecord
+public class 送状型: Identifiable, FileMakerImportRecord {
+    public static let layout = "DataAPI_16"
+    public static let name = "送状"
+//    let record: FileMakerRecord
+    public let recordID: String?
 
-    init?(_ record: FileMakerRecord) {
-        guard let 管理番号 = record.string(forKey: "管理番号"),
-            let 送り状番号 = record.string(forKey: "送り状番号"),
-              let 福山依頼主コード = record.string(forKey: "福山依頼主コード"),
-              let 運送会社 = record.string(forKey: "運送会社") else { return nil }
-        self.管理番号 = 管理番号
-        self.送り状番号 = 送り状番号型(rawValue: 送り状番号)
-        self.福山依頼主コード = 福山依頼主コード
-        self.運送会社 = 運送会社型(name: 運送会社)
-        self.record = record
-    }
-
-    public func clone() -> 送状型 {
-        let clone = 送状型(record)!
-        clone.管理番号 = 管理番号
-        clone.送り状番号 = 送り状番号
-        clone.運送会社 = 運送会社
-        return clone
-    }
-    
     public var 管理番号: String
     public var 送り状番号: 送り状番号型
     public var 運送会社: 運送会社型
     public var 福山依頼主コード: String
 
-    public var 同送情報: String { record.string(forKey: "同送情報")! }
-    public var 種類: String { record.string(forKey: "種類")! }
-    public var 着指定日: Day? { record.day(forKey: "着指定日") }
-    public var 着指定時間: String { record.string(forKey: "着指定時間")! }
-    public var 指示書UUID: String { record.string(forKey: "指示書UUID")! }
-    public var 品名: String { record.string(forKey: "品名")! }
-    public var 記事: String { record.string(forKey: "記事")! }
-    public var 運送会社備考: String { record.string(forKey: "運送会社備考")! }
-    public var 届け先郵便番号: String { record.string(forKey: "届け先郵便番号")! }
-    public var 届け先住所1: String { record.string(forKey: "届け先住所1")! }
-    public var 届け先住所2: String { record.string(forKey: "届け先住所2")! }
-    public var 届け先住所3: String { record.string(forKey: "届け先住所3")! }
-    public var 届け先受取者名: String { record.string(forKey: "届け先受取者名")! }
-    public var 届け先電話番号: String { record.string(forKey: "届け先電話番号")! }
-    public var 依頼主郵便番号: String { record.string(forKey: "依頼主郵便番号")! }
-    public var 依頼主住所1: String { record.string(forKey: "依頼主住所1")! }
-    public var 依頼主住所2: String { record.string(forKey: "依頼主住所2")! }
-    public var 依頼主住所3: String { record.string(forKey: "依頼主住所3")! }
-    public var 依頼主受取者名: String { record.string(forKey: "依頼主受取者名")! }
-    public var 依頼主電話番号: String { record.string(forKey: "依頼主電話番号")! }
-    public var 地域: String { record.string(forKey: "地域")! }
-    public var ヤマトお客様コード: String { record.string(forKey: "ヤマトお客様コード")! }
+    public let 同送情報: String
+    public let 種類: String
+    public let 着指定日: Day?
+    public let 着指定時間: String
+    public let 指示書UUID: UUID
+    public let 品名: String
+    public let 記事: String
+    public let 運送会社備考: String
+    public let 届け先郵便番号: String
+    public let 届け先住所1: String
+    public let 届け先住所2: String
+    public let 届け先住所3: String
+    public let 届け先受取者名: String
+    public let 届け先電話番号: String
+    public let 依頼主郵便番号: String
+    public let 依頼主住所1: String
+    public let 依頼主住所2: String
+    public let 依頼主住所3: String
+    public let 依頼主受取者名: String
+    public let 依頼主電話番号: String
+    public let 地域: String
+    public let ヤマトお客様コード: String
+
+    public let 伝票番号: 伝票番号型?
+    public let 伝票種類: 伝票種類型?
+    public let 出荷納期: Day?
+    public let 発送事項: String?
+    public let 伝票状態: 伝票状態型?
+    
+    required public init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
+        func getString(_ key: String) throws -> String {
+            guard let string = record.string(forKey: key) else { throw makeError(key) }
+            return string
+        }
+        self.recordID = record.recordId
+        guard let 指示書UUID = try UUID(uuidString: getString("指示書UUID")) else { throw makeError("指示書UUID") }
+        self.指示書UUID = 指示書UUID
+        
+        self.管理番号 = try getString("管理番号")
+        self.送り状番号 = try 送り状番号型(rawValue: getString("送り状番号"))
+        self.福山依頼主コード = try getString("福山依頼主コード")
+        self.運送会社 = try 運送会社型(name: getString("運送会社"))
+        
+        self.同送情報 = try getString("同送情報")
+        self.種類 = try getString("種類")
+        self.着指定日 = record.day(forKey: "着指定日")
+        self.着指定時間 = try getString("着指定時間")
+        self.品名 = try getString("品名")
+        self.記事 = try getString("記事")
+        self.運送会社備考 = try getString("運送会社備考")
+        self.届け先郵便番号 = try getString("届け先郵便番号")
+        self.届け先住所1 = try getString("届け先住所1")
+        self.届け先住所2 = try getString("届け先住所2")
+        self.届け先住所3 = try getString("届け先住所3")
+        self.届け先受取者名 = try getString("届け先受取者名")
+        self.届け先電話番号 = try getString("届け先電話番号")
+        self.依頼主郵便番号 = try getString("依頼主郵便番号")
+        self.依頼主住所1 = try getString("依頼主住所1")
+        self.依頼主住所2 = try getString("依頼主住所2")
+        self.依頼主住所3 = try getString("依頼主住所3")
+        self.依頼主受取者名 = try getString("依頼主受取者名")
+        self.依頼主電話番号 = try getString("依頼主電話番号")
+        self.地域 = try getString("地域")
+        self.ヤマトお客様コード = try getString("ヤマトお客様コード")
+
+        self.伝票番号 = record.伝票番号(forKey: "エッチング指示書テーブル::伝票番号")
+        self.伝票種類 = record.伝票種類(forKey: "エッチング指示書テーブル::伝票種類")
+        self.出荷納期 = record.day(forKey: "エッチング指示書テーブル::出荷納期")
+        self.発送事項 = record.string(forKey: "エッチング指示書テーブル::発送事項")
+        self.伝票状態 = record.伝票状態(forKey: "エッチング指示書テーブル::伝票状態")
+    }
+
+    init(_ original: 送状型) {
+        self.recordID = original.recordID
+        self.管理番号 = original.管理番号
+        self.送り状番号 = original.送り状番号
+        self.福山依頼主コード = original.福山依頼主コード
+        self.運送会社 = original.運送会社
+        self.同送情報 = original.同送情報
+        self.種類 = original.種類
+        self.着指定日 = original.着指定日
+        self.着指定時間 = original.着指定時間
+        self.指示書UUID = original.指示書UUID
+        self.品名 = original.品名
+        self.記事 = original.記事
+        self.運送会社備考 = original.運送会社備考
+        self.届け先郵便番号 = original.届け先郵便番号
+        self.届け先住所1 = original.届け先住所1
+        self.届け先住所2 = original.届け先住所2
+        self.届け先住所3 = original.届け先住所3
+        self.届け先受取者名 = original.届け先受取者名
+        self.届け先電話番号 = original.届け先電話番号
+        self.依頼主郵便番号 = original.依頼主郵便番号
+        self.依頼主住所1 = original.依頼主住所1
+        self.依頼主住所2 = original.依頼主住所2
+        self.依頼主住所3 = original.依頼主住所3
+        self.依頼主受取者名 = original.依頼主受取者名
+        self.依頼主電話番号 = original.依頼主電話番号
+        self.地域 = original.地域
+        self.ヤマトお客様コード = original.ヤマトお客様コード
+        
+        self.伝票番号 = original.伝票番号
+        self.伝票種類 = original.伝票種類
+        self.出荷納期 = original.出荷納期
+        self.発送事項 = original.発送事項
+        self.伝票状態 = original.伝票状態
+    }
+    
+    public var memoryFootPrint: Int { return 50 * 8} // 仮設定のため適当
+
+    public func clone() -> 送状型 { return 送状型(self) }
     
     public lazy var 指示書: 指示書型? = {
         try? 指示書型.findDirect(uuid: self.指示書UUID)
@@ -210,12 +283,6 @@ public class 送状型: Identifiable {
         return 住所型(郵便番号: self.依頼主郵便番号 , 住所1: self.依頼主住所1, 住所2: self.依頼主住所2, 住所3: self.依頼主住所3, 名前: self.依頼主受取者名 , 電話番号: self.依頼主電話番号)
     }()
     
-    public var 伝票番号: 伝票番号型? { record.伝票番号(forKey: "エッチング指示書テーブル::伝票番号") }
-    public var 伝票種類: 伝票種類型? { record.伝票種類(forKey: "エッチング指示書テーブル::伝票種類") }
-    public var 出荷納期: Day? { record.day(forKey: "エッチング指示書テーブル::出荷納期") }
-    public var 発送事項: String? { record.string(forKey: "エッチング指示書テーブル::発送事項") }
-    public var 伝票状態: 伝票状態型? { record.伝票状態(forKey: "エッチング指示書テーブル::伝票状態") }
-    
     public lazy var isAM: Bool = {
         let str = self.着指定時間.toHalfCharacters.uppercased()
         return str.hasPrefix("AM")
@@ -224,33 +291,23 @@ public class 送状型: Identifiable {
 }
 
 extension 送状型 {
-    static let dbName = "DataAPI_16"
-    
-    static func find(_ query: FileMakerQuery) throws -> [送状型] {
-        if query.isEmpty { return [] }
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 送状型.dbName, query: [query])
-        let result = list.compactMap { 送状型($0) }
-        return result
-    }
-    
     public static func find(伝票番号: String? = nil, 送状番号: String? = nil, 運送会社名: String = "") throws -> [送状型] {
         var query = FileMakerQuery()
         if let number = 伝票番号, let order = try 指示書型.findDirect(伝票番号文字列: number) {
-            query["指示書UUID"] = order.uuid
+            query["指示書UUID"] = order.uuid.uuidString
         }
         query["送り状番号"] = 送状番号
         if !運送会社名.isEmpty {
             query["運送会社"] = 運送会社名
         }
-        return try find(query)
+        return try find(query: query)
     }
 
     public static func find最近登録(基準登録日: Day, 運送会社: 運送会社型) throws -> [送状型] {
         var query = FileMakerQuery()
         query["登録日"] = ">\(基準登録日.fmString)"
         query["運送会社"] = 運送会社.社名
-        return try find(query)
+        return try find(query: query)
     }
 
     public static func find採番待ち(運送会社: 運送会社型) throws -> [送状型] {
@@ -258,7 +315,7 @@ extension 送状型 {
         var query = FileMakerQuery()
         query["送り状番号"] = "=0"
         query["運送会社"] = 運送会社.社名
-        return try find(query).filter {
+        return try find(query: query).filter {
             guard let order = $0.指示書 else { return false }
             if order.承認状態 == .未承認 { return false }
             switch order.伝票状態 {
@@ -276,13 +333,13 @@ extension 送状型 {
         if !運送会社名.isEmpty {
             query["運送会社"] = 運送会社名
         }
-        return try find(query)
+        return try find(query: query)
     }
     
     public static func findDirect(送状管理番号: String) throws -> 送状型? {
         var query = FileMakerQuery()
         query["管理番号"] = 送状管理番号
-        return try find(query).first
+        return try find(query: query).first
     }
     
     public var 送り主住所: 住所型 {

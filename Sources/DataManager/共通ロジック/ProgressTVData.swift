@@ -115,23 +115,23 @@ public final class ProgressTVData {
     }
     
     public var whiteCache: (target: [工程型], result: Bool?)?
-    public func 白表示(for target: [工程型]) -> Bool? {
+    public func 白表示(for target: [工程型]) throws -> Bool? {
         lock.lock()
         if whiteCache?.target == target {
             lock.unlock()
             return whiteCache?.result
         }
         lock.unlock()
-        return self.指示書.白表示(for: target, cacheOnly: true)
+        return try self.指示書.白表示(for: target, cacheOnly: true)
     }
-    public func update白表示(for target: [工程型]) -> Bool {
+    public func update白表示(for target: [工程型]) throws -> Bool {
         lock.lock()
         if whiteCache != nil {
             lock.unlock()
             return false
         }
         lock.unlock()
-        let data = (target, self.指示書.白表示(for: target))
+        let data = (target, try self.指示書.白表示(for: target))
         lock.lock()
         self.whiteCache = data
         lock.unlock()
@@ -139,31 +139,31 @@ public final class ProgressTVData {
     }
     
     public var priorityCache: (target: [工程型], result: Bool?)?
-    public func 優先状態(for target: [工程型]) -> Bool? {
+    public func 優先状態(for target: [工程型]) throws -> Bool? {
         lock.lock()
         if priorityCache?.target == target {
             lock.unlock()
             return priorityCache?.result
         }
         lock.unlock()
-        return self.指示書.優先状態(for: target, cacheOnly: true)
+        return try self.指示書.優先状態(for: target, cacheOnly: true)
     }
-    public func update優先状態(for target: [工程型]) -> Bool {
+    public func update優先状態(for target: [工程型]) throws -> Bool {
         lock.lock()
         if priorityCache != nil {
             lock.unlock()
             return false
         }
         lock.unlock()
-        let data = (target, self.指示書.優先状態(for: target))
+        let data = (target, try self.指示書.優先状態(for: target))
         lock.lock()
         self.priorityCache = data
         lock.unlock()
         return true
     }
     
-    public func backgroundColor(of target: 工程型) -> DMColor? {
-        let flg2 = self.白表示(for: [target])
+    public func backgroundColor(of target: 工程型) throws -> DMColor? {
+        let flg2 = try self.白表示(for: [target])
         if flg2 == true {
             return nil
         } else if flg2 == false {
@@ -173,10 +173,10 @@ public final class ProgressTVData {
         }
     }
     
-    public func updateOneStep(_ target: 工程型) -> Bool {
+    public func updateOneStep(_ target: 工程型) throws -> Bool {
         assert(!Thread.isMainThread)
-        let flg1 = self.update白表示(for: [target])
-        let flg2 = self.update優先状態(for: [target])
+        let flg1 = try self.update白表示(for: [target])
+        let flg2 = try self.update優先状態(for: [target])
         return flg1 || flg2
     }
 
@@ -370,10 +370,10 @@ public final class ProgressTVCore {
     var currentIndex = 0
 
     var updateTimerWorkItem: DispatchWorkItem?  = nil
-    func updateOneStep(_ data: ProgressTVData, _ target:工程型) -> Bool {
+    func updateOneStep(_ data: ProgressTVData, _ target:工程型) throws -> Bool {
         assert(!Thread.isMainThread)
-        let flg1 = data.update白表示(for: [target])
-        let flg2 = data.update優先状態(for: [target])
+        let flg1 = try data.update白表示(for: [target])
+        let flg2 = try data.update優先状態(for: [target])
         return flg1 || flg2
     }
     
@@ -409,10 +409,10 @@ public final class ProgressTVCore {
         item = DispatchWorkItem { [unowned item] in
             assert(!Thread.isMainThread)
             if item?.isCancelled == true { return }
-            let allChange = self.updateOneStep(data, target)
+            let allChange = try? self.updateOneStep(data, target)
             DispatchQueue.main.async {
                 if item?.isCancelled == true { return }
-                self.prepareData(allChange: allChange)
+                self.prepareData(allChange: allChange ?? false)
             }
         }
         self.updateTimerWorkItem = item
@@ -442,7 +442,7 @@ public final class ProgressTVCore {
         }
         let targets = [self.target]
 
-        let count = datas.reduce(0) { $0 + ($1.白表示(for: targets) != false ? 1 : 0) }
+        let count = datas.reduce(0) { $0 + ((try? $1.白表示(for: targets)) != false ? 1 : 0) }
         owner.showInfo1("\(today.monthDayWeekJString) \(self.target.description)待ち分 (\(now.hourMinuteString)時点)")
 
         let count2 = datas.reduce(0) { $0 + ($1.is仮表示(for: targets) ? 1 : 0) }
@@ -466,7 +466,7 @@ public final class ProgressTVCore {
     // TableView表示用
     public func tableViewRowBackgroundColor(row: Int) -> DMColor? {
         let data = datas[row]
-        return data.backgroundColor(of: self.target)
+        return try? data.backgroundColor(of: self.target)
     }
     
     public func tableViewData(row: Int, col: String, font: DMFont) -> NSAttributedString {
@@ -475,7 +475,7 @@ public final class ProgressTVCore {
         var color: DMColor? = nil
         switch col {
         case "Check":
-            let flg1 = data.優先状態(for: [target])
+            let flg1 = try? data.優先状態(for: [target])
             if flg1 == true {
                 text = "優先"
             } else if flg1 == false {
@@ -544,13 +544,17 @@ public final class ProgressTVCore {
     }
     
     public func 白優先比較(_ data1: ProgressTVData, _ data2: ProgressTVData, 工程 target: 工程型) -> Bool {
-        let isWhite1 = data1.白表示(for: [target]) ?? false
-        let isWhite2 = data2.白表示(for: [target]) ?? false
-        
-        if isWhite1 && isWhite2 { //どっちも白
-            return 箱文字前工程比較(data1.指示書, data2.指示書, 工程: target)
-        }else{
-            return isWhite1
+        do {
+            let isWhite1 = try data1.白表示(for: [target]) ?? false
+            let isWhite2 = try data2.白表示(for: [target]) ?? false
+            
+            if isWhite1 && isWhite2 { //どっちも白
+                return 箱文字前工程比較(data1.指示書, data2.指示書, 工程: target)
+            } else {
+                return isWhite1
+            }
+        } catch {
+            return false
         }
     }
     

@@ -11,60 +11,87 @@ import Foundation
 public class 外注型 {
 }
 public final class 発注型: FileMakerImportRecord {
-    let record: FileMakerRecord
-    public let 発注種類: 発注種類型
-    public let 資材: 資材型
+    public static let layout = "DataAPI_4"
+    public static let name = "発注"
+
+//    let record: FileMakerRecord
+    public let 資材: 資材型?
     public let 指定注文番号: 指定注文番号型
     
+    public let 注文番号: 注文番号型
+    public let 会社名: String
+    public let 会社コード: 会社コード型
+    public let 金額: String
+    public let 発注日: Day
+    public let 登録日: Day
+    public let 版数: String
+    public let 製品名称: String
+    public let 規格: String
+    public let 規格2: String
+    public let 発注数量文字列: String
+    public let 備考: String
+    public let 納品日: Day?
+    public let 納品書処理日: Day?
+    public let 依頼社員: 社員型?
+    public let 発注数量: Int?
+    public let 状態: 発注状態型
+    public let 発注種類: 発注種類型
+
+    public var memoryFootPrint: Int { return 22 * 8} // 仮設定のため適当
+
     public required init(_ record: FileMakerRecord) throws {
-        self.record = record
-        guard let type = record.発注種類(forKey: "発注種類") else { throw FileMakerError.invalidData(message: "発注種類") }
-        self.発注種類 = type
-        switch type {
-        case .資材:
-            guard let item = record.資材(forKey: "図番") else { throw FileMakerError.invalidData(message: "図番") }
-            self.資材 = item
-            guard let number = record.指定注文番号(forKey: "指定注文番号") else { throw FileMakerError.invalidData(message: "指定注文番号") }
-            self.指定注文番号 = number
-        case .外注:
-            self.資材 = 資材型.empty
-            guard let text = record.string(forKey: "指定注文番号") else { throw FileMakerError.invalidData(message: "指定注文番号") }
-            self.指定注文番号 = 指定注文番号型(text: text)
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
+        func getString(_ key: String) throws -> String {
+            guard let string = record.string(forKey: key) else { throw makeError(key) }
+            return string
         }
+        func getDay(_ key: String) throws -> Day {
+            guard let day = record.day(forKey: key) else { throw makeError(key) }
+            return day
+        }
+        guard let 注文番号 = record.注文番号(forKey: "注文番号") else { throw makeError("注文番号") }
+        guard let 発注種類 = record.発注種類(forKey: "発注種類") else { throw makeError("発注種類") }
+        
+        switch 発注種類 {
+        case .資材:
+            guard let 資材 = record.資材(forKey: "図番") else { throw makeError("図番") }
+            self.資材 = 資材
+            guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else { throw makeError("指定注文番号") }
+            self.指定注文番号 = 指定注文番号
+        case .外注:
+            self.資材 = nil
+            self.指定注文番号 = try 指定注文番号型(text: getString("指定注文番号"))
+        }
+        self.注文番号 = 注文番号
+        self.発注種類 = 発注種類
+
+        self.会社名 = try getString("会社名")
+        self.会社コード = try getString("会社コード")
+        self.金額 = try getString("金額")
+        self.発注日 = try getDay("発注日")
+        self.登録日 = try getDay("登録日")
+        self.版数 = try getString("版数")
+        self.製品名称 = try getString("製品名称")
+        self.規格 = try getString("規格")
+        self.規格2 = try getString("規格2")
+        self.備考 = try getString("備考")
+        self.発注数量文字列 = try getString("発注数量")
+        
+        self.状態 = record.発注状態(forKey: "状態") ?? .処理済み
+        self.納品日 = record.day(forKey: "納品日")
+        self.納品書処理日 = record.day(forKey: "納品書処理日")
+        self.依頼社員 = record.社員(forKey: "依頼社員番号")
+        self.発注数量 = Int(self.発注数量文字列)
     }
-    public var 状態: 発注状態型 {
-        guard let type = record.発注状態(forKey: "状態") else { return .処理済み } // 未設定(外注資材)は処理済み扱いとする
-        return type
-    }
-    
-    public static var db: FileMakerDB { .pm_osakaname }
-    public static var importLayout: String { "DataAPI_4" }
-    public static var title: String { "発注" }
 }
 
 public extension 発注型 {
-    var 注文番号: 注文番号型 { return record.注文番号(forKey: "注文番号")! }
-    var 会社名: String { return record.string(forKey: "会社名")! }
-    var 会社コード: 会社コード型 { return record.string(forKey: "会社コード")! }
     var 会社: 取引先型? { return try? 取引先キャッシュ型.shared.キャッシュ取引先(会社コード: self.会社コード) }
-    var 金額: String { return record.string(forKey: "金額")! }
-    var 発注日: Day { return record.day(forKey: "発注日")! }
-    var 登録日: Day { return record.day(forKey: "登録日")! }
-    var 図番: String { return 資材.図番 }
-    var 単位: String { return 資材.単位 }
-    var 版数: String { return record.string(forKey: "版数")! }
-    var 製品名称: String { return record.string(forKey: "製品名称")! }
-    var 規格: String { return record.string(forKey: "規格")! }
-    var 規格2: String { return record.string(forKey: "規格2")! }
-    var 納品日: Day? { return record.day(forKey: "納品日") }
-    var 納品書処理日: Day? { return record.day(forKey: "納品書処理日") }
-    var 備考: String { return record.string(forKey: "備考")! }
-    var 依頼社員: 社員型? { return record.社員(forKey: "依頼社員番号") }
+    var 図番: String { return 資材?.図番 ?? "" }
+    var 単位: String { return 資材?.単位 ?? "" }
     var 品名1: String { return self.製品名称 }
     var 品名2: String { return self.規格 }
     var 品名3: String { return self.規格2 }
-    var 発注数量: Int? { return record.integer(forKey: "発注数量") }
-    var 発注数量文字列: String { return record.string(forKey: "発注数量")! }
     
     var 補正済状態: 発注状態型 {
         guard let state = try? 資材入庫状況キャッシュ型.shared.キャッシュ資材入庫状況(指定注文番号: self.指定注文番号) else { return self.状態 }

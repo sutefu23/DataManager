@@ -130,8 +130,8 @@ extension 指示書型 {
         if check仕上(self.表面仕上1) || check仕上(self.表面仕上2) || check仕上(self.側面仕上1) || check仕上(self.側面仕上2) { return true }
         return false
     }
-    public func 優先状態(for targets: [工程型], cacheOnly: Bool = false) -> Bool? {
-        switch self.優先設定(for: targets, cacheOnly: cacheOnly) {
+    public func 優先状態(for targets: [工程型], cacheOnly: Bool = false) throws -> Bool? {
+        switch try self.優先設定(for: targets, cacheOnly: cacheOnly) {
         case .優先あり: return true
         case .優先なし: return false
         case nil:
@@ -140,7 +140,7 @@ extension 指示書型 {
             break
         }
         if !targets.isEmpty {
-            switch self.優先設定(for: [], cacheOnly: cacheOnly) {
+            switch try self.優先設定(for: [], cacheOnly: cacheOnly) {
                 case .優先あり: return true
                 case .優先なし: return false
                 case nil:
@@ -164,8 +164,8 @@ extension 指示書型 {
         }
     }
     
-    public func 白表示(for targets: [工程型], cacheOnly: Bool = false) -> Bool? {
-        switch self.表示設定(for: targets, cacheOnly: cacheOnly) {
+    public func 白表示(for targets: [工程型], cacheOnly: Bool = false) throws -> Bool? {
+        switch try self.表示設定(for: targets, cacheOnly: cacheOnly) {
         case .白: return true
         case .黒: return false
         case nil: return nil
@@ -225,40 +225,38 @@ extension 指示書型 {
         }
     }
     
-    public func 箱文字優先設定(for target: 工程型?, cacheOnly: Bool = false) -> 優先設定型 {
+    public func 箱文字優先設定(for target: 工程型?, cacheOnly: Bool = false) throws -> 優先設定型 {
         if cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target) {
             return .自動判定
         }
-        let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
-        return data?.優先設定 ?? .自動判定
+        let data = try 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
+        return data.優先設定
     }
     
-    public func set箱文字優先設定(for target: 工程型?, 設定: 優先設定型) {
-        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else { return }
+    public func set箱文字優先設定(for target: 工程型?, 設定: 優先設定型) throws {
+        let data = try 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
         data.優先設定 = 設定
-        data.synchronize()
+        try data.synchronize()
     }
     
-    public func 箱文字表示設定(for target: 工程型?, cacheOnly: Bool = false) -> 表示設定型 {
+    public func 箱文字表示設定(for target: 工程型?, cacheOnly: Bool = false) throws -> 表示設定型 {
         if cacheOnly && !箱文字優先度キャッシュ型.shared.contains(self.伝票番号, target) { return .自動判定 }
-        let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
-        return data?.表示設定 ?? .自動判定
+        let data = try 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
+        return data.表示設定
     }
-    public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) {
-        guard let data = try? 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target) else {
-            return
-        }
+    public func set箱文字表示設定(for target: 工程型?, 設定: 表示設定型) throws {
+        let data = try 箱文字優先度キャッシュ型.shared.find(self.伝票番号, target)
         data.表示設定 = 設定
-        data.synchronize()
+        try data.synchronize()
     }
     
-    public func 優先設定(for targets: [工程型], cacheOnly: Bool = false) -> 優先設定型? {
+    public func 優先設定(for targets: [工程型], cacheOnly: Bool = false) throws -> 優先設定型? {
         if targets.isEmpty {
-            return self.箱文字優先設定(for: nil, cacheOnly: cacheOnly)
+            return try self.箱文字優先設定(for: nil, cacheOnly: cacheOnly)
         }
         var settings: 優先設定型? = nil
         for process in targets {
-            let tmp = self.箱文字優先設定(for: process, cacheOnly: cacheOnly)
+            let tmp = try self.箱文字優先設定(for: process, cacheOnly: cacheOnly)
             if let current = settings {
                 if tmp != current { return nil }
             } else {
@@ -268,13 +266,13 @@ extension 指示書型 {
         return settings
     }
     
-    public func 表示設定(for targets: [工程型], cacheOnly: Bool = false) -> 表示設定型? {
+    public func 表示設定(for targets: [工程型], cacheOnly: Bool = false) throws -> 表示設定型? {
         if targets.isEmpty {
-            return self.箱文字表示設定(for: nil, cacheOnly: cacheOnly)
+            return try self.箱文字表示設定(for: nil, cacheOnly: cacheOnly)
         }
         var settings: 表示設定型? = nil
         for process in targets {
-            let tmp = self.箱文字表示設定(for: process, cacheOnly: cacheOnly)
+            let tmp = try self.箱文字表示設定(for: process, cacheOnly: cacheOnly)
             if let current = settings {
                 if tmp != current { return nil }
             } else {
@@ -287,26 +285,26 @@ extension 指示書型 {
     public func set箱文字優先設定(for targets: [工程型], 設定: 優先設定型) throws {
         if targets.isEmpty {
             let list = try 箱文字優先度キャッシュ型.shared.allRegistered(for: self.伝票番号)
-            list.forEach {
+            try list.forEach {
                 $0.優先設定 = 設定
-                $0.synchronize()
+                try $0.synchronize()
             }
-            self.set箱文字優先設定(for: nil, 設定: 設定)
+            try self.set箱文字優先設定(for: nil, 設定: 設定)
         } else {
-            targets.forEach { self.set箱文字優先設定(for: $0, 設定: 設定) }
+            try targets.forEach { try self.set箱文字優先設定(for: $0, 設定: 設定) }
         }
     }
     
     public func set箱文字表示設定(for targets: [工程型], 設定: 表示設定型) throws {
         if targets.isEmpty {
             let list = try 箱文字優先度キャッシュ型.shared.allRegistered(for: self.伝票番号)
-            list.forEach {
+            try list.forEach {
                 $0.表示設定 = 設定
-                $0.synchronize()
+                try $0.synchronize()
             }
-            self.set箱文字表示設定(for: nil, 設定: 設定)
+            try self.set箱文字表示設定(for: nil, 設定: 設定)
         } else {
-            targets.forEach { self.set箱文字表示設定(for: $0, 設定: 設定) }
+            try targets.forEach { try self.set箱文字表示設定(for: $0, 設定: 設定) }
         }
     }
 

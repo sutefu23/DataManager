@@ -8,6 +8,15 @@
 import Foundation
 import AVFoundation
 
+public enum DumpType: String {
+    /// エラーダンプ
+    case error = "エラー"
+    /// 現時点までの動作状況
+    case current = "動作履歴"
+    /// アプリの動作記録
+    case app = "終了時"
+}
+
 public enum DMLogLevel: Int, Comparable {    
     public static let all: DMLogLevel = .debug
     /// デバッグ

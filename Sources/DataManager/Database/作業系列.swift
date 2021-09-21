@@ -17,7 +17,7 @@ func flush作業系列Cache() {
     lock.unlock()
 }
 
-public final class 作業系列型: Hashable {
+public struct 作業系列型: Hashable {
     public static func 登録チェック() {
         let _ = 作業系列型.null
         let _ = 作業系列型.gx
@@ -36,43 +36,32 @@ public final class 作業系列型: Hashable {
     public static let ボルト1 = 作業系列型(系列コード: "S011")!
     public static let ボルト2 = 作業系列型(系列コード: "S012")!
     
-    let record: FileMakerRecord
-
-    public convenience init?(系列コード: String) {
+    public let 系列コード: String
+    public let 名称: String
+    public let 備考: String
+    
+    init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "作業系列", mes: key) }
+        guard let 系列コード = record.string(forKey: "系列コード") else { throw makeError("系列コード") }
+        guard let 名称 = record.string(forKey: "名称") else { throw makeError("名称") }
+        guard let 備考 = record.string(forKey: "備考") else { throw makeError("備考") }
+        self.系列コード = 系列コード
+        self.名称 = 名称
+        self.備考 = 備考
+    }
+    public init?(系列コード: String) {
         if 系列コード.isEmpty { return nil }
         let code = 系列コード.uppercased()
         lock.lock()
         defer { lock.unlock() }
         if let cache = seriesCache[code] {
-            self.init(cache.record)
+            self = cache
             return
         }
-        do {
-            guard let series = try 作業系列型.find(系列コード: code) else {
-                return nil
-            }
-            seriesCache[code] = series
-            self.init(series.record)
-        } catch {
-            print(error.localizedDescription)
-            return nil
-        }
+        guard let series = try? 作業系列型.find(系列コード: code) else { return nil }
+        seriesCache[code] = series
+        self = series
     }
-    
-    init(_ record: FileMakerRecord) {
-        self.record = record
-    }
-    
-    public lazy var 系列コード: String = {
-        record.string(forKey: "系列コード")!
-    }()
-    
-    public lazy var 名称: String = {
-        record.string(forKey: "名称")!
-    }()
-    public lazy var 備考: String = {
-        record.string(forKey: "備考")!
-    }()
     
     public static func == (left: 作業系列型, right: 作業系列型) -> Bool {
         return left.系列コード == right.系列コード
@@ -87,11 +76,8 @@ extension 作業系列型 {
     static let dbName = "DataAPI_9"
     
     public static func find(系列コード: String) throws -> 作業系列型? {
-        var query = FileMakerQuery()
-        query["系列コード"] = 系列コード
         let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [query])
-        return list.compactMap { 作業系列型($0) }.first
+        let list: [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [["系列コード": 系列コード]])
+        return try list.map { try 作業系列型($0) }.first
     }
 }
-

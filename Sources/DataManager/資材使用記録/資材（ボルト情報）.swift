@@ -104,7 +104,7 @@ public struct 選択ボルト等型 {
             }
         }
         self.表示名 = 分割表示名1 + 分割表示名2
-        if let item = 資材型(図番: 図番) {
+        if let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番) {
             if let ch = item.発注先名称.remove㈱㈲.first {
                 self.社名先頭1文字 = String(ch)
             } else {
@@ -117,7 +117,7 @@ public struct 選択ボルト等型 {
     }
     
     public var 資材登録あり: Bool {
-        let item: 資材型? = 資材型(図番: self.図番)
+        let item: 資材型? = try? 資材キャッシュ型.shared.キャッシュ資材(図番: self.図番)
         return item != nil
     }
 }

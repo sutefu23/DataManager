@@ -9,7 +9,7 @@
 import Foundation
 
 public final class 資材入出庫型: FileMakerImportRecord {
-    let record: FileMakerRecord
+//    let record: FileMakerRecord
     public let 登録日: Day
     public let 登録時間: Time
     public lazy var 登録日時: Date = Date(self.登録日, self.登録時間)
@@ -21,15 +21,17 @@ public final class 資材入出庫型: FileMakerImportRecord {
     public let 部署: 部署型
     public let 修正社員名: String
     
+    public var memoryFootPrint: Int { return 10 * 8} // 仮設定のため適当
+    
     public required init(_ record: FileMakerRecord) throws {
-        self.record = record
+//        self.record = record
         guard let day = record.day(forKey: "登録日"),
               let time = record.time(forKey: "登録時間"),
               let worker = record.社員(forKey: "社員番号") ?? record.社員名称(forKey: "社員名称"),
               let type = record.入力区分(forKey: "入力区分"),
               let item = record.資材(forKey: "資材番号"),
               let name = record.string(forKey: "修正社員名"),
-              let sec = record.キャッシュ部署(forKey: "部署記号") else { throw FileMakerError.invalidData(message: "recordId:[\(record.recordID ?? "")]不正な内容") }
+              let sec = record.キャッシュ部署(forKey: "部署記号") else { throw FileMakerError.invalidData(message: "recordId:[\(record.recordId ?? "")]不正な内容") }
         let input = record.integer(forKey: "入庫数") ?? 0
         let output = record.integer(forKey: "出庫数") ?? 0
         self.登録日 = day
@@ -49,8 +51,8 @@ public final class 資材入出庫型: FileMakerImportRecord {
     }
     
     public static var db: FileMakerDB { .pm_osakaname }
-    public static var importLayout: String { "DataAPI_12" }
-    public static var title: String { "資材入出庫" }
+    public static var layout: String { "DataAPI_12" }
+    public static var name: String { "資材入出庫" }
     
 }
 

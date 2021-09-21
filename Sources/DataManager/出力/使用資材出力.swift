@@ -130,7 +130,7 @@ public struct 使用資材出力型: FileMakerExportRecord {
     }
     
     public typealias ImportBuddyType = 使用資材型
-    public static var exportLayout: String { "DataAPI_UseMaterialInput" }
+    public static var layout: String { "DataAPI_UseMaterialInput" }
     public static var exportScript: String { "DataAPI_UseMaterialInput_RecordSet" }
     public static var uuidField: String { "登録セッションUUID" }
 

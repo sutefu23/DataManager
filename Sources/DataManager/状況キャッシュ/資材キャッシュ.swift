@@ -7,9 +7,9 @@
 //
 
 import Foundation
-
+/*
 public final class 資材キャッシュ型 {
-    var expire: TimeInterval = 4*60*60 // 8時間
+    var expire: TimeInterval = 4*60*60 // 4時間
     public static let shared = 資材キャッシュ型()
     
     let lock = NSLock()
@@ -38,4 +38,19 @@ public final class 資材キャッシュ型 {
         cache.removeAll()
         lock.unlock()
     }
+}
+*/
+public typealias 資材キャッシュ型 = DMDBCache<図番型, 資材型>
+
+private let 資材キャッシュ = 資材キャッシュ型(lifeTime: 4*60*60) {
+    if $0 == "996068" {
+        return try 資材型.find(図番: "990120")
+    } else {
+        return try 資材型.find(図番: $0)
+    }
+}
+extension 資材キャッシュ型 {
+    public static var shared: 資材キャッシュ型 { return 資材キャッシュ }
+    public func 現在資材(図番: 図番型) throws -> 資材型? { try find(図番, noCache: true) }
+    public func キャッシュ資材(図番: 図番型) throws -> 資材型? { try find(図番, noCache: false) }
 }

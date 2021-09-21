@@ -18,7 +18,7 @@ public protocol DMLogger {
     func currentLog(minLevel: DMLogLevel) -> [DMLogRecord]
     
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    func dumplog(base: DirType, name: String, minLevel: DMLogLevel, shareButton: DMButton?) throws
+    func dumplog(type: DumpType, base: DirType, minLevel: DMLogLevel, shareButton: DMButton?) throws
     /// エラー時の自動ダンプ
     func errorDump()
     
@@ -55,7 +55,7 @@ public extension DMLogger {
     func errorDump() {
         // デフォルトではデスクトップ環境時のみ自動ダンプ
         #if os(macOS) || os(Linux) || os(Windows) || targetEnvironment(macCatalyst)
-        try? dumplog(base: .desktop, name: "[エラー]", minLevel: .all, shareButton: nil)
+        try? dumplog(type: .error, base: .desktop, minLevel: .all, shareButton: nil)
         #endif
     }
     // MARK: 派生実装
@@ -83,8 +83,8 @@ public extension DMLogger {
         self.hasLogRecord(level: .all)
     }
 
-    func dumplog(name: String, minLevel: DMLogLevel, shareButton: DMButton? = nil) throws {
-        try dumplog(base: .desktop, name: name, minLevel: minLevel, shareButton: shareButton)
+    func dumplog(type: DumpType, minLevel: DMLogLevel = .all, shareButton: DMButton? = nil) throws {
+        try dumplog(type: type, base: .desktop, minLevel: minLevel, shareButton: shareButton)
     }
     
     /// 全ログを返す
@@ -167,7 +167,7 @@ public final class DMLogSystem: DMLogger {
 // MARK: - テキスト出力
 extension DMLogger {
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    public func dumplog(base: DirType, name: String, minLevel: DMLogLevel, shareButton: DMButton?) throws {
+    public func dumplog(type: DumpType, base: DirType, minLevel: DMLogLevel, shareButton: DMButton?) throws {
         let gen = TableGenerator<DMLogRecord>()
             .string("種類") {
                 switch $0.level {
@@ -183,6 +183,6 @@ extension DMLogger {
             .string("詳細") { $0.detail }
         let hostname = ProcessInfo.processInfo.hostName
         let log = self.currentLog(minLevel: minLevel)
-        try gen.share(log, format: .excel(header: true), base: base, title: "\(defaults.programName)\(name)(\(hostname)).csv", shareButton: shareButton)
+        try gen.share(log, format: .excel(header: true), base: base, title: "\(defaults.programName)[\(type.rawValue)](\(hostname)).csv", shareButton: shareButton)
     }
 }

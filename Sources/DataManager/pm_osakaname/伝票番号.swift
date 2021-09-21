@@ -59,7 +59,7 @@ public final class 伝票番号解析型 {
     }
 }
 
-public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+public struct 伝票番号型: DMCacheElement, Codable, Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
     public let 整数値: Int
     
     public init(validNumber: Int) {
@@ -107,6 +107,10 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
         } else {
             return false
         }
+    }
+    
+    public var memoryFootPrint: Int {
+        return MemoryLayout<伝票番号型>.stride
     }
     
     // MARK: <Codable>
@@ -241,7 +245,7 @@ public struct 伝票番号型: Codable, Hashable, Comparable, CustomStringConver
         self.init(validNumber: number)
     }
     
-    public var キャッシュ指示書: 指示書型? { try? 指示書キャッシュ.find(self) }
+    public var キャッシュ指示書: 指示書型? { try? 指示書キャッシュ型.shared.find(self) }
 }
 
 extension FileMakerRecord {

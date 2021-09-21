@@ -10,8 +10,8 @@ import Foundation
 
 public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
     public typealias ImportBuddyType = 進捗型
-    public static var exportLayout: String { return "DataAPI_ProcessInput" }
-    public static var exportScript: String { return "DataAPI_ProcessInput_RecordSet" }
+    public static let layout = "DataAPI_ProcessInput"
+    public static let exportScript = "DataAPI_ProcessInput_RecordSet"
     
     public let 登録日: Day
     public let 登録時間: Time
@@ -129,7 +129,7 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
     public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
         var query = FileMakerQuery()
         query["指示書進捗入力UUID"] = "==\(uuid.uuidString)"
-        _ = try session.find(layout: 進捗型.dbName, query: [query])
+        _ = try session.find(layout: 進捗型.layout, query: [query])
     }
 
     /// 重複登録ならtrue
@@ -158,11 +158,6 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
         return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧
     }
     
-//    public func isUploaded(data: 進捗型) -> Bool {
-//        return self.is内容重複(with: data) &&
-//        self.作業系列 == data.作業系列 && self.社員 == data.作業者 && self.登録日 == data.登録日 && self.登録時間.isSameHourMinutes(to: data.登録時間)
-//    }
-//    
     public func is内容重複(with data: 進捗型) -> Bool {
         return self.伝票番号 == data.伝票番号 && self.工程 == data.工程 && self.作業内容 == data.作業内容 && self.作業種別 == data.作業種別
     }

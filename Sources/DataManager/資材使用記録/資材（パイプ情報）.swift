@@ -160,7 +160,7 @@ public struct 資材パイプ情報型 {
             }
         }
         // 先頭１文字社名
-        if let item = 資材型(図番: 図番) {
+        if let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番) {
             if let ch = item.発注先名称.remove㈱㈲.first {
                 self.社名先頭1文字 = String(ch)
             } else {

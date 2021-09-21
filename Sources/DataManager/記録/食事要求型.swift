@@ -48,12 +48,12 @@ public enum 食事要求状態型: Int, Comparable, Hashable {
     }
 }
 
-struct 食事要求Data型: Equatable {
-    static let dbName = "DataAPI_7"
-    
-    var 社員番号: String
-    var メニューID: メニューID型
-    var 要求状態: 食事要求状態型
+public struct 食事要求Data型: DMSystemRecordData {
+    public static let layout = "DataAPI_7"
+
+    public var 社員番号: String
+    public var メニューID: メニューID型
+    public var 要求状態: 食事要求状態型
     
     var 修正情報タイムスタンプ: Date
     
@@ -64,18 +64,20 @@ struct 食事要求Data型: Equatable {
         self.修正情報タイムスタンプ = Date().rounded()
     }
     
-    init?(_ record: FileMakerRecord) {
-        guard let 社員番号 = record.string(forKey: "社員番号"),
-              let メニューID = record.string(forKey: "メニューID"),
-              let 状態str = record.string(forKey: "要求状態"),
-              let 要求状態 = 食事要求状態型(text: 状態str) else { return nil }
+    public init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "食事要求", mes: key) }
+        guard let 状態str = record.string(forKey: "要求状態"),
+              let 要求状態 = 食事要求状態型(text: 状態str) else { throw makeError("要求状態") }
+        guard let 修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ") else { throw makeError("修正情報タイムスタンプ") }
+        guard let 社員番号 = record.string(forKey: "社員番号") else { throw makeError("社員番号") }
+        guard let メニューID = record.string(forKey: "メニューID") else { throw makeError("メニューID") }
+        self.要求状態 = 要求状態
+        self.修正情報タイムスタンプ = 修正情報タイムスタンプ
         self.社員番号 = 社員番号
         self.メニューID = メニューID
-        self.要求状態 = 要求状態
-        self.修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ") ?? Date().rounded()
     }
     
-    var fieldData: FileMakerQuery {
+    public var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         data["社員番号"] = self.社員番号
         data["メニューID"] = self.メニューID
@@ -84,40 +86,29 @@ struct 食事要求Data型: Equatable {
     }
 }
 
-public class 食事要求型: Identifiable {
-    var original: 食事要求Data型?
-    var data: 食事要求Data型
-    
-    public internal(set) var recordId: String?
-    
-    public var 社員番号: String {
-        get { data.社員番号 }
-        set { data.社員番号 = newValue }
-    }
-    public var メニューID: メニューID型 {
-        get { data.メニューID }
-        set { data.メニューID = newValue }
-    }
-    public var 要求状態: 食事要求状態型 {
-        get { data.要求状態 }
-        set { data.要求状態 = newValue }
-    }
-    
+public class 食事要求型: DMSystemRecord<食事要求Data型>, Identifiable {    
+//    public var 社員番号: String {
+//        get { data.社員番号 }
+//        set { data.社員番号 = newValue }
+//    }
+//    public var メニューID: メニューID型 {
+//        get { data.メニューID }
+//        set { data.メニューID = newValue }
+//    }
+//    public var 要求状態: 食事要求状態型 {
+//        get { data.要求状態 }
+//        set { data.要求状態 = newValue }
+//    }
+//    
     public var 修正情報タイムスタンプ: Date { data.修正情報タイムスタンプ }
     
     public init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
-        self.data = 食事要求Data型(社員番号: 社員番号, メニューID: メニューID, 要求状態: 要求状態)
+        let data = 食事要求Data型(社員番号: 社員番号, メニューID: メニューID, 要求状態: 要求状態)
+        super.init(data)
     }
+    required init(_ record: FileMakerRecord) throws { try super.init(record) }
+
     
-    init?(_ record: FileMakerRecord) {
-        guard let data = 食事要求Data型(record) else { return nil }
-        self.data = data
-        self.original = data
-        self.recordId = record.recordID
-    }
-
-    public var isChanged: Bool { original != data }
-
     public lazy var メニュー: 食事メニュー型? = {
         try? 食事メニューキャッシュ型.shared.キャッシュメニュー(メニューID: self.メニューID)
     }()
@@ -129,32 +120,18 @@ public class 食事要求型: Identifiable {
     
     // MARK: - DB操作
     public func delete() throws {
-        guard let recordID = self.recordId else { return }
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        try db.delete(layout: 食事要求Data型.dbName, recordId: recordID)
-        self.recordId = nil
-        //                資材使用記録キャッシュ型.shared.flush(伝票番号: self.伝票番号)
+        try generic_delete()
     }
     
-    public func upload() {
-        let data = self.data.fieldData
+    public func upload() throws {
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let _ = try? db.insert(layout: 食事要求Data型.dbName, fields: data)
+        try generic_insert()
     }
     
     public func synchronize() throws {
-        if !isChanged { return }
-        let data = self.data.fieldData
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        if let recordID = self.recordId {
-            try db.update(layout: 食事要求Data型.dbName, recordId: recordID, fields: data)
-        } else {
-            self.recordId = try db.insert(layout: 食事要求Data型.dbName, fields: data)
-        }
-        self.original = self.data
+        try generic_synchronize()
     }
     
     public var 食事時間帯: 食事時間帯型? {
@@ -168,9 +145,7 @@ public class 食事要求型: Identifiable {
     static func find(query: FileMakerQuery) throws -> [食事要求型] {
         if query.isEmpty { return [] }
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let list: [FileMakerRecord] = try db.find(layout: 食事要求Data型.dbName, query: [query])
-        return list.compactMap { 食事要求型($0) }
+        return try find(querys: [query])
     }
 
     public static func find(社員ID: String? = nil, メニューID: String? = nil) throws -> [食事要求型] {
@@ -186,17 +161,18 @@ public class 食事要求型: Identifiable {
     }
 
     public static func find(発注日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["DataAPI_食事メニュー::発注日": 発注日.fmString]
-        return try find(query: query)
+        return try find(query: ["DataAPI_食事メニュー::発注日": 発注日.fmString])
     }
 
     public static func find追加発注(提供日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 提供日.fmString, "要求状態": "==追加発注"]
-        return try find(query: query)
+        return try find(query: [
+            "DataAPI_食事メニュー::提供日" : 提供日.fmString,
+                                "要求状態" : "==追加発注"
+        ])
     }
 
     public static func find(提供日: Day, 種類: 食事種類型? = nil) throws -> [食事要求型] {
-        var query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": 提供日.fmString]
+        var query: FileMakerQuery = ["DataAPI_食事メニュー::提供日" : 提供日.fmString]
         if let type = 種類 {
             query["DataAPI_食事メニュー::種類"] = "==\(type.rawValue)"
         }
@@ -204,14 +180,11 @@ public class 食事要求型: Identifiable {
     }
 
     public static func find(提供開始日: Day) throws -> [食事要求型] {
-        let query: FileMakerQuery = ["DataAPI_食事メニュー::提供日": ">=\(提供開始日.fmString)"]
-        return try find(query: query)
+        return try find(query: ["DataAPI_食事メニュー::提供日" : ">=\(提供開始日.fmString)"])
     }
     
     public static func find(提供期間: ClosedRange<Day>) throws -> [食事要求型] {
-        var query = FileMakerQuery()
-        query["DataAPI_食事メニュー::提供日"] = makeQueryDayString(提供期間)
-        return try find(query: query)
+        return try find(query: ["DataAPI_食事メニュー::提供日" : makeQueryDayString(提供期間)])
     }
     
     #if !os(tvOS)

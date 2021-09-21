@@ -11,7 +11,7 @@ import Foundation
 /// レコードの種類
 private enum RecordType {
     /// メインレコード
-    case master(recordID: String, portals: [String: [FileMakerRecord]])
+    case master(recordId: String, portals: [String: [FileMakerRecord]])
     /// ポータルレコード
     case portal(header: String)
 }
@@ -24,10 +24,10 @@ public struct FileMakerRecord {
     private let type: RecordType
 
     /// レコードID
-    var recordID: String? {
+    var recordId: String? {
         switch type {
-        case .master(recordID: let recordID, portals: _):
-            return recordID
+        case .master(recordId: let recordId, portals: _):
+            return recordId
         case .portal:
             return nil
         }
@@ -41,7 +41,7 @@ public struct FileMakerRecord {
 
     /// jsonをもとにメインレコードを生成する
     init?(json data: Any) {
-        guard case let dic as [String: Any] = data, case let recordID as String = dic["recordId"] else { return nil }
+        guard case let dic as [String: Any] = data, case let recordId as String = dic["recordId"] else { return nil }
         self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
         if case let data as [String: [[String: Any]]] = dic["portalData"], !data.isEmpty {
             var portalData: [String: [FileMakerRecord]] = [:]
@@ -49,9 +49,9 @@ public struct FileMakerRecord {
                 let source = array.map { FileMakerRecord(portal: key, fieldData: $0) }
                 portalData[key] = source
             }
-            self.type = .master(recordID: recordID, portals: portalData)
+            self.type = .master(recordId: recordId, portals: portalData)
         } else {
-            self.type = .master(recordID: recordID, portals: [:])
+            self.type = .master(recordId: recordId, portals: [:])
         }
     }
     
@@ -60,6 +60,11 @@ public struct FileMakerRecord {
         assert(!name.isEmpty)
         self.fieldData = fieldData
         self.type = .portal(header: "\(name)::")
+    }
+    
+    // MARK: -
+    func makeInvalidRecordError(name: String, mes: String) -> Error {
+        return FileMakerError.invalidRecord(name: name, recordId: recordId, mes: mes)
     }
     
     // MARK: -
@@ -77,7 +82,7 @@ public struct FileMakerRecord {
     /// 指定された名前のポータルを取り出す
     func portal(forKey name: String) -> [FileMakerRecord]? {
         switch type {
-        case .master(recordID: _, portals: let portalData):
+        case .master(recordId: _, portals: let portalData):
             return portalData[name]
         case .portal:
             return nil
@@ -95,7 +100,7 @@ public struct FileMakerRecord {
             return nil
         }
     }
-    
+
     /// 指定されたキーに対応する整数値を返す
     func integer(forKey key: String) -> Int? {
         if case let value as Int = self[key] { return value }
@@ -164,8 +169,7 @@ public struct FileMakerRecord {
 }
 
 // MARK: -
-func makeQueryDayString(_ range: ClosedRange<Day>?) -> String? {
-    guard let range = range else { return nil }
+func makeQueryDayString(_ range: ClosedRange<Day>) -> String {
     let from = range.lowerBound
     let to = range.upperBound
     if from == to {

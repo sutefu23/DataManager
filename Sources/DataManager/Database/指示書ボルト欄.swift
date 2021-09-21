@@ -315,7 +315,7 @@ public struct 資材要求情報型 {
     public let ボルト数量: ボルト数欄型?
     public let is附属品: Bool?
     
-    public var 資材: 資材型? { 資材型(図番: self.図番) }
+    public var 資材: 資材型? { try? 資材キャッシュ型.shared.キャッシュ資材(図番: self.図番) }
     public lazy var 単価: Double? = self.資材?.単価
     public var 単位数: Double?
     public var 金額: Double? {

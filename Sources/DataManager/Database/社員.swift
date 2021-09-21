@@ -127,9 +127,10 @@ public final class 社員型: Hashable, Codable {
         return nil
     }
     
-    init?(_ record: FileMakerRecord) {
-        guard let 社員番号 = record.integer(forKey: "社員番号") else { return nil }
-        guard let 社員名称 = record.string(forKey: "社員名称") else { return nil }
+    init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "社員", mes: key) }
+        guard let 社員番号 = record.integer(forKey: "社員番号") else { throw makeError("社員番号") }
+        guard let 社員名称 = record.string(forKey: "社員名称") else { throw makeError("社員名称") }
         self.社員番号 = 社員番号
         self.社員名称 = 社員名称
         self.部署Data = record.キャッシュ部署(forKey: "部署記号")
@@ -217,6 +218,8 @@ public extension 社員型 {
     static let 関_雄也 = prepare社員(社員番号: 034, 社員名称: "関 雄也")
     static let 佐伯_潤一 = prepare社員(社員番号: 038, 社員名称: "佐伯　潤一")
     static let 田中_希望 = prepare社員(社員番号: 059, 社員名称: "田中　希望")
+    static let 山本_沢 = prepare社員(社員番号: 061, 社員名称: "山本　沢")
+    static let 平山_裕二 = prepare社員(社員番号: 084, 社員名称: "平山　裕二")
     static let 荒川_謙二 = prepare社員(社員番号: 095, 社員名称: "荒川　謙二")
     static let 井手_法昭 = prepare社員(社員番号: 102, 社員名称: "井手 法昭")
     static let 岸原_秀昌 = prepare社員(社員番号: 112, 社員名称: "岸原 秀昌")
@@ -280,7 +283,7 @@ extension 社員型 {
     static func fetchAll() throws -> [社員型] {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 社員型.dbName)
-        return list.compactMap { 社員型($0) }
+        return list.compactMap { try? 社員型($0) }
     }
     
     static func findDirect(_ 社員番号: Int) throws -> 社員型? {
@@ -288,6 +291,6 @@ extension 社員型 {
         var query = FileMakerQuery()
         query["社員番号"] = "==\(String(format: "%03d",社員番号))"
         let list = try db.find(layout: 社員型.dbName, query: [query])
-        return list.compactMap { 社員型($0) }.first
+        return try list.map { try 社員型($0) }.first
     }
 }

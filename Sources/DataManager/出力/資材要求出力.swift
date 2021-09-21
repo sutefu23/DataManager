@@ -9,6 +9,11 @@
 import Foundation
 
 public struct 資材要求出力型: FileMakerExportRecord {
+    public static let layout: String = "DataAPI_MaterialRequirementsInput"
+    public static let exportScript: String = "DataAPI_MaterialRequestments_RecordSet"
+    public typealias ImportBuddyType = 発注型
+    
+
     public let 登録日: Day
     public let 登録時間: Time
     public let 注文番号: 注文番号型
@@ -28,11 +33,6 @@ public struct 資材要求出力型: FileMakerExportRecord {
         self.希望納期 = 希望納期
         self.備考 = 備考
     }    
-    
-    public typealias ImportBuddyType = 発注型
-    public static var db: FileMakerDB { .pm_osakaname }
-    public static var exportLayout: String { "DataAPI_MaterialRequirementsInput" }
-    public static var exportScript: String { "DataAPI_MaterialRequestments_RecordSet" }
     
     public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
         var record: [String: String] = [

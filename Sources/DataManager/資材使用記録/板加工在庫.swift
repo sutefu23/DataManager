@@ -19,7 +19,7 @@ struct 板加工在庫型 {
         guard digs.count >= 3 else { return nil }
         let name = digs[0]
         if name.isEmpty { return nil }
-        guard let item = 資材型(図番: 図番型(digs[1])) else { return nil }
+        guard let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番型(digs[1])) else { return nil }
         guard let area = Double(digs[2]), area > 0 else { return nil }
         let order = order ?? 0
         self.名称 = String(name)

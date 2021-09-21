@@ -8,9 +8,9 @@
 import Foundation
 
 public class 使用資材型: FileMakerImportRecord {
-    public static var title: String { "使用資材" }
+    public static var name: String { "使用資材" }
     public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
-    public static var importLayout: String { "DataAPI_17" }
+    public static var layout: String { "DataAPI_17" }
     
     static let dbName = "DataAPI_17"
 
@@ -33,13 +33,15 @@ public class 使用資材型: FileMakerImportRecord {
 
     public var 登録日時: Date { Date(self.登録日, self.登録時間) }
     
+    public var memoryFootPrint: Int { return 30 * 8 } // 仮設定のため適当
+
     public required init(_ record: FileMakerRecord) throws {
         guard let day = record.day(forKey: "登録日"),
               let time = record.time(forKey: "登録時間"),
               let order = record.伝票番号(forKey: "伝票番号"),
               let item = record.string(forKey: "図番"),
               let title = record.string(forKey: "表示名"),
-              let use = record.string(forKey: "使用量") else { throw FileMakerError.invalidData(message: "不正な使用資材データ: レコードID\(record.recordID ?? "")") }
+              let use = record.string(forKey: "使用量") else { throw FileMakerError.invalidData(message: "不正な使用資材データ: レコードID\(record.recordId ?? "")") }
         self.登録日 = day
         self.登録時間 = time
         self.伝票番号 = order

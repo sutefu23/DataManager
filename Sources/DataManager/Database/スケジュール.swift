@@ -8,29 +8,37 @@
 
 import Foundation
 
-final class スケジュール型 {
-    static let dbName = "DataAPI_6"
-
-    let record: FileMakerRecord
+struct スケジュール型: FileMakerImportRecord {
+    static let layout: String = "DataAPI_6" 
+    static let name: String = "スケジュール"
     
-    init?(_ record: FileMakerRecord) {
-        self.record = record
+    init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "スケジュール", mes: key) }
+        guard let 種類 = record.string(forKey: "種類") else { throw makeError("種類") }
+        self.種類 = 種類
+        guard let 開始日 = record.day(forKey: "開始日") else { throw makeError("開始日") }
+        self.開始日 = 開始日
+        self.開始時刻 = record.time(forKey: "開始時刻")
+        self.終了日 = record.day(forKey: "終了日")
+        self.終了時刻 = record.time(forKey: "終了時刻")
     }
+    let 種類: String
+    let 開始日: Day
+    let 開始時刻: Time?
+    let 終了日: Day?
+    let 終了時刻: Time?
     
-    var 種類 : String { return record.string(forKey: "種類")! }
-    var 開始日 : Day { return record.day(forKey: "開始日")! }
-    var 開始時刻 : Time? { return record.time(forKey: "開始時刻") }
-    var 終了日 : Day? { return record.day(forKey: "終了日") }
-    var 終了時刻 : Time? { return record.time(forKey: "終了時刻") }
+    var memoryFootPrint: Int { return MemoryLayout<スケジュール型>.stride }
 }
 
 private let tableName = "スケジュール管理テーブル"
 
 extension スケジュール型 {
     static func find(at day: Day) throws -> [スケジュール型] {
-        let db = FileMakerDB.pm_osakaname
-        let str = day.fmString
-        let list = try db.find(layout: スケジュール型.dbName, query: [["開始日" : str, "終了日" : "="], ["開始日" : "<=\(str)", "終了日" : ">=\(str)"]])
-        return list.compactMap { スケジュール型($0) }
+        let daystr = day.fmString
+        return try self.find(querys: [
+            ["開始日" : daystr, "終了日" : "="],
+            ["開始日" : "<=\(daystr)", "終了日" : ">=\(daystr)"]
+        ])
     }
 }

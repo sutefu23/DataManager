@@ -10,7 +10,9 @@ import Foundation
 
 public struct 資材入出庫出力型: FileMakerExportRecord {
     public typealias ImportBuddyType = 資材入出庫型
-    
+    public static let layout: String = "DataAPI_MaterialEntry"
+    public static let exportScript: String = "DataAPI_MaterialEntry_RecordSet"
+
     public let 登録日: Day
     public let 登録時間: Time
     public let 資材: 資材型
@@ -42,7 +44,7 @@ public struct 資材入出庫出力型: FileMakerExportRecord {
             else { return nil }
         guard let time = Time(fmTime: digs[1])
             else { return nil }
-        guard let item = 資材型(図番: 図番型(digs[2]))
+        guard let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番型(digs[2]))
             else { return nil }
         guard let count = Int(digs[3])
             else { return nil }
@@ -59,10 +61,7 @@ public struct 資材入出庫出力型: FileMakerExportRecord {
         self.社員 = member
         self.入力区分 = .通常入出庫
     }
-    
-    public static var exportLayout: String { "DataAPI_MaterialEntry" }
-    public static var exportScript: String { "DataAPI_MaterialEntry_RecordSet" }
-    
+        
     public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
         var record: [String: String] = [
             "識別キー": exportUUID.uuidString,

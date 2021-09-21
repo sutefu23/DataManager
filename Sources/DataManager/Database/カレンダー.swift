@@ -8,56 +8,64 @@
 
 import Foundation
 
+/// 始業時間(朝礼を考慮して40分からとしている)
 public let 標準始業時間 = Time(8, 40)
+/// 終業時間
 public let 標準終業時間 = Time(17, 30)
 
-public enum 日付タイプ型 {
-    case 出勤日
-    case 休日
-    
-    var description: String {
-        switch self {
-        case .出勤日: return "出勤日"
-        case .休日: return "休日"
-        }
-    }
-}
+//public enum 日付タイプ型 {
+//    case 出勤日
+//    case 休日
+//
+//    var description: String {
+//        switch self {
+//        case .出勤日: return "出勤日"
+//        case .休日: return "休日"
+//        }
+//    }
+//}
 
 public extension TimeInterval {
+    /// 指定された工程について作業時間を計算する
     init(工程: 工程型?, 作業開始 from: Date, 作業完了 to: Date, by cal: カレンダー型 = 標準カレンダー) {
         self = cal.calcWorkTime(state: 工程, from: from, to: to)
     }
 }
 
-public extension Day {
-    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
-        return cal.isHoliday(of: self) ? .休日: . 出勤日
-    }
-}
+//public extension Day {
+//    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
+//        return cal.isHoliday(of: self) ? .休日: . 出勤日
+//    }
+//}
 
 public extension Date {
-    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
-        return self.day.日付タイプ(cal)
+//    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
+//        return self.day.日付タイプ(cal)
+//    }
+
+    /// fromからthisまでの作業時間を計算する
+    func 作業時間(工程: 工程型? = nil, from: Date, by cal: カレンダー型 = 標準カレンダー) -> TimeInterval {
+        return cal.calcWorkTime(state: 工程, from: from, to: self)
     }
     
-    func 作業時間(from: Date, by cal: カレンダー型 = 標準カレンダー) -> TimeInterval {
-        return cal.calcWorkTime(state: nil, from: from, to: self)
+    /// thisからtoまでの作業時間を計算する
+    func 作業時間(工程: 工程型? = nil, to: Date, by cal: カレンダー型 = 標準カレンダー) -> TimeInterval {
+        return cal.calcWorkTime(state: 工程, from: self, to: to)
     }
     
-    func 作業時間(to: Date, by cal: カレンダー型 = 標準カレンダー) -> TimeInterval {
-        return cal.calcWorkTime(state: nil, from: self, to: to)
-    }
-    
+    /// thisからcount営業日後の日を計算する
     func 翌出勤日(by cal: カレンダー型 = 標準カレンダー, count: Int = 1) -> Date {
         return Date(self.day.翌出勤日(by: cal, count: count))
     }
     
+    /// thisからcount営業日前の日を計算する
     func 前出勤日(by cal: カレンダー型 = 標準カレンダー, count: Int = 1) -> Date {
         return Date(self.day.前出勤日(by: cal, count: count))
     }
 }
 
 public extension Day {
+    /// thisからcount営業日後の日を計算する
     func 翌出勤日(by cal: カレンダー型 = 標準カレンダー, count: Int = 1) -> Day {
         let count = (count > 0) ? count : 1
         var day = self.nextDay
@@ -69,6 +77,7 @@ public extension Day {
         return day
     }
     
+    /// thisからcount営業日前の日を計算する
     func 前出勤日(by cal: カレンダー型 = 標準カレンダー, count: Int = 1) -> Day {
         let count = (count > 0) ? count : 1
         var day = self.prevDay
@@ -80,7 +89,10 @@ public extension Day {
         return day
     }
 }
+
+/// １日の勤務時間情報を保持する。0:00から0:00までの１日と考え、0:00を跨ぐことは想定しない
 public struct 勤務時間型 {
+    /// 一般的な勤務時間モデル
     static let standard: 勤務時間型 = 勤務時間型(始業: 標準始業時間, 終業: 標準終業時間, 休憩時間: [
         (from: Time(10,00), to: Time(10,10)),
         (from: Time(12,00), to: Time(13,00)),
@@ -88,6 +100,7 @@ public struct 勤務時間型 {
         (from: Time(17,30), to: Time(17,40)),
         ])
 
+    /// 半田部の勤務時間モデル
     static let handa: 勤務時間型 = 勤務時間型(始業: 標準始業時間, 終業: Time(20, 00), 休憩時間: [
         (from: Time(10,00), to: Time(10,10)),
         (from: Time(12,00), to: Time(13,00)),
@@ -95,11 +108,14 @@ public struct 勤務時間型 {
         (from: Time(17,30), to: Time(17,40)),
         ])
 
+    /// 始業時間
     public var 始業: Time
+    /// 通常の就業時間
     public var 終業: Time
+    /// 休憩時間のリスト。残業時間時の休憩時間も含む
     public var 休憩時間: [(from: Time, to: Time)]
 
-    init(始業 from: Time = Time(8, 40), 終業 to: Time) {
+    init(始業 from: Time = 標準始業時間, 終業 to: Time) {
         self.始業 = from
         self.終業 = to
         self.休憩時間 = [
@@ -116,6 +132,7 @@ public struct 勤務時間型 {
         self.休憩時間 = rests.sorted { $0.from < $1.from }
     }
 
+    /// 指定された時間を勤務時間に丸める。休憩時間の時は休憩後の時間にする
     private func round(_ time: Time) -> Time {
         if time <= self.始業 { return self.始業 }
         if self.終業 <= time { return self.終業 }
@@ -124,7 +141,8 @@ public struct 勤務時間型 {
         }
         return time
     }
-    
+
+    /// 指定された領域のから休憩時間を引いて作業時間を計算する
     func calcWorkTime(from: Time, to: Time) -> TimeInterval {
         var offset : TimeInterval = 0
         for rest in self.休憩時間 {
@@ -136,12 +154,16 @@ public struct 勤務時間型 {
         return result >= 0 ? result : 0
     }
     
+    /// １日のフルタイムの作業時間を返す
     var fullTime: TimeInterval { return calcWorkTime(from: self.始業, to: self.終業) }
 }
 
+/// 工程毎に１日の進捗入力から計算された残業時間を算出した残業カレンダー
 public let 標準カレンダー: カレンダー型 = 自動カレンダー型()
+/// 半田舞踊の専用カレンダ。就業時間は固定で20:00
 public let 半田カレンダー: カレンダー型 = 固定カレンダー型(day: 出勤日DB型.shared, time: 勤務時間型.handa)
 
+/// 標準的なカレンダーのインターフェース
 public protocol カレンダー型 {
     func isHoliday(of day: Day) -> Bool
     func calcWorkTime(state: 工程型?, from: Date, to: Date, 終業カット: Bool) -> TimeInterval
@@ -149,6 +171,7 @@ public protocol カレンダー型 {
 }
 
 public extension カレンダー型 {
+    // 2つの日にち間の勤務日数を数える。from==toで0日と数える
     func 勤務日数(from: Day, to: Day) -> Int {
         var day = from
         var count = 0
@@ -163,6 +186,7 @@ public extension カレンダー型 {
 
     /// 全工程で最大の勤務時間
     func 勤務時間(日付: Day) -> 勤務時間型 { self.勤務時間(工程: nil, 日付: 日付) }
+    /// 勤務時間を計算する
     func calcWorkTime(state: 工程型?, from: Date, to: Date) -> TimeInterval {
         calcWorkTime(state: state, from: from, to: to, 終業カット: false)
     }

@@ -204,10 +204,17 @@ var is製作工程Set: Set<工程型> = {
 }()
 
 func flush工程名称DB() {
-    工程名称DB = 工程名称DB型()
+    if isInit工程名称DB {
+        工程名称DB = 工程名称DB型()
+    }
 }
 
-private(set) var 工程名称DB: 工程名称DB型 = 工程名称DB型()
+private var isInit工程名称DB = false
+private(set) var 工程名称DB: 工程名称DB型 = {
+    isInit工程名称DB = true
+    return 工程名称DB型()
+}()
+
 var 名称工程DB: [String: 工程型] { 工程名称DB.reversedMap }
 
 public extension 工程型 {

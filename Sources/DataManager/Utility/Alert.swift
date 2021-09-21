@@ -36,7 +36,7 @@ public func showMessage(message: String, info: String = "", ok: String = "Ok") {
     alert.runModal()
     #elseif os(iOS) || os(tvOS)
     let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-    let actionOk = UIAlertAction(title: ok, style: .default) { _ in  }
+    let actionOk = UIAlertAction(title: ok, style: .default)
     alert.addAction(actionOk)
     let vc = UIApplication.shared.windows.first?.rootViewController
     vc?.present(alert, animated: true, completion: nil)

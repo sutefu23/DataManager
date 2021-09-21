@@ -454,6 +454,8 @@ extension DMHttpConnectionProtocol {
         } catch {
             if let str = String(data: data, encoding: .utf8) {
                 DMLogSystem.shared.log("JSON変換異常", detail: String(str.prefix(200)), level: .critical)
+            } else {
+                DMLogSystem.shared.log("JSON変換異常", detail: "UTF-8変換失敗[\(data.count)bytes]", level: .critical)
             }
             throw error
         }

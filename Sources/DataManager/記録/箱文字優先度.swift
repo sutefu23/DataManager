@@ -8,19 +8,18 @@
 
 import Foundation
 
-struct 箱文字優先度Data型: Equatable {
-    static let dbName = "DataAPI_3"
+public struct 箱文字優先度Data型: DMSystemRecordData, Equatable {
+    public static let layout = "DataAPI_3"
     
-    var 伝票番号: 伝票番号型? = nil
-    var 優先設定: 優先設定型 = .自動判定
-    var 表示設定: 表示設定型 = .自動判定
-    var 表示設定日: Day? = nil
-    var 工程: 工程型? = nil
+    public var 伝票番号: 伝票番号型? = nil
+    public var 優先設定: 優先設定型 = .自動判定
+    public var 表示設定: 表示設定型 = .自動判定
+    public var 表示設定日: Day? = nil
+    public var 工程: 工程型? = nil
     
     var 修正情報タイムスタンプ: Date? = nil // 保存情報でない
-    private var recordId: String?
     
-    init?(_ record: FileMakerRecord) {
+    public init(_ record: FileMakerRecord) throws {
         if let number = record.integer(forKey: "伝票番号") {
             self.伝票番号 = 伝票番号型(validNumber: number)
         }
@@ -35,7 +34,6 @@ struct 箱文字優先度Data型: Equatable {
         }
         self.表示設定日 = record.day(forKey: "表示設定日")
         self.修正情報タイムスタンプ = record.date(forKey: "修正情報タイムスタンプ")
-        self.recordId = record.recordID
     }
     
     init() {}
@@ -45,11 +43,11 @@ struct 箱文字優先度Data型: Equatable {
         self.工程 = 工程
     }
     
-    static func == (left: 箱文字優先度Data型, right: 箱文字優先度Data型) -> Bool {
+    public static func == (left: 箱文字優先度Data型, right: 箱文字優先度Data型) -> Bool {
         return left.伝票番号 == right.伝票番号 && left.優先設定 == right.優先設定 && left.表示設定 == right.表示設定 && left.表示設定日 == right.表示設定日 && left.工程 == right.工程
     }
     
-    var fieldData: FileMakerQuery {
+    public var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         if let num = self.伝票番号 { data["伝票番号"] = String(num.整数値) }
         data["優先設定"] = 優先設定.code
@@ -58,42 +56,21 @@ struct 箱文字優先度Data型: Equatable {
         data["表示設定日"] = 表示設定日?.fmString
         return data
     }
-    
-    func delete() throws -> Bool {
-        guard let recordId = self.recordId else { return false }
-        let db = FileMakerDB.system
-        try db.delete(layout: 箱文字優先度Data型.dbName, recordId: recordId)
-        return true
-    }
-
-    static func findOld(date: Date) throws -> [箱文字優先度Data型] {
-        let db = FileMakerDB.system
-        var query = [String: String]()
-        query["修正情報タイムスタンプ"] = "<\(date.fmDayTime)"
-        let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
-        return list.compactMap { 箱文字優先度Data型($0) }
-    }
-    
 }
 
-public final class 箱文字優先度型 {
+public final class 箱文字優先度型: DMSystemRecord<箱文字優先度Data型> {
     public static let 自動有効期限: Time = Time(15, 00)
     
-    var original: 箱文字優先度Data型 = 箱文字優先度Data型()
-    var data: 箱文字優先度Data型
-    var recordID: String?
-
-    public var 伝票番号: 伝票番号型? {
-        get { data.伝票番号 }
-        set { data.伝票番号 = newValue }
-    }
-    public var 優先設定: 優先設定型 {
-        get { data.優先設定 }
-        set { data.優先設定 = newValue }
-    }
+//    public var 伝票番号: 伝票番号型? {
+//        get { data.伝票番号 }
+//        set { data.伝票番号 = newValue }
+//    }
+//    public var 優先設定: 優先設定型 {
+//        get { data.優先設定 }
+//        set { data.優先設定 = newValue }
+//    }
     public var 表示設定: 表示設定型 {
         get {
-//            guard let day = data.表示設定日, day.isToday else { return .自動判定 }
             return data.表示設定
         }
         set {
@@ -109,64 +86,40 @@ public final class 箱文字優先度型 {
         get { data.表示設定日 ?? data.修正情報タイムスタンプ?.day ?? Day() }
         set { data.表示設定日 = newValue }
     }
-    public var 工程: 工程型? {
-        get { data.工程 }
-        set { data.工程 = newValue }
-    }
+//    public var 工程: 工程型? {
+//        get { data.工程 }
+//        set { data.工程 = newValue }
+//    }
     
-    init(data: 箱文字優先度Data型, recordID: String) {
-        self.data = data
-        self.original = data
-        self.recordID = recordID
+    init(data: 箱文字優先度Data型, recordId: String) {
+        super.init(data, recordId: recordId)
     }
     
     init(_ number: 伝票番号型, 工程: 工程型?) {
         let data = 箱文字優先度Data型(number, 工程: 工程)
-        self.original = data
-        self.data = data
-        self.recordID = nil
+        super.init(data, recordId: nil)
     }
     
-    public func delete() {
-        guard let recordId = self.recordID else { return }
-        let db = FileMakerDB.system
-        try? db.delete(layout: 箱文字優先度Data型.dbName, recordId: recordId)
-        self.recordID = nil
+    required public init(_ record: FileMakerRecord) throws {
+        try super.init(record)
     }
     
-    public func synchronize() {
-        if self.data == self.original { return }
-        let data = self.data.fieldData
-        let db = FileMakerDB.system
-        do {
-            if let recordID = self.recordID {
-                try db.update(layout: 箱文字優先度Data型.dbName, recordId: recordID, fields: data)
-            } else {
-                let db = FileMakerDB.system
-                let recordID = try db.insert(layout: 箱文字優先度Data型.dbName, fields: data)
-                self.recordID = recordID
-            }
-            self.original = self.data
-        } catch {
-            NSLog(error.localizedDescription)
+    @discardableResult
+    public func delete() throws -> Bool {
+        return try generic_delete()
+    }
+    
+    public func synchronize() throws {
+        if try generic_synchronize() {
+            箱文字優先度キャッシュ型.shared.update(self)
         }
-        箱文字優先度キャッシュ型.shared.update(self)
     }
     
     public static func allRegistered(for 伝票番号: 伝票番号型) throws -> [箱文字優先度型] {
-        let db = FileMakerDB.system
-        var query = FileMakerQuery()
-        query["伝票番号"] = "==\(伝票番号.整数値)"
-        let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
-        let orders: [箱文字優先度型] = list.compactMap {
-            guard let recordID = $0.recordID, let data = 箱文字優先度Data型($0) else { return nil }
-            return 箱文字優先度型(data: data, recordID: recordID)
-        }
-        return orders
+        return try find(query: ["伝票番号": "==\(伝票番号.整数値)"])
     }
     
     public static func findDirect(伝票番号: 伝票番号型, 工程: 工程型?) throws -> 箱文字優先度型? {
-        let db = FileMakerDB.system
         var query = [String: String]()
         query["伝票番号"] = "==\(伝票番号.整数値)"
         if let process = 工程 {
@@ -174,20 +127,14 @@ public final class 箱文字優先度型 {
         } else {
             query["工程コード"] = "="
         }
-        let list: [FileMakerRecord] = try db.find(layout: 箱文字優先度Data型.dbName, query: [query])
-        if let record = list.first, let recordId = record.recordID {
-            if let data = 箱文字優先度Data型(record) {
-                return 箱文字優先度型(data: data, recordID: recordId)
-            }
-        }
-        return nil
+        return try find(query: query).first
     }
     
     public static func deleteOldData() -> [String] {
         var log: [String] = []
         do {
             let old = Day().prevWorkDay.prevWorkDay.prevWorkDay // ３営業日前
-            let list = try 箱文字優先度Data型.findOld(date: Date(old))
+            let list = try findOld(date: Date(old))
             for data in list {
                 guard let num = data.伝票番号, let order = try 指示書型.findDirect(伝票番号: num), order.出荷納期 <= old else { continue }
                 if try data.delete() {
@@ -203,6 +150,10 @@ public final class 箱文字優先度型 {
             log = [error.localizedDescription]
         }
         return log
+    }
+    
+    static func findOld(date: Date) throws -> [箱文字優先度型] {
+        return try find(query: ["修正情報タイムスタンプ": "<\(date.fmDayTime)"])
     }
 }
 
@@ -240,7 +191,6 @@ public enum 優先設定型 {
 }
 
 public enum 表示設定型 {
-   
     case 白
     case 黒
     case 自動判定

@@ -9,13 +9,22 @@
 import Foundation
 
 public final class DataManagerController {
+    public static let shared: DataManagerController = DataManagerController()
+
+    public let serialQueue: OperationQueue
+
+    private init() {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        self.serialQueue = queue
+    }
+    
     public func flushAllCache() {
         clear伝票番号Cache()
         flush工程名称DB()
         出勤日DB型.shared.flushCache()
         flush作業系列Cache()
         最終発注単価キャッシュ型.shared.flushCache()
-        資材キャッシュ型.shared.flushCache()
         箱文字優先度キャッシュ型.shared.removeAll()
         在庫数キャッシュ型.shared.flushAllCache()
         入出庫キャッシュ型.shared.flushAllCache()
@@ -23,10 +32,13 @@ public final class DataManagerController {
         取引先キャッシュ型.shared.flushAllCache()
         指示書進捗キャッシュ型.shared.flushAllCache()
         資材入庫状況キャッシュ型.shared.flushAllCache()
+        DMCacheSystem.shared.clearAllCache()
+    }
+    
+    public func prepareSleep() {
+        serialQueue.waitUntilAllOperationsAreFinished()
     }
 }
-
-public let dataManager = DataManagerController()
 
 #if os(iOS) || os(tvOS)
 import UIKit

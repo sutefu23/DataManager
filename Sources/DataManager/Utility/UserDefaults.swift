@@ -25,7 +25,21 @@ extension UserDefaults {
         dataManagerDefaultValuesRegistered = true
         return [
             "programName": mainBundleName,
+            "maxCacheRate": 40,
         ]
+    }
+    /// キャッシュに使用できるメモリの全メモリに対する割合(%)）
+    public var maxCacheRate: Int {
+        get {
+            let rate = integer(forKey: "maxCacheRate")
+            if rate < 0 { return 0 }
+            if rate > 100 { return 100 }
+            return rate
+        }
+        set {
+            set(newValue, forKey: "maxCacheRate")
+            DMCacheSystem.shared.maxBytes = DMCacheSystem.calcMaxCacheBytes(for: newValue)
+        }
     }
     /// 起動時にNAS自動接続
     public var launchAutoMountNAS: Bool {

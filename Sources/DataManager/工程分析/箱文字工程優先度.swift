@@ -199,8 +199,8 @@ public func 箱文字前工程比較(_ order1: 指示書型, _ order2: 指示書
     let rank0 = order1.箱文字前工程優先度(of: target)
     let rank1 = order2.箱文字前工程優先度(of: target)
     if rank0 != rank1 { return rank0 < rank1 }
-    let pri1 = (order1.優先状態(for: [target]) ?? false) ? -1 : 0
-    let pri2 = (order2.優先状態(for: [target]) ?? false) ? -1 : 0
+    let pri1 = ((try? order1.優先状態(for: [target])) ?? false) ? -1 : 0
+    let pri2 = ((try? order2.優先状態(for: [target])) ?? false) ? -1 : 0
     if pri1 != pri2 {
         return pri1 < pri2
     }

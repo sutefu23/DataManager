@@ -36,8 +36,6 @@ public enum 送状CheckError: String, LocalizedError {
 }
 
 extension 送状型 {
-    public var recordID: String? { record.recordID }
-    
     public var ヤマトCSV出力待ち: Bool {
         guard self.運送会社 == .ヤマト else { return false }
         switch self.送り状番号.状態 {
@@ -93,9 +91,9 @@ extension 送状型 {
         let data = self.送り状番号.ハイフンなし生データ
         fieldData["送り状番号"] = data
 
-        let db = FileMakerDB.pm_osakaname
+        let db = 送状型.db
         db.log("送り状番号変更", detail: "管理番号=\(recordID), 送り状番号=\(data)", level: .information)
-        try db.update(layout: 送状型.dbName, recordId: recordID, fields: fieldData)
+        try db.update(layout: 送状型.layout, recordId: recordID, fields: fieldData)
     }
     
     /// サーバーの送状番号欄を「出力済」にする
@@ -104,5 +102,4 @@ extension 送状型 {
         self.送り状番号 = 送り状番号型(状態: .運送会社割当待ち, 運送会社: self.運送会社)
         try self.upload送状番号()
     }
-    
 }

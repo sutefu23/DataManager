@@ -9,8 +9,6 @@
 import Foundation
 
 public final class 部署型: Comparable, Hashable, Codable {
-//    let record: FileMakerRecord
-
     public var 部署記号: String { return "\(self.部署番号)" }
     public var 部署名: String
     public let 部署番号: Int
@@ -25,11 +23,13 @@ public final class 部署型: Comparable, Hashable, Codable {
         }
     }
     
-    init?(_ record: FileMakerRecord) {
-//        self.record = record
-        guard let code = record.string(forKey: "部署記号") else { return nil }
-        guard let name = record.string(forKey: "部署名") else { return nil }
-        guard let number = Int(code) else { return nil }
+    init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "部署", mes: key) }
+        guard let code = record.string(forKey: "部署記号"),
+              let number = Int(code) else {
+                  throw makeError("部署記号")
+              }
+        guard let name = record.string(forKey: "部署名") else { throw makeError("部署名") }
         self.部署番号 = number
         self.部署名 = name
     }
@@ -145,8 +145,7 @@ extension 部署型 {
     static func fetchAll() throws -> [部署型] {
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.fetch(layout: 部署型.dbName)
-        return list.compactMap { 部署型($0) }
-
+        return list.compactMap { try? 部署型($0) }
     }
     
     public static func find(部署記号: String? = nil, 部署名: String? = nil) throws -> [部署型] {
@@ -155,6 +154,6 @@ extension 部署型 {
         query["部署名"] = 部署名
         let db = FileMakerDB.pm_osakaname
         let list: [FileMakerRecord] = try db.find(layout: 部署型.dbName, query: [query])
-        return list.compactMap { 部署型($0) }
+        return try list.map { try 部署型($0) }
     }
 }

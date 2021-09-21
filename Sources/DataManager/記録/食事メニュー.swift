@@ -16,8 +16,7 @@ public enum メニュー種類型: 図番型, Comparable, CaseIterable{
     case A定食
     case B定食
     case C定食
-    
-    
+
     public static func ==(left: メニュー種類型, right: メニュー種類型) -> Bool {
         left.rawValue == right.rawValue
     }
@@ -84,58 +83,49 @@ extension FileMakerRecord {
     }
 }
 public typealias メニューID型 = String
-struct 食事メニューData型: Equatable {
-    static let dbName = "DataAPI_6"
-    var メニューID: メニューID型
-    var 図番: 図番型
-    var 提供日: Day
-    var 発注日: Day
-    var 種類: 食事種類型
-    var 内容: String
-    var カロリー: String
-    var 食塩: String
-    var 最大提供数: Int
-    var 金額: Int
-    var 提供パターン: String
+public struct 食事メニューData型: Equatable {
+    public static let layout = "DataAPI_6"
     
-    init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
-        self.メニューID = メニューID
-        self.図番 = 図番
-        self.提供日 = 提供日
-        self.発注日 = 発注日
+    public var メニューID: メニューID型
+    public var 図番: 図番型
+    public var 提供日: Day
+    public var 発注日: Day
+    public var 種類: 食事種類型
+    public var 内容: String
+    public var カロリー: String
+    public var 食塩: String
+    public var 最大提供数: Int
+    public var 金額: Int
+    public var 提供パターン: String
+}
+
+extension 食事メニューData型: DMSystemRecordData {
+    public init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "食事メニュー", mes: key) }
+        func getString(_ key: String) throws -> String {
+            guard let str = record.string(forKey: key) else { throw makeError(key) }
+            return str
+        }
+        func getDay(_ key: String) throws -> Day {
+            guard let day = record.day(forKey: key) else { throw makeError(key) }
+            return day
+        }
+
+        guard let 種類 = record.食事種類(forKey: "種類") else { throw makeError("種類") }
         self.種類 = 種類
-        self.内容 = 内容
-        self.カロリー = カロリー
-        self.食塩 = 食塩
-        self.最大提供数 = 最大提供数
-        self.金額 = 金額
-        self.提供パターン = 提供パターン
+        self.メニューID = try getString("メニューID")
+        self.図番 = try getString("図番")
+        self.提供日 = try getDay("提供日")
+        self.発注日 = try getDay("発注日")
+        self.内容 = try getString("内容")
+        self.カロリー = try getString("カロリー")
+        self.食塩 = try getString("食塩")
+        self.提供パターン = try getString("提供パターン")
+        self.最大提供数 = record.integer(forKey: "最大提供数") ?? 999
+        self.金額 = record.integer(forKey: "金額") ?? 0
     }
     
-    init?(_ record: FileMakerRecord) {
-        guard let メニューID = record.string(forKey: "メニューID"),
-              let 図番 = record.string(forKey: "図番"),
-              let 提供日 = record.day(forKey: "提供日"),
-              let 発注日 = record.day(forKey: "発注日"),
-              let 種類 = record.食事種類(forKey: "種類"),
-              let 提供パターン = record.string(forKey: "提供パターン")
-        else { return nil }
-        let 最大提供数 = record.integer(forKey: "最大提供数") ?? 999
-        let 金額 = record.integer(forKey: "金額") ?? 0
-        self.メニューID = メニューID
-        self.図番 = 図番
-        self.提供日 = 提供日
-        self.発注日 = 発注日
-        self.種類 = 種類
-        self.内容 = record.string(forKey: "内容") ?? ""
-        self.カロリー = record.string(forKey: "カロリー") ?? ""
-        self.食塩 = record.string(forKey: "食塩") ?? ""
-        self.最大提供数 = 最大提供数
-        self.金額 = 金額
-        self.提供パターン = 提供パターン
-    }
-    
-    var fieldData: FileMakerQuery {
+    public var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         data["図番"] = 図番
         data["提供日"] = 提供日.fmString
@@ -151,68 +141,57 @@ struct 食事メニューData型: Equatable {
     }
 }
 
-public class 食事メニュー型 {    
-    var original: 食事メニューData型?
-    var data: 食事メニューData型
-    
-    public internal(set) var recordId: String?
-    public var メニューID: メニューID型 {
-        get { data.メニューID }
-        set { data.メニューID = newValue }
-    }
-    public var 図番: 図番型 {
-        get { data.図番 }
-        set { data.図番 = newValue }
-    }
-    public var 提供日: Day {
-        get { data.提供日 }
-        set { data.提供日 = newValue }
-    }
-    public var 発注日: Day {
-        get { data.発注日 }
-        set { data.発注日 = newValue }
-    }
-    public var 種類: 食事種類型 {
-        get { data.種類 }
-        set { data.種類 = newValue }
-    }
-    public var 内容: String {
-        get { data.内容 }
-        set { data.内容 = newValue }
-    }
-    public var カロリー: String {
-        get { data.カロリー }
-        set { data.カロリー = newValue }
-    }
-    public var 食塩: String {
-        get { data.食塩 }
-        set { data.食塩 = newValue }
-    }
-    public var 最大提供数: Int {
-        get { data.最大提供数 }
-        set { data.最大提供数 = newValue }
-    }
-    public var 金額: Int {
-        get { data.金額 }
-        set { data.金額 = newValue }
-    }
-    public var 提供パターン: String {
-        get { data.提供パターン }
-        set { data.提供パターン = newValue }
-    }
+public class 食事メニュー型: DMSystemRecord<食事メニューData型> {
+//    public var メニューID: メニューID型 {
+//        get { data.メニューID }
+//        set { data.メニューID = newValue }
+//    }
+//    public var 図番: 図番型 {
+//        get { data.図番 }
+//        set { data.図番 = newValue }
+//    }
+//    public var 提供日: Day {
+//        get { data.提供日 }
+//        set { data.提供日 = newValue }
+//    }
+//    public var 発注日: Day {
+//        get { data.発注日 }
+//        set { data.発注日 = newValue }
+//    }
+//    public var 種類: 食事種類型 {
+//        get { data.種類 }
+//        set { data.種類 = newValue }
+//    }
+//    public var 内容: String {
+//        get { data.内容 }
+//        set { data.内容 = newValue }
+//    }
+//    public var カロリー: String {
+//        get { data.カロリー }
+//        set { data.カロリー = newValue }
+//    }
+//    public var 食塩: String {
+//        get { data.食塩 }
+//        set { data.食塩 = newValue }
+//    }
+//    public var 最大提供数: Int {
+//        get { data.最大提供数 }
+//        set { data.最大提供数 = newValue }
+//    }
+//    public var 金額: Int {
+//        get { data.金額 }
+//        set { data.金額 = newValue }
+//    }
+//    public var 提供パターン: String {
+//        get { data.提供パターン }
+//        set { data.提供パターン = newValue }
+//    }
 
     public init(メニューID: メニューID型, 図番: 図番型, 提供日: Day, 発注日: Day, 種類: 食事種類型, 内容: String, カロリー: String, 食塩: String, 最大提供数: Int, 金額: Int, 提供パターン: String) {
-        self.data = 食事メニューData型(メニューID: メニューID, 図番: 図番, 提供日: 提供日, 発注日: 発注日, 種類: 種類, 内容: 内容, カロリー: カロリー, 食塩: 食塩, 最大提供数: 最大提供数, 金額: 金額, 提供パターン: 提供パターン)
+        let data = 食事メニューData型(メニューID: メニューID, 図番: 図番, 提供日: 提供日, 発注日: 発注日, 種類: 種類, 内容: 内容, カロリー: カロリー, 食塩: 食塩, 最大提供数: 最大提供数, 金額: 金額, 提供パターン: 提供パターン)
+        super.init(data)
     }
-    
-    init?(_ record: FileMakerRecord) {
-        guard let data = 食事メニューData型(record) else { return nil }
-        self.data = data
-        self.original = data
-        self.recordId = record.recordID
-    }
-
-    public var isChanged: Bool { original != data }
+    required init(_ record: FileMakerRecord) throws { try super.init(record) }
 
     public var 略称: String {
         switch self.図番 {
@@ -221,7 +200,7 @@ public class 食事メニュー型 {
         case "10002": return "B"
         case "10003": return "C"
         default: 
-            if let item = 資材型(図番: self.図番), let 略号 = item.規格.first {
+            if let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: self.図番), let 略号 = item.規格.first {
                 return String(略号)
             } else {
                 return "?"
@@ -231,50 +210,37 @@ public class 食事メニュー型 {
     
     // MARK: - DB操作
     public func delete() throws {
-        guard let recordID = self.recordId else { return }
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        try db.delete(layout: 食事メニューData型.dbName, recordId: recordID)
-        self.recordId = nil
-        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
+        if try generic_delete() {
+            食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
+        }
     }
 
-    public func upload() {
-        let data = self.data.fieldData
+    public func upload() throws {
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let _ = try? db.insert(layout: 食事メニューData型.dbName, fields: data)
-        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
+        if try generic_insert() {
+            食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
+        }
     }
     
     public func synchronize() throws {
-        if !isChanged { return }
-        let data = self.data.fieldData
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        if let recordID = self.recordId {
-            try db.update(layout: 食事メニューData型.dbName, recordId: recordID, fields: data)
-        } else {
-            self.recordId = try db.insert(layout: 食事メニューData型.dbName, fields: data)
+        if try generic_synchronize() {
+            食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
         }
-        self.original = self.data
-        食事メニューキャッシュ型.shared.flush(メニューID: self.メニューID)
     }
     
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [食事メニュー型] {
-        if query.isEmpty { return [] }
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let list: [FileMakerRecord] = try db.find(layout: 食事メニューData型.dbName, query: [query])
-        let result = list.compactMap { 食事メニュー型($0) }
+        let result = try find(querys: [query])
         let cache = 食事メニューキャッシュ型.shared
         result.forEach { cache.regist($0) }
         return result
     }
 
     public static func find(メニューID: String? = nil, 図番: 図番型? = nil) throws -> [食事メニュー型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         if let order = メニューID {
             query["メニューID"] = "==\(order)"
         }
@@ -285,15 +251,11 @@ public class 食事メニュー型 {
     }
 
     public static func find(from day: Day) throws -> [食事メニュー型] {
-        var query = [String: String]()
-        query["提供日"] = ">=\(day.fmString)"
-        return try find(query: query)
+        return try find(query: ["提供日": ">=\(day.fmString)"])
     }
 
     public static func find(提供日: Day) throws -> [食事メニュー型] {
-        var query = [String: String]()
-        query["提供日"] = "==\(提供日.fmString)"
-        return try find(query: query)
+        return try find(query: ["提供日": "==\(提供日.fmString)"])
     }
     
     #if !os(tvOS)

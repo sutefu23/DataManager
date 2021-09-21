@@ -54,7 +54,7 @@ public let コイル優先度: [図番型: Double] = {
 public let コイル図番Set: Set<図番型> = Set<図番型>(coilList.map { $0.図番 })
 
 public let コイル資材一覧: [資材型] = {
-    return coilList.compactMap { 資材型(図番: $0.図番) }
+    return coilList.compactMap { try? 資材キャッシュ型.shared.キャッシュ資材(図番: $0.図番) }
 }()
 
 private let coilList: [(図番: 図番型, 優先度: Double)] = [

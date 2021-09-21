@@ -10,36 +10,81 @@ import Foundation
 
 public typealias 図番型 = String
 
-public final class 資材型: Codable, Comparable, Hashable {
-    static let empty = 資材型()
-    
-    let record: FileMakerRecord
+public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
     public let 図番: 図番型
     public let 製品名称: String
     public let 規格: String
     public let 単価: Double?
 
-    init(図番: 図番型 = "", 版数: String = "", 製品名称: String = "", 規格: String = "", 単価: Double? = nil) {
-        self.record = FileMakerRecord()
-        self.図番 = 図番
-        self.製品名称 = 製品名称
-        self.規格 = 規格
-        self.単価 = 単価
+    public let 箱入り数: Double
+    public let レコード在庫数: Int
+    public let 版数: String
+    public let is棚卸し対象: Bool
+    public let 備考: String
+    
+    public let 発注先名称: String
+    
+    public let 会社コード: 会社コード型
+    public let 規格2: String
+    public let 種類: String
+    
+    public let 単位: String
+
+    public let 登録日: Day
+
+    public var memoryFootPrint: Int {
+        return (3 * 1 + 2 * 10 + 3 + 1) * 8
     }
     
     init(_ record: FileMakerRecord) throws {
-        self.record = record
-        guard let 図番 = record.string(forKey: "f13") else { throw FileMakerError.invalidData(message: "図番:f13 of レコードID \(record.recordID ?? "")") }
-        guard let 製品名称 = record.string(forKey: "f3") else { throw FileMakerError.invalidData(message: "製品名称:f3 of 図番 \(図番)") }
-        guard let 規格 = record.string(forKey: "f15") else { throw FileMakerError.invalidData(message: "規格:f15 of 図番 \(図番)") }
-        self.図番 = 図番
-        self.製品名称 = 製品名称
-        self.規格 = 規格
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材", mes: key) }
+        func getString(_ key: String, _ mes: String? = nil) throws -> String {
+            guard let string = record.string(forKey: key) else { throw makeError(mes ?? key) }
+            return string
+        }
+        guard let 登録日 = record.day(forKey: "登録日") else { throw makeError("登録日") }
+        self.登録日 = 登録日
+        
+        let 図番 = try getString("f13", "図番")
+        if 図番 == "996068" {
+            self.図番 = "990120"
+        } else {
+            self.図番 = 図番
+        }
+        self.製品名称 = try getString("f3", "製品名称")
+        self.規格 = try getString("f15", "規格")
+        self.版数 = try getString("f14", "版数")
+        self.備考 = try getString("備考")
+
         self.単価 = record.double(forKey: "f88")
+        self.発注先名称 = record.string(forKey: "dbo.ZB_T1:f6") ?? ""
+        self.会社コード = record.string(forKey: "会社コード") ?? ""
+        self.規格2 = record.string(forKey: "規格2") ?? ""
+        self.種類 = record.string(forKey: "種類") ?? ""
+        self.単位 = record.string(forKey: "dbo.SYS_T2:f4") ?? ""
+        
+        self.箱入り数 = record.double(forKey: "f43") ?? 1
+        self.レコード在庫数 = record.integer(forKey: "f32") ?? 0
+        self.is棚卸し対象 = record.string(forKey: "棚卸し対象")?.isEmpty == false
     }
-    public convenience init?(図番: 図番型) {
-        guard let record = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番)?.record else { return nil }
-        try? self.init(record)
+    
+    init(_ item: 資材型) {
+        self.図番 = item.図番
+        self.製品名称 = item.製品名称
+        self.規格 = item.規格
+        self.単価 = item.単価
+        
+        self.箱入り数 = item.箱入り数
+        self.レコード在庫数 = item.レコード在庫数
+        self.版数 = item.版数
+        self.is棚卸し対象 = item.is棚卸し対象
+        self.備考 = item.備考
+        self.発注先名称 = item.発注先名称
+        self.会社コード = item.会社コード
+        self.規格2 = item.規格2
+        self.種類 = item.種類
+        self.単位 = item.単位
+        self.登録日 = item.登録日
     }
     
     // MARK: - Coable
@@ -49,11 +94,12 @@ public final class 資材型: Codable, Comparable, Hashable {
     
     public required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let num = try values.decode(String.self, forKey: .図番)
-        if let record = try 資材キャッシュ型.shared.キャッシュ資材(図番: num)?.record {
-            try self.init(record)
+        var num = try values.decode(String.self, forKey: .図番)
+        if num == "996068" { num = "990120" }
+        if let item = try 資材キャッシュ型.shared.キャッシュ資材(図番: num) {
+            self.init(item)
         } else {
-            self.init(図番: num, 製品名称: "\(num)?")
+            throw FileMakerError.invalidData(message: "不明な図番がある\(num)")
         }
     }
     
@@ -104,11 +150,6 @@ public final class 資材型: Codable, Comparable, Hashable {
         hasher.combine(self.図番)
     }
     
-    public lazy var 箱入り数: Double = {
-        guard let num = self.record.double(forKey: "f43") else { return 1 }
-        return num > 0 ? num : 1
-    }()
-
     public lazy var 表示用単価: String = {
         guard let num = self.単価 else { return "" }
         let formatter = NumberFormatter()
@@ -117,9 +158,6 @@ public final class 資材型: Codable, Comparable, Hashable {
     }()
 
     // MARK: 在庫処理
-    var レコード在庫数: Int { // 在庫キャッシュ経由でアクセスするとキャッシュされる
-        return record.integer(forKey: "f32") ?? 0
-    }
     public func 現在在庫数() throws -> Int {
         return  try 在庫数キャッシュ型.shared.現在在庫(of: self)
     }
@@ -165,42 +203,9 @@ extension StringProtocol {
 public extension 資材型 {
     var 図番バーコード: String? { self.図番.図番バーコード }
 
-    var 版数: String {
-        return record.string(forKey: "f14") ?? ""
-    }
-    
-    var is棚卸し対象: Bool {
-        record.string(forKey: "棚卸し対象")?.isEmpty == false
-    }
-    var 備考: String {
-        return record.string(forKey: "備考") ?? ""
-    }
-    
-    var 発注先名称: String {
-        return record.string(forKey: "dbo.ZB_T1:f6") ?? ""
-    }
-    
-    var 会社コード: 会社コード型 {
-        return record.string(forKey: "会社コード") ?? ""
-    }
-    
     var 発注先: 取引先型? {
         return try? 取引先キャッシュ型.shared.キャッシュ取引先(会社コード: self.会社コード)
     }
-    
-    var 規格2: String {
-        return record.string(forKey: "規格2") ?? ""
-    }
-    
-    var 種類: String {
-        return record.string(forKey: "種類") ?? ""
-    }
-    
-    var 単位: String {
-        return record.string(forKey: "dbo.SYS_T2:f4") ?? ""
-    }
-
-    var 登録日: Day { record.day(forKey: "登録日")! }
     
     // MARK: - 入出庫処理
     func 入庫(日時: Date? = nil, 部署: 部署型? = nil, 入庫者: 社員型, 入庫数: Int, 入力区分: 入力区分型 = .通常入出庫) throws {

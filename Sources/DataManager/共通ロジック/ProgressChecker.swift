@@ -296,7 +296,7 @@ class CountColumn {
     var 加工 : CountCell?
     
     init(工程:工程型, 日付:Day, 略号:略号型?, queue:OperationQueue, completionHandler:@escaping ()->()) {
-        assert(日付.日付タイプ() == .出勤日)
+        assert(日付.isWorkday)
         self.日付 = 日付
         queue.addOperation {
             self.箱文字 = CountCell(工程:工程, 日付:日付, 種類:.箱文字, 略号:略号)

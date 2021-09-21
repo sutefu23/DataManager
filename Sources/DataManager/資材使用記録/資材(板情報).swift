@@ -305,7 +305,12 @@ public struct 選択板型 {
     public let サイズ: String
     
     init(図番: 図番型, 種類: String, 板厚: String, サイズ: String) {
-        self.図番 = 図番.toJapaneseNormal
+        let 図番 = 図番.toJapaneseNormal
+        if 図番 == "996068" {
+            self.図番 = "990120"
+        } else {
+            self.図番 = 図番
+        }
         self.種類 = 種類.toJapaneseNormal
         self.板厚 = 板厚.toJapaneseNormal
         self.サイズ = サイズ.toJapaneseNormal
@@ -315,7 +320,7 @@ public struct 選択板型 {
             self.社名先頭1文字 = "松"
         } else if 図番.hasSuffix("K") {
             self.社名先頭1文字 = "菊"
-        } else if let item = 資材型(図番: 図番) {
+        } else if let item = try? 資材キャッシュ型.shared.キャッシュ資材(図番: 図番) {
             if let ch = item.発注先名称.remove㈱㈲.first {
                 self.社名先頭1文字 = String(ch)
             } else {
@@ -327,7 +332,7 @@ public struct 選択板型 {
     }
 
     public var 資材登録あり: Bool {
-        let item: 資材型? = 資材型(図番: self.図番)
+        let item: 資材型? = try? 資材キャッシュ型.shared.キャッシュ資材(図番: self.図番)
         return item != nil
     }
 }

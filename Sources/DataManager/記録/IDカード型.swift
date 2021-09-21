@@ -22,14 +22,14 @@ extension FileMakerRecord {
     }
 }
 
-struct IDカードData型: Equatable {
-    static let dbName = "DataAPI_8"
+public struct IDカードData型: DMSystemRecordData {
+    public static let layout = "DataAPI_8"
     
-    var 社員番号: String
-    var カードID: String
-    var 種類: IDカード種類型
-    var 備考: String
-    var 食事グループ: String
+    public var 社員番号: String
+    public var カードID: String
+    public var 種類: IDカード種類型
+    public var 備考: String
+    public var 食事グループ: String
     
     init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
         self.社員番号 = 社員番号
@@ -39,11 +39,12 @@ struct IDカードData型: Equatable {
         self.食事グループ = 食事グループ
     }
     
-    init?(_ record: FileMakerRecord) {
-        guard let 社員番号 = record.string(forKey: "社員番号"),
-              let カードID = record.string(forKey: "カードID"),
-              let 食事グループ = record.string(forKey: "食事グループ"),
-              let 種類 = record.IDカード種類(forKey: "種類") else { return nil }
+    public init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "IDカード", mes: key) }
+        guard let 社員番号 = record.string(forKey: "社員番号") else { throw makeError("社員番号") }
+        guard let カードID = record.string(forKey: "カードID") else { throw makeError("カードID") }
+        guard let 食事グループ = record.string(forKey: "食事グループ") else { throw makeError("食事グループ") }
+        guard let 種類 = record.IDカード種類(forKey: "種類") else { throw makeError("種類") }
         self.社員番号 = 社員番号
         self.カードID = カードID
         self.種類 = 種類
@@ -51,7 +52,7 @@ struct IDカードData型: Equatable {
         self.食事グループ = 食事グループ
     }
     
-    var fieldData: FileMakerQuery {
+    public var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         data["社員番号"] = 社員番号
         data["カードID"] = カードID
@@ -62,96 +63,67 @@ struct IDカードData型: Equatable {
     }
 }
 
-public class IDカード型 {
-    var original: IDカードData型?
-    var data: IDカードData型
-    
-    public internal(set) var recordId: String?
-    
-    public var 社員番号: String {
-        get { data.社員番号 }
-        set { data.社員番号 = newValue }
-    }
-    public var カードID: String {
-        get { data.カードID }
-        set { data.カードID = newValue }
-    }
-
-    public var 種類: IDカード種類型 {
-        get { data.種類 }
-        set { data.種類 = newValue }
-    }
-    
-    public var 備考: String {
-        get { data.備考 }
-        set { data.備考 = newValue }
-    }
-    
-    public var 食事グループ: String {
-        get { data.食事グループ }
-        set { data.食事グループ = newValue }
-    }
+public class IDカード型: DMSystemRecord<IDカードData型> {
+//    public var 社員番号: String {
+//        get { data.社員番号 }
+//        set { data.社員番号 = newValue }
+//    }
+//    public var カードID: String {
+//        get { data.カードID }
+//        set { data.カードID = newValue }
+//    }
+//
+//    public var 種類: IDカード種類型 {
+//        get { data.種類 }
+//        set { data.種類 = newValue }
+//    }
+//    
+//    public var 備考: String {
+//        get { data.備考 }
+//        set { data.備考 = newValue }
+//    }
+//    
+//    public var 食事グループ: String {
+//        get { data.食事グループ }
+//        set { data.食事グループ = newValue }
+//    }
     
     public init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
-        self.data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考, 食事グループ: 食事グループ)
+        let data = IDカードData型(社員番号: 社員番号, カードID: カードID, 種類: 種類, 備考: 備考, 食事グループ: 食事グループ)
+        super.init(data)
     }
-    
-    init?(_ record: FileMakerRecord) {
-        guard let data = IDカードData型(record) else { return nil }
-        self.data = data
-        self.original = data
-        self.recordId = record.recordID
-    }
-    
-    public var isChanged: Bool { original != data }
+    required init(_ record: FileMakerRecord) throws { try super.init(record) }
 
     // MARK: - DB操作
     public func delete() throws {
-        guard let recordID = self.recordId else { return }
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        try db.delete(layout: IDカードData型.dbName, recordId: recordID)
-        self.recordId = nil
-        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
+        if try generic_delete() {
+            IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
+        }
     }
 
-    public func upload() {
-        let data = self.data.fieldData
+    public func upload() throws {
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let _ = try? db.insert(layout: IDカードData型.dbName, fields: data)
-        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
+        if try generic_insert() {
+            IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
+        }
     }
     
     public func synchronize() throws {
-        if !isChanged { return }
-        let data = self.data.fieldData
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        if let recordID = self.recordId {
-            try db.update(layout: IDカードData型.dbName, recordId: recordID, fields: data)
-        } else {
-            self.recordId = try db.insert(layout: IDカードData型.dbName, fields: data)
+        if try generic_synchronize() {
+            IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
         }
-        self.original = self.data
-        IDカードキャッシュ型.shared.flush(社員番号: self.社員番号)
     }
     
     // MARK: - DB検索
     static func find(query: FileMakerQuery) throws -> [IDカード型] {
         lock.lock(); defer { lock.unlock() }
-        let db = FileMakerDB.system
-        let list: [FileMakerRecord]
-        if query.isEmpty {
-            list = try db.fetch(layout: IDカードData型.dbName)
-        } else {
-            list = try db.find(layout: IDカードData型.dbName, query: [query])
-        }
-        return list.compactMap { IDカード型($0) }
+        return try find(querys: [query])
     }
     
     public static func find(社員番号: String? = nil, カードID: String? = nil) throws -> [IDカード型] {
-        var query = [String: String]()
+        var query = FileMakerQuery()
         if let number = 社員番号 {
             query["社員番号"] = "==\(number)"
         }

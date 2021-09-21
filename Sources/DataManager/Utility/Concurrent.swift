@@ -51,3 +51,34 @@ public extension NSRecursiveLock {
     }
 }
 
+public extension OperationQueue {
+    func execOperation(_ exec: @escaping () -> Void) {
+        let operation = BlockOperation(block: exec)
+        self.addOperation(operation)
+        operation.waitUntilFinished()
+    }
+
+    func execOperation<T>(_ exec: @escaping () -> T) -> T {
+        var result: T!
+        let operation = BlockOperation {
+            result = exec()
+        }
+        self.addOperation(operation)
+        operation.waitUntilFinished()
+        return result
+    }
+
+    func execOperation<T>(_ exec: @escaping () throws -> T) throws -> T {
+        var result: Result<T, Error>!
+        let operation = BlockOperation {
+            do {
+                result = try .success(exec())
+            } catch {
+                result = .failure(error)
+            }
+        }
+        self.addOperation(operation)
+        operation.waitUntilFinished()
+        return try result.get()
+    }
+}

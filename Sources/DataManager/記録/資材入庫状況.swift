@@ -33,14 +33,15 @@ extension FileMakerRecord {
     }
 }
 
-struct 資材入庫状況Data型: Equatable {
-    static let dbName = "DataAPI_4"
-    var 指定注文番号:  指定注文番号型
-    var 資材入庫状況状態: 資材入庫状況状態型
+public struct 資材入庫状況Data型: DMSystemRecordData, Equatable {
+    public static let layout = "DataAPI_4"
+    public var 指定注文番号:  指定注文番号型
+    public var 資材入庫状況状態: 資材入庫状況状態型
 
-    init?(_ record: FileMakerRecord) {
-        guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else  { return nil }
-        guard let 資材入庫状況状態 = record.資材入庫状況状態(forKey: "資材入庫状況状態") else { return nil }
+    public init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材入庫状況", mes: key) }
+        guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else  { throw makeError("指定注文番号") }
+        guard let 資材入庫状況状態 = record.資材入庫状況状態(forKey: "資材入庫状況状態") else { throw makeError("資材入庫状況状態") }
         self.指定注文番号 = 指定注文番号
         self.資材入庫状況状態 = 資材入庫状況状態
     }
@@ -50,97 +51,56 @@ struct 資材入庫状況Data型: Equatable {
         self.資材入庫状況状態 = 資材入庫状況状態
     }
     
-    var fieldData: FileMakerQuery {
+    public var fieldData: FileMakerQuery {
         var data = FileMakerQuery()
         data["指定注文番号"] = 指定注文番号.テキスト
         data["資材入庫状況状態"] = 資材入庫状況状態.text
         return data
     }
-
-    static func find(_ 指定注文番号: 指定注文番号型) throws -> 資材入庫状況Data型? {
-        let db = FileMakerDB.system
-        var query = FileMakerQuery()
-        query["指定注文番号"] = "==\(指定注文番号.テキスト)"
-        let list: [FileMakerRecord] = try db.find(layout: dbName, query: [query])
-        return list.compactMap{ 資材入庫状況Data型($0) }.first
-    }
-    
-    static func fetchAll() throws -> [資材入庫状況Data型] {
-        let db = FileMakerDB.system
-        return try db.fetch(layout: dbName).compactMap { 資材入庫状況Data型($0) }
-    }
 }
 
-public final class 資材入庫状況型 {
-    var original: 資材入庫状況Data型
-    var data: 資材入庫状況Data型
-    var recordID: String?
-
-    var 指定注文番号: 指定注文番号型 {
-        get { data.指定注文番号 }
-        set { data.指定注文番号 = newValue }
-    }
-    var 資材入庫状況状態: 資材入庫状況状態型 {
-        get { data.資材入庫状況状態 }
-        set { data.資材入庫状況状態 = newValue }
-    }
+public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data型> {
+//    var 指定注文番号: 指定注文番号型 {
+//        get { data.指定注文番号 }
+//        set { data.指定注文番号 = newValue }
+//    }
+//    var 資材入庫状況状態: 資材入庫状況状態型 {
+//        get { data.資材入庫状況状態 }
+//        set { data.資材入庫状況状態 = newValue }
+//    }
     
     init(data: 資材入庫状況Data型, recordID: String) {
-        self.data = data
-        self.original = data
-        self.recordID = recordID
+        super.init(data, recordId: recordID)
     }
     
     public init(_ 指定注文番号: 指定注文番号型, 資材入庫状況状態: 資材入庫状況状態型) {
         let data = 資材入庫状況Data型(指定注文番号: 指定注文番号, 資材入庫状況状態: 資材入庫状況状態)
-        self.original = data
-        self.data = data
-        self.recordID = nil
+        super.init(data, recordId: nil)
+    }
+    
+    required init(_ record: FileMakerRecord) throws {
+        try super.init(record)
     }
     
     func delete() throws {
-        guard let recordId = self.recordID else { return }
-        let db = FileMakerDB.system
-        try db.delete(layout: 資材入庫状況Data型.dbName, recordId: recordId)
-        self.recordID = nil
-        資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: nil)
+        if try generic_delete() {
+            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況型: nil)
+        }
     }
     
     public func synchronize() throws {
-        if self.recordID != nil && self.data == self.original { return }
-        let data = self.data.fieldData
-        let db = FileMakerDB.system
-        if let recordID = self.recordID {
-            try db.update(layout: 資材入庫状況Data型.dbName, recordId: recordID, fields: data)
-        } else {
-            let db = FileMakerDB.system
-            let recordID = try db.insert(layout: 資材入庫状況Data型.dbName, fields: data)
-            self.recordID = recordID
+        if try generic_synchronize() {
+            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況型: self)
         }
-        self.original = self.data
-        資材入庫状況キャッシュ型.shared.registCache(指定注文番号: 指定注文番号, 資材入庫状況型: self)
     }
     
     static func findDirect(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
-        let db = FileMakerDB.system
-        var query = FileMakerQuery()
-        query["指定注文番号"] = "==\(指定注文番号.テキスト)"
-        let list: [FileMakerRecord] = try db.find(layout: 資材入庫状況Data型.dbName, query: [query])
-        if let record = list.first, let recordId = record.recordID {
-            if let data = 資材入庫状況Data型(record) {
-                return 資材入庫状況型(data: data, recordID: recordId)
-            }
-        }
-        return nil
+        return try find(query: ["指定注文番号" : "==\(指定注文番号.テキスト)"]).first
     }
     
     // 不要になったレコードの消去
     static func removeOld() throws {
-        let db = FileMakerDB.system
-        let list: [資材入庫状況型] = try db.fetch(layout: 資材入庫状況Data型.dbName).compactMap {
-            guard let recordId = $0.recordID, let data = 資材入庫状況Data型($0) else { return nil }
-            return 資材入庫状況型(data: data, recordID: recordId)
-        }
+        let list = try fetchAll()
         for data in list {
             guard let order = try 発注型.find(指定注文番号: data.指定注文番号).first else { continue }
             switch order.状態 {
@@ -202,6 +162,6 @@ public class 資材入庫状況キャッシュ型 {
         lock.lock()
         map.removeAll()
         lock.unlock()
-        try? 資材入庫状況型.removeOld()
+//        try? 資材入庫状況型.removeOld()
     }
 }

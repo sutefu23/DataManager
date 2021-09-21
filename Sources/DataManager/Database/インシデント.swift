@@ -8,7 +8,9 @@
 
 import Foundation
 
+/// 指示書に対して発生したイベント。進捗入力と内容変更・資材の利用などを時系列で並べるのが目的
 public final class インシデント型 {
+    /// インシデントの種類
     public enum 種類型 {
         case 受取
         case 開始
@@ -22,27 +24,7 @@ public final class インシデント型 {
         case キャンセル
         case その他
         
-        public init(_ type: 作業内容型) {
-            switch type {
-            case .受取: self = .受取
-            case .開始: self = .開始
-            case .仕掛: self = .仕掛
-            case .完了: self = .完了
-            }
-        }
-        
-        public init(_ type: 変更履歴種類型) {
-            switch type {
-            case .指示書承認: self = .指示書承認
-            case .校正開始: self = .校正開始
-            case .校正終了: self = .校正終了
-            case .保留開始: self = .保留開始
-            case .保留解除: self = .保留解除
-            case .キャンセル: self = .キャンセル
-            case .その他: self = .その他
-            }
-        }
-        
+        /// 種類の文字表現
         public var description : String {
             switch self {
             case .受取: return "受取"
@@ -60,22 +42,41 @@ public final class インシデント型 {
         }
     }
 
+    /// インシデントの日時
     public var 日時: Date
+    /// 内容
     public var 内容: String
+    /// 種類
     public var 種類: 種類型
-    public var 社員名称: String
+    /// 作業者
+    public var 作業者: 社員型
 
+    /// 進捗入力で初期化する
     init(_ progress: 進捗型) {
+        switch progress.作業内容 {
+        case .受取: self.種類 = .受取
+        case .開始: self.種類 = .開始
+        case .仕掛: self.種類 = .仕掛
+        case .完了: self.種類 = .完了
+        }
         self.日時 = progress.登録日時
         self.内容 = progress.工程.description
-        self.種類 = 種類型(progress.作業内容)
-        self.社員名称 = progress.作業者.社員名称
+        self.作業者 = progress.作業者
     }
     
+    /// 変更内容履歴で初期化する
     init(_ change: 指示書変更内容履歴型) {
+        switch change.種類 {
+        case .指示書承認: self.種類 = .指示書承認
+        case .校正開始: self.種類 = .校正開始
+        case .校正終了: self.種類 = .校正終了
+        case .保留開始: self.種類 = .保留開始
+        case .保留解除: self.種類 = .保留解除
+        case .キャンセル: self.種類 = .キャンセル
+        case .その他: self.種類 = .その他
+        }
         self.日時 = change.日時
         self.内容 = change.内容
-        self.種類 = 種類型(change.種類)
-        self.社員名称 = change.社員名称
+        self.作業者 = change.作業者
     }
 }
