@@ -8,6 +8,54 @@
 
 import Foundation
 
+public struct 箱文字優先度キャッシュKey型: Hashable, DMCacheElement {
+    var number: 伝票番号型
+    var process: 工程型?
+    
+    public var memoryFootPrint: Int {
+        var size = number.memoryFootPrint
+        if let process = process {
+            size += process.memoryFootPrint
+        }
+        return size
+    }
+}
+
+public class 箱文字優先度キャッシュ型: DMDBAllCache<箱文字優先度キャッシュKey型, 箱文字優先度型> {
+    public static let shared: 箱文字優先度キャッシュ型 = 箱文字優先度キャッシュ型(lifeTime: 10 * 60) {
+        let number = $0.number
+        let process = $0.process
+        return try 箱文字優先度型.findDirect(伝票番号: number, 工程: process)
+    }
+
+    public func allRegistered(for number: 伝票番号型) throws -> [箱文字優先度型] {
+        let all = try 箱文字優先度型.allRegistered(for: number)
+        all.forEach {
+            guard let number = $0.伝票番号 else { return }
+            let key = 箱文字優先度キャッシュKey型(number: number, process: $0.工程)
+            self.regist($0, forKey: key)
+        }
+        return all
+    }
+
+    public func contains(_ number: 伝票番号型, _ process: 工程型?) -> Bool {
+        let key = 箱文字優先度キャッシュKey型(number: number, process: process)
+        return isCaching(forKey: key)
+    }
+
+    public func find(_ number: 伝票番号型, _ process: 工程型?) throws -> 箱文字優先度型 {
+        let key = 箱文字優先度キャッシュKey型(number: number, process: process)
+        return try find(key, noCache: false) ?? 箱文字優先度型(number, 工程: process)
+    }
+    
+    func update(_ data: 箱文字優先度型) {
+        guard let number = data.伝票番号 else { return }
+        let key = 箱文字優先度キャッシュKey型(number: number, process: data.工程)
+        self.regist(data, forKey: key)
+    }
+}
+
+    /*
 public final class 箱文字優先度キャッシュ型 {
     public static let shared = 箱文字優先度キャッシュ型()
     public var キャッシュ寿命: TimeInterval = 60 * 10 // デフォルトは10分間
@@ -90,7 +138,7 @@ public final class 箱文字優先度キャッシュ型 {
         self.cache.removeAll()
         lock.unlock()
     }
-}
+}*/
 
 extension 指示書型 {
     func 箱文字優先状態(for target: [工程型]) -> Bool {

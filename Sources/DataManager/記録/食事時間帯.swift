@@ -16,6 +16,8 @@ public struct 食事時間帯Data型: DMSystemRecordData {
     public var 開始時間: Time
     public var 終了時間: Time
     
+    public var memoryFootPrint: Int { 4 * 16 } // てきとう
+
     init(提供パターン: String, 食事グループ: String, 開始時間: Time, 終了時間: Time) {
         self.提供パターン = 提供パターン
         self.食事グループ = 食事グループ

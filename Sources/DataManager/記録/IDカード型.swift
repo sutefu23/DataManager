@@ -31,6 +31,8 @@ public struct IDカードData型: DMSystemRecordData {
     public var 備考: String
     public var 食事グループ: String
     
+    public var memoryFootPrint: Int { 5 * 16 } // てきとう
+
     init(社員番号: String, カードID: String, 種類: IDカード種類型, 備考: String, 食事グループ: String) {
         self.社員番号 = 社員番号
         self.カードID = カードID

@@ -84,6 +84,10 @@ extension 資材入出庫型 {
         return try self.find(query: query)
     }
 
+    public static func find(図番: 図番型) throws -> [資材入出庫型] {
+        return try self.find(query: ["資材番号" : 図番])
+    }
+
 //    static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil, session: FileMakerSession?) throws -> [資材入出庫型] {
 //        var query = FileMakerQuery()
 //        query["登録日"] = 登録日?.fmString

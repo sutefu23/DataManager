@@ -33,11 +33,15 @@ extension FileMakerRecord {
     }
 }
 
-public struct 資材入庫状況Data型: DMSystemRecordData, Equatable {
+public struct 資材入庫状況Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_4"
     public var 指定注文番号:  指定注文番号型
     public var 資材入庫状況状態: 資材入庫状況状態型
 
+    public var memoryFootPrint: Int {
+        return 指定注文番号.memoryFootPrint + MemoryLayout<資材入庫状況状態型>.stride
+    }
+    
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材入庫状況", mes: key) }
         guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else  { throw makeError("指定注文番号") }
@@ -69,6 +73,7 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
 //        set { data.資材入庫状況状態 = newValue }
 //    }
     
+    
     init(data: 資材入庫状況Data型, recordID: String) {
         super.init(data, recordId: recordID)
     }
@@ -84,13 +89,13 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
     
     func delete() throws {
         if try generic_delete() {
-            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況型: nil)
+            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況: nil)
         }
     }
     
     public func synchronize() throws {
         if try generic_synchronize() {
-            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況型: self)
+            資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況: self)
         }
     }
     
@@ -114,7 +119,37 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
 }
 
 // MARK: -
+public class 資材入庫状況キャッシュ型: DMDBAllCache<指定注文番号型, 資材入庫状況型> {
+    public static let shared: 資材入庫状況キャッシュ型 = 資材入庫状況キャッシュ型(lifeTime: 10*60*60) {
+        try 資材入庫状況型.findDirect(指定注文番号: $0)
+    }
+    
+    func 現在資材入庫状況(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
+        return try find(指定注文番号, noCache: true)
+    }
 
+    func キャッシュ資材入庫状況(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
+        return try find(指定注文番号, noCache: false)
+    }
+
+    public func removeOldData() {
+        try? 資材入庫状況型.removeOld()
+    }
+
+    func flushCache(指定注文番号: 指定注文番号型) {
+        removeCache(forKey: 指定注文番号)
+    }
+    
+    func registCache(指定注文番号: 指定注文番号型, 資材入庫状況: 資材入庫状況型?) {
+        if let 資材入庫状況 = 資材入庫状況 {
+            self.registCache(指定注文番号: 指定注文番号, 資材入庫状況: 資材入庫状況)
+        } else {
+            self.removeCache(forKey: 指定注文番号)
+        }
+    }
+}
+
+/*
 public class 資材入庫状況キャッシュ型 {
     let expireTime: TimeInterval = 10*60*60
     public static let shared = 資材入庫状況キャッシュ型()
@@ -165,3 +200,4 @@ public class 資材入庫状況キャッシュ型 {
 //        try? 資材入庫状況型.removeOld()
     }
 }
+*/

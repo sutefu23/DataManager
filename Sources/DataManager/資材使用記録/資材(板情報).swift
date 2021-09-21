@@ -306,11 +306,11 @@ public struct 選択板型 {
     
     init(図番: 図番型, 種類: String, 板厚: String, サイズ: String) {
         let 図番 = 図番.toJapaneseNormal
-        if 図番 == "996068" {
-            self.図番 = "990120"
-        } else {
+//        if 図番 == "996068" {
+//            self.図番 = "990120"
+//        } else {
             self.図番 = 図番
-        }
+//        }
         self.種類 = 種類.toJapaneseNormal
         self.板厚 = 板厚.toJapaneseNormal
         self.サイズ = サイズ.toJapaneseNormal

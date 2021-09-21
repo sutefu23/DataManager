@@ -16,6 +16,17 @@ public class DMSystemRecord<R: DMSystemRecordData>: DMSystemRecordManager {
     var data: RecordData
     public internal(set) var recordId: String?
     
+    public var memoryFootPrint: Int {
+        var result = data.memoryFootPrint * 2 + 16
+        if let size = original?.memoryFootPrint {
+            result += size
+        }
+        if let size = recordId?.memoryFootPrint {
+            result += size
+        }
+        return result
+    }
+    
     init(_ data: RecordData, recordId: String? = nil) {
         if let recordId = recordId {
             self.data = data
@@ -89,7 +100,7 @@ public class DMSystemRecord<R: DMSystemRecordData>: DMSystemRecordManager {
 }
 
 /// systemデータベースファイル上のテーブルのレコードのデータ
-public protocol DMSystemRecordData: Equatable {
+public protocol DMSystemRecordData: DMCacheElement, Equatable {
     static var db: FileMakerDB { get }
     static var layout: String { get }
     init(_ record: FileMakerRecord) throws
@@ -100,7 +111,7 @@ extension DMSystemRecordData {
 }
 
 /// systemデータベースファイル上のテーブルのレコードの管理メカニズム
-public protocol DMSystemRecordManager {
+public protocol DMSystemRecordManager: DMCacheElement {
     associatedtype RecordData: DMSystemRecordData
     init(_ record: FileMakerRecord) throws
     static var queue: OperationQueue { get }

@@ -13,18 +13,6 @@ public let 標準始業時間 = Time(8, 40)
 /// 終業時間
 public let 標準終業時間 = Time(17, 30)
 
-//public enum 日付タイプ型 {
-//    case 出勤日
-//    case 休日
-//
-//    var description: String {
-//        switch self {
-//        case .出勤日: return "出勤日"
-//        case .休日: return "休日"
-//        }
-//    }
-//}
-
 public extension TimeInterval {
     /// 指定された工程について作業時間を計算する
     init(工程: 工程型?, 作業開始 from: Date, 作業完了 to: Date, by cal: カレンダー型 = 標準カレンダー) {
@@ -32,17 +20,7 @@ public extension TimeInterval {
     }
 }
 
-//public extension Day {
-//    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
-//        return cal.isHoliday(of: self) ? .休日: . 出勤日
-//    }
-//}
-
 public extension Date {
-//    func 日付タイプ(_ cal: カレンダー型 = 標準カレンダー) -> 日付タイプ型 {
-//        return self.day.日付タイプ(cal)
-//    }
-
     /// fromからthisまでの作業時間を計算する
     func 作業時間(工程: 工程型? = nil, from: Date, by cal: カレンダー型 = 標準カレンダー) -> TimeInterval {
         return cal.calcWorkTime(state: 工程, from: from, to: self)

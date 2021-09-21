@@ -12,7 +12,6 @@ public struct 資材要求出力型: FileMakerExportRecord {
     public static let layout: String = "DataAPI_MaterialRequirementsInput"
     public static let exportScript: String = "DataAPI_MaterialRequestments_RecordSet"
     public typealias ImportBuddyType = 発注型
-    
 
     public let 登録日: Day
     public let 登録時間: Time

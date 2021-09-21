@@ -245,7 +245,7 @@ public struct 伝票番号型: DMCacheElement, Codable, Hashable, Comparable, Cu
         self.init(validNumber: number)
     }
     
-    public var キャッシュ指示書: 指示書型? { try? 指示書キャッシュ型.shared.find(self) }
+    public var キャッシュ指示書: 指示書型? { try? 指示書伝票番号キャッシュ型.shared.find(self) }
 }
 
 extension FileMakerRecord {
@@ -268,16 +268,8 @@ extension 伝票番号型 {
 }
 
 // MARK: - 伝票種類キャッシュ
-private let typeLock = NSLock()
-private var typeCache: [伝票番号型: 伝票種類型] = [:]
-
 extension 伝票番号型 {
     public var キャッシュ伝票種類: 伝票種類型? {
-        typeLock.lock()
-        defer { typeLock.unlock() }
-        if let cache = typeCache[self] { return cache }
-        guard let type = self.キャッシュ指示書?.伝票種類 else { return nil }
-        typeCache[self] = type
-        return type
+        return self.キャッシュ指示書?.伝票種類
     }
 }

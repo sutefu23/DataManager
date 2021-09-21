@@ -9,9 +9,30 @@
 import Foundation
 
 public func flush入出庫キャッシュ() {
-    入出庫キャッシュ型.shared.flushAllCache()
+    入出庫キャッシュ型.shared.removeAllCache()
 }
 
+struct 入出庫キャッシュData型: DMCacheElement {
+    let array: [資材入出庫型]
+    
+    var memoryFootPrint: Int { array.reduce(16) { $0 + $1.memoryFootPrint }}
+}
+
+class 入出庫キャッシュ型: DMDBCache<図番型, 入出庫キャッシュData型> {
+    static let shared: 入出庫キャッシュ型 = 入出庫キャッシュ型(lifeTime: 15*60) {
+        return 入出庫キャッシュData型(array: try 資材入出庫型.find(図番: $0))
+    }
+    
+    func 現在入出庫(of item: 資材型) throws -> [資材入出庫型] {
+        return try find(item.図番, noCache: true)?.array ?? []
+    }
+    
+    func キャッシュ入出庫(of item: 資材型) throws -> [資材入出庫型] {
+        return try find(item.図番, noCache: false)?.array ?? []
+    }
+}
+
+/*
 final class 入出庫キャッシュ型 {
     var 在庫寿命: TimeInterval = 15 * 60 // 15分間
     static let shared = 入出庫キャッシュ型()
@@ -50,3 +71,4 @@ final class 入出庫キャッシュ型 {
         lock.unlock()
     }
 }
+*/

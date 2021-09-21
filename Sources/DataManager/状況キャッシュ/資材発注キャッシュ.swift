@@ -9,14 +9,52 @@
 import Foundation
 
 public func flush資材発注キャッシュ() {
-    資材発注キャッシュ型.shared.flushAllCache()
+    資材発注キャッシュ型.shared.removeAllCache()
 }
 
-private struct 資材発注キャッシュKey: Hashable {
+struct 資材発注キャッシュKey: Hashable, DMCacheElement {
     let 図番: 図番型
-    let 発注種類: 発注種類型?
+    var 発注種類: 発注種類型?
+    
+    var memoryFootPrint: Int { return 図番.memoryFootPrint + MemoryLayout<発注種類型>.stride }
 }
 
+struct 資材発注キャッシュData型: DMCacheElement {
+    let array: [発注型]
+    
+    var memoryFootPrint: Int { array.reduce(16) { $0 + $1.memoryFootPrint }}
+
+}
+
+class 資材発注キャッシュ型: DMDBCache<資材発注キャッシュKey, 資材発注キャッシュData型> {
+    static let shared: 資材発注キャッシュ型 = 資材発注キャッシュ型(lifeTime: 1*60*60) {
+        let list = try 発注型.find(発注種類: $0.発注種類, 資材番号: $0.図番)
+        if list.isEmpty { return nil }
+        return 資材発注キャッシュData型(array: list)
+    }
+    
+    func 現在発注一覧(図番: 図番型, 発注種類: 発注種類型? = .資材) throws -> [発注型] {
+        let key = 資材発注キャッシュKey(図番: 図番, 発注種類: 発注種類)
+        return try find(key, noCache: true)?.array ?? []
+    }
+    
+    func キャッシュ発注一覧(図番: 図番型, 発注種類: 発注種類型? = .資材) throws -> [発注型] {
+        let key = 資材発注キャッシュKey(図番: 図番, 発注種類: 発注種類)
+        return try find(key, noCache: false)?.array ?? []
+    }
+
+    func flushCache(図番: 図番型) {
+        var key = 資材発注キャッシュKey(図番: 図番, 発注種類: nil)
+        self.removeCache(forKey: key)
+        for type in 発注種類型.allCases {
+            key.発注種類 = type
+            self.removeCache(forKey: key)
+        }
+    }
+
+}
+
+/*
 final class 資材発注キャッシュ型 {
     static let shared = 資材発注キャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
@@ -60,4 +98,4 @@ final class 資材発注キャッシュ型 {
         lock.unlock()
     }
 }
-
+*/

@@ -57,6 +57,8 @@ public struct 食事要求Data型: DMSystemRecordData {
     
     var 修正情報タイムスタンプ: Date
     
+    public var memoryFootPrint: Int { 4 * 16 } // てきとう
+
     init(社員番号: String, メニューID: メニューID型, 要求状態: 食事要求状態型) {
         self.社員番号 = 社員番号
         self.メニューID = メニューID

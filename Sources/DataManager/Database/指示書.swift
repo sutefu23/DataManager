@@ -329,9 +329,9 @@ public final class 指示書型: FileMakerImportRecord {
         return image
     }()
     #endif
-    public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧) ?? [] }
-    public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧) ?? [:] }
-    public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).作業進捗一覧) ?? [] }
+    public var 進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.進捗一覧) ?? [] }
+    public var 工程別進捗一覧: [工程型: [進捗型]] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.工程別進捗一覧) ?? [:] }
+    public var 作業進捗一覧: [進捗型] { return (try? 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.作業進捗一覧) ?? [] }
     
     public lazy var 変更一覧: [指示書変更内容履歴型] = {
         let list = (try? 指示書変更内容履歴型.find(指示書uuid: self.uuid))?.sorted { $0.日時 < $1.日時 } ?? []

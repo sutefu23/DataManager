@@ -28,7 +28,6 @@ public struct MailServer: Codable {
 }
 
 public enum MailMethod: String, Codable{
-    public typealias RawValue = String
     case noEncript = "rawvalue"
     case startTLS = "starttls"
     case SSL = "ssl"

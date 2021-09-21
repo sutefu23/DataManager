@@ -46,11 +46,11 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
         self.登録日 = 登録日
         
         let 図番 = try getString("f13", "図番")
-        if 図番 == "996068" {
-            self.図番 = "990120"
-        } else {
+//        if 図番 == "996068" {
+//            self.図番 = "990120"
+//        } else {
             self.図番 = 図番
-        }
+//        }
         self.製品名称 = try getString("f3", "製品名称")
         self.規格 = try getString("f15", "規格")
         self.版数 = try getString("f14", "版数")
@@ -94,8 +94,8 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
     
     public required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        var num = try values.decode(String.self, forKey: .図番)
-        if num == "996068" { num = "990120" }
+        let num = try values.decode(String.self, forKey: .図番)
+//        if num == "996068" { num = "990120" }
         if let item = try 資材キャッシュ型.shared.キャッシュ資材(図番: num) {
             self.init(item)
         } else {

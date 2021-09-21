@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 箱文字優先度Data型: DMSystemRecordData, Equatable {
+public struct 箱文字優先度Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_3"
     
     public var 伝票番号: 伝票番号型? = nil
@@ -18,6 +18,10 @@ public struct 箱文字優先度Data型: DMSystemRecordData, Equatable {
     public var 工程: 工程型? = nil
     
     var 修正情報タイムスタンプ: Date? = nil // 保存情報でない
+    
+    public var memoryFootPrint: Int {
+        return 10 * 8 // てきとう
+    }
     
     public init(_ record: FileMakerRecord) throws {
         if let number = record.integer(forKey: "伝票番号") {

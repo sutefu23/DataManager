@@ -15,7 +15,7 @@ public enum 分類型: String{
     case 発注先 = "発注先"
 }
 
-public final class 取引先型: Identifiable {
+public final class 取引先型: DMCacheElement, Identifiable {
     static let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 
     let record: FileMakerRecord
@@ -29,6 +29,9 @@ public final class 取引先型: Identifiable {
         guard let record = try 取引先型.find(会社コード: code)?.record else { return nil }
         self.会社コード = code
         self.record = record
+    }
+    public var memoryFootPrint: Int {
+        return 20 * 8
     }
     
     public var 会社コード: 会社コード型

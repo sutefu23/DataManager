@@ -100,6 +100,8 @@ public struct 食事メニューData型: Equatable {
 }
 
 extension 食事メニューData型: DMSystemRecordData {
+    public var memoryFootPrint: Int { 11 * 16 } // てきとう
+
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "食事メニュー", mes: key) }
         func getString(_ key: String) throws -> String {

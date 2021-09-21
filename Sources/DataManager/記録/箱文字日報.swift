@@ -18,6 +18,8 @@ public struct 箱文字日報Data型: DMSystemRecordData {
     public var 分: Int?
     public var 備考: String
     
+    public var memoryFootPrint: Int { 5 * 16 } // てきとう
+    
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "箱文字日報", mes: key) }
 

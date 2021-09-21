@@ -155,7 +155,7 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
     }
     
     public func find重複候補() throws -> [進捗型] {
-        return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).進捗一覧
+        return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.進捗一覧 ?? []
     }
     
     public func is内容重複(with data: 進捗型) -> Bool {
@@ -163,7 +163,7 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
     }
     
     public func flushCache() {
-        return 指示書進捗キャッシュ型.shared.flushCache(伝票番号: self.伝票番号)
+        return 指示書進捗キャッシュ型.shared.removeCache(forKey: self.伝票番号)
     }
 }
 

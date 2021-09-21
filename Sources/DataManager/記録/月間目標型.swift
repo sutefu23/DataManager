@@ -28,6 +28,8 @@ public struct 月間目標Data型: DMSystemRecordData {
     public var 加工比率: Double
     public var エッチング比率: Double
     public var 外注比率: Double
+    
+    public var memoryFootPrint: Int { 13 * 16 } // てきとう
 }
 
 extension 月間目標Data型 {

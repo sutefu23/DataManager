@@ -32,7 +32,7 @@ extension FileMakerRecord {
     }
 }
 
-public struct 資材使用記録Data型: DMSystemRecordData, Equatable {
+public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_5"
     public var 登録日時: Date
     
@@ -51,6 +51,8 @@ public struct 資材使用記録Data型: DMSystemRecordData, Equatable {
     public var 印刷対象: 印刷対象型?
     public var 原因工程: 工程型?
 
+    public var memoryFootPrint: Int { return 15 * 16 }
+    
     init(登録日時: Date, 伝票番号: 伝票番号型, 工程: 工程型, 作業者: 社員型, 図番: 図番型, 表示名: String, 単価: Double?, 用途: String?, 使用量: String?, 使用面積: Double?, 単位量: Double?, 単位数: Double?, 金額: Double?, 印刷対象: 印刷対象型?, 原因工程: 工程型?) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
@@ -223,7 +225,7 @@ public final class 資材使用記録型: DMSystemRecord<資材使用記録Data�
         }
         let execProcess = self.工程.チェック工程
         guard execProcess == errorProcess else { return }
-        if let last = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号).工程別進捗一覧[execProcess]?.last(where: { $0.登録日時 < self.登録日時 && $0.作業種別 != .作直 }) {
+        if let last = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.工程別進捗一覧[execProcess]?.last(where: { $0.登録日時 < self.登録日時 && $0.作業種別 != .作直 }) {
             if last.作業内容 == .完了 { return }
         }
         self.用途 = "部署内やり直し"
@@ -317,6 +319,33 @@ extension 資材使用記録型 {
     }
 }
 
+struct 資材使用記録キャッシュData型: DMCacheElement {
+    let list: [資材使用記録型]
+    
+    var memoryFootPrint: Int { return list.reduce(16) { $0 + $1.memoryFootPrint } }
+}
+
+class 資材使用記録キャッシュ型: DMDBCache<伝票番号型, 資材使用記録キャッシュData型> {
+    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeTime: 1*60*60) {
+        let list = try 資材使用記録型.find(伝票番号: $0)
+        if list.isEmpty { return nil }
+        return 資材使用記録キャッシュData型(list: list)
+    }
+    
+    func 現在資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+        return try find(伝票番号, noCache: true)?.list
+    }
+
+    func キャッシュ資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+        return try find(伝票番号, noCache: false)?.list
+    }
+
+    func flush(伝票番号: 伝票番号型) {
+        removeCache(forKey: 伝票番号)
+    }
+}
+
+/*
 class 資材使用記録キャッシュ型 {
     static let shared = 資材使用記録キャッシュ型()
     var expireTime: TimeInterval = 1*60*60 // 1時間
@@ -354,3 +383,4 @@ class 資材使用記録キャッシュ型 {
         lock.unlock()
     }
 }
+*/

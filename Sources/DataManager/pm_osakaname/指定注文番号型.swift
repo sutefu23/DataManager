@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 指定注文番号型: Codable, Hashable {
+public struct 指定注文番号型: Codable, Hashable, DMCacheElement {
     private let text: String
     public var テキスト: String { return text }
     public var 注文番号: 注文番号型? {
@@ -16,6 +16,8 @@ public struct 指定注文番号型: Codable, Hashable {
         return 注文番号キャッシュ型.shared[code]
     }
 
+    public var memoryFootPrint: Int { text.memoryFootPrint }
+    
     init(text: String) {
         self.text = text
     }

@@ -15,7 +15,7 @@ extension FileMakerRecord {
     }
 }
 
-public struct 工程型: Hashable, Comparable, Codable {
+public struct 工程型: Hashable, Comparable, Codable, DMCacheElement {
     public static let dbName = "DataAPI_7"
     let number: Int
 
@@ -27,6 +27,7 @@ public struct 工程型: Hashable, Comparable, Codable {
             self.init(code: name)
         }
     }
+    public var memoryFootPrint: Int { number.memoryFootPrint }
 
     init(_ number: Int) { self.number = number }
     
