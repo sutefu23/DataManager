@@ -11,6 +11,8 @@ private let lock = NSRecursiveLock()
 
 public struct 食事時間帯Data型: DMSystemRecordData {
     public static let layout = "DataAPI_9"
+    public static var db: FileMakerDB { .system }
+
     public var 提供パターン: String
     public var 食事グループ: String
     public var 開始時間: Time

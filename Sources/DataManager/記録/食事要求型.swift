@@ -50,6 +50,7 @@ public enum 食事要求状態型: Int, Comparable, Hashable {
 
 public struct 食事要求Data型: DMSystemRecordData {
     public static let layout = "DataAPI_7"
+    public static var db: FileMakerDB { .system }
 
     public var 社員番号: String
     public var メニューID: メニューID型

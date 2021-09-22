@@ -607,7 +607,8 @@ public final class 指示書型: FileMakerImportRecord {
     public lazy var ボルト資材情報: [Int: 資材要求情報型] = {
         var map: [Int: 資材要求情報型] = [:]
         var sizeSet = Set<String>()
-        let set = self.セット数値
+//        let set = self.セット数値
+        let set = 1.0
         for index in 1...15 {
             var name = self.ボルト等(index) ?? ""
             let count = self.ボルト本数(index) ?? ""

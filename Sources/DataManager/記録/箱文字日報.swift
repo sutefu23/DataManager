@@ -12,6 +12,8 @@ private let lock = NSRecursiveLock()
 
 public struct 箱文字日報Data型: DMSystemRecordData {
     public static let layout = "DataAPI_2"
+    public static var db: FileMakerDB { .system }
+
     public var 工程: 工程型
     public var 作業日: Day
     public var 件数: Int?

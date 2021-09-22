@@ -9,7 +9,7 @@
 import Foundation
 
 public class 指示書伝票番号キャッシュ型: DMDBCache<伝票番号型, 指示書型> {
-    public static let shared: 指示書伝票番号キャッシュ型 = 指示書伝票番号キャッシュ型(lifeTime: 10*60*60) {
+    public static let shared: 指示書伝票番号キャッシュ型 = 指示書伝票番号キャッシュ型(lifeTime: 10*60*60, nilCache: false) {
         guard let order = try 指示書型.findDirect(伝票番号: $0) else { return nil }
         指示書UUIDキャッシュ型.shared.regist(order, forKey: order.uuid)
         伝票番号キャッシュ型.shared.regist(order.伝票番号, forKey: order.伝票番号.整数値)
@@ -24,7 +24,7 @@ public class 指示書伝票番号キャッシュ型: DMDBCache<伝票番号型,
 }
 
 public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {
-    public static let shared: 指示書UUIDキャッシュ型 = 指示書UUIDキャッシュ型(lifeTime: 10*60*60) {
+    public static let shared: 指示書UUIDキャッシュ型 = 指示書UUIDキャッシュ型(lifeTime: 10*60*60, nilCache: false) {
         guard let order = try 指示書型.findDirect(uuid: $0) else { return nil }
         指示書伝票番号キャッシュ型.shared.regist(order, forKey: order.伝票番号)
         伝票番号キャッシュ型.shared.regist(order.伝票番号, forKey: order.伝票番号.整数値)
@@ -38,52 +38,8 @@ public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {
     }
 }
 
-//public final class 指示書キャッシュ型 {
-//    public static let shared = 指示書キャッシュ型()
-//    let lock = NSLock()
-//    var cache: [伝票番号型 : 指示書型?] = [:]
-//    var cache2: [UUID: 指示書型] = [:]
-//
-//    public func find(_ number: 伝票番号型) throws -> 指示書型? {
-//        lock.lock()
-//        defer { lock.unlock() }
-//        if let cache = self.cache[number] { return cache }
-//        let order = try 指示書型.findDirect(伝票番号: number)
-//        cache[number] = order
-//        if let order = order {
-//            cache2[order.uuid] = order
-//        }
-//        return order
-//    }
-//    public func find(_ uuid: UUID) throws -> 指示書型? {
-//        lock.lock()
-//        defer { lock.unlock() }
-//        if let cache = self.cache2[uuid] { return cache }
-//        let order = try 指示書型.findDirect(uuid: uuid)
-//        if let order = order {
-//            cache[order.伝票番号] = order
-//            cache2[order.uuid] = order
-//        }
-//        return order
-//    }
-//
-//    public func regist(_ order: 指示書型) {
-//        lock.lock()
-//        cache[order.伝票番号] = order
-//        cache2[order.uuid] = order
-//        lock.unlock()
-//    }
-//
-//
-//    public func clearAll() {
-//        lock.lock()
-//        cache.removeAll()
-//        lock.unlock()
-//    }
-//}
-
 public class 伝票番号キャッシュ型: DMDBCache<Int, 伝票番号型> {
-    public static let shared: 伝票番号キャッシュ型 = 伝票番号キャッシュ型(lifeTime: 4*60*60) {
+    public static let shared: 伝票番号キャッシュ型 = 伝票番号キャッシュ型(lifeTime: 4*60*60, nilCache: false) {
         try 伝票番号型(invalidNumber: $0)
     }
     

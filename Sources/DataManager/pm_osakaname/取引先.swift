@@ -18,37 +18,49 @@ public enum 分類型: String{
 public final class 取引先型: DMCacheElement, Identifiable {
     static let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 
-    let record: FileMakerRecord
+    public let 会社コード: 会社コード型
+    public let 会社名: String
+    public let 印字会社名: String
+    public let 分類: 分類型?
+    public let 郵便番号: String
+    public let 住所1: String
+    public let 住所2: String
+    public let 住所3: String
+    public let 代表者名称: String
+    public let 代表TEL: String
+    public let 直通TEL: String
+    public let 社員名称: String
 
-    init?(_ record: FileMakerRecord) {
-        self.record = record
-        guard let 会社コード = record.string(forKey: "会社コード") else { return nil }
-        self.会社コード = 会社コード
-    }
-    public init?(会社コード code: String) throws {
-        guard let record = try 取引先型.find(会社コード: code)?.record else { return nil }
-        self.会社コード = code
-        self.record = record
-    }
     public var memoryFootPrint: Int {
-        return 20 * 8
+        return 12*16
     }
     
-    public var 会社コード: 会社コード型
-    public var 会社名: String { return record.string(forKey: "会社名")! }
-    public var 印字会社名: String { return record.string(forKey: "印字会社名")! }
-    public var 分類: 分類型? { return 分類型(rawValue: record.string(forKey: "分類") ?? "") }
-    public var 郵便番号: String { return record.string(forKey: "郵便番号")! }
-    public var 住所1: String { return record.string(forKey: "住所1")! }
-    public var 住所2: String { return record.string(forKey: "住所2")! }
-    public var 住所3: String { return record.string(forKey: "住所3")! }
-    public var 代表者名称: String { return record.string(forKey: "代表者名称")! }
-    public var 代表TEL: String { return record.string(forKey: "代表TEL")! }
-    public var 直通TEL: String { return record.string(forKey: "直通TEL")! }
+    init(_ record: FileMakerRecord) throws {
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "取引先", mes: key) }
+        func getString(_ key: String) throws -> String {
+            guard let string = record.string(forKey: key) else { throw makeError(key) }
+            return string
+        }
+        self.会社コード = try getString("会社コード")
+        self.会社名 = try getString("会社名")
+        self.印字会社名 = try getString("印字会社名")
+        self.分類 = 分類型(rawValue: try getString("分類"))
+        self.郵便番号 = try getString("郵便番号")
+        self.住所1 = try getString("住所1")
+        self.住所2 = try getString("住所2")
+        self.住所3 = try getString("住所3")
+        self.代表者名称 = try getString("代表者名称")
+        self.代表TEL = try getString("代表TEL")
+        self.直通TEL = try getString("直通TEL")
+        self.社員名称 = try getString("社員名称")
+    }
+    public convenience init?(会社コード: String) throws {
+        let db = FileMakerDB.pm_osakaname
+        guard let record = try db.find(layout: 取引先型.dbName, query: [["会社コード" : "==\(会社コード)"]]).first else { return nil }
+        try self.init(record)
+    }
 
     public var 電話番号: String { return 代表TEL.isEmpty ? 直通TEL : 代表TEL }
-    public var 社員名称: String { return record.string(forKey: "社員名称") ?? "" }
-    
     public var is原稿社名不要: Bool { self.会社コード.is原稿社名不要会社コード }
     public var is管理用: Bool { self.会社コード.is管理用会社コード }
     
@@ -78,10 +90,8 @@ extension 取引先型 {
 
     public static func find(会社コード: 会社コード型) throws -> 取引先型? {
         let db = FileMakerDB.pm_osakaname
-        var query = FileMakerQuery()
-        query["会社コード"] = "==\(会社コード)"
-        let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [query])
-        return list.compactMap { 取引先型($0) }.first
+        let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [["会社コード" : "==\(会社コード)"]])
+        return try list.map { try 取引先型($0) }.first
     }
 
     public static func find(分類: 分類型) throws -> [取引先型]? {
@@ -90,7 +100,7 @@ extension 取引先型 {
         query["分類"] = "\(分類)"
         
         let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [query])
-        return list.compactMap { 取引先型($0) }
+        return try list.map { try 取引先型($0) }
     }
 }
 
@@ -147,7 +157,6 @@ let 原稿社名不要会社コード一覧: [会社コード型] = [
     "4248", // オミノ大阪営業所
     "0831", // 城戸工芸
     "2620", // メイク広告
-//    "2564", // ミナミ工芸㈱
     "3659", // ㈲ミナミ工芸
     "1882", // トレード
     "2052", // 東洋銘板
@@ -158,4 +167,5 @@ let 原稿社名不要会社コード一覧: [会社コード型] = [
     "2579", // 美濃クラフト
     "1681", // タカショーデジテック
     "2286", // 福彫
+    //    "2564", // ミナミ工芸㈱
 ]

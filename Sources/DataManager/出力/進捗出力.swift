@@ -109,8 +109,8 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
         return self.makeRecord(識別キー: exportUUID)
     }
     
-    func makeRecord(識別キー key: UUID) -> [String: String] {
-        var record: [String: String] = [
+    func makeRecord(識別キー key: UUID) -> FileMakerQuery {
+        var record: FileMakerQuery = [
             "識別キー": key.uuidString,
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,

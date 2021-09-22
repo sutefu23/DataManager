@@ -34,7 +34,7 @@ public struct 資材要求出力型: FileMakerExportRecord {
     }    
     
     public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
-        var record: [String: String] = [
+        var record: FileMakerQuery = [
             "識別キー": exportUUID.uuidString,
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,

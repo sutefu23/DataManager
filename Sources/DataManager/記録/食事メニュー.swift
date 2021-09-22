@@ -85,7 +85,8 @@ extension FileMakerRecord {
 public typealias メニューID型 = String
 public struct 食事メニューData型: Equatable {
     public static let layout = "DataAPI_6"
-    
+    public static var db: FileMakerDB { .system }
+
     public var メニューID: メニューID型
     public var 図番: 図番型
     public var 提供日: Day

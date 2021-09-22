@@ -35,6 +35,7 @@ extension FileMakerRecord {
 
 public struct 資材入庫状況Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_4"
+    public static var db: FileMakerDB { .system }
     public var 指定注文番号:  指定注文番号型
     public var 資材入庫状況状態: 資材入庫状況状態型
 
@@ -87,7 +88,7 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
         try super.init(record)
     }
     
-    func delete() throws {
+    public func delete() throws {
         if try generic_delete() {
             資材入庫状況キャッシュ型.shared.registCache(指定注文番号: self.指定注文番号, 資材入庫状況: nil)
         }
@@ -107,7 +108,7 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
     static func removeOld() throws {
         let list = try fetchAll()
         for data in list {
-            guard let order = try 発注型.find(指定注文番号: data.指定注文番号).first else { continue }
+            guard let order = try 資材指定注番発注キャッシュ型.shared.find(data.指定注文番号, noCache: false) else { continue }
             switch order.状態 {
             case .未処理, .発注待ち, .発注済み:
                 break
@@ -119,8 +120,8 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
 }
 
 // MARK: -
-public class 資材入庫状況キャッシュ型: DMDBAllCache<指定注文番号型, 資材入庫状況型> {
-    public static let shared: 資材入庫状況キャッシュ型 = 資材入庫状況キャッシュ型(lifeTime: 10*60*60) {
+public class 資材入庫状況キャッシュ型: DMDBCache<指定注文番号型, 資材入庫状況型> {
+    public static let shared: 資材入庫状況キャッシュ型 = 資材入庫状況キャッシュ型(lifeTime: 10*60*60, nilCache: true) {
         try 資材入庫状況型.findDirect(指定注文番号: $0)
     }
     
@@ -142,7 +143,7 @@ public class 資材入庫状況キャッシュ型: DMDBAllCache<指定注文番�
     
     func registCache(指定注文番号: 指定注文番号型, 資材入庫状況: 資材入庫状況型?) {
         if let 資材入庫状況 = 資材入庫状況 {
-            self.registCache(指定注文番号: 指定注文番号, 資材入庫状況: 資材入庫状況)
+            self.regist(資材入庫状況, forKey: 指定注文番号)
         } else {
             self.removeCache(forKey: 指定注文番号)
         }

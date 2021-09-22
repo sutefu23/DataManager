@@ -24,7 +24,8 @@ extension FileMakerRecord {
 
 public struct IDカードData型: DMSystemRecordData {
     public static let layout = "DataAPI_8"
-    
+    public static var db: FileMakerDB { .system }
+
     public var 社員番号: String
     public var カードID: String
     public var 種類: IDカード種類型

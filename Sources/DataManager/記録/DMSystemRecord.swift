@@ -106,9 +106,9 @@ public protocol DMSystemRecordData: DMCacheElement, Equatable {
     init(_ record: FileMakerRecord) throws
     var fieldData: FileMakerQuery { get }
 }
-extension DMSystemRecordData {
-    public static var db: FileMakerDB { .system }
-}
+//extension DMSystemRecordData {
+//    public static var db: FileMakerDB { .system }
+//}
 
 /// systemデータベースファイル上のテーブルのレコードの管理メカニズム
 public protocol DMSystemRecordManager: DMCacheElement {

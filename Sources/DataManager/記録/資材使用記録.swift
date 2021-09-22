@@ -34,6 +34,7 @@ extension FileMakerRecord {
 
 public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_5"
+    public static var db: FileMakerDB { .system }
     public var 登録日時: Date
     
     public var 伝票番号: 伝票番号型
@@ -326,7 +327,7 @@ struct 資材使用記録キャッシュData型: DMCacheElement {
 }
 
 class 資材使用記録キャッシュ型: DMDBCache<伝票番号型, 資材使用記録キャッシュData型> {
-    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeTime: 1*60*60) {
+    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeTime: 1*60*60, nilCache: false) {
         let list = try 資材使用記録型.find(伝票番号: $0)
         if list.isEmpty { return nil }
         return 資材使用記録キャッシュData型(list: list)

@@ -10,7 +10,8 @@ import Foundation
 
 public struct 箱文字優先度Data型: DMSystemRecordData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_3"
-    
+    public static var db: FileMakerDB { .system }
+
     public var 伝票番号: 伝票番号型? = nil
     public var 優先設定: 優先設定型 = .自動判定
     public var 表示設定: 表示設定型 = .自動判定

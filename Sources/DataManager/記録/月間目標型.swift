@@ -11,6 +11,7 @@ private let lock = NSRecursiveLock()
 
 public struct 月間目標Data型: DMSystemRecordData {
     public static let layout = "DataAPI_10"
+    public static var db: FileMakerDB { .system }
 
     public var 対象月: Month
     

@@ -58,7 +58,6 @@ public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
         case .外注, .校正:
             return DMColor.black
         }
-
     }
     #endif
     

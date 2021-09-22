@@ -32,13 +32,13 @@ extension Date: DMCacheElement {
     public var memoryFootPrint: Int { return MemoryLayout<Date>.stride }
 }
 
-
 public enum CacheMode {
     /// 有効期限がある
     case `dynamic`
     /// 有効期限がない
     case `static`
 }
+
 private var dbCachingMode: CacheMode = .dynamic
 
 extension UserDefaults {
@@ -306,9 +306,20 @@ fileprivate protocol CacheStorage: AnyObject {
     func completeClearAllCache()
     /// 無効なデータを削除する
     func removeInvalidCache() -> [CacheHandle]
+    
+    var name: String { get }
 }
 
 extension CacheStorage {
+    var name: String {
+        let name = String(describing: type(of: self))
+        if name.hasSuffix("型") {
+            return String(name.dropLast())
+        } else {
+            return name
+        }
+
+    }
     func removeInvalidCache() -> [CacheHandle] { [] }
 }
 
@@ -546,186 +557,8 @@ public class DMCachingTtyConverter<S: Hashable & DMCacheElement, R: DMCacheEleme
 }
 
 // MARK: -
-/// DB結果について正しく帰ってきた時のみキャッシュ
-public class DMDBCache<S: Hashable & DMCacheElement, R: DMCacheElement>: CacheStorage {
-    /// DB検索を管理するオブジェクト。複数の同じ検索の待ち合わせに使用する
-    private class SearchResult<R: DMCacheElement>: NSLock {
-        override init() {
-            super.init()
-            self.lock()
-        }
-        private var data: Result<R, Error>!
-        
-        /// 書き込みがあるまで読込はブロックされる
-        var value: Result<R, Error> {
-            get {
-                self.lock()
-                defer { self.unlock() }
-                return data
-            }
-            set {
-                data = newValue
-                self.unlock()
-            }
-        }
-    }
-
-    fileprivate let lock: NSLock
-    private var map: [S: (handle: KeyedCacheHandle<S>, date: Date, data: R)] = [:]
-    /// キャッシュの寿命
-    var lifeTime: TimeInterval
-    
-    private let converter: (S) throws -> R?
-    private var working: [S: SearchResult<R?>] = [:]
-
-    /// キャッシュの有効期限と検索関数を元に初期化する
-    public init(lifeTime: TimeInterval = 60, _ converter: @escaping (S) throws -> R?) {
-        switch dbCachingMode {
-        case .dynamic:
-            self.lifeTime = lifeTime // 通常の寿命
-        case .static:
-            self.lifeTime = max(lifeTime, 24 * 60 * 60) // 最低24時間の寿命
-        }
-        self.converter = converter
-        self.lock = NSLock()
-        DMCacheSystem.shared.appendCache(self)
-    }
-
-    /// 検索結果を登録する
-    public func regist(_ object: R, forKey key: S) {
-        lock.lock(); defer { lock.unlock() }
-        if let handle = map[key]?.handle {
-            DMCacheSystem.shared.touch(handle: handle) // ハンドル再利用
-            map[key] = (handle, Date(), object)
-        } else {
-            let handle = KeyedCacheHandle(map: self, memoryFootPrint: key.memoryFootPrint + object.memoryFootPrint, key: key)
-            DMCacheSystem.shared.append(handle: handle) // ハンドル新規登録
-            map[key] = (handle, Date(), object)
-        }
-    }
-
-    /// 指定のkeyに対して、キャッシュしていればtrueを返す
-    public func isCaching(forKey key: S) -> Bool {
-        lock.lock(); defer { lock.unlock() }
-        return map[key] != nil || working[key] != nil
-    }
-
-    /// 指定されたキャッシュの寿命を変更する
-    public func changeExpire(_ maxExpire: TimeInterval, forKey key: S) {
-        lock.lock(); defer { lock.unlock() }
-        guard let date = map[key]?.date else { return }
-        map[key]?.date = date.addingTimeInterval(self.lifeTime - maxExpire)
-    }
-
-    /// 指定されたパラメータで検索を行う
-    public func find(_ keySource: S, noCache: Bool = false) throws -> R? {
-        lock.lock()
-        if let (handle, date, data) = map[keySource] {
-            if !noCache, date < Date(timeIntervalSinceNow: self.lifeTime) {
-                if date < Date(timeIntervalSinceNow: self.lifeTime / 2) { // 寿命の半分までは積極的に保護する
-                    DMCacheSystem.shared.touch(handle: handle)
-                }
-                lock.unlock()
-                return data
-            } else {
-                map[keySource] = nil
-                DMCacheSystem.shared.remove(handle: handle)
-            }
-        }
-        if let data = working[keySource] { // この時は寿命は考えない
-            lock.unlock()
-            return try data.value.get()
-        }
-        let result = SearchResult<R?>()
-        working[keySource] = result
-        lock.unlock()
-        do {
-            if let data = try converter(keySource) {
-                let date = Date()
-                result.value = .success(data)
-                let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + data.memoryFootPrint, key: keySource)
-                lock.lock()
-                DMCacheSystem.shared.append(handle: handle)
-                working.removeValue(forKey: keySource)
-                map[keySource] = (handle, date, data)
-                lock.unlock()
-                return data
-            } else {
-                result.value = .success(nil)
-                lock.lock()
-                working.removeValue(forKey: keySource)
-                lock.unlock()
-                return nil
-            }
-        } catch {
-            result.value = .failure(error)
-            lock.lock()
-            working.removeValue(forKey: keySource)
-            lock.unlock()
-            throw error
-        }
-    }
-
-    /// 全てのキャッシュを削除する（検索中のものは検索後にキャッシュされる）
-    public func removeAllCache() {
-        let cacheSystem = DMCacheSystem.shared
-        lock.lock(); defer { lock.unlock() }
-        map.values.forEach { cacheSystem.remove(handle: $0.handle) }
-        map.removeAll()
-    }
-    
-    /// 指定されたキーに対応するキャッシュを消去する
-    public func removeCache(forKey key: S) {
-        lock.lock(); defer { lock.unlock() }
-        guard let handle = map.removeValue(forKey: key)?.handle else { return }
-        DMCacheSystem.shared.remove(handle: handle)
-    }
-    
-    // MARK: DMCacheSystemからの操作インターフェース
-    /// キャッシュ全クリアの準備
-    fileprivate func prepareClearAllCache() {
-        // workingは残しているためロック解除直後にworkingの中身が登録されることがある
-        lock.lock()
-        map.removeAll()
-    }
-    
-    /// キャッシュ全クリアの完了
-    fileprivate func completeClearAllCache() {
-        lock.unlock()
-    }
-    
-    /// 指定されたハンドルに対応するデータを消去する
-    fileprivate func removeHandle(for handle: CacheHandle) {
-        if case let handle as KeyedCacheHandle<S> = handle {
-            lock.lock()
-            map.removeValue(forKey: handle.key)
-        } else { // あり得ないけど念のため
-            lock.lock()
-            if let index = map.firstIndex(where: { $0.value.handle === handle }) {
-                map.remove(at: index)
-            } else {
-                fatalError() // 完全なロジックエラー
-            }
-        }
-        lock.unlock()
-    }
-    
-    /// 保有するキャッシュのうち、有効期限を切れたものを削除し、ハンドルを返す
-    fileprivate func removeInvalidCache() -> [CacheHandle] {
-        var handles: [CacheHandle] = []
-        lock.lock(); defer { lock.unlock() }
-        let expire = Date(timeIntervalSinceNow: lifeTime)
-        for (key, data) in map where data.date > expire {
-            map.removeValue(forKey: key)
-            handles.append(data.handle)
-        }
-        return handles
-    }
-}
-
-// MARK: -
-/// DB結果についてnilも含めてキャッシュ
-public class DMDBAllCache<S: Hashable & DMCacheElement, R: DMCacheElement>: CacheStorage {
+/// DB結果についてキャッシュ
+public class DMDBCache<S: Hashable & DMCacheElement & CustomStringConvertible, R: DMCacheElement>: CacheStorage {
     /// DB検索を管理するオブジェクト。複数の同じ検索の待ち合わせに使用する
     private class SearchResult<R: DMCacheElement>: NSLock {
         override init() {
@@ -755,9 +588,13 @@ public class DMDBAllCache<S: Hashable & DMCacheElement, R: DMCacheElement>: Cach
     
     private let converter: (S) throws -> R?
     private var working: [S: SearchResult<R>] = [:]
+    let isDebug: Bool
+    private let nilCache: Bool
 
     /// キャッシュの有効期限と検索関数を元に初期化する
-    public init(lifeTime: TimeInterval = 60, _ converter: @escaping (S) throws -> R?) {
+    public init(lifeTime: TimeInterval = 60, nilCache: Bool, isDebug: Bool = false, _ converter: @escaping (S) throws -> R?) {
+        self.nilCache = nilCache
+        self.isDebug = isDebug
         switch dbCachingMode {
         case .dynamic:
             self.lifeTime = lifeTime // 通常の寿命
@@ -799,35 +636,44 @@ public class DMDBAllCache<S: Hashable & DMCacheElement, R: DMCacheElement>: Cach
     public func find(_ keySource: S, noCache: Bool = false) throws -> R? {
         lock.lock()
         if let (handle, date, data) = map[keySource] {
-            if !noCache, date < Date(timeIntervalSinceNow: self.lifeTime) {
-                if date < Date(timeIntervalSinceNow: self.lifeTime / 2) { // 寿命の半分までは積極的に保護する
-                    DMCacheSystem.shared.touch(handle: handle)
+            if !noCache {
+                let now = Date()
+                if now < date.addingTimeInterval(self.lifeTime) {
+                    if now < date.addingTimeInterval(self.lifeTime/2) { // 寿命の半分までは積極的に保護する
+                        DMCacheSystem.shared.touch(handle: handle)
+                    }
+                    lock.unlock()
+                    #if DEBUG
+                    if isDebug { DMLogSystem.shared.debugLog("キャッシュ有効[\(name)]", detail: keySource.description, level: .debug) }
+                    #endif
+                    return data
                 }
-                lock.unlock()
-                return data
-            } else {
-                map[keySource] = nil
-                DMCacheSystem.shared.remove(handle: handle)
             }
+            #if DEBUG
+            if isDebug { DMLogSystem.shared.debugLog("キャッシュ無効[\(name)]", detail: keySource.description, level: .debug) }
+            #endif
+            map[keySource] = nil
+            DMCacheSystem.shared.remove(handle: handle)
         }
+        #if DEBUG
+        if isDebug { DMLogSystem.shared.debugLog("キャッシュなし[\(name)]", detail: keySource.description, level: .debug) }
+        #endif
         if let data = working[keySource] { // この時は寿命は考えない
             lock.unlock()
             return try data.value.get()
         }
         let result = SearchResult<R>()
         working[keySource] = result
+        var regist: Bool
         lock.unlock()
+        var data: R? = nil
         do {
-            let data = try converter(keySource)
-            let date = Date()
-            result.value = .success(data)
-            let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + data.memoryFootPrint, key: keySource)
-            lock.lock()
-            DMCacheSystem.shared.append(handle: handle)
-            working.removeValue(forKey: keySource)
-            map[keySource] = (handle, date, data)
-            lock.unlock()
-            return data
+            data = try converter(keySource)
+            regist = data != nil ? true : self.nilCache
+        } catch FileMakerError.invalidRecord(name: let name, recordId: let recordId, mes: let mes) {
+            DMLogSystem.shared.log("データエラー[\(name)]", detail: "\(recordId ?? "nil"): \(mes)", level: .warning)
+            data = nil
+            regist = true
         } catch {
             result.value = .failure(error)
             lock.lock()
@@ -835,6 +681,20 @@ public class DMDBAllCache<S: Hashable & DMCacheElement, R: DMCacheElement>: Cach
             lock.unlock()
             throw error
         }
+        let date = Date()
+        result.value = .success(data)
+        
+        if regist {
+            let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + data.memoryFootPrint, key: keySource)
+            lock.lock()
+            DMCacheSystem.shared.append(handle: handle)
+            map[keySource] = (handle, date, data)
+        } else {
+            lock.lock()
+        }
+        working.removeValue(forKey: keySource)
+        lock.unlock()
+        return data
     }
 
     /// 全てのキャッシュを削除する（検索中のものは検索後にキャッシュされる）

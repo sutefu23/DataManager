@@ -397,8 +397,8 @@ public struct 資材要求情報型 {
 
         self.表示名 = text
         self.is附属品 = is附属品
-        let set = (セット数 >= 1) ? セット数 : 1
-        let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: set)
+//        let set = (セット数 >= 1) ? セット数 : 1
+        let numbers = ボルト数欄型(ボルト数欄: 数量欄, セット数: 1.0)
         // パイプ
         if let pipe = searchボルト等パイプ(ボルト欄: text) {
             self.ソート順 = 75

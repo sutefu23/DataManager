@@ -133,9 +133,9 @@ public struct 使用資材出力型: FileMakerExportRecord {
     public static var layout: String { "DataAPI_UseMaterialInput" }
     public static var exportScript: String { "DataAPI_UseMaterialInput_RecordSet" }
     public static var uuidField: String { "登録セッションUUID" }
-
+    
     public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
-        var record: [String: String] = [
+        var record: FileMakerQuery = [
             "登録セッションUUID": exportUUID.uuidString,
             "登録日": 登録日時.day.fmString,
             "登録時間": 登録日時.time.fmImportString,

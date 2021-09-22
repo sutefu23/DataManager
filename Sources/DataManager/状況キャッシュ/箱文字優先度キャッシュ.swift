@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 箱文字優先度キャッシュKey型: Hashable, DMCacheElement {
+public struct 箱文字優先度キャッシュKey型: Hashable, DMCacheElement, CustomStringConvertible {
     var number: 伝票番号型
     var process: 工程型?
     
@@ -19,10 +19,14 @@ public struct 箱文字優先度キャッシュKey型: Hashable, DMCacheElement 
         }
         return size
     }
+    
+    public var description: String {
+        return "伝票番号: \(number.整数文字列) 工程: \(process?.description ?? "nil")"
+    }
 }
 
-public class 箱文字優先度キャッシュ型: DMDBAllCache<箱文字優先度キャッシュKey型, 箱文字優先度型> {
-    public static let shared: 箱文字優先度キャッシュ型 = 箱文字優先度キャッシュ型(lifeTime: 10 * 60) {
+public class 箱文字優先度キャッシュ型: DMDBCache<箱文字優先度キャッシュKey型, 箱文字優先度型> {
+    public static let shared: 箱文字優先度キャッシュ型 = 箱文字優先度キャッシュ型(lifeTime: 10 * 60, nilCache: true) {
         let number = $0.number
         let process = $0.process
         return try 箱文字優先度型.findDirect(伝票番号: number, 工程: process)
@@ -54,91 +58,6 @@ public class 箱文字優先度キャッシュ型: DMDBAllCache<箱文字優先�
         self.regist(data, forKey: key)
     }
 }
-
-    /*
-public final class 箱文字優先度キャッシュ型 {
-    public static let shared = 箱文字優先度キャッシュ型()
-    public var キャッシュ寿命: TimeInterval = 60 * 10 // デフォルトは10分間
-    
-    struct CacheKey: Hashable {
-        var number: 伝票番号型
-        var process: 工程型?
-    }
-    struct TimeData {
-        let time: Date
-        let data: 箱文字優先度型
-        
-        init(_ data: 箱文字優先度型) {
-            self.data = data
-            self.time = Date()
-        }
-    }
-    
-    let lock = NSLock()
-    var cache: [CacheKey: TimeData] = [:]
-    
-    public func allRegistered(for number: 伝票番号型) throws -> [箱文字優先度型] {
-        let all = try 箱文字優先度型.allRegistered(for: number)
-        lock.lock()
-        all.forEach {
-            guard let number = $0.伝票番号 else { return }
-            let key = CacheKey(number: number, process: $0.工程)
-            cache[key] = TimeData($0)
-        }
-        lock.unlock()
-        return all
-    }
-    
-    public func contains(_ number: 伝票番号型, _ process: 工程型?) -> Bool {
-        let key = CacheKey(number: number, process: process)
-        lock.lock()
-        defer { lock.unlock() }
-        guard let cache = self.cache[key] else { return false }
-        let time = Date(timeInterval: -キャッシュ寿命, since: Date())
-        if cache.time >= time { return true }
-        self.cache[key] = nil
-        return false
-    }
-    
-    public func find(_ number: 伝票番号型, _ process: 工程型?) throws -> 箱文字優先度型 {
-        let key = CacheKey(number: number, process: process)
-        lock.lock()
-        if let cache = self.cache[key] {
-            lock.unlock()
-            let time = Date(timeInterval: -キャッシュ寿命, since: Date())
-            if cache.time >= time {
-                return cache.data
-            }
-        } else {
-            lock.unlock()
-        }
-        let result: 箱文字優先度型
-        do {
-            result = try 箱文字優先度型.findDirect(伝票番号: number, 工程: process) ?? 箱文字優先度型(number, 工程: process)
-        } catch {
-            NSLog(error.localizedDescription)
-            result = 箱文字優先度型(number, 工程: process)
-        }
-        lock.lock()
-        cache[key] = TimeData(result)
-        lock.unlock()
-        return result
-    }
-    
-    func update(_ data: 箱文字優先度型) {
-        guard let number = data.伝票番号 else { return }
-        let key = CacheKey(number: number, process: data.工程)
-        lock.lock()
-        cache[key] = TimeData(data)
-        lock.unlock()
-    }
-    
-    public func removeAll() {
-        lock.lock()
-        self.cache.removeAll()
-        lock.unlock()
-    }
-}*/
 
 extension 指示書型 {
     func 箱文字優先状態(for target: [工程型]) -> Bool {
@@ -355,5 +274,4 @@ extension 指示書型 {
             try targets.forEach { try self.set箱文字表示設定(for: $0, 設定: 設定) }
         }
     }
-
 }
