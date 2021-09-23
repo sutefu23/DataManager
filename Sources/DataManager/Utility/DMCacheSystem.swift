@@ -548,42 +548,6 @@ public final class DMCachingTtyConverter<Key: DMCacheKey, R: DMCacheElement>: Ba
     /// 指定されたパラメータで検索を行う
     public func convert(_ keySource: Key) throws -> R {
         return try basic_convert(forceUpdate: false, forKey: keySource)
-        /*
-        lock.lock()
-        // キャッシュにあればそれを返す
-        if let (handle, result) = map[keySource] {
-            lock.unlock()
-            DMCacheSystem.shared.touch(handle: handle)
-            return try result.get()
-        }
-        // 計算中なら計算を待って結果をもらう
-        if let data = working[keySource] { // この時は寿命は考えない
-            lock.unlock()
-            return try data.value.get()
-        }
-        // 新規計算を登録する
-        let result = SearchResult<R>()
-        working[keySource] = result
-        lock.unlock()
-        do { // 新規計算を登録する
-            let data = try converter(keySource)
-            let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + data.memoryFootPrint, key: keySource)
-            result.value = .success(data)
-            lock.lock()
-            working.removeValue(forKey: keySource)
-            map[keySource] = (handle, DMResultCacheResult(data))
-            DMCacheSystem.shared.append(handle: handle)
-            return data
-        } catch { // エラー時はエラーを登録する
-            result.value = .failure(error)
-            let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + 24, key: keySource)
-            lock.lock()
-            working.removeValue(forKey: keySource)
-            map[keySource] = (handle, DMResultCacheResult(error))
-            DMCacheSystem.shared.append(handle: handle)
-            throw error
-        }
-         */
     }
 }
 
@@ -659,75 +623,6 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
     /// 指定されたパラメータで検索を行う
     public final func find(_ keySource: Key, noCache: Bool = false) throws -> R? {
         return try basic_convert(forceUpdate: noCache, forKey: keySource)
-        /*
-        lock.lock()
-        // キャッシュにあれば使えないか調べる
-        if let (handle, data) = map[keySource] {
-            if !noCache {
-                let now = Date()
-                if now < data.date.addingTimeInterval(self.lifeTime) { // 有効期限内
-                    if now < data.date.addingTimeInterval(self.lifeTime/2) { // 寿命の半分までは積極的に保護する
-                        DMCacheSystem.shared.touch(handle: handle)
-                    }
-                    lock.unlock()
-                    #if DEBUG
-                    if isDebug { DMLogSystem.shared.debugLog("キャッシュ有効[\(name)]", detail: keySource.description, level: .debug) }
-                    #endif
-                    return data.data
-                }
-            }
-            #if DEBUG
-            if isDebug { DMLogSystem.shared.debugLog("キャッシュ無効[\(name)]", detail: keySource.description, level: .debug) }
-            #endif
-            // 有効期限外なのでキャッシュを無効にする
-            map[keySource] = nil
-            DMCacheSystem.shared.remove(handle: handle)
-        }
-        #if DEBUG
-        if isDebug { DMLogSystem.shared.debugLog("キャッシュなし[\(name)]", detail: keySource.description, level: .debug) }
-        #endif
-        // 検索中なら検索完了を待って結果を共有する
-        if let data = working[keySource] { // この時は寿命は考えない
-            lock.unlock()
-            return try data.value.get()
-        }
-        // 新規検索を登録する
-        let result = SearchResult<R?>()
-        working[keySource] = result
-        lock.unlock()
-        /// 検索結果
-        var data: R? = nil
-        /// キャッシュに登録するならtrue
-        var regist: Bool
-        do { // 新規検索
-            data = try converter(keySource)
-            regist = data != nil ? true : self.nilCache // nilの時は設定により登録しない場合がある
-        } catch FileMakerError.invalidRecord(name: let name, recordId: let recordId, mes: let mes) {
-            // DBデータ不正時
-            DMLogSystem.shared.log("データエラー[\(name)]", detail: "\(recordId ?? "nil"): \(mes)", level: .error)
-            data = nil // エラーの代わりにnil(存在しない)を返す
-            regist = true // 不正を記録する
-        } catch { // その他のエラー（通常アクセスエラー）時は結果をキャッシュしない
-            result.value = .failure(error)
-            lock.lock()
-            working.removeValue(forKey: keySource)
-            lock.unlock()
-            throw error
-        }
-        result.value = .success(data)
-        if regist { // データを登録する
-            let date = Date()
-            let handle = KeyedCacheHandle(map: self, memoryFootPrint: keySource.memoryFootPrint + data.memoryFootPrint, key: keySource)
-            lock.lock()
-            map[keySource] = (handle, DMDBCacheData(date, data))
-            DMCacheSystem.shared.append(handle: handle)
-        } else { // 登録しない
-            lock.lock()
-        }
-        working.removeValue(forKey: keySource) // 計算の登録を解除する
-        lock.unlock()
-        return data
-         */
     }
     
     // MARK: - 内部データ処理インターフェース
