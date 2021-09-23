@@ -24,7 +24,7 @@ public enum DMLogLevel: Int, Comparable {
     /// 情報
     case information = 1
     /// 続行可能なエラー
-    case warning = 2
+    case error = 2
     /// 致命的で続行不能
     case critical = 3
     

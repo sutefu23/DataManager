@@ -116,7 +116,6 @@
 		OBJ_220 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* PropertyWrapper.swift */; };
 		OBJ_221 /* RunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* RunLoop.swift */; };
 		OBJ_222 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* Sequence.swift */; };
-		OBJ_223 /* SerialCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* SerialCache.swift */; };
 		OBJ_224 /* SerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* SerialNumber.swift */; };
 		OBJ_225 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Set.swift */; };
 		OBJ_226 /* DMFormula.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* DMFormula.swift */; };
@@ -125,7 +124,6 @@
 		OBJ_229 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* String.swift */; };
 		OBJ_230 /* TextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* TextReader.swift */; };
 		OBJ_231 /* TextWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* TextWriter.swift */; };
-		OBJ_232 /* TwoElementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* TwoElementCache.swift */; };
 		OBJ_233 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* URL.swift */; };
 		OBJ_234 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* UserDefaults.swift */; };
 		OBJ_235 /* UserDefaultsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* UserDefaultsUtility.swift */; };
@@ -445,7 +443,6 @@
 		OBJ_45 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		OBJ_46 /* RunLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoop.swift; sourceTree = "<group>"; };
 		OBJ_47 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
-		OBJ_48 /* SerialCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialCache.swift; sourceTree = "<group>"; };
 		OBJ_49 /* SerialNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialNumber.swift; sourceTree = "<group>"; };
 		OBJ_50 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		OBJ_52 /* DMFormula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMFormula.swift; sourceTree = "<group>"; };
@@ -454,7 +451,6 @@
 		OBJ_55 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		OBJ_56 /* TextReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextReader.swift; sourceTree = "<group>"; };
 		OBJ_57 /* TextWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWriter.swift; sourceTree = "<group>"; };
-		OBJ_58 /* TwoElementCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoElementCache.swift; sourceTree = "<group>"; };
 		OBJ_59 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_60 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
@@ -763,10 +759,8 @@
 				OBJ_45 /* PropertyWrapper.swift */,
 				OBJ_46 /* RunLoop.swift */,
 				OBJ_47 /* Sequence.swift */,
-				OBJ_48 /* SerialCache.swift */,
 				OBJ_49 /* SerialNumber.swift */,
 				OBJ_50 /* Set.swift */,
-				OBJ_58 /* TwoElementCache.swift */,
 				OBJ_59 /* URL.swift */,
 				OBJ_60 /* UserDefaults.swift */,
 				OBJ_61 /* UserDefaultsUtility.swift */,
@@ -1102,7 +1096,6 @@
 				OBJ_220 /* PropertyWrapper.swift in Sources */,
 				OBJ_221 /* RunLoop.swift in Sources */,
 				OBJ_222 /* Sequence.swift in Sources */,
-				OBJ_223 /* SerialCache.swift in Sources */,
 				OBJ_224 /* SerialNumber.swift in Sources */,
 				OBJ_225 /* Set.swift in Sources */,
 				OBJ_226 /* DMFormula.swift in Sources */,
@@ -1118,7 +1111,6 @@
 				OBJ_231 /* TextWriter.swift in Sources */,
 				142149E0268D975300A13F6A /* 使用資材.swift in Sources */,
 				148CA55225367D98002CE1D4 /* ICCard.swift in Sources */,
-				OBJ_232 /* TwoElementCache.swift in Sources */,
 				OBJ_233 /* URL.swift in Sources */,
 				OBJ_234 /* UserDefaults.swift in Sources */,
 				OBJ_235 /* UserDefaultsUtility.swift in Sources */,

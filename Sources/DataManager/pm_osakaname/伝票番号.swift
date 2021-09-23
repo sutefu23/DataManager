@@ -59,7 +59,7 @@ public final class 伝票番号解析型 {
     }
 }
 
-public struct 伝票番号型: DMCacheElement, Codable, Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
     public let 整数値: Int
     
     public init(validNumber: Int) {

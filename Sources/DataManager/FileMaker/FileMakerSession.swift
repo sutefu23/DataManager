@@ -167,7 +167,7 @@ public final class FileMakerSession: DMLogger {
                 log("token削除")
                 let response = try connection.callFileMaker(url: url, method: .DELETE)
                 if response.code != 0 {
-                    log("token削除失敗（\(response.message)）", level: .warning)
+                    log("token削除失敗（\(response.message)）", level: .error)
                 }
                 if let waitAfterLogout = waitAfterLogout {
                     let waitTime = FileMakerSession.clampWaitTime(waitAfterLogout)
@@ -417,24 +417,27 @@ struct FileMakerPortal {
 /// FileMaker検索条件
 public typealias FileMakerQuery = [String: String]
 extension Array where Element == FileMakerQuery {
+    /// デバッグ用文字列表記を作成する
     func makeText() -> String? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
         return text
     }
     
+    /// デバッグ用のキー一覧を作成する
     func makeKeys() -> String {
         return self.map{ $0.makeKeys() }.joined(separator: "|")
     }
 }
 
 extension FileMakerQuery {
+    /// デバッグ用文字列表記を作成する
     func makeText() -> String? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
         return text
     }
-    
+    /// デバッグ用のキー一覧を作成する
     func makeKeys() -> String {
         return self.keys.joined(separator: ",")
     }
@@ -489,6 +492,7 @@ struct FileMakerResponse {
     }
 }
 
+/// DataAPIの基本的な構造エラー
 enum FileMakerResponseError: String, LocalizedError {
     case レスポンスがない
     case レスポンスをJSONに変換できない

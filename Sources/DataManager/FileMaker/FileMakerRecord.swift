@@ -63,6 +63,7 @@ public struct FileMakerRecord {
     }
     
     // MARK: -
+    /// フィールドエラーを生成する
     func makeInvalidRecordError(name: String, mes: String) -> Error {
         return FileMakerError.invalidRecord(name: name, recordId: recordId, mes: mes)
     }
@@ -169,6 +170,7 @@ public struct FileMakerRecord {
 }
 
 // MARK: -
+/// 日付の範囲をクエリ文字列に変換する
 func makeQueryDayString(_ range: ClosedRange<Day>) -> String {
     let from = range.lowerBound
     let to = range.upperBound

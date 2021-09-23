@@ -94,7 +94,7 @@ public extension DMLogger {
 extension Error {
     /// エラーに対するログレベルを計算する
     private func calcLogLevel() -> DMLogLevel {
-        return self.canRetry ? .warning : .critical
+        return self.canRetry ? .error : .critical
     }
     
     /// セッションエラーログを登録する
@@ -172,7 +172,7 @@ extension DMLogger {
             .string("種類") {
                 switch $0.level {
                 case .critical: return "致命的"
-                case .warning: return "エラー"
+                case .error: return "エラー"
                 case .information: return "記録"
                 case .debug: return "デバッグ"
                 }

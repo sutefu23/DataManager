@@ -11,6 +11,8 @@ import Foundation
 import CoreGraphics
 
 public extension DMColor {
+    var memoryFootPrint: Int { return 4 * 8 }
+    
     /// 輝度を落とす
     func dark(brightnessRatio: CGFloat = 0.8) -> DMColor {
         var hue: CGFloat = 0
@@ -34,4 +36,5 @@ public extension DMColor {
         return red >= 1.0 && green >= 1.0 && blue >= 1.0
     }
 }
+
 #endif

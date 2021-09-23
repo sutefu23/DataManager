@@ -20,7 +20,7 @@ public class 指示書伝票番号キャッシュ型: DMDBCache<伝票番号型,
         self.regist(order, forKey: order.伝票番号)
         指示書UUIDキャッシュ型.shared.regist(order, forKey: order.uuid)
         伝票番号キャッシュ型.shared.regist(order.伝票番号, forKey: order.伝票番号.整数値)
-    }
+    }    
 }
 
 public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {

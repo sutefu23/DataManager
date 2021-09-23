@@ -24,7 +24,7 @@ public extension UserDefaults {
 }
 
 /// サーバーオブジェクト（セッションの管理）
-final class FileMakerServer: Hashable, DMLogger {
+final class FileMakerServer: DMLogger {
     // MARK: - 定数
     /// １台のサーバーへの最大同時接続数
     static fileprivate(set) var maxConnection = 3
@@ -34,10 +34,15 @@ final class FileMakerServer: Hashable, DMLogger {
     static let timerInterval: Int = 5
 
     // MARK: - プロパティ
-    private var pool: [FileMakerSession] = []
-    private var connecting: [FileMakerSession.ID: FileMakerSession] = [:]
+    /// 操作ロック
     private let lock = NSRecursiveLock()
+    /// pool管理用セマフォ
     private let sem: DispatchSemaphore
+    /// 待機中のセッション
+    private var pool: [FileMakerSession] = []
+    /// 稼働中のセッション
+    private var connecting: [FileMakerSession.ID: FileMakerSession] = [:]
+    /// 切断タイマーが設定されている場合trueを返す
     private var timerSet: Bool = false
 
     /// サーバーのURL
@@ -66,15 +71,6 @@ final class FileMakerServer: Hashable, DMLogger {
     /// 指定された名称のDBファイルのURLを生成する
     func makeURL(with filename: String) -> URL {
         return self.serverURL.appendingPathComponent(filename)
-    }
-    
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-    }
-    
-    static func ==(left: FileMakerServer, right: FileMakerServer) -> Bool {
-        return left.name == right.name
     }
     
     /// セッションを取得する
@@ -125,6 +121,7 @@ final class FileMakerServer: Hashable, DMLogger {
     }
     
     // MARK: - logger
+    /// ログを記録する
     func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
         currentLogSystem.registLogData(DMFileMakerServerRecord(self, data: data), level)
     }
@@ -169,12 +166,18 @@ final class FileMakerServer: Hashable, DMLogger {
 }
 
 // MARK: - サーバーキャッシュ
-let serverCache = FileMakerServerCache()
-
 /// サーバー名に対応するサーバーオブジェクトを保持する（共用のため）
 final class FileMakerServerCache {
+    /// 共有キャッシュ本体
+    static let shared = FileMakerServerCache()
+    
+    /// サーバーリスト
     private var cache: [String: FileMakerServer] = [:]
+    /// 操作ロック
     private let lock = NSRecursiveLock()
+
+    /// 外部で生成禁止
+    private init() {}
     
     /// サーバーを取り出す
     /// - Parameter name: サーバー名
@@ -190,14 +193,12 @@ final class FileMakerServerCache {
     
     /// 全てのサーバーの現在の待機数の合計
     var poolCount: Int {
-        lock.lock()
-        defer { lock.unlock() }
+        lock.lock(); defer { lock.unlock() }
         return cache.reduce(0) { $0 + $1.value.poolCount }
     }
     /// 全てのサーバーの現在の接続数の合計
     var connectingCount: Int {
-        lock.lock()
-        defer { lock.unlock() }
+        lock.lock(); defer { lock.unlock() }
         return cache.reduce(0) { $0 + $1.value.connectingCount }
     }
     

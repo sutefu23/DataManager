@@ -50,7 +50,7 @@ public final class FileMakerDB: DMLogger {
     let password: String
 
     private init(server: String, filename: String, user: String, password: String) {
-        self.server = serverCache.server(server)
+        self.server = FileMakerServerCache.shared.server(server)
         self.dbURL = self.server.makeURL(with: filename)
         self.filename = filename
         self.user = user
@@ -186,19 +186,12 @@ public final class FileMakerDB: DMLogger {
 
     /// 現在使用していないアイドル状態のセッションを閉じる
     public static func logoutAll() {
-        serverCache.logoutAll()
+        FileMakerServerCache.shared.logoutAll()
     }
-    
-    /// 現在使用していないアイドル状態のセッションを非同期で閉じる
-//    public static func logoutAllAsync() {
-//        DispatchQueue.global(qos: .utility).async {
-//            serverCache.logoutAll()
-//        }
-//    }
     /// 全てのサーバーの現在の待機数の合計
-    public static var poolCount: Int { serverCache.poolCount }
+    public static var poolCount: Int { FileMakerServerCache.shared.poolCount }
     /// 全てのサーバーの現在の接続数の合計
-    public static var connectionCount: Int { serverCache.connectingCount }
+    public static var connectionCount: Int { FileMakerServerCache.shared.connectingCount }
     /// DBについてログをとる
     public func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {
         currentLogSystem.registLogData(DMFileMakerDBRecord(self, data: data),  level)
