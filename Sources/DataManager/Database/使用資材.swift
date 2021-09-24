@@ -7,7 +7,11 @@
 
 import Foundation
 
-public class 使用資材型: FileMakerImportRecord {
+public protocol 登録日時比較可能型 {
+    var 登録日時:Date { get }
+}
+
+public class 使用資材型: FileMakerImportRecord,登録日時比較可能型 {
     public static var name: String { "使用資材" }
     public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
     public static var layout: String { "DataAPI_17" }
@@ -65,7 +69,13 @@ public class 使用資材型: FileMakerImportRecord {
 //    public static func makeExportCheckQuery(exportUUID: UUID) -> FileMakerQuery {
 //        return ["登録セッションUUID": "==\(exportUUID.uuidString)"]
 //    }
-
+    
+    public static func find(登録日:ClosedRange<Day>) throws -> [使用資材型] {
+        var query = [String: String]()
+        query["登録日"] = makeQueryDayString(登録日)
+        return try find(query: query)
+    }
+    
     static func find(query: FileMakerQuery, session: FileMakerSession? = nil) throws -> [使用資材型] {
         if query.isEmpty { return [] }
 

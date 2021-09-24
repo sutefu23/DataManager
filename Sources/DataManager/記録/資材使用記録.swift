@@ -10,7 +10,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public enum 印刷対象型: String {
+public enum 印刷対象型: String, Hashable {
     public static let 仮印刷対象工程: Set<工程型> = [.裏加工, .裏加工_溶接]
     case 全て
     case なし
@@ -133,9 +133,16 @@ public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheE
     }
 }
 
-public final class 資材使用記録型: DMSystemRecord<資材使用記録Data型> {
+public final class 資材使用記録型: DMSystemRecord<資材使用記録Data型>,登録日時比較可能型 {
+    public var 登録日時: Date {
+        get { data.登録日時 }
+    }
+    
     typealias RecordData = 資材使用記録Data型
 
+    public var 登録日: Day{
+        get {data.登録日時.day}
+    }
 //    public var 登録日時: Date {
 //        get { data.登録日時 }
 //        set { data.登録日時 = newValue }

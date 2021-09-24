@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct 用途型: Equatable {
+public struct 用途型: Equatable, Hashable {
     public static let 天板 = 用途型(用途コード: "Y001", 用途名: "天板")
     public static let 底板 = 用途型(用途コード: "Y002", 用途名: "底板")
     public static let 中板 = 用途型(用途コード: "Y003", 用途名: "中板")
