@@ -14,7 +14,8 @@ public final class 発注型: FileMakerImportRecord {
     public static let layout = "DataAPI_4"
     public static let name = "発注"
 
-//    let record: FileMakerRecord
+    public let recordId: String?
+
     public let 資材: 資材型?
     public let 指定注文番号: 指定注文番号型
     
@@ -77,6 +78,8 @@ public final class 発注型: FileMakerImportRecord {
         self.備考 = try getString("備考")
         self.発注数量文字列 = try getString("発注数量")
         
+        self.recordId = record.recordId
+
         self.状態 = record.発注状態(forKey: "状態") ?? .処理済み
         self.納品日 = record.day(forKey: "納品日")
         self.納品書処理日 = record.day(forKey: "納品書処理日")

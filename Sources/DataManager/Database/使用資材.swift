@@ -13,7 +13,8 @@ public class 使用資材型: FileMakerImportRecord {
     public static var layout: String { "DataAPI_17" }
     
     static let dbName = "DataAPI_17"
-
+    public let recordId: String?
+    
     public var 登録日: Day
     public var 登録時間: Time
     public var 伝票番号: 伝票番号型
@@ -58,6 +59,7 @@ public class 使用資材型: FileMakerImportRecord {
         self.原因工程 = record.工程(forKey: "原因工程")
         self.面積 = record.string(forKey: "面積")
         self.登録セッションUUID = record.string(forKey: "登録セッションUUID") ?? ""
+        self.recordId = record.recordId
     }
 
 //    public static func makeExportCheckQuery(exportUUID: UUID) -> FileMakerQuery {

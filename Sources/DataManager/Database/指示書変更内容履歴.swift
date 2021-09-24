@@ -43,6 +43,8 @@ public struct 指示書変更内容履歴型: FileMakerImportRecord {
     public static let layout = "DataAPI_2"
     public static let name = "指示書変更内容履歴"
     
+    public let recordId: String?
+    
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
         guard let 内容 = record.string(forKey: "内容") else { throw makeError("内容") }
@@ -51,6 +53,7 @@ public struct 指示書変更内容履歴型: FileMakerImportRecord {
         guard let 社員番号 = record.integer(forKey: "社員番号") else { throw makeError("社員番号") }
         guard let 指示書UUIDStr = record.string(forKey: "指示書UUID"), let 指示書UUID = UUID(uuidString: 指示書UUIDStr) else { throw makeError("指示書UUID") }
         guard let 指示書 = try 指示書UUIDキャッシュ型.shared.find(指示書UUID) else { throw makeError("指示書") }
+        self.recordId = record.recordId
         self.内容 = 内容
         self.日時 = 日時
         

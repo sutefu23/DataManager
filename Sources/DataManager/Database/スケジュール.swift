@@ -12,6 +12,8 @@ struct スケジュール型: FileMakerImportRecord {
     static let layout: String = "DataAPI_6" 
     static let name: String = "スケジュール"
     
+    let recordId: String?
+    
     init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "スケジュール", mes: key) }
         guard let 種類 = record.string(forKey: "種類") else { throw makeError("種類") }
@@ -21,6 +23,7 @@ struct スケジュール型: FileMakerImportRecord {
         self.開始時刻 = record.time(forKey: "開始時刻")
         self.終了日 = record.day(forKey: "終了日")
         self.終了時刻 = record.time(forKey: "終了時刻")
+        self.recordId = record.recordId
     }
     let 種類: String
     let 開始日: Day

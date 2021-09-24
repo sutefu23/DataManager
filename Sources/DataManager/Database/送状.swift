@@ -155,7 +155,7 @@ public class 送状型: Identifiable, FileMakerImportRecord {
     public static let layout = "DataAPI_16"
     public static let name = "送状"
 //    let record: FileMakerRecord
-    public let recordID: String?
+    public let recordId: String?
 
     public var 管理番号: String
     public var 送り状番号: 送り状番号型
@@ -197,7 +197,6 @@ public class 送状型: Identifiable, FileMakerImportRecord {
             guard let string = record.string(forKey: key) else { throw makeError(key) }
             return string
         }
-        self.recordID = record.recordId
         guard let 指示書UUID = try UUID(uuidString: getString("指示書UUID")) else { throw makeError("指示書UUID") }
         self.指示書UUID = 指示書UUID
         
@@ -228,6 +227,8 @@ public class 送状型: Identifiable, FileMakerImportRecord {
         self.地域 = try getString("地域")
         self.ヤマトお客様コード = try getString("ヤマトお客様コード")
 
+        self.recordId = record.recordId
+
         self.伝票番号 = record.伝票番号(forKey: "エッチング指示書テーブル::伝票番号")
         self.伝票種類 = record.伝票種類(forKey: "エッチング指示書テーブル::伝票種類")
         self.出荷納期 = record.day(forKey: "エッチング指示書テーブル::出荷納期")
@@ -236,7 +237,7 @@ public class 送状型: Identifiable, FileMakerImportRecord {
     }
 
     init(_ original: 送状型) {
-        self.recordID = original.recordID
+        self.recordId = original.recordId
         self.管理番号 = original.管理番号
         self.送り状番号 = original.送り状番号
         self.福山依頼主コード = original.福山依頼主コード

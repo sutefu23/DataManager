@@ -86,19 +86,19 @@ extension 送状型 {
     
     /// 送状番号をアップロードする
     public func upload送状番号() throws {
-        guard let recordID = self.recordID, !recordID.isEmpty else { throw FileMakerError.update(message: "送状管理番号:\(self.管理番号) レコードIDが見つからない")}
+        guard let recordId = self.recordId, !recordId.isEmpty else { throw FileMakerError.update(message: "送状管理番号:\(self.管理番号) レコードIDが見つからない")}
         var fieldData = FileMakerQuery()
         let data = self.送り状番号.ハイフンなし生データ
         fieldData["送り状番号"] = data
 
         let db = 送状型.db
-        db.log("送り状番号変更", detail: "管理番号=\(recordID), 送り状番号=\(data)", level: .information)
-        try db.update(layout: 送状型.layout, recordId: recordID, fields: fieldData)
+        db.log("送り状番号変更", detail: "管理番号=\(recordId), 送り状番号=\(data)", level: .information)
+        try db.update(layout: 送状型.layout, recordId: recordId, fields: fieldData)
     }
     
     /// サーバーの送状番号欄を「出力済」にする
     public func update送状番号欄出力済() throws {
-        guard self.is送状未出力 && self.recordID != nil else { return }
+        guard self.is送状未出力 && self.recordId != nil else { return }
         self.送り状番号 = 送り状番号型(状態: .運送会社割当待ち, 運送会社: self.運送会社)
         try self.upload送状番号()
     }

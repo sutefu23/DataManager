@@ -13,6 +13,7 @@ public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
     public static let name = "進捗"
     public static let layout = "DataAPI_3"
 
+    public var recordId: String? { self.recordID }
     private(set) var recordID: String
     public var id: String { recordID }
 

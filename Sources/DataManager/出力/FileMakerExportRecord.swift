@@ -74,7 +74,11 @@ public protocol FileMakerImportRecord: DMCacheElement {
     ///
     static func find(querys: [FileMakerQuery]) throws -> [Self]
 
+    var recordId: String? { get }
+    
     init(_ record: FileMakerRecord) throws
+    
+    func delete() throws -> String?
 }
 
 extension FileMakerImportRecord {
@@ -92,6 +96,12 @@ extension FileMakerImportRecord {
     public static func find(recordId: String) throws -> Self? {
         guard let record = try Self.db.find(layout: Self.layout, recordId: recordId) else { return nil }
         return try Self(record)
+    }
+    
+    public func delete() throws -> String? {
+        guard let recordId = self.recordId else { return nil }
+        try Self.db.delete(layout: Self.layout, recordId: recordId)
+        return recordId
     }
 }
 
