@@ -40,6 +40,7 @@ public class 指示書進捗キャッシュ型: DMDBCache<伝票番号型, 進�
     func 現在一覧(_ 伝票番号: 伝票番号型) throws -> 進捗一覧Data型? {
         return try self.find(伝票番号, noCache: true)
     }
+    
     func キャッシュ一覧(_ 伝票番号: 伝票番号型) throws -> 進捗一覧Data型? {
         return try self.find(伝票番号, noCache: false)
     }

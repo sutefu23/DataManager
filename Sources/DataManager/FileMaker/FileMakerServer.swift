@@ -31,7 +31,7 @@ final class FileMakerServer: DMLogger {
     /// 最低180秒はアクセスする
     static let lastAccessInterval: TimeInterval = 180
     /// 有効期限一括チェックの周期。整数で単位は秒
-    static let timerInterval: Int = 5
+    static let timerInterval: Int = 4
 
     // MARK: - プロパティ
     /// 操作ロック
