@@ -363,6 +363,27 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
         DMCacheSystem.shared.remove(handles: handles)
     }
     
+    // MARK: - 共有外部インターフェース
+    /// 外部で計算したキャッシュデータを登録する
+    public final func regist(_ object: R2, forKey key: Key) {
+        let cache = Data(object)
+        lock.lock(); defer { lock.unlock() }
+        if let handle = map[key] {
+            handle.result = cache
+            DMCacheSystem.shared.touch(handle: handle) // ハンドル再利用
+        } else {
+            let handle = KeyResultCacheHandle(map: self, memoryFootPrint: object.memoryFootPrint, key: key, result: cache)
+            map[key] = handle
+            DMCacheSystem.shared.append(handle: handle) // ハンドル新規登録
+        }
+    }
+
+    /// 指定のkeyに対して、キャッシュしていればtrueを返す
+    public final func isCaching(forKey key: Key) -> Bool {
+        lock.lock(); defer { lock.unlock() }
+        return map[key] != nil || working[key] != nil
+    }
+
     /// 全クリア
     public final func removeAllCache() {
         lock.lock(); defer { lock.unlock() }
@@ -376,6 +397,7 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
         DMCacheSystem.shared.remove(handle: handle)
     }
 
+    // MARK: - 内部インターフェース
     /// クラス名文字列(デバッグ用)
     final var name: String {
         let name = String(describing: type(of: self))
@@ -386,8 +408,16 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
         }
     }
 
+    /// 指定されたキーのデータを更新する。キーに対応するデーターがない場合何もしない
+    final func basic_update(forKey key: Key, updator: (inout Data) -> Void) {
+        lock.lock(); defer { lock.unlock() }
+        guard let handle = map[key] else { return }
+        updator(&handle.result)
+        DMCacheSystem.shared.touch(handle: handle)
+    }
+    
     /// キャッシュ変換を行う
-    func basic_convert(forceUpdate: Bool, forKey key: Key) throws -> R2 {
+    final func basic_convert(forceUpdate: Bool, forKey key: Key) throws -> R2 {
         lock.lock()
         // キャッシュにあればそれを返す
         if let handle = map[key] {
@@ -573,7 +603,7 @@ public struct DMDBCacheData<R: DMCacheElement>: BasicCacheResult {
 
 /// DB結果についてキャッシュ
 public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Key, DMDBCacheData<R?>, R?> {
-    /// キャッシュの寿命
+    /// キャッシュの寿命。変更すると既存のキャッシュの寿命も同じだけ変化する
     var lifeTime: TimeInterval
     /// falseなら結果がniの場合キャッシュせず毎回検索する
     private let nilCache: Bool
@@ -592,32 +622,25 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
         self.isDebug = isDebug
     }
 
-    /// 検索結果を登録する
-    public final func regist(_ object: R?, forKey key: Key) {
-        let cache = DMDBCacheData(object)
-        lock.lock(); defer { lock.unlock() }
-        if let handle = map[key] {
-            handle.result = cache
-            DMCacheSystem.shared.touch(handle: handle) // ハンドル再利用
-        } else {
-            let handle = KeyResultCacheHandle(map: self, memoryFootPrint: object.memoryFootPrint, key: key, result: cache)
-            map[key] = handle
-            DMCacheSystem.shared.append(handle: handle) // ハンドル新規登録
+    /// 指定されたキャッシュの寿命を変更する
+    public final func updateLifeTime(_ newLifeTime: TimeInterval? = nil, forKey key: Key) {
+        self.basic_update(forKey: key) {
+            if let newLifeTime = newLifeTime {
+                $0.date = Date(timeIntervalSinceNow: newLifeTime - self.lifeTime)
+            } else {
+                $0.date = Date()
+            }
         }
     }
 
-    /// 指定のkeyに対して、キャッシュしていればtrueを返す
-    public final func isCaching(forKey key: Key) -> Bool {
-        lock.lock(); defer { lock.unlock() }
-        return map[key] != nil || working[key] != nil
-    }
-
-    /// 指定されたキャッシュの寿命を変更する
-    public final func changeExpire(_ maxExpire: TimeInterval, forKey key: Key) {
-        lock.lock(); defer { lock.unlock() }
-        guard let handle = map[key] else { return }
-        handle.result.date = handle.result.date.addingTimeInterval(self.lifeTime - maxExpire)
-        DMCacheSystem.shared.touch(handle: handle)
+    /// 指定されたキャッシュの寿命を制限する
+    public final func limitLifeTime(_ maxLifeTime: TimeInterval, forKey key: Key) {
+        self.basic_update(forKey: key) {
+            let maxDate = Date(timeIntervalSinceNow: maxLifeTime - self.lifeTime)
+            if $0.date > maxDate {
+                $0.date = maxDate
+            }
+        }
     }
 
     /// 指定されたパラメータで検索を行う

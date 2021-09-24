@@ -44,10 +44,6 @@ public class 指示書進捗キャッシュ型: DMDBCache<伝票番号型, 進�
         return try self.find(伝票番号, noCache: false)
     }
     
-    public func cutExpire(伝票番号: 伝票番号型, maxExpire: TimeInterval) {
-        self.changeExpire(maxExpire, forKey: 伝票番号)
-    }
-
     public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .受取, member: member)
     }
