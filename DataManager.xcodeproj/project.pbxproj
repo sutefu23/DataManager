@@ -584,7 +584,6 @@
 			children = (
 				14DF962826E050B5003CC5BE /* LogSystem.swift */,
 				14DF962A26E050BF003CC5BE /* LogData.swift */,
-				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = "エラー処理";
 			sourceTree = "<group>";
@@ -743,6 +742,7 @@
 				OBJ_31 /* FileMakerSession.swift */,
 				OBJ_30 /* FileMakerRecord.swift */,
 				1495333327014C5F00E3BD26 /* FileMakerQuery.swift */,
+				OBJ_29 /* FileMakerError.swift */,
 			);
 			path = FileMaker;
 			sourceTree = "<group>";

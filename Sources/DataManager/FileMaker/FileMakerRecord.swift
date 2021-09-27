@@ -66,8 +66,8 @@ public struct FileMakerRecord {
     }
 
     /// jsonをもとにメインレコードを生成する
-    init?(json dic: [String : Any]) {
-        guard let recordId = FileMakerRecordID(object: dic["recordId"]) else { return nil }
+    init(json dic: [String : Any]) throws {
+        guard let recordId = FileMakerRecordID(object: dic["recordId"]) else { throw FileMakerError.noRecordId }
         self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
         var portalData: [String: [FileMakerRecord]] = [:]
         if case let data as [String: [[String: Any]]] = dic["portalData"] {

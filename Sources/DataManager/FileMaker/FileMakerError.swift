@@ -164,6 +164,7 @@ private func makeCodeMes(_ code: Int?, _ mes: String) -> String {
 public enum FileMakerError: FilemakerErrorProtocol {
     case dbIsDisabled
     case noConnection
+    case noRecordId
     case tokenCreate(message: String, code: Int?)
     case fetch(message: String)
     case find(message: String, code: Int?)
@@ -205,7 +206,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
     
     var message: String {
         switch self {
-        case .dbIsDisabled: return ""
+        case .dbIsDisabled, .noRecordId: return ""
         case .noConnection: return "サーバーに接続できません"
         case
                 .find(message: let mes, code: let code),
@@ -237,6 +238,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
         switch self {
         case .dbIsDisabled: return "サーバー接続停止中"
         case .noConnection: return "サーバーに接続できません"
+        case .noRecordId: return "recordIdが存在しない"
         case .tokenCreate: return "データベースに接続できませんでした(\(self.message))"
         case .fetch(message: let mes): return "データベースからの読み取りができなかった(\(mes))"
         case .find: return "データベースの検索ができなかった(\(self.message))"

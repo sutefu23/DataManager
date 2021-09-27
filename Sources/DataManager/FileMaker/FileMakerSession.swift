@@ -245,7 +245,7 @@ public final class FileMakerSession: DMLogger {
             guard response.code == 0 else {
                 throw FileMakerDetailedError(table: layout, work: .fetch, response: response).log(self)
             }
-            guard let newRecords = response.data else { break }
+            guard let newRecords = try response.data else { break }
             result.append(contentsOf: newRecords)
             let count = newRecords.count
             if count < limit { break }
@@ -291,7 +291,7 @@ public final class FileMakerSession: DMLogger {
             if response.message.contains("Field") {
                 throw FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)").log(self, .critical)
             }
-            guard let newRecords = response.data else { break }
+            guard let newRecords = try response.data else { break }
             result.append(contentsOf: newRecords)
             if max != nil { break }
             let count = newRecords.count
