@@ -56,8 +56,8 @@ public struct 資材入庫状況Data型: DMSystemRecordData, Equatable, DMCacheE
         self.資材入庫状況状態 = 資材入庫状況状態
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["指定注文番号"] = 指定注文番号.テキスト
         data["資材入庫状況状態"] = 資材入庫状況状態.text
         return data
@@ -75,7 +75,7 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
 //    }
     
     
-    init(data: 資材入庫状況Data型, recordID: String) {
+    init(data: 資材入庫状況Data型, recordID: FileMakerRecordID) {
         super.init(data, recordId: recordID)
     }
     
@@ -149,56 +149,3 @@ public class 資材入庫状況キャッシュ型: DMDBCache<指定注文番号�
         }
     }
 }
-
-/*
-public class 資材入庫状況キャッシュ型 {
-    let expireTime: TimeInterval = 10*60*60
-    public static let shared = 資材入庫状況キャッシュ型()
-    private let lock = NSLock()
-    var map = [指定注文番号型: (expire: Date, data:資材入庫状況型?)]()
-
-    func 現在資材入庫状況(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
-        guard let result = try 資材入庫状況型.findDirect(指定注文番号: 指定注文番号) else {
-            let date = Date(timeIntervalSinceNow: self.expireTime)
-            lock.lock()
-            map[指定注文番号] = (date, nil)
-            lock.unlock()
-            return nil
-        }
-        registCache(指定注文番号: 指定注文番号, 資材入庫状況型: result)
-        return result
-    }
-    
-    func キャッシュ資材入庫状況(指定注文番号: 指定注文番号型) throws -> 資材入庫状況型? {
-        lock.lock()
-        let cache = map[指定注文番号]
-        lock.unlock()
-        if let cache = cache, Date() < cache.expire { return cache.data }
-        return try self.現在資材入庫状況(指定注文番号: 指定注文番号)
-    }
-    
-    public func removeOldData() {
-        try? 資材入庫状況型.removeOld()
-    }
-    
-    func flushCache(指定注文番号: 指定注文番号型) {
-        lock.lock()
-        self.map[指定注文番号] = nil
-        lock.unlock()
-    }
-    
-    func registCache(指定注文番号: 指定注文番号型, 資材入庫状況型: 資材入庫状況型?) {
-        let date = Date(timeIntervalSinceNow: self.expireTime)
-        lock.lock()
-        map[指定注文番号] = (date, 資材入庫状況型)
-        lock.unlock()
-    }
-    
-    func flushAllCache() {
-        lock.lock()
-        map.removeAll()
-        lock.unlock()
-//        try? 資材入庫状況型.removeOld()
-    }
-}
-*/

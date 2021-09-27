@@ -8,41 +8,50 @@
 
 import Foundation
 
-public final class 部署型: Comparable, Hashable, Codable {
+public final class 部署型: FileMakerImportRecord, Comparable, Hashable, Codable {
+    public static let layout = "DataAPI_11"
+    
     public var 部署記号: String { return "\(self.部署番号)" }
     public var 部署名: String
     public let 部署番号: Int
+    public let recordId: FileMakerRecordID?
     
     public init(_ 部署番号: Int, _ 部署名: String) {
         if let sec = 部署型.部署番号マップ[部署番号] {
             self.部署名 = sec.部署名
             self.部署番号 = sec.部署番号
+            self.recordId = sec.recordId
         } else {
             self.部署名 = 部署名
             self.部署番号 = 部署番号
+            self.recordId = nil
         }
     }
     
-    init(_ record: FileMakerRecord) throws {
+    public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "部署", mes: key) }
         guard let code = record.string(forKey: "部署記号"),
               let number = Int(code) else {
                   throw makeError("部署記号")
               }
         guard let name = record.string(forKey: "部署名") else { throw makeError("部署名") }
+        self.recordId = record.recordId
         self.部署番号 = number
         self.部署名 = name
     }
     
+    public var memoryFootPrint: Int { return 部署名.memoryFootPrint + 部署番号.memoryFootPrint + recordId.memoryFootPrint }
+
     // MARK: - Coable
     enum CodingKeys: String, CodingKey {
         case 部署名, 部署番号
     }
     
-    public required init(from decoder: Decoder) throws {
+    public required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.部署番号 = try values.decode(Int.self, forKey: .部署番号)
-        self.部署名 = try values.decode(String.self, forKey: .部署名)
+        let 部署番号 = try values.decode(Int.self, forKey: .部署番号)
+        let 部署名 = try values.decode(String.self, forKey: .部署名)
+        self.init(部署番号, 部署名)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -140,20 +149,10 @@ extension FileMakerRecord {
 
 // MARK: - 検索
 extension 部署型 {
-    static let dbName = "DataAPI_11"
-    
-    static func fetchAll() throws -> [部署型] {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.fetch(layout: 部署型.dbName)
-        return list.compactMap { try? 部署型($0) }
-    }
-    
-    public static func find(部署記号: String? = nil, 部署名: String? = nil) throws -> [部署型] {
+        public static func find(部署記号: String? = nil, 部署名: String? = nil) throws -> [部署型] {
         var query = FileMakerQuery()
         query["部署記号"] = 部署記号
         query["部署名"] = 部署名
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 部署型.dbName, query: [query])
-        return try list.map { try 部署型($0) }
+        return try find(query: query)
     }
 }

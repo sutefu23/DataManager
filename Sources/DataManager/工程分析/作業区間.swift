@@ -24,7 +24,7 @@ class 作業区間型 {
     }
 }
 
-func make作業区間(_ source: [進捗型]) -> (list: [作業区間型], recordIDMap: [String: 作業区間型]) {
+func make作業区間(_ source: [進捗型]) -> (list: [作業区間型], recordIDMap: [FileMakerRecordID: 作業区間型]) {
     struct MapKey: Hashable {
         var 伝票番号: 伝票番号型
         var 工程: 工程型
@@ -41,7 +41,7 @@ func make作業区間(_ source: [進捗型]) -> (list: [作業区間型], record
     let group = DispatchGroup()
     let lock = NSLock()
     let lock2 = NSLock()
-    var recordIDMap: [String: 作業区間型] = [:]
+    var recordIDMap: [FileMakerRecordID: 作業区間型] = [:]
     var result: [作業区間型] = []
     let map = Dictionary(grouping: source) { MapKey($0) }
     for (key, list) in map {

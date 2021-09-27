@@ -12,9 +12,8 @@ public class 外注型 {
 }
 public final class 発注型: FileMakerImportRecord {
     public static let layout = "DataAPI_4"
-    public static let name = "発注"
 
-    public let recordId: String?
+    public let recordId: FileMakerRecordID?
 
     public let 資材: 資材型?
     public let 指定注文番号: 指定注文番号型
@@ -104,7 +103,7 @@ public extension 発注型 {
             case .未処理, .発注済み, .発注待ち:
                 return .納品書待ち
             case .処理済み, .納品書待ち, .納品済み:
-                try? state.delete()
+                let _ = try? state.delete()
                 return self.状態
             }
         }

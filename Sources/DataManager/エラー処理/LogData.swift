@@ -126,3 +126,16 @@ final class DMFileMakerServerRecord<T: DMRecordData>: DMHeaderRecordData<T> {
     
     override var detailHeader: String { "db=\(name)" }
 }
+
+final class DMFileMakerObjectRecord<T: DMRecordData>: DMHeaderRecordData<T> {
+    let db: FileMakerDB
+    let layout: String
+    
+    init(db: FileMakerDB, layout: String, data: T) {
+        self.db = db
+        self.layout = layout
+        super.init(data)
+    }
+    
+    override var detailHeader: String { "db=\(db.filename), layout=\(layout)"}
+}

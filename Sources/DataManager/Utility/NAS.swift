@@ -126,7 +126,6 @@ public enum NAS4User: Int, RawRepresentable, Hashable, Identifiable {
     }
 }
 
-
 public struct NASUser: Hashable {
     var account: String
     var password: String

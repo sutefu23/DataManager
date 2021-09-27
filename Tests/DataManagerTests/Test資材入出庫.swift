@@ -20,7 +20,7 @@ class TestInOutObjects: XCTestCase {
 }
 
 private func makeTest1() -> 資材入出庫出力型 {
-    let sizai = 資材型(図番: "990180B")!
+    let sizai = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990180B")!
     let busyo = 部署型.加工
     let inCount = 5
     let outCount = 0
@@ -32,7 +32,7 @@ private func makeTest1() -> 資材入出庫出力型 {
 private func makeTest2() -> 資材入出庫出力型 {
     let day = Day(2020, 02, 1)
     let time = Time(12, 33)
-    let sizai = 資材型(図番: "990180M")!
+    let sizai = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990180M")!
     let busyo = 部署型.加工
     let inCount = 0
     let outCount = 2
@@ -44,7 +44,7 @@ private func makeTest2() -> 資材入出庫出力型 {
 private func makeTest3() -> 資材入出庫出力型 {
     let day = Day(2020, 02, 1)
     let time = Time(12, 33)
-    let sizai = 資材型(図番: "5904")!
+    let sizai = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "5904")!
     let busyo = 部署型.レーザー・ウォーター・照合・検査
     let inCount = 0
     let outCount = 2

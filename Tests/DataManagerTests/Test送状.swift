@@ -32,7 +32,8 @@ class TestOkurijou: XCTestCase {
         try! order.upload送状番号()
 
         let order2 = try! 送状型.findDirect(送状管理番号: "134784")!
-        XCTAssertEqual(order2.送り状番号.rawValue, "福山送状出力済")
+        XCTAssertEqual(order2.送り状番号.rawValue, "福山出力済")
+        XCTAssertEqual(order2.送り状番号.状態, .運送会社割当待ち)
 
         order.送り状番号 = original
         try! order.upload送状番号()

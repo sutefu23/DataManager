@@ -86,7 +86,7 @@ public final class FileMakerDB: DMLogger {
     /// セッションを一時的に取得して作業を行う
     /// - Parameter work: セッション上で行う作業。なんらかの値を返す
     /// - Returns: 作業の返り値。Voidの時もある
-    private func execute<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
+    func execute<T>(_ work: (FileMakerSession) throws -> T) rethrows -> T {
         try autoreleasepool {
             let session = server.pullSession(url: self.dbURL, user: self.user, password: self.password)
             defer { server.putSession(session) }
@@ -147,19 +147,19 @@ public final class FileMakerDB: DMLogger {
         return try self.execute { try $0.download(url) }
     }
     /// 指定されたレイアウトのrecordIdのレコードについてfiledsの項目を更新する
-    func update(layout: String, recordId: String, fields: FileMakerQuery) throws {
+    func update(layout: String, recordId: FileMakerRecordID, fields: FileMakerQuery) throws {
         try checkStop()
-        return try self.execute { try $0.update(layout: layout, recordID: recordId,fields: fields) }
+        return try self.execute { try $0.update(layout: layout, recordID: recordId, fields: fields) }
     }
     ///指定されたレイアウトのrecordIdのレコードを削除する
-    func delete(layout: String, recordId: String) throws {
+    func delete(layout: String, recordId: FileMakerRecordID) throws {
         try checkStop()
         return try self.execute { try $0.delete(layout: layout, recordID: recordId) }
     }
     
     /// 指定されたレイアウトにfieldsを用いてレコードを作成する
     @discardableResult
-    func insert(layout: String, fields: FileMakerQuery) throws -> String {
+    func insert(layout: String, fields: FileMakerQuery) throws -> FileMakerRecordID {
         try checkStop()
         return try self.execute { try $0.insert(layout: layout, fields: fields) }
     }

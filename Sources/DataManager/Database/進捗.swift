@@ -10,12 +10,11 @@ import Foundation
 
 public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
-    public static let name = "進捗"
     public static let layout = "DataAPI_3"
 
-    public var recordId: String? { self.recordID }
-    private(set) var recordID: String
-    public var id: String { recordID }
+    public var recordId: FileMakerRecordID? { self.recordID }
+    private(set) var recordID: FileMakerRecordID
+    public var id: FileMakerRecordID { recordID }
 
     public let 登録日: Day // 24
     public let 登録時間: Time // 24
@@ -86,8 +85,8 @@ public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
         return left.工程 == right.工程 && left.作業内容 == right.作業内容 && left.作業者 == right.作業者 && left.登録日時 == right.登録日時 && left.作業種別 == right.作業種別 && left.作業系列 == right.作業系列
     }
     
-    public lazy var 同時作業レコード: Set<String> = {
-        var set = Set<String>()
+    public lazy var 同時作業レコード: Set<FileMakerRecordID> = {
+        var set = Set<FileMakerRecordID>()
         set.insert(self.recordID)
         switch self.作業内容 {
         case .受取, .開始:

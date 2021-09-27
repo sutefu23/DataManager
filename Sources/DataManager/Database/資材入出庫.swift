@@ -9,7 +9,10 @@
 import Foundation
 
 public final class 資材入出庫型: FileMakerImportRecord {
-    public let recordId: String?
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static var layout: String { "DataAPI_12" }
+
+    public let recordId: FileMakerRecordID?
 
     public let 登録日: Day
     public let 登録時間: Time
@@ -32,7 +35,7 @@ public final class 資材入出庫型: FileMakerImportRecord {
               let type = record.入力区分(forKey: "入力区分"),
               let item = record.資材(forKey: "資材番号"),
               let name = record.string(forKey: "修正社員名"),
-              let sec = record.キャッシュ部署(forKey: "部署記号") else { throw FileMakerError.invalidData(message: "recordId:[\(record.recordId ?? "")]不正な内容") }
+              let sec = record.キャッシュ部署(forKey: "部署記号") else { throw FileMakerError.invalidData(message: "recordId:[\(record.recordId?.description ?? "")]不正な内容") }
         self.recordId = record.recordId
         let input = record.integer(forKey: "入庫数") ?? 0
         let output = record.integer(forKey: "出庫数") ?? 0
@@ -51,11 +54,6 @@ public final class 資材入出庫型: FileMakerImportRecord {
         guard let num = 資材.単価 else { return nil }
         return num * Double(出庫数)
     }
-    
-    public static var db: FileMakerDB { .pm_osakaname }
-    public static var layout: String { "DataAPI_12" }
-    public static var name: String { "資材入出庫" }
-    
 }
 
 extension 資材入出庫型 {

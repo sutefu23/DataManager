@@ -225,7 +225,7 @@ public class 作業記録型 {
     
     /// 同時にまとめて行われた進捗入力・進捗出力の数。単独の時は1を返す
     public lazy var 同時作業数: Int = {
-        var set = Set<String>()
+        var set = Set<FileMakerRecordID>()
         if let fromRecords = self.開始進捗?.同時作業レコード {
             set.formUnion(fromRecords)
         }
@@ -243,7 +243,7 @@ extension Sequence where Element == 進捗型 {
     }
     
     /// 同時にまとめて行われた進捗入力・進捗出力（レコードID）
-    public var 同時作業レコード: Set<String> {
+    public var 同時作業レコード: Set<FileMakerRecordID> {
         return self.reduce([]) { $0.union($1.同時作業レコード) }
     }
 }

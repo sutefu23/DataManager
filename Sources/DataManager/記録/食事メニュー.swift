@@ -128,8 +128,8 @@ extension 食事メニューData型: DMSystemRecordData {
         self.金額 = record.integer(forKey: "金額") ?? 0
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["図番"] = 図番
         data["提供日"] = 提供日.fmString
         data["発注日"] = 発注日.fmString

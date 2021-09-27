@@ -41,9 +41,8 @@ public enum 変更履歴種類型: Hashable {
 
 public struct 指示書変更内容履歴型: FileMakerImportRecord {
     public static let layout = "DataAPI_2"
-    public static let name = "指示書変更内容履歴"
     
-    public let recordId: String?
+    public let recordId: FileMakerRecordID?
     
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }

@@ -63,47 +63,6 @@ extension FileMakerExportRecord {
     }
 }
 
-/// 入力レコード
-public protocol FileMakerImportRecord: DMCacheElement {
-    static var db: FileMakerDB { get }
-    static var layout: String { get }
-    static var name: String { get }
-
-    /// 指定された検索条件で検索する
-    static func find(query: FileMakerQuery) throws -> [Self]
-    ///
-    static func find(querys: [FileMakerQuery]) throws -> [Self]
-
-    var recordId: String? { get }
-    
-    init(_ record: FileMakerRecord) throws
-    
-    func delete() throws -> String?
-}
-
-extension FileMakerImportRecord {
-    public static var db: FileMakerDB { .pm_osakaname }
-
-    public static func find(query: FileMakerQuery) throws -> [Self] {
-        return try self.find(querys: [query])
-    }
-
-    public static func find(querys: [FileMakerQuery]) throws -> [Self] {
-        let list = try db.find(layout: Self.layout, query: querys)
-        return try list.map { try Self($0) }
-    }
-    
-    public static func find(recordId: String) throws -> Self? {
-        guard let record = try Self.db.find(layout: Self.layout, recordId: recordId) else { return nil }
-        return try Self(record)
-    }
-    
-    public func delete() throws -> String? {
-        guard let recordId = self.recordId else { return nil }
-        try Self.db.delete(layout: Self.layout, recordId: recordId)
-        return recordId
-    }
-}
 
 extension Array where Element: FileMakerExportRecord {
     public func exportToDB(重複チェック: Bool = false) throws {
@@ -122,14 +81,16 @@ extension Array where Element: FileMakerExportRecord {
             session.log("\(Element.layout)へ\(Element.ImportBuddyType.name)重複チェックで完了")
             return
         }
-        
-        /// ループの回数
-        var loopCount = 1
+        var retryText = ""
+        /// リトライの最大回数
+        let maxRetryCount = 1
+        /// 現在のリトライの回数
+        var retryCount = 0
         repeat {
             let uuid = UUID()
             let detail = "uuid: \(uuid.uuidString)"
             try Element.prepareUploads(uuid: uuid, session: session)
-            session.log("\(Element.layout)へ\(targets.count)件\(Element.ImportBuddyType.name)出力開始[\(loopCount)]", detail: detail, level: .information)
+            session.log("\(Element.layout)へ\(targets.count)件\(Element.ImportBuddyType.name)出力開始\(retryText)", detail: detail, level: .information)
             let startTime = Date()
             // アップロード
             for progress in targets {
@@ -137,24 +98,23 @@ extension Array where Element: FileMakerExportRecord {
                 progress.flushCache()
             }
             let uploadTime = Date().timeIntervalSince(startTime)
-            let waitTime, extendTime: TimeInterval
-            waitTime = 1.0
-            extendTime = 1.0
-//            waitTime = TimeInterval(loopCount) * 2
-//            extendTime = TimeInterval(loopCount)
-            Thread.sleep(forTimeInterval: waitTime + 1.0)
+            let waitTime = 1.0
+            let extendTime = 1.0
+            Thread.sleep(forTimeInterval: waitTime + extendTime)
             // 更新
-            session.log("\(Element.ImportBuddyType.name)出力スクリプト実行開始[\(loopCount)]", detail: detail, level: .information)
-            try session.executeScript(layout: Element.layout, script: Element.exportScript, param: uuid.uuidString, waitTime: (Swift.max(uploadTime, waitTime), extendTime))
+            session.log("\(Element.ImportBuddyType.name)出力スクリプト実行開始\(retryText)", detail: detail, level: .information)
+            try session.executeScript(layout: Element.layout, script: Element.exportScript, param: uuid.uuidString, waitTime: (Swift.max(uploadTime * 1.5, waitTime), extendTime))
             // チェック
-            session.log("\(Element.ImportBuddyType.name)出力チェック開始[\(loopCount)]", detail: detail, level: .information)
+            session.log("\(Element.ImportBuddyType.name)出力チェック開始\(retryText)", detail: detail, level: .information)
             let count = try Element.countUploads(uuid: uuid, session: session)
             if count == targets.count {
-                session.log("\(Element.ImportBuddyType.name)出力完了[\(loopCount)]", detail: detail, level: .information)
+                session.log("\(Element.ImportBuddyType.name)出力完了\(retryText)", detail: detail, level: .information)
                 return
             }
-          loopCount += 1
-        } while loopCount <= 2
+            retryCount += 1
+            retryText = "[リトライ\(retryCount)]"
+        } while retryCount <= maxRetryCount
+        // リトライ回数オーバー
         throw FileMakerError.upload(message: "\(Element.layout)へ\(targets.count)件").log(.critical)
     }
 }

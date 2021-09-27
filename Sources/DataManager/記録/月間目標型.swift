@@ -64,8 +64,8 @@ extension 月間目標Data型 {
                   外注比率: 外注比率)
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["対象月"] = self.対象月.firstDay.fmString
         data["箱文字件数"] = String(箱文字件数)
         data["溶接件数"] = String(溶接件数)

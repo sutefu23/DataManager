@@ -38,11 +38,11 @@ protocol FilemakerErrorProtocol: LocalizedError {
 
 enum FileMakerErrorWork {
     case fetch
-    case delete(recordID: String)
+    case delete(recordID: FileMakerRecordID)
     case find(query: [FileMakerQuery])
     case insert(fields: FileMakerQuery)
     case exec(script: String, param: String)
-    case update(recordID: String, fields: FileMakerQuery)
+    case update(recordID: FileMakerRecordID, fields: FileMakerQuery)
 
     var title: String {
         switch self {
@@ -66,7 +66,7 @@ enum FileMakerErrorWork {
         }
     }
     
-    var recordID: String? {
+    var recordID: FileMakerRecordID? {
         switch self {
         case .delete(recordID: let recordID), .update(recordID: let recordID, fields: _):
             return recordID
@@ -122,7 +122,7 @@ class FileMakerDetailedError: FilemakerErrorProtocol {
         if let response = response {
             mes += " \(response.message)"
         }
-        if let recordID = work.recordID, !recordID.isEmpty {
+        if let recordID = work.recordID {
             mes += " recordID:\(recordID)"
         }
         if let query = work.query, !query.isEmpty {
@@ -182,7 +182,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
     case invalidData(message: String)
     case notFound(message: String)
     case internalError(message: String)
-    case invalidRecord(name: String, recordId: String?, mes: String)
+    case invalidRecord(name: String, recordId: FileMakerRecordID?, mes: String)
     
     init(invalidData keys: String..., record: FileMakerRecord) {
         let list: [String] = keys.map { "\($0): \(record.string(forKey: $0) ?? "")" }
@@ -255,7 +255,7 @@ public enum FileMakerError: FilemakerErrorProtocol {
         case .notFound(message: let mes): return "必要なレコードが見つからなかった(\(mes))"
         case .internalError(message: let mes): return "内部ロジックエラー[\(mes)]"
         case .invalidRecord(name: let name, recordId: let recordId, mes: let mes):
-            return "\(name): 初期化失敗[recordId=\(recordId ?? "?")] 不明な\(mes)"
+            return "\(name): 初期化失敗[recordId=\(recordId?.description ?? "?")] 不明な\(mes)"
         }
     }
     

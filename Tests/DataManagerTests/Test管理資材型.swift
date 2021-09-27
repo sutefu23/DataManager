@@ -14,7 +14,7 @@ class TestKanriSizai: XCTestCase {
     func testAnalyze() {
         var obj: 管理板材型
         // 1.0t　4×8
-        obj = 管理板材型(資材: 資材型(図番: "990173M")!)
+        obj = 管理板材型(資材: try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990173M")!)
         XCTAssertEqual(obj.板厚, "1.0")
         XCTAssertEqual(obj.サイズ, "4x8")
         XCTAssertEqual(obj.高さ, 1219)
@@ -32,7 +32,7 @@ class TestKanriSizai: XCTestCase {
 //        XCTAssertEqual(obj.高さ, 1219)
 //        XCTAssertEqual(obj.横幅, 2438)
         // スミペックス透明　4.0t　1100×1350
-        obj = 管理板材型(資材: 資材型(図番: "990772")!)
+        obj = 管理板材型(資材: try! 資材キャッシュ型.shared.キャッシュ資材(図番: "990772")!)
         XCTAssertEqual(obj.板厚, "4.0")
         XCTAssertEqual(obj.サイズ, "1100×1350")
         XCTAssertEqual(obj.高さ, 1100)

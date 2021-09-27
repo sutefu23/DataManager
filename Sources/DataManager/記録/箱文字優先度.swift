@@ -52,8 +52,8 @@ public struct 箱文字優先度Data型: DMSystemRecordData, Equatable, DMCacheE
         return left.伝票番号 == right.伝票番号 && left.優先設定 == right.優先設定 && left.表示設定 == right.表示設定 && left.表示設定日 == right.表示設定日 && left.工程 == right.工程
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         if let num = self.伝票番号 { data["伝票番号"] = String(num.整数値) }
         data["優先設定"] = 優先設定.code
         data["表示設定"] = 表示設定.code
@@ -96,7 +96,7 @@ public final class 箱文字優先度型: DMSystemRecord<箱文字優先度Data�
 //        set { data.工程 = newValue }
 //    }
     
-    init(data: 箱文字優先度Data型, recordId: String) {
+    init(data: 箱文字優先度Data型, recordId: FileMakerRecordID) {
         super.init(data, recordId: recordId)
     }
     

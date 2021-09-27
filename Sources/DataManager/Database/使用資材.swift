@@ -12,12 +12,9 @@ public protocol 登録日時比較可能型 {
 }
 
 public class 使用資材型: FileMakerImportRecord,登録日時比較可能型 {
-    public static var name: String { "使用資材" }
-    public static var db: FileMakerDB { FileMakerDB.pm_osakaname }
     public static var layout: String { "DataAPI_17" }
     
-    static let dbName = "DataAPI_17"
-    public let recordId: String?
+    public let recordId: FileMakerRecordID?
     
     public var 登録日: Day
     public var 登録時間: Time
@@ -46,7 +43,7 @@ public class 使用資材型: FileMakerImportRecord,登録日時比較可能型 
               let order = record.伝票番号(forKey: "伝票番号"),
               let item = record.string(forKey: "図番"),
               let title = record.string(forKey: "表示名"),
-              let use = record.string(forKey: "使用量") else { throw FileMakerError.invalidData(message: "不正な使用資材データ: レコードID\(record.recordId ?? "")") }
+              let use = record.string(forKey: "使用量") else { throw FileMakerError.invalidData(message: "不正な使用資材データ: レコードID\(record.recordId?.description ?? "nil")") }
         self.登録日 = day
         self.登録時間 = time
         self.伝票番号 = order
@@ -81,9 +78,9 @@ public class 使用資材型: FileMakerImportRecord,登録日時比較可能型 
 
         let list: [FileMakerRecord]
         if let session = session {
-            list = try session.find(layout: 使用資材型.dbName, query: [query])
+            list = try session.find(layout: 使用資材型.layout, query: [query])
         } else {
-            list = try FileMakerDB.pm_osakaname.find(layout: 使用資材型.dbName, query: [query])
+            list = try FileMakerDB.pm_osakaname.find(layout: 使用資材型.layout, query: [query])
         }
         return try list.map { try 使用資材型($0) }
     }

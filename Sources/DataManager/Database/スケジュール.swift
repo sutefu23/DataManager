@@ -10,9 +10,8 @@ import Foundation
 
 struct スケジュール型: FileMakerImportRecord {
     static let layout: String = "DataAPI_6" 
-    static let name: String = "スケジュール"
     
-    let recordId: String?
+    let recordId: FileMakerRecordID?
     
     init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "スケジュール", mes: key) }

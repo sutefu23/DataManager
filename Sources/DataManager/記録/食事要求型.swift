@@ -80,8 +80,8 @@ public struct 食事要求Data型: DMSystemRecordData {
         self.メニューID = メニューID
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["社員番号"] = self.社員番号
         data["メニューID"] = self.メニューID
         data["要求状態"] = self.要求状態.text

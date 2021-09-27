@@ -55,8 +55,8 @@ public struct IDカードData型: DMSystemRecordData {
         self.食事グループ = 食事グループ
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["社員番号"] = 社員番号
         data["カードID"] = カードID
         data["種類"] = 種類.rawValue

@@ -11,9 +11,35 @@ import Foundation
 /// レコードの種類
 private enum RecordType {
     /// メインレコード
-    case master(recordId: String, portals: [String: [FileMakerRecord]])
+    case master(recordId: FileMakerRecordID, portals: [String: [FileMakerRecord]])
     /// ポータルレコード
     case portal(header: String)
+}
+
+/// レコードID
+public struct FileMakerRecordID: Hashable, CustomStringConvertible, DMCacheElement {
+    let data: Int
+    
+    init?(string: String?) {
+        guard let string = string, let FileMakerRecordID = Int(string) else { return nil }
+        self.data = FileMakerRecordID
+    }
+    
+    init?(object: Any?) {
+        switch object {
+        case let str as String:
+            guard let intValue = Int(str) else { return nil }
+            self.data = intValue
+        case let intValue as Int:
+            self.data = intValue
+        default:
+            return nil
+        }
+    }
+    
+    public var memoryFootPrint: Int { return data.memoryFootPrint }
+    
+    public var description: String { "\(data)" }
 }
 
 /// 1レコードに対応するデータ
@@ -24,7 +50,7 @@ public struct FileMakerRecord {
     private let type: RecordType
 
     /// レコードID
-    var recordId: String? {
+    var recordId: FileMakerRecordID? {
         switch type {
         case .master(recordId: let recordId, portals: _):
             return recordId
@@ -40,23 +66,20 @@ public struct FileMakerRecord {
     }
 
     /// jsonをもとにメインレコードを生成する
-    init?(json data: Any) {
-        guard case let dic as [String: Any] = data, case let recordId as String = dic["recordId"] else { return nil }
+    init?(json dic: [String : Any]) {
+        guard let recordId = FileMakerRecordID(object: dic["recordId"]) else { return nil }
         self.fieldData = dic["fieldData"] as? [String: Any] ?? [:]
-        if case let data as [String: [[String: Any]]] = dic["portalData"], !data.isEmpty {
-            var portalData: [String: [FileMakerRecord]] = [:]
-            for (key, array) in data {
-                let source = array.map { FileMakerRecord(portal: key, fieldData: $0) }
-                portalData[key] = source
+        var portalData: [String: [FileMakerRecord]] = [:]
+        if case let data as [String: [[String: Any]]] = dic["portalData"] {
+            for (key, list) in data {
+                portalData[key] = list.map { FileMakerRecord(portal: key, fieldData: $0) }
             }
-            self.type = .master(recordId: recordId, portals: portalData)
-        } else {
-            self.type = .master(recordId: recordId, portals: [:])
         }
+        self.type = .master(recordId: recordId, portals: portalData)
     }
     
     /// ポータルレコードを生成する。portalがポータルの名前になる。ポータルのレコードIDは必ずnilとなる
-    init(portal name: String, fieldData: [String:Any]) {
+    init(portal name: String, fieldData: [String : Any]) {
         assert(!name.isEmpty)
         self.fieldData = fieldData
         self.type = .portal(header: "\(name)::")
@@ -166,17 +189,5 @@ public struct FileMakerRecord {
         let db = FileMakerDB.pm_osakaname
         let data = try? db.downloadObject(url: url)
         return data
-    }
-}
-
-// MARK: -
-/// 日付の範囲をクエリ文字列に変換する
-func makeQueryDayString(_ range: ClosedRange<Day>) -> String {
-    let from = range.lowerBound
-    let to = range.upperBound
-    if from == to {
-        return "\(from.fmString)"
-    } else {
-        return "\(from.fmString)...\(to.fmString)"
     }
 }

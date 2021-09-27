@@ -318,15 +318,20 @@ private class KeyResultCacheHandle<Key: DMCacheKey, Data: BasicCacheResult>: Cac
 
 /// キャッシュデータの共通の挙動
 public protocol BasicCacheResult {
+    /// 保持するデータの型
     associatedtype R2
-    
+    /// データで初期化
     init(_ data: R2)
+    /// エラーで初期化
     init(_ error: Error)
 
+    /// データを取り出す
     func get() throws -> R2
 }
 
+/// キャッシュのキーのインターフェース
 public typealias DMCacheKey = DMCacheElement & Hashable & CustomStringConvertible
+
 /// 基本的なキャッシュの基礎
 public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCacheElement>: CacheStorage where Data.R2 == R2 {
     /// 管理用ロック
@@ -336,7 +341,7 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
     /// キャッシュデータ
     fileprivate var map: [Key: KeyResultCacheHandle<Key, Data>]
     /// 作業中データ
-    fileprivate var working: [Key: SearchResult<R2>]
+    fileprivate var working: [Key: WorkingResult<R2>]
 
     // MARK: - 汎用インターフェース
     public var isDebug: Bool
@@ -399,14 +404,7 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
 
     // MARK: - 内部インターフェース
     /// クラス名文字列(デバッグ用)
-    final var name: String {
-        let name = String(describing: type(of: self))
-        if name.hasSuffix("型") {
-            return String(name.dropLast())
-        } else {
-            return name
-        }
-    }
+    final var name: String { return className(of: self) }
 
     /// 指定されたキーのデータを更新する。キーに対応するデーターがない場合何もしない
     final func basic_update(forKey key: Key, updator: (inout Data) -> Void) {
@@ -451,8 +449,8 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
         #if DEBUG
         if isDebug { DMLogSystem.shared.debugLog("キャッシュなし[\(name)]", detail: key.description, level: .debug) }
         #endif
-        // 新規計算を登録する
-        let result = SearchResult<R2>()
+        // 新規計算を予約する
+        let result = WorkingResult<R2>()
         working[key] = result
         lock.unlock()
         defer { // 後処理登録
@@ -463,8 +461,8 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
             let data = try converter(key)
             result.result = .success(data)
             basic_lock_regist(data, forKey: key)
-            return data
-        } catch { // エラー時はエラーを登録する
+            return data // 正常終了
+        } catch { // エラー時はリカバリを試み、失敗した場合エラーを登録する
             do {
                 let data = try basic_lock_recovery(error, forKey: key) // リカバリ処理
                 DMLogSystem.shared.log("キャッシュエラーリカバリ成功[\(name)]", detail: error.localizedDescription)
@@ -529,12 +527,13 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
     fileprivate func removeInvalidCache() -> [CacheHandle] { [] }
 }
 
-/// DB検索を管理するオブジェクト。複数の同じ検索の待ち合わせに使用する
-fileprivate class SearchResult<R: DMCacheElement>: NSLock {
+/// 計算中のデータ。複数のスレッドが計算終了を待つための待ち合わせに使う
+fileprivate class WorkingResult<R: DMCacheElement>: NSLock {
     override init() {
         super.init()
         self.lock() // 初期化時にロックし書き込み待ちとする
     }
+    /// 　計算結果となるデータ又はエラー
     private var data: Result<R, Error>!
     
     /// 書き込みがあるまで読込はブロックされる
@@ -553,8 +552,8 @@ fileprivate class SearchResult<R: DMCacheElement>: NSLock {
 
 // MARK: - 変換キャッシュ
 public struct DMResultCacheResult<R2: DMCacheElement>: BasicCacheResult {
-    
-    let data: Result<R2, Error>
+    /// データ本体 or エラー
+    private let data: Result<R2, Error>
     
     public init(_ data: R2) { self.data = .success(data) }
     public init(_ error: Error) { self.data = .failure(error) }
@@ -583,8 +582,10 @@ public final class DMCachingTtyConverter<Key: DMCacheKey, R: DMCacheElement>: Ba
 
 // MARK: - DBキャッシュ
 public struct DMDBCacheData<R: DMCacheElement>: BasicCacheResult {
-    var date: Date
-    let data: Result<R, Error>
+    /// データ登録日時
+    fileprivate var date: Date
+    /// データ本体 or エラー
+    private let data: Result<R, Error>
     
     public init(_ data: R) {
         self.data = .success(data)
@@ -633,7 +634,7 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
         }
     }
 
-    /// 指定されたキャッシュの寿命を制限する
+    /// 指定されたキャッシュの寿命の最大値を指定する
     public final func limitLifeTime(_ maxLifeTime: TimeInterval, forKey key: Key) {
         self.basic_update(forKey: key) {
             let maxDate = Date(timeIntervalSinceNow: maxLifeTime - self.lifeTime)
@@ -663,10 +664,10 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
 
     fileprivate override func basic_lock_recovery(_ error: Error, forKey key: Key) throws -> R? {
         switch error {
-        case FileMakerError.invalidRecord:
+        case FileMakerError.invalidRecord: // データ破損はnil（データなし）とする
             super.basic_lock_regist(nil, forKey: key)
             return nil
-        default:
+        default: // それ以外はキャッシュせずにエラーを返し、同じリクエスト発生時に再度アクセスを試みる
             lock.lock()
             throw error
         }
@@ -675,15 +676,16 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
     // MARK: DMCacheSystemからの内部操作インターフェース
     /// 保有するキャッシュのうち、有効期限を切れたものを削除し、ハンドルを返す
     fileprivate final override func removeInvalidCache() -> [CacheHandle] {
+        /// 有効期限切れリスト
         var handles: [CacheHandle] = []
         lock.lock(); defer { lock.unlock() }
-        let expire = Date(timeIntervalSinceNow: lifeTime)
-        for (key, handle) in map where handle.result.date > expire {
-            map.removeValue(forKey: key)
+        let expireBorder = Date(timeIntervalSinceNow: -lifeTime) // 有効期限切れとなる登録日時
+        for (key, handle) in map where handle.result.date < expireBorder { // 古くなったキャッシュデータを列挙
+            map.removeValue(forKey: key) // 登録解除
             handle.storage = nil
             handles.append(handle)
         }
-        return handles
+        return handles // 呼び出し元のCacheSystemでhanldeListからの解除を行う
     }
 }
 

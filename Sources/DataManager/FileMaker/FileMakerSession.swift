@@ -245,7 +245,7 @@ public final class FileMakerSession: DMLogger {
             guard response.code == 0 else {
                 throw FileMakerDetailedError(table: layout, work: .fetch, response: response).log(self)
             }
-            guard let newRecords = response.records else { break }
+            guard let newRecords = response.data else { break }
             result.append(contentsOf: newRecords)
             let count = newRecords.count
             if count < limit { break }
@@ -291,7 +291,7 @@ public final class FileMakerSession: DMLogger {
             if response.message.contains("Field") {
                 throw FileMakerError.response(message: "Field情報がない。layout:\(layout) query:\(query)").log(self, .critical)
             }
-            guard let newRecords = response.records else { break }
+            guard let newRecords = response.data else { break }
             result.append(contentsOf: newRecords)
             if max != nil { break }
             let count = newRecords.count
@@ -303,10 +303,10 @@ public final class FileMakerSession: DMLogger {
     }
     
     /// レコードを削除する
-    func delete(layout: String, recordID: String) throws {
+    func delete(layout: String, recordID: FileMakerRecordID) throws {
         log(layout: layout, "削除", detail: "レコードID=\(recordID)")
         let token = try self.prepareToken()
-        let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
+        let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID.description)
         let response = try connection.callFileMaker(url: url, method: .DELETE, authorization: .Bearer(token: token))
         if response.code != 0 {
             throw FileMakerDetailedError(table: layout, work: .delete(recordID: recordID), response: response).log(self)
@@ -314,9 +314,9 @@ public final class FileMakerSession: DMLogger {
     }
     
     /// レコードを更新する
-    func update(layout: String, recordID: String , fields: FileMakerQuery) throws {
+    func update(layout: String, recordID: FileMakerRecordID , fields: FileMakerQuery) throws {
         let token = try self.prepareToken()
-        let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID)
+        let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records").appendingPathComponent(recordID.description)
         let request = ["fieldData" : fields]
         let response = try connection.callFileMaker(url: url, method: .PATCH, authorization: .Bearer(token: token), object: request)
         if response.code != 0 {
@@ -326,14 +326,14 @@ public final class FileMakerSession: DMLogger {
     
     /// レコードを追加する
     @discardableResult
-    func insert(layout: String, fields: FileMakerQuery) throws -> String {
+    func insert(layout: String, fields: FileMakerQuery) throws -> FileMakerRecordID {
         log(layout: layout, "追加", detail: fields.makeText())
 
         let token = try self.prepareToken()
         let url = self.url.appendingPathComponent("layouts").appendingPathComponent(layout).appendingPathComponent("records")
         let request = ["fieldData": fields]
         let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Bearer(token: token), object: request)
-        guard response.code == 0, case let recordId as String = response["recordId"] else {
+        guard response.code == 0, let recordId = FileMakerRecordID(object: response["recordId"]) else {
             throw FileMakerDetailedError(table: layout, work: .insert(fields: fields), response: response).log(self)
         }
         return recordId
@@ -405,98 +405,4 @@ public final class FileMakerSession: DMLogger {
         }
         override var titleHeader: String { layout }
     }
-}
-
-// MARK: - FileMaker専用処理
-/// ポータル取得情報
-struct FileMakerPortal {
-    let name: String
-    let limit: Int?
-}
-
-/// FileMaker検索条件
-public typealias FileMakerQuery = [String: String]
-extension Array where Element == FileMakerQuery {
-    /// デバッグ用文字列表記を作成する
-    func makeText() -> String? {
-        let encoder = JSONEncoder()
-        guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
-        return text
-    }
-    
-    /// デバッグ用のキー一覧を作成する
-    func makeKeys() -> String {
-        return self.map{ $0.makeKeys() }.joined(separator: "|")
-    }
-}
-
-extension FileMakerQuery {
-    /// デバッグ用文字列表記を作成する
-    func makeText() -> String? {
-        let encoder = JSONEncoder()
-        guard let data = try? encoder.encode(self), let text = String(data: data, encoding: .utf8)?.encodeLF() else { return nil }
-        return text
-    }
-    /// デバッグ用のキー一覧を作成する
-    func makeKeys() -> String {
-        return self.keys.joined(separator: ",")
-    }
-}
-
-extension DMHttpConnectionProtocol {
-    /// FileMakerSeverと通信する。その際dataを渡す
-    func callFileMaker(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, data: Data? = nil) throws -> FileMakerResponse {
-        guard let data = try self.call(url: url, method: method, authorization: authorization, contentType: contentType, body: data) else { throw FileMakerResponseError.レスポンスがない }
-        do {
-            guard case let json as [String: Any] = try JSONSerialization.jsonObject(with: data) else { throw FileMakerResponseError.レスポンスをJSONに変換できない }
-            guard case let messages as [[String: Any]] = json["messages"] else { throw FileMakerResponseError.レスポンスにmessagesが存在しない }
-            guard case let codeString as String = messages[0]["code"], let code = Int(codeString) else { throw FileMakerResponseError.レスポンスにcodeが存在しない }
-            let response = (json["response"] as? [String: Any]) ?? [:]
-            let message = (messages[0]["message"] as? String) ?? ""
-            return FileMakerResponse(code: code, message: message, response: response)
-        } catch {
-            if let str = String(data: data, encoding: .utf8) {
-                DMLogSystem.shared.log("JSON変換異常", detail: String(str.prefix(200)), level: .critical)
-            } else {
-                DMLogSystem.shared.log("JSON変換異常", detail: "UTF-8変換失敗[\(data.count)bytes]", level: .critical)
-            }
-            throw error
-        }
-    }
-    
-    /// FileMakerSeverと通信する。その際objectをJSONでエンコードして渡す
-    func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {
-        try autoreleasepool {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(object)
-            let response = try self.callFileMaker(url: url, method: method, authorization: authorization, contentType: contentType, data: data)
-            return response
-        }
-    }
-}
-
-/// DataAPIのレスポンス
-struct FileMakerResponse {
-    /// レスポンスコード
-    let code: Int
-    /// レスポンスメッセージ
-    let message: String
-    /// レスポンスデータ
-    let response: [String: Any]
-
-    subscript(key: String) -> Any? { response[key] }
-    
-    var records: [FileMakerRecord]? {
-        guard case let dataArray as [Any] = self["data"] else { return nil }
-        return dataArray.compactMap { FileMakerRecord(json: $0) }
-    }
-}
-
-/// DataAPIの基本的な構造エラー
-enum FileMakerResponseError: String, LocalizedError {
-    case レスポンスがない
-    case レスポンスをJSONに変換できない
-    case レスポンスにmessagesが存在しない
-    case レスポンスにcodeが存在しない
-    var errorDescription: String? { self.rawValue }
 }

@@ -101,8 +101,8 @@ public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheE
         self.原因工程 = record.工程(forKey: "原因工程コード")
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["登録日"] = 登録日時.day.fmString
         data["登録時間"] = 登録日時.time.fmImportString
         data["伝票番号"] = "\(伝票番号.整数値)"
@@ -140,9 +140,8 @@ public final class 資材使用記録型: DMSystemRecord<資材使用記録Data�
     
     typealias RecordData = 資材使用記録Data型
 
-    public var 登録日: Day{
-        get {data.登録日時.day}
-    }
+    public var 登録日: Day { return data.登録日時.day }
+    
 //    public var 登録日時: Date {
 //        get { data.登録日時 }
 //        set { data.登録日時 = newValue }

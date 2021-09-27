@@ -36,8 +36,8 @@ public struct 食事時間帯Data型: DMSystemRecordData {
         self.init(提供パターン: 提供パターン, 食事グループ: 食事グループ, 開始時間: 開始時間, 終了時間: 終了時間)
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["提供パターン"] = 提供パターン
         data["食事グループ"] = 食事グループ
         data["開始時間"] = 開始時間.fmImportString

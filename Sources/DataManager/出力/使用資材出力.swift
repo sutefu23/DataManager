@@ -167,6 +167,6 @@ public struct 使用資材出力型: FileMakerExportRecord {
     public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
         var query = FileMakerQuery()
         query["登録セッションUUID"] = "==\(uuid.uuidString)"
-        _ = try session.find(layout: 使用資材型.dbName, query: [query])
+        _ = try session.find(layout: 使用資材型.layout, query: [query])
     }
 }

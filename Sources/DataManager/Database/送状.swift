@@ -23,7 +23,7 @@ public enum 送り状番号状態型 {
     case 確定
 }
 
-public struct 送り状番号型 {
+public struct 送り状番号型: CustomStringConvertible {
     /// 生データ
     public let rawValue: String
     /// 送り状番号
@@ -64,6 +64,9 @@ public struct 送り状番号型 {
             self.送り状番号 = nil
         }
     }
+    
+    public var isValid: Bool { return !ハイフンなし生データ.isEmpty }
+    public var description: String { self.rawValue }
     
     public var ヤマト送状元番号: Int? {
         guard let str = self.送り状番号 else { return nil }
@@ -153,9 +156,8 @@ public enum 運送会社型: Hashable {
 
 public class 送状型: Identifiable, FileMakerImportRecord {
     public static let layout = "DataAPI_16"
-    public static let name = "送状"
-//    let record: FileMakerRecord
-    public let recordId: String?
+
+    public let recordId: FileMakerRecordID?
 
     public var 管理番号: String
     public var 送り状番号: 送り状番号型

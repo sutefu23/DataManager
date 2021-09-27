@@ -16,11 +16,10 @@ import Foundation
 
 public final class 指示書型: FileMakerImportRecord {
     public static let layout: String = "DataAPI_1"
-    public static let name: String = "指示書"
 
     private let lock = NSRecursiveLock()
     
-    public let recordId: String?
+    public let recordId: FileMakerRecordID?
     public let uuid: UUID
     let 図URL: URL?
 

@@ -42,8 +42,8 @@ public struct 箱文字日報Data型: DMSystemRecordData {
         self.備考 = 備考
     }
     
-    public var fieldData: FileMakerQuery {
-        var data = FileMakerQuery()
+    public var fieldData: FileMakerFields {
+        var data = FileMakerFields()
         data["作業日"] = 作業日.fmString
         data["工程コード"] = 工程.code
         if let number = self.件数 { data["件数"] = "\(number)" } else { data["件数"] = "" }

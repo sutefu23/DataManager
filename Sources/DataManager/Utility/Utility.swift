@@ -40,6 +40,15 @@ public final class DataManagerController {
     }
 }
 
+func className(of object: Any) -> String {
+    let name = String(describing: type(of: object))
+    if name.hasSuffix("型") {
+        return String(name.dropLast())
+    } else {
+        return name
+    }
+}
+
 #if os(iOS) || os(tvOS)
 import UIKit
 
