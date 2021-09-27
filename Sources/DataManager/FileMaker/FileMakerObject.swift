@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// レコードの内容をオブジェクトしたものの共通インターフェース
+/// レコードの内容をオブジェクト化したものの共通インターフェース
 /// recordIdは内容ではなく管理タグのため、共通インターフェースとしては含めない
 public protocol FileMakerObject: DMCacheElement, DMLogger {
     static var db: FileMakerDB { get }
@@ -21,10 +21,10 @@ public protocol FileMakerObject: DMCacheElement, DMLogger {
     /// 指定された検索OR条件で検索する
     static func find(querys: [FileMakerQuery]) throws -> [Self]
 
-    /// 指定された検索条件で検索する
-    static func find(query: FileMakerQuery, session: FileMakerSession) throws -> [Self]
-    /// 指定された検索OR条件で検索する
-    static func find(querys: [FileMakerQuery], session: FileMakerSession) throws -> [Self]
+    /// 指定された検索条件で検索し、生データを返す
+    static func basic_find(query: FileMakerQuery, session: FileMakerSession) throws -> [FileMakerRecord]
+    /// 指定された検索OR条件で検索し、生データを返す
+    static func basic_find(querys: [FileMakerQuery], session: FileMakerSession) throws -> [FileMakerRecord]
 
     /// 指定されたレコードデータで初期化する
     init(_ record: FileMakerRecord) throws
@@ -49,22 +49,20 @@ extension FileMakerObject {
     }
 
     public static func find(querys: [FileMakerQuery]) throws -> [Self] {
-        let db = Self.db
-        return try db.execute { try self.find(querys: querys, session: $0) }
+        let records: [FileMakerRecord] = try Self.db.execute { try basic_find(querys: querys, session: $0) }
+        return try records.map { try Self($0) }
     }
 
-    public static func find(query: FileMakerQuery, session: FileMakerSession) throws -> [Self] {
-        return try self.find(querys: [query], session: session)
+    public static func basic_find(query: FileMakerQuery, session: FileMakerSession) throws -> [FileMakerRecord] {
+        return try self.basic_find(querys: [query], session: session)
     }
 
-    public static func find(querys: [FileMakerQuery], session: FileMakerSession) throws -> [Self] {
-        let records: [FileMakerRecord]
+    public static func basic_find(querys: [FileMakerQuery], session: FileMakerSession) throws -> [FileMakerRecord] {
         if querys.isEmpty || querys.allSatisfy({ $0.isEmpty }) { // 条件指定が全くない
-            records = try session.fetch(layout: Self.layout) // 全データ読み込み
+            return try session.fetch(layout: Self.layout) // 全データ読み込み
         } else {
-            records = try session.find(layout: Self.layout, query: querys) // 指定条件で検索
+            return try session.find(layout: Self.layout, query: querys) // 指定条件で検索
         }
-        return try records.compactMap { try Self($0) }
     }
     
     public static func find(recordId: String) throws -> Self? {
