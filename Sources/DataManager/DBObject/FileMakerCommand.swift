@@ -8,8 +8,8 @@
 import Foundation
 
 /// DBコマンド
-/// （DBに繋がらない状態でもDecode/Encodeできる必要がある）
-enum FileMakerCommand: Codable {
+/// （リトライシステムでの使用が前提。DBに繋がらない状態でもDecode/Encodeできる必要がある）
+public enum FileMakerCommand: Codable {
     case insert(db: FileMakerDB, layout: String, fields: [FileMakerFields])
     case export(db: FileMakerDB, layout: String, prepare: (layout: String, field: String)?, fields: [FileMakerFields], uuidField: String, script: String, checkField: String)
     
@@ -26,7 +26,7 @@ enum FileMakerCommand: Codable {
         case checkField
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let type = try values.decode(FileMakerCommandType.self, forKey: .type)
         switch type {
@@ -53,7 +53,7 @@ enum FileMakerCommand: Codable {
         }
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .insert(db: let db, layout: let layout, fields: let fields):
@@ -82,25 +82,34 @@ enum FileMakerCommand: Codable {
         var errorDescription: String? { return self.rawValue }
     }
 
-    /// リトライの種類
+    /// コマンドの種類
     enum FileMakerCommandType: Codable {
         case insert
         case export
     }
 
     // MARK: -
+    var db: FileMakerDB {
+        switch self {
+        case .export(db: let db, layout: _, prepare: _, fields: _, uuidField: _, script: _, checkField: _),
+                .insert(db: let db, layout: _, fields: _):
+            return db
+        }
+        
+    }
+    
     /// 出力を実行する
     func execute() throws -> Bool {
         switch self {
         case .insert:
-            fatalError()
+            fatalError() // 未実装
         case .export(db: let db, layout: let layout, prepare: let prepare, fields: let fields, uuidField: let uuidField, script: let script, checkField: let checkField):
             return try execExport(db: db, layout: layout, prepare: prepare, fields: fields, uuidField: uuidField, script: script, checkField: checkField)
         }
     }
 }
 
-/// exportのリトライ実行
+/// export実行
 private func execExport(db: FileMakerDB, layout: String, prepare: (layout: String, field: String)?, fields: [FileMakerFields], uuidField: String, script: String, checkField: String) throws -> Bool {
     let session = db.retainExportSession()
     defer { db.releaseExportSession(session) }
@@ -123,11 +132,14 @@ private func execExport(db: FileMakerDB, layout: String, prepare: (layout: Strin
         try session.insert(layout: layout, fields: data)
     }
     let uploadTime = Date().timeIntervalSince(startTime)
-    let waitTime = 1.0
-    let extendTime = 1.0
+    let waitTime = 0.5
+    let extendTime = 0.5
+    #if DEBUG
+    session.log("出力中[\(layout)]", detail: "アップロード完了[\(uploadTime)秒]", level: .information)
+    #endif
     Thread.sleep(forTimeInterval: waitTime + extendTime)
     // 更新
-    try session.executeScript(layout: layout, script: script, param: uuidString, waitTime: (Swift.max(uploadTime * 1.5, waitTime), extendTime))
+    try session.executeScript(layout: layout, script: script, param: uuidString, waitTime: (Swift.max(uploadTime, waitTime), extendTime))
     // チェック
     let records = try session.find(layout: layout, query: [[uuidField: uuidString]])
     var count = 0

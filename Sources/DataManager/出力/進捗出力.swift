@@ -9,9 +9,7 @@
 import Foundation
 
 public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
-    public typealias ImportBuddyType = 進捗型
     public static let layout = "DataAPI_ProcessInput"
-    public static let exportScript = "DataAPI_ProcessInput_RecordSet"
     
     public let 登録日: Day
     public let 登録時間: Time
@@ -105,31 +103,6 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
         return "\(登録日.fmImportString),\(登録時間.fmImportString),\(伝票番号),\(工程.code),\(作業内容.code),\(社員.Hなし社員コード),\(作業種別.code),\(作業系列?.系列コード ?? "")\n"
     }
     
-    public func makeExportRecord(exportUUID: UUID?) -> FileMakerQuery {
-        return self.makeRecord(識別キー: exportUUID)
-    }
-    
-    func makeRecord(識別キー key: UUID?) -> FileMakerQuery {
-        var record: FileMakerQuery = [
-            "登録日": self.登録日.fmString,
-            "登録時間": self.登録時間.fmImportString,
-            "伝票番号": "\(self.伝票番号.整数値)",
-            "工程コード": self.工程.code,
-            "作業内容コード": self.作業内容.code,
-            "社員コード": self.社員.Hなし社員コード,
-            "作業種別コード": self.作業種別.code
-        ]
-        record["識別キー"] = key?.uuidString
-        if let series = self.作業系列 {
-            record["作業系列コード"] = series.系列コード
-        }
-        return record
-    }
-    
-    public static var prepareParameters: (layout: String, field: String)? {
-        return (layout: 進捗型.layout, field: "指示書進捗入力UUID")
-    }
-
     /// 重複登録ならtrue
     public func is内容重複(with progress: 進捗出力型) -> Bool {
         if self.伝票番号 != progress.伝票番号 { return false }
@@ -151,15 +124,42 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
         }
         return false
     }
-    
-    public func find重複候補() throws -> [進捗型] {
-        return try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.進捗一覧 ?? []
+        
+    public func is登録済み() throws -> Bool? {
+        guard let records = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.進捗一覧, !records.isEmpty else { return false }
+        return !records.contains { data in
+            return  self.伝票番号 == data.伝票番号 &&
+                    self.工程 == data.工程 &&
+                    self.作業内容 == data.作業内容 &&
+                    self.作業種別 == data.作業種別
+        }
     }
     
-    public func is内容重複(with data: 進捗型) -> Bool {
-        return self.伝票番号 == data.伝票番号 && self.工程 == data.工程 && self.作業内容 == data.作業内容 && self.作業種別 == data.作業種別
+    public func makeExportRecord() -> FileMakerFields {
+        var record: FileMakerQuery = [
+            "登録日": self.登録日.fmString,
+            "登録時間": self.登録時間.fmImportString,
+            "伝票番号": "\(self.伝票番号.整数値)",
+            "工程コード": self.工程.code,
+            "作業内容コード": self.作業内容.code,
+            "社員コード": self.社員.Hなし社員コード,
+            "作業種別コード": self.作業種別.code
+        ]
+        if let series = self.作業系列 {
+            record["作業系列コード"] = series.系列コード
+        }
+        return record
     }
     
+    public static func makeExportCommand(fields: [FileMakerFields]) -> FileMakerCommand {
+        return .export(db: db, layout: layout,
+                       prepare: (layout: 進捗型.layout, field: "指示書進捗入力UUID"),
+                       fields: fields,
+                       uuidField: "識別キー",
+                       script: "DataAPI_ProcessInput_RecordSet",
+                       checkField: "エラー")
+    }
+
     public func flushCache() {
         return 指示書進捗キャッシュ型.shared.removeCache(forKey: self.伝票番号)
     }

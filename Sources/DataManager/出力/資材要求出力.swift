@@ -10,8 +10,6 @@ import Foundation
 
 public struct 資材要求出力型: FileMakerExportObject {
     public static let layout: String = "DataAPI_MaterialRequirementsInput"
-    public static let exportScript: String = "DataAPI_MaterialRequestments_RecordSet"
-    public typealias ImportBuddyType = 発注型
 
     public let 登録日: Day
     public let 登録時間: Time
@@ -33,7 +31,7 @@ public struct 資材要求出力型: FileMakerExportObject {
         self.備考 = 備考
     }    
     
-    public func makeExportRecord(exportUUID: UUID?) -> FileMakerQuery {
+    public func makeExportRecord() -> FileMakerFields {
         var record: FileMakerQuery = [
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,
@@ -43,18 +41,22 @@ public struct 資材要求出力型: FileMakerExportObject {
             "数量": "\(self.数量)",
             "備考": self.備考
         ]
-        record["識別キー"] = exportUUID?.uuidString
         if let day = self.希望納期 {
             record["希望納期"] = day.fmString
         }
         return record
     }
     
-    public func flushCache() {
-        資材発注キャッシュ型.shared.flushCache(図番: self.資材.図番)
+    public static func makeExportCommand(fields: [FileMakerFields]) -> FileMakerCommand {
+        return .export(db: db, layout: layout,
+                       prepare: (layout: 発注型.dbName, field: "API識別キー"),
+                       fields: fields,
+                       uuidField: "識別キー",
+                       script: "DataAPI_MaterialRequestments_RecordSet",
+                       checkField: "エラー")
     }
     
-    public static var prepareParameters: (layout: String, field: String)? {
-        return (layout: 発注型.dbName, field: "API識別キー")
+    public func flushCache() {
+        資材発注キャッシュ型.shared.flushCache(図番: self.資材.図番)
     }
 }

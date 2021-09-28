@@ -8,6 +8,8 @@
 import Foundation
 
 public struct 使用資材出力型: FileMakerExportObject {
+    public static var layout: String { "DataAPI_UseMaterialInput" }
+
     public var 登録日時: Date
     
     public var 伝票番号: 伝票番号型
@@ -129,12 +131,7 @@ public struct 使用資材出力型: FileMakerExportObject {
         }
     }
     
-    public typealias ImportBuddyType = 使用資材型
-    public static var layout: String { "DataAPI_UseMaterialInput" }
-    public static var exportScript: String { "DataAPI_UseMaterialInput_RecordSet" }
-    public static var uuidField: String { "登録セッションUUID" }
-    
-    public func makeExportRecord(exportUUID: UUID?) -> FileMakerQuery {
+    public func makeExportRecord() -> FileMakerFields {
         var record: FileMakerQuery = [
             "登録日": 登録日時.day.fmString,
             "登録時間": 登録日時.time.fmImportString,
@@ -143,7 +140,6 @@ public struct 使用資材出力型: FileMakerExportObject {
             "表示名": 表示名,
             "使用量": 使用量,
         ]
-        record["登録セッションUUID"] = exportUUID?.uuidString
         record["工程コード"] = 工程?.code
         record["社員コード"] = 作業者?.Hなし社員コード
         record["原因部署"] = 原因工程?.code
@@ -164,7 +160,12 @@ public struct 使用資材出力型: FileMakerExportObject {
         return record
     }
     
-    public static var prepareParameters: (layout: String, field: String)? {
-        return (layout: 使用資材型.layout, field: "登録セッションUUID")
+    public static func makeExportCommand(fields: [FileMakerFields]) -> FileMakerCommand {
+        return .export(db: db, layout: layout,
+                       prepare: (layout: 使用資材型.layout, field: "登録セッションUUID"),
+                       fields: fields,
+                       uuidField: "登録セッションUUID",
+                       script: "DataAPI_UseMaterialInput_RecordSet",
+                       checkField: "エラー")
     }
 }
