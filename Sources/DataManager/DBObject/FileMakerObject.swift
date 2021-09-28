@@ -31,7 +31,7 @@ public protocol FileMakerObject: DMCacheElement, DMLogger {
 }
 
 extension FileMakerObject {
-    public static var name: String { className(of: self) }
+    public static var name: String { classNameBody(of: self) }
     
     /// ログシステムにレコードを記録する
     public func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {

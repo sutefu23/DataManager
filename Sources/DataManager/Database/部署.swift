@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class 部署型: FileMakerImportRecord, Comparable, Hashable, Codable {
+public final class 部署型: FileMakerImportObject, Comparable, Hashable, Codable {
     public static let layout = "DataAPI_11"
     
     public var 部署記号: String { return "\(self.部署番号)" }

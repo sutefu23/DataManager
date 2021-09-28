@@ -127,7 +127,7 @@ public protocol DMSystemRecordData: DMCacheElement, Equatable {
 }
 
 /// systemデータベースファイル上のテーブルのレコードの管理メカニズム
-public protocol DMSystemRecordManager: FileMakerImportRecord {
+public protocol DMSystemRecordManager: FileMakerImportObject {
     associatedtype RecordData: DMSystemRecordData
     init(_ record: FileMakerRecord) throws
     static var queue: OperationQueue { get }

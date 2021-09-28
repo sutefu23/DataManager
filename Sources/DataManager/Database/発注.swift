@@ -10,7 +10,7 @@ import Foundation
 
 public class 外注型 {
 }
-public final class 発注型: FileMakerImportRecord {
+public final class 発注型: FileMakerImportObject {
     public static let layout = "DataAPI_4"
 
     public let recordId: FileMakerRecordID?

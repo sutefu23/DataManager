@@ -25,6 +25,7 @@
 		1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1409A34326783B9800B4530A /* 送り状エラー.swift */; };
 		140C4E31269D6E150066E221 /* 作業区間.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4E30269D6E150066E221 /* 作業区間.swift */; };
 		140DC6402696D3920010F86E /* 送状番号出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140DC63F2696D3920010F86E /* 送状番号出力.swift */; };
+		141585B927029BC5009AE92F /* FileMakerRetrySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */; };
 		14167AE326E985AE009B50B3 /* FileMakerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14167AE226E985AE009B50B3 /* FileMakerServer.swift */; };
 		1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */; };
 		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
@@ -77,10 +78,10 @@
 		67227BF625D65663003D6C50 /* sendMail.py in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 00AAB90F2595D91E00ACB725 /* sendMail.py */; };
 		67F36F6F26A15F4F0051C411 /* mailConfig.json in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 67F36F6E26A143110051C411 /* mailConfig.json */; };
 		8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E106DB0251E1E8C00FB059D /* Linux.swift */; };
-		8E29B92526EF531400A0D40A /* FileMakerExportRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29B92426EF531400A0D40A /* FileMakerExportRecord.swift */; };
-		8E7D23A526FE173C00C1B1C2 /* FileMakerImportRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D23A426FE173C00C1B1C2 /* FileMakerImportRecord.swift */; };
+		8E29B92526EF531400A0D40A /* FileMakerExportObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29B92426EF531400A0D40A /* FileMakerExportObject.swift */; };
+		8E7D23A526FE173C00C1B1C2 /* FileMakerImportObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D23A426FE173C00C1B1C2 /* FileMakerImportObject.swift */; };
 		8E7D23A726FECDA600C1B1C2 /* FileMakerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D23A626FECDA600C1B1C2 /* FileMakerObject.swift */; };
-		8E7D23A926FEE9B600C1B1C2 /* FileMakerRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D23A826FEE9B600C1B1C2 /* FileMakerRetry.swift */; };
+		8E7D23A926FEE9B600C1B1C2 /* FileMakerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D23A826FEE9B600C1B1C2 /* FileMakerCommand.swift */; };
 		8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A4E522526045600476B2E /* DMHttpConnection.swift */; };
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
 		8E9E604D251E439B00B4858E /* 食事要求型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E604C251E439B00B4858E /* 食事要求型.swift */; };
@@ -282,6 +283,7 @@
 		1409A34326783B9800B4530A /* 送り状エラー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送り状エラー.swift"; sourceTree = "<group>"; };
 		140C4E30269D6E150066E221 /* 作業区間.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業区間.swift"; sourceTree = "<group>"; };
 		140DC63F2696D3920010F86E /* 送状番号出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状番号出力.swift"; sourceTree = "<group>"; };
+		141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRetrySystem.swift; sourceTree = "<group>"; };
 		14167AE226E985AE009B50B3 /* FileMakerServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerServer.swift; sourceTree = "<group>"; };
 		1417EA5A2612B7710026FDA4 /* 作業時間分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業時間分析.swift"; sourceTree = "<group>"; };
 		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
@@ -333,10 +335,10 @@
 		14F3DFE6251DAEA0003D4BCA /* TestFileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFileMakerSession.swift; sourceTree = "<group>"; };
 		67F36F6E26A143110051C411 /* mailConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mailConfig.json; sourceTree = "<group>"; };
 		8E106DB0251E1E8C00FB059D /* Linux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linux.swift; sourceTree = "<group>"; };
-		8E29B92426EF531400A0D40A /* FileMakerExportRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerExportRecord.swift; sourceTree = "<group>"; };
-		8E7D23A426FE173C00C1B1C2 /* FileMakerImportRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerImportRecord.swift; sourceTree = "<group>"; };
+		8E29B92426EF531400A0D40A /* FileMakerExportObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerExportObject.swift; sourceTree = "<group>"; };
+		8E7D23A426FE173C00C1B1C2 /* FileMakerImportObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerImportObject.swift; sourceTree = "<group>"; };
 		8E7D23A626FECDA600C1B1C2 /* FileMakerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerObject.swift; sourceTree = "<group>"; };
-		8E7D23A826FEE9B600C1B1C2 /* FileMakerRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRetry.swift; sourceTree = "<group>"; };
+		8E7D23A826FEE9B600C1B1C2 /* FileMakerCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerCommand.swift; sourceTree = "<group>"; };
 		8E9A4E522526045600476B2E /* DMHttpConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMHttpConnection.swift; sourceTree = "<group>"; };
 		8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事メニュー.swift"; sourceTree = "<group>"; };
 		8E9E604C251E439B00B4858E /* 食事要求型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事要求型.swift"; sourceTree = "<group>"; };
@@ -513,6 +515,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		141585B727028DD2009AE92F /* DBObject */ = {
+			isa = PBXGroup;
+			children = (
+				8E7D23A626FECDA600C1B1C2 /* FileMakerObject.swift */,
+				8E29B92426EF531400A0D40A /* FileMakerExportObject.swift */,
+				8E7D23A426FE173C00C1B1C2 /* FileMakerImportObject.swift */,
+				8E7D23A826FEE9B600C1B1C2 /* FileMakerCommand.swift */,
+				141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */,
+			);
+			path = DBObject;
+			sourceTree = "<group>";
+		};
 		14310E6C2643D3CE00F062CA /* アクションライン */ = {
 			isa = PBXGroup;
 			children = (
@@ -570,6 +584,7 @@
 		149D95F025B95F68000F97B5 /* CSV */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_98 /* TableGenerator.swift */,
 				149D95F125B95FAB000F97B5 /* 福山通運.swift */,
 				148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */,
 				1409A34326783B9800B4530A /* 送り状エラー.swift */,
@@ -579,13 +594,14 @@
 			path = CSV;
 			sourceTree = "<group>";
 		};
-		14DF962726E05098003CC5BE /* エラー処理 */ = {
+		14DF962726E05098003CC5BE /* 動作ログ */ = {
 			isa = PBXGroup;
 			children = (
 				14DF962826E050B5003CC5BE /* LogSystem.swift */,
 				14DF962A26E050BF003CC5BE /* LogData.swift */,
 			);
-			path = "エラー処理";
+			name = "動作ログ";
+			path = "動作ログ";
 			sourceTree = "<group>";
 		};
 		OBJ_105 /* 工程分析 */ = {
@@ -735,8 +751,6 @@
 		OBJ_27 /* FileMaker */ = {
 			isa = PBXGroup;
 			children = (
-				8E7D23A826FEE9B600C1B1C2 /* FileMakerRetry.swift */,
-				8E7D23A626FECDA600C1B1C2 /* FileMakerObject.swift */,
 				OBJ_28 /* FileMakerDB.swift */,
 				14167AE226E985AE009B50B3 /* FileMakerServer.swift */,
 				OBJ_31 /* FileMakerSession.swift */,
@@ -818,7 +832,6 @@
 		OBJ_64 /* pm_osakaname */ = {
 			isa = PBXGroup;
 			children = (
-				8E7D23A426FE173C00C1B1C2 /* FileMakerImportRecord.swift */,
 				OBJ_65 /* レーザー加工機.swift */,
 				OBJ_66 /* 伝票状態.swift */,
 				OBJ_67 /* 伝票番号.swift */,
@@ -852,7 +865,7 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
-				14DF962726E05098003CC5BE /* エラー処理 */,
+				14DF962726E05098003CC5BE /* 動作ログ */,
 				14310E6C2643D3CE00F062CA /* アクションライン */,
 				149D95F025B95F68000F97B5 /* CSV */,
 				147A6311255927610077634B /* 工程分解 */,
@@ -868,6 +881,7 @@
 				OBJ_137 /* 資材使用記録 */,
 				OBJ_9 /* Database */,
 				OBJ_64 /* pm_osakaname */,
+				141585B727028DD2009AE92F /* DBObject */,
 				OBJ_27 /* FileMaker */,
 				OBJ_84 /* 互換性 */,
 				OBJ_32 /* Utility */,
@@ -939,8 +953,6 @@
 		OBJ_97 /* 出力 */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_98 /* TableGenerator.swift */,
-				8E29B92426EF531400A0D40A /* FileMakerExportRecord.swift */,
 				OBJ_99 /* 管理資材.swift */,
 				OBJ_100 /* 管理資材（パイプ）.swift */,
 				OBJ_101 /* 管理資材（板）.swift */,
@@ -1100,7 +1112,7 @@
 				OBJ_215 /* Month.swift in Sources */,
 				OBJ_216 /* Time.swift in Sources */,
 				OBJ_217 /* File.swift in Sources */,
-				8E7D23A926FEE9B600C1B1C2 /* FileMakerRetry.swift in Sources */,
+				8E7D23A926FEE9B600C1B1C2 /* FileMakerCommand.swift in Sources */,
 				OBJ_218 /* Future.swift in Sources */,
 				OBJ_219 /* Int.swift in Sources */,
 				OBJ_220 /* PropertyWrapper.swift in Sources */,
@@ -1128,7 +1140,7 @@
 				OBJ_236 /* Utility.swift in Sources */,
 				147A63132559277B0077634B /* 工程分解.swift in Sources */,
 				OBJ_237 /* Version.swift in Sources */,
-				8E29B92526EF531400A0D40A /* FileMakerExportRecord.swift in Sources */,
+				8E29B92526EF531400A0D40A /* FileMakerExportObject.swift in Sources */,
 				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
 				OBJ_238 /* レーザー加工機.swift in Sources */,
 				OBJ_239 /* 伝票状態.swift in Sources */,
@@ -1143,7 +1155,7 @@
 				OBJ_244 /* 入力区分.swift in Sources */,
 				OBJ_245 /* 分量.swift in Sources */,
 				14767118251D577A00429C17 /* DMColor.swift in Sources */,
-				8E7D23A526FE173C00C1B1C2 /* FileMakerImportRecord.swift in Sources */,
+				8E7D23A526FE173C00C1B1C2 /* FileMakerImportObject.swift in Sources */,
 				OBJ_246 /* 取引先.swift in Sources */,
 				OBJ_247 /* 工程.swift in Sources */,
 				143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */,
@@ -1161,6 +1173,7 @@
 				OBJ_257 /* KeyModifiers.swift in Sources */,
 				OBJ_259 /* UIKit.swift in Sources */,
 				OBJ_260 /* 作業.swift in Sources */,
+				141585B927029BC5009AE92F /* FileMakerRetrySystem.swift in Sources */,
 				OBJ_261 /* 作業ステージ.swift in Sources */,
 				OBJ_262 /* 指示書分析.swift in Sources */,
 				OBJ_263 /* 部署作業者分析.swift in Sources */,

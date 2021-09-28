@@ -8,14 +8,6 @@
 
 import Foundation
 
-/// レコードの種類
-private enum RecordType {
-    /// メインレコード
-    case master(recordId: FileMakerRecordID, portals: [String: [FileMakerRecord]])
-    /// ポータルレコード
-    case portal(header: String)
-}
-
 /// レコードID
 public struct FileMakerRecordID: Hashable, CustomStringConvertible, DMCacheElement {
     let data: Int
@@ -44,6 +36,14 @@ public struct FileMakerRecordID: Hashable, CustomStringConvertible, DMCacheEleme
 
 /// 1レコードに対応するデータ
 public struct FileMakerRecord {
+    /// レコードの種類
+    private enum RecordType {
+        /// メインレコード
+        case master(recordId: FileMakerRecordID, portals: [String: [FileMakerRecord]])
+        /// ポータルレコード
+        case portal(header: String)
+    }
+
     /// フィールドデータ
     private let fieldData: [String: Any]
     /// レコードの種類

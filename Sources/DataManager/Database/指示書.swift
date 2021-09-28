@@ -14,7 +14,7 @@ import Cocoa
 import Foundation
 #endif
 
-public final class 指示書型: FileMakerImportRecord {
+public final class 指示書型: FileMakerImportObject {
     public static let layout: String = "DataAPI_1"
 
     private let lock = NSRecursiveLock()

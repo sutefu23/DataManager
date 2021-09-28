@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
+public final class 進捗型: FileMakerImportObject, Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
     public static let layout = "DataAPI_3"
 
@@ -21,12 +21,12 @@ public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
     public let 製作納期: Day // 24
     public let 伝票番号: 伝票番号型 // 8
     public let 登録日時: Date // 8
-    public let 工程: 工程型 //8
+    public var 工程: 工程型 //8
     public let 作業系列: 作業系列型? // 8
     public let 作業者: 社員型
 
     public let 伝票種類: 伝票種類型 // 1
-    public let 作業内容: 作業内容型 // 1
+    public var 作業内容: 作業内容型 // 1
     public let 作業種別: 作業種別型 // 1
 
     public var 社員番号: Int { 作業者.社員番号 }
@@ -35,13 +35,20 @@ public final class 進捗型: FileMakerImportRecord, Equatable, Identifiable {
     public var memoryFootPrint: Int { return 22 * 8} // 仮設定のため適当
 
     public init(_ record: FileMakerRecord) throws {
-        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
-        guard let recordID = record.recordId else { throw makeError("recordId") }
+        func makeError0(_ key: String) -> Error {
+            record.makeInvalidRecordError(name: Self.name, mes: key)
+        }
+        guard let recordID = record.recordId else { throw makeError0("recordId") }
         self.recordID = recordID
+        guard let numberStr = record.string(forKey: "伝票番号") else {
+            throw makeError0("伝票番号")
+        }
+        func makeError(_ key: String) -> Error {
+            record.makeInvalidRecordError(name: Self.name, mes: "\(key): \(numberStr)")
+        }
+        guard let number = Int(numberStr), 伝票番号型.isValidNumber(number) else { throw makeError("伝票番号[\(numberStr)]") }
         guard var 工程 = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else { throw makeError("工程") }
         if 進捗型.立ち上り進捗統合 && 工程 == .立ち上がり_溶接 { 工程 = .立ち上がり }
-        guard let numberStr = record.string(forKey: "伝票番号") else { throw makeError("伝票番号") }
-        guard let number = Int(numberStr), 伝票番号型.isValidNumber(number) else { throw makeError("伝票番号[\(numberStr)]") }
         self.伝票番号 = 伝票番号型(validNumber: number)
         guard let 作業内容 = record.作業内容(forKey: "進捗コード") else { throw makeError("進捗") }
         guard let name = record.string(forKey: "社員名称"), let num = record.integer(forKey: "社員番号") else { throw makeError("作業者") }

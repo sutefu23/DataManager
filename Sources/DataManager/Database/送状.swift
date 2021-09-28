@@ -154,7 +154,7 @@ public enum 運送会社型: Hashable {
     }
 }
 
-public class 送状型: Identifiable, FileMakerImportRecord {
+public class 送状型: Identifiable, FileMakerImportObject {
     public static let layout = "DataAPI_16"
 
     public let recordId: FileMakerRecordID?

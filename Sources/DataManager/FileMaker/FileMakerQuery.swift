@@ -75,6 +75,11 @@ extension DMHttpConnectionProtocol {
             } else {
                 DMLogSystem.shared.log("UTF8変換失敗", detail: "\(url.path): \(data.count)bytes", level: .critical)
             }
+            #if os(macOS) || targetEnvironment(macCatalyst)
+            if let url = try? 動作履歴URL.appendingPathComponent("HTTP-Error-Response.data") {
+                try? data.write(to: url)
+            }
+            #endif
             throw error
         }
     }

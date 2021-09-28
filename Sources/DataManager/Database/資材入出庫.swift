@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class 資材入出庫型: FileMakerImportRecord {
+public final class 資材入出庫型: FileMakerImportObject {
     public static var db: FileMakerDB { .pm_osakaname }
     public static var layout: String { "DataAPI_12" }
 

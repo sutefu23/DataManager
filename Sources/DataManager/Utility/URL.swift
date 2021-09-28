@@ -8,33 +8,67 @@
 
 import Foundation
 
-public let ダウンロードURL: URL = {
-    let fm = FileManager.default
-    let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.downloadsDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
-    return desktopURL
-}()
-
-public let デスクトップURL: URL = {
-    let fm = FileManager.default
-    let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.desktopDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
-    return desktopURL
-}()
-
-public let 生産管理集計URL: URL = {
-    let fm = FileManager.default
-    let url = デスクトップURL.appendingPathComponent("生産管理集計", isDirectory: true)
-    try? fm.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
-    return url
-}()
-
-public let applicationSupportURL: URL = {
-    let fm = FileManager.default
-    let url = try! fm.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(defaults.programName)
-    if !url.isExists {
-        try! fm.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+/// よく使うディレクトリ
+public enum CommonDirectory {
+    case pm_statistics
+    case desktopLog
+    case desktop
+    case applicationSupport
+    case download
+    
+    public var url: URL {
+        get throws {
+            switch self {
+            case .pm_statistics: return try 生産管理集計URL
+            case .desktopLog: return try 動作履歴URL
+            case .desktop: return try デスクトップURL
+            case .download: return try ダウンロードURL
+            case .applicationSupport: return try applicationSupportURL
+            }
+        }
     }
-    return url
-}()
+}
+
+public var ダウンロードURL: URL {
+    get throws {
+        let fm = FileManager.default
+        let desktopURL = try! fm.url(for: FileManager.SearchPathDirectory.downloadsDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
+        return desktopURL
+    }
+}
+
+public var デスクトップURL: URL {
+    get throws {
+        let fm = FileManager.default
+        let desktopURL = try fm.url(for: FileManager.SearchPathDirectory.desktopDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
+        return desktopURL
+    }
+}
+
+public var applicationSupportURL: URL {
+    get throws {
+        let fm = FileManager.default
+        let url = try fm.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(defaults.programName)
+        try url.prepareDirectory()
+        return url
+    }
+}
+
+public var 生産管理集計URL: URL {
+    get throws {
+        let url = try デスクトップURL.appendingPathComponent("生産管理集計", isDirectory: true)
+        try url.prepareDirectory()
+        return url
+    }
+}
+
+public var 動作履歴URL: URL {
+    get throws {
+        let url = try デスクトップURL.appendingPathComponent("動作履歴", isDirectory: true)
+        try? url.prepareDirectory()
+        return url
+    }
+}
 
 let tmpSerial = SerialGenerator()
 
@@ -141,11 +175,16 @@ extension URL {
     }
     
     /// URLのディレクトリを準備する
+    public func prepareBaseDirectory() throws {
+        let dir = self.deletingLastPathComponent()
+        try dir.prepareDirectory()
+    }
+
+    /// URLのディレクトリを準備する
     public func prepareDirectory() throws {
         let fm = FileManager.default
-        let dir = self.deletingLastPathComponent()
-        if dir.isExists == false {
-            try fm.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
+        if self.isExists == false {
+            try fm.createDirectory(at: self, withIntermediateDirectories: true, attributes: nil)
         }
     }
 }

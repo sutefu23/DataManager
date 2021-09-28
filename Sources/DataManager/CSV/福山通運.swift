@@ -54,7 +54,7 @@ private extension 送状型 {
 
 extension Sequence where Element == 送状型 {
     public func export福山システムCSV(to url: URL) throws {
-        try url.prepareDirectory()
+        try url.prepareBaseDirectory()
 
         let generator = TableGenerator<送状型>()
             .string("荷受人コード") { $0.荷受人コード }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct スケジュール型: FileMakerImportRecord {
+struct スケジュール型: FileMakerImportObject {
     static let layout: String = "DataAPI_6" 
     
     let recordId: FileMakerRecordID?

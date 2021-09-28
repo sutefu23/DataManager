@@ -21,6 +21,15 @@ enum FileMakerSortType: String, Encodable {
 
 /// サーバー上のデータベースファイル
 public final class FileMakerDB: DMLogger {
+    static func db(ofName name: String) -> FileMakerDB? {
+        switch name {
+        case "pm_osakaname": return pm_osakaname
+        case "systemn": return system
+        case "laser": return laser
+        default: return nil
+        }
+    }
+    
     /// 再実行前の待機時間
     static let retryInterval: TimeInterval = 1.0
 

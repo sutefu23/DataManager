@@ -404,7 +404,7 @@ public class BasicCacheStorage<Key: DMCacheKey, Data: BasicCacheResult, R2: DMCa
 
     // MARK: - 内部インターフェース
     /// クラス名文字列(デバッグ用)
-    final var name: String { return className(of: self) }
+    final var name: String { return classNameBody(of: self) }
 
     /// 指定されたキーのデータを更新する。キーに対応するデーターがない場合何もしない
     final func basic_update(forKey key: Key, updator: (inout Data) -> Void) {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
+public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
     public typealias ImportBuddyType = 進捗型
     public static let layout = "DataAPI_ProcessInput"
     public static let exportScript = "DataAPI_ProcessInput_RecordSet"
@@ -105,13 +105,12 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
         return "\(登録日.fmImportString),\(登録時間.fmImportString),\(伝票番号),\(工程.code),\(作業内容.code),\(社員.Hなし社員コード),\(作業種別.code),\(作業系列?.系列コード ?? "")\n"
     }
     
-    public func makeExportRecord(exportUUID: UUID) -> FileMakerQuery {
+    public func makeExportRecord(exportUUID: UUID?) -> FileMakerQuery {
         return self.makeRecord(識別キー: exportUUID)
     }
     
-    func makeRecord(識別キー key: UUID) -> FileMakerQuery {
+    func makeRecord(識別キー key: UUID?) -> FileMakerQuery {
         var record: FileMakerQuery = [
-            "識別キー": key.uuidString,
             "登録日": self.登録日.fmString,
             "登録時間": self.登録時間.fmImportString,
             "伝票番号": "\(self.伝票番号.整数値)",
@@ -120,16 +119,15 @@ public struct 進捗出力型: FileMakerExportRecord, Hashable, Codable {
             "社員コード": self.社員.Hなし社員コード,
             "作業種別コード": self.作業種別.code
         ]
+        record["識別キー"] = key?.uuidString
         if let series = self.作業系列 {
             record["作業系列コード"] = series.系列コード
         }
         return record
     }
     
-    public static func prepareUploads(uuid: UUID, session: FileMakerSession) throws {
-        var query = FileMakerQuery()
-        query["指示書進捗入力UUID"] = "==\(uuid.uuidString)"
-        _ = try session.find(layout: 進捗型.layout, query: [query])
+    public static var prepareParameters: (layout: String, field: String)? {
+        return (layout: 進捗型.layout, field: "指示書進捗入力UUID")
     }
 
     /// 重複登録ならtrue

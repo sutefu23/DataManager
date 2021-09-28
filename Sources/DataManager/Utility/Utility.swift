@@ -41,7 +41,15 @@ public final class DataManagerController {
 }
 
 func className(of object: Any) -> String {
-    let name = String(describing: type(of: object))
+    var name = String(describing: type(of: object))
+    if name.hasSuffix(".Type") {
+        name.removeLast(5)
+    }
+    return name
+}
+
+func classNameBody(of object: Any) -> String {
+    let name = className(of: object)
     if name.hasSuffix("型") {
         return String(name.dropLast())
     } else {

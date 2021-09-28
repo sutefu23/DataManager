@@ -41,7 +41,7 @@ extension 送状型 {
 
 public extension Sequence where Element == 送状型 {
     func exportヤマト送状CSV(to url: URL) throws {
-        try url.prepareDirectory()
+        try url.prepareBaseDirectory()
 
         let today = Day().yearMonthDayNumberString
         let children = self.reduce([]) { $0 + $1.makeヤマト子伝票() } // 複数小口に関しては子伝票が必要

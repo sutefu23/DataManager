@@ -8,7 +8,7 @@
 import Foundation
 
 /// 入力レコード
-public protocol FileMakerImportRecord: FileMakerObject {
+public protocol FileMakerImportObject: FileMakerObject {
 /// レコードId
     var recordId: FileMakerRecordID? { get }
 
@@ -18,7 +18,7 @@ public protocol FileMakerImportRecord: FileMakerObject {
     func update(_ data: FileMakerFields) throws
 }
 
-extension FileMakerImportRecord {
+extension FileMakerImportObject {
     public static var db: FileMakerDB { .pm_osakaname }
 
     /// レコードを削除する

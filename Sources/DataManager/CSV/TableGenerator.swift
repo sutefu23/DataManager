@@ -406,26 +406,12 @@ public extension TableGenerator {
     }
 }
 
-public enum DirType {
-    case normal
-    case desktop
-    case download
-    
-    var url: URL {
-        switch self {
-        case .normal: return 生産管理集計URL
-        case .desktop: return デスクトップURL
-        case .download: return ダウンロードURL
-        }
-    }
-}
-
 #if targetEnvironment(macCatalyst)
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, base: DirType = .normal, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
-        var url: URL = base.url
+    func share(_ key: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
+        var url: URL = try base.url
         if !dir.isEmpty {
             url.appendPathComponent(dir)
             if !url.isExists {
@@ -441,7 +427,7 @@ public extension TableGenerator {
 import UIKit
 
 public extension TableGenerator {
-    func share(_ key: [S], format: ExportType, base: DirType = .normal, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
+    func share(_ key: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: UIButton? = nil, concurrent: Bool = false) throws {
         var title = title
         if !dir.isEmpty {
             title = "\(dir)_\(title)"
@@ -464,8 +450,8 @@ public extension TableGenerator {
 import AppKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, base: DirType = .normal, dir: String = "", title: String, shareButton: NSButton? = nil, concurrent: Bool = false) throws {
-        var url = base.url
+    func share(_ source: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: NSButton? = nil, concurrent: Bool = false) throws {
+        var url = try base.url
         if !dir.isEmpty {
             url.appendPathComponent(dir)
             if !url.isExists {
