@@ -9,7 +9,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public struct 月間目標Data型: DMSystemRecordData {
+public struct 月間目標Data型: FileMakerSyncData {
     public static let layout = "DataAPI_10"
     public static var db: FileMakerDB { .system }
 
@@ -83,7 +83,7 @@ extension 月間目標Data型 {
     }
 }
 
-public final class 月間目標型: DMSystemRecord<月間目標Data型> {
+public final class 月間目標型: FileMakerSyncObject<月間目標Data型> {
 //    public var 対象月: Month {
 //        get { data.対象月 }
 //        set { data.対象月 = newValue }

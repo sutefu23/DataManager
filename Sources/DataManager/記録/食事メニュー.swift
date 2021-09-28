@@ -100,7 +100,7 @@ public struct 食事メニューData型: Equatable {
     public var 提供パターン: String
 }
 
-extension 食事メニューData型: DMSystemRecordData {
+extension 食事メニューData型: FileMakerSyncData {
     public var memoryFootPrint: Int { 11 * 16 } // てきとう
 
     public init(_ record: FileMakerRecord) throws {
@@ -144,7 +144,7 @@ extension 食事メニューData型: DMSystemRecordData {
     }
 }
 
-public class 食事メニュー型: DMSystemRecord<食事メニューData型> {
+public class 食事メニュー型: FileMakerSyncObject<食事メニューData型> {
 //    public var メニューID: メニューID型 {
 //        get { data.メニューID }
 //        set { data.メニューID = newValue }

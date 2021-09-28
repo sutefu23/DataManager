@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct 箱文字優先度Data型: DMSystemRecordData, Equatable, DMCacheElement {
+public struct 箱文字優先度Data型: FileMakerSyncData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_3"
     public static var db: FileMakerDB { .system }
 
@@ -63,7 +63,7 @@ public struct 箱文字優先度Data型: DMSystemRecordData, Equatable, DMCacheE
     }
 }
 
-public final class 箱文字優先度型: DMSystemRecord<箱文字優先度Data型> {
+public final class 箱文字優先度型: FileMakerSyncObject<箱文字優先度Data型> {
     public static let 自動有効期限: Time = Time(15, 00)
     
 //    public var 伝票番号: 伝票番号型? {

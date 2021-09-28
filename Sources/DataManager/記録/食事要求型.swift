@@ -48,7 +48,7 @@ public enum 食事要求状態型: Int, Comparable, Hashable {
     }
 }
 
-public struct 食事要求Data型: DMSystemRecordData {
+public struct 食事要求Data型: FileMakerSyncData {
     public static let layout = "DataAPI_7"
     public static var db: FileMakerDB { .system }
 
@@ -89,7 +89,7 @@ public struct 食事要求Data型: DMSystemRecordData {
     }
 }
 
-public class 食事要求型: DMSystemRecord<食事要求Data型>, Identifiable {    
+public class 食事要求型: FileMakerSyncObject<食事要求Data型>, Identifiable {    
 //    public var 社員番号: String {
 //        get { data.社員番号 }
 //        set { data.社員番号 = newValue }

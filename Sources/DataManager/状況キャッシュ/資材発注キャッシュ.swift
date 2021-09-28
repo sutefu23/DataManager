@@ -30,13 +30,13 @@ struct 資材発注キャッシュData型: DMCacheElement {
 }
 
 class 資材指定注番発注キャッシュ型: DMDBCache<指定注文番号型, 発注型> {
-    static let shared: 資材指定注番発注キャッシュ型 = 資材指定注番発注キャッシュ型(lifeTime: 1*60*60, nilCache: true) {
+    static let shared: 資材指定注番発注キャッシュ型 = 資材指定注番発注キャッシュ型(lifeSpan: 1*60*60, nilCache: true) {
         try 発注型.find(指定注文番号: $0).last
     }
 }
 
 class 資材発注キャッシュ型: DMDBCache<資材発注キャッシュKey, 資材発注キャッシュData型> {
-    static let shared: 資材発注キャッシュ型 = 資材発注キャッシュ型(lifeTime: 1*60*60, nilCache: true) {
+    static let shared: 資材発注キャッシュ型 = 資材発注キャッシュ型(lifeSpan: 1*60*60, nilCache: true) {
         let list = try 発注型.find(発注種類: $0.発注種類, 資材番号: $0.図番)
         if list.isEmpty { return nil }
         list.forEach { 資材指定注番発注キャッシュ型.shared.regist($0, forKey: $0.指定注文番号) }

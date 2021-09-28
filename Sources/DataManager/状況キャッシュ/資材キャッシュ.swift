@@ -9,10 +9,16 @@
 import Foundation
 
 public class 資材キャッシュ型: DMDBCache<図番型, 資材型> {
-    public static let shared = 資材キャッシュ型(lifeTime: 4*60*60, nilCache: false) {
+    public static let shared = 資材キャッシュ型(lifeSpan: 4*60*60, nilCache: false) {
         return try 資材型.find(図番: $0)
     }
     
-    public func 現在資材(図番: 図番型) throws -> 資材型? { try find(図番, noCache: true) }
-    public func キャッシュ資材(図番: 図番型) throws -> 資材型? { try find(図番, noCache: false) }
+    public func 現在資材(図番: 図番型) throws -> 資材型? {
+        if 図番.isEmpty { return nil }
+        return try find(図番, noCache: true)
+    }
+    public func キャッシュ資材(図番: 図番型) throws -> 資材型? {
+        if 図番.isEmpty { return nil }
+        return try find(図番, noCache: false)
+    }
 }

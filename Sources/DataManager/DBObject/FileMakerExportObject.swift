@@ -8,12 +8,7 @@
 import Foundation
 
 /// 出力レコード
-public protocol FileMakerExportObject {
-    /// 出力先のDBファイル
-    static var db: FileMakerDB { get }
-    /// 出力先のレイアウト名
-    static var layout: String { get }
-
+public protocol FileMakerExportObject: FileMakerObject {
     /// DBに登録済みならtrueを返す。nilは未チェック
     func is登録済み() throws -> Bool?
     

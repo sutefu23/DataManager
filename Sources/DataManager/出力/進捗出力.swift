@@ -24,6 +24,8 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
 
     public var 登録日時: Date { return Date(self.登録日, self.登録時間) }
     
+    public var memoryFootPrint: Int { 8 * 16 }
+
     enum CodingKeys: String, CodingKey {
         case 登録日
         case 登録時間

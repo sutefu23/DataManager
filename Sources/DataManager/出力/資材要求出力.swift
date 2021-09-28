@@ -20,6 +20,8 @@ public struct 資材要求出力型: FileMakerExportObject {
     public let 希望納期: Day?
     public let 備考: String
     
+    public var memoryFootPrint: Int { 8 * 16 }
+
     public init(登録日: Day = Day(), 登録時間: Time = Time(), 注文番号: 注文番号型, 社員: 社員型, 資材: 資材型, 数量: Int, 希望納期: Day?, 備考: String) {
         self.登録日 = 登録日
         self.登録時間 = 登録時間

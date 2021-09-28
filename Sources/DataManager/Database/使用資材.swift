@@ -11,7 +11,7 @@ public protocol 登録日時比較可能型 {
     var 登録日時:Date { get }
 }
 
-public class 使用資材型: FileMakerImportObject,登録日時比較可能型 {
+public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 {
     public static var layout: String { "DataAPI_17" }
     
     public let recordId: FileMakerRecordID?

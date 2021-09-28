@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class 進捗型: FileMakerImportObject, Equatable, Identifiable {
+public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
     public static var 立ち上り進捗統合 = false
     public static let layout = "DataAPI_3"
 

@@ -10,28 +10,28 @@ import Foundation
 
 /// レコードID
 public struct FileMakerRecordID: Hashable, CustomStringConvertible, DMCacheElement {
-    let data: Int
+    private let rawValue: Int
     
     init?(string: String?) {
-        guard let string = string, let FileMakerRecordID = Int(string) else { return nil }
-        self.data = FileMakerRecordID
+        guard let string = string, let intValue = Int(string) else { return nil }
+        self.rawValue = intValue
     }
     
     init?(object: Any?) {
         switch object {
         case let str as String:
             guard let intValue = Int(str) else { return nil }
-            self.data = intValue
+            self.rawValue = intValue
         case let intValue as Int:
-            self.data = intValue
+            self.rawValue = intValue
         default:
             return nil
         }
     }
     
-    public var memoryFootPrint: Int { return data.memoryFootPrint }
+    public var memoryFootPrint: Int { return rawValue.memoryFootPrint }
     
-    public var description: String { "\(data)" }
+    public var description: String { "\(rawValue)" }
 }
 
 /// 1レコードに対応するデータ

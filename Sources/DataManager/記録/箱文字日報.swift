@@ -10,7 +10,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public struct 箱文字日報Data型: DMSystemRecordData {
+public struct 箱文字日報Data型: FileMakerSyncData {
     public static let layout = "DataAPI_2"
     public static var db: FileMakerDB { .system }
 
@@ -53,7 +53,7 @@ public struct 箱文字日報Data型: DMSystemRecordData {
     }
 }
 
-public final class 箱文字日報型: DMSystemRecord<箱文字日報Data型> {
+public final class 箱文字日報型: FileMakerSyncObject<箱文字日報Data型> {
 //    public var 工程: 工程型 {
 //        get { data.工程 }
 //        set { data.工程 = newValue }

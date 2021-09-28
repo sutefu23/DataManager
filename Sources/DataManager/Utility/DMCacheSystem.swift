@@ -605,29 +605,29 @@ public struct DMDBCacheData<R: DMCacheElement>: BasicCacheResult {
 /// DB結果についてキャッシュ
 public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Key, DMDBCacheData<R?>, R?> {
     /// キャッシュの寿命。変更すると既存のキャッシュの寿命も同じだけ変化する
-    var lifeTime: TimeInterval
+    var lifeSpan: TimeInterval
     /// falseなら結果がniの場合キャッシュせず毎回検索する
     private let nilCache: Bool
 
     // MARK: - 固有外部インターフェース
     /// キャッシュの有効期限と検索関数を元に初期化する
-    public init(lifeTime: TimeInterval = 60, nilCache: Bool, isDebug: Bool = false, _ converter: @escaping (Key) throws -> R?) {
+    public init(lifeSpan: TimeInterval = 60, nilCache: Bool, isDebug: Bool = false, _ converter: @escaping (Key) throws -> R?) {
         self.nilCache = nilCache
         switch dbCachingMode {
         case .dynamic:
-            self.lifeTime = lifeTime // 通常の寿命
+            self.lifeSpan = lifeSpan // 通常の寿命
         case .static:
-            self.lifeTime = max(lifeTime, 24 * 60 * 60) // 最低24時間の寿命
+            self.lifeSpan = max(lifeSpan, 24 * 60 * 60) // 最低24時間の寿命
         }
         super.init(converter)
         self.isDebug = isDebug
     }
 
     /// 指定されたキャッシュの寿命を変更する
-    public final func updateLifeTime(_ newLifeTime: TimeInterval? = nil, forKey key: Key) {
+    public final func updateLifeSpan(_ newLifeSpan: TimeInterval? = nil, forKey key: Key) {
         self.basic_update(forKey: key) {
-            if let newLifeTime = newLifeTime {
-                $0.date = Date(timeIntervalSinceNow: newLifeTime - self.lifeTime)
+            if let newLifeSpan = newLifeSpan {
+                $0.date = Date(timeIntervalSinceNow: newLifeSpan - self.lifeSpan)
             } else {
                 $0.date = Date()
             }
@@ -635,9 +635,9 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
     }
 
     /// 指定されたキャッシュの寿命の最大値を指定する
-    public final func limitLifeTime(_ maxLifeTime: TimeInterval, forKey key: Key) {
+    public final func limitLifeSpan(_ maxLifeSpan: TimeInterval, forKey key: Key) {
         self.basic_update(forKey: key) {
-            let maxDate = Date(timeIntervalSinceNow: maxLifeTime - self.lifeTime)
+            let maxDate = Date(timeIntervalSinceNow: maxLifeSpan - self.lifeSpan)
             if $0.date > maxDate {
                 $0.date = maxDate
             }
@@ -651,7 +651,7 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
     
     // MARK: - 内部データ処理インターフェース
     fileprivate override func basic_validate(_ data: DMDBCacheData<R?>) -> Bool {
-        return Date() < data.date.addingTimeInterval(self.lifeTime) // 有効期限内
+        return Date() < data.date.addingTimeInterval(self.lifeSpan) // 有効期限内
     }
     
     fileprivate override func basic_lock_regist(_ data: R?, forKey key: Key) {
@@ -679,7 +679,7 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
         /// 有効期限切れリスト
         var handles: [CacheHandle] = []
         lock.lock(); defer { lock.unlock() }
-        let expireBorder = Date(timeIntervalSinceNow: -lifeTime) // 有効期限切れとなる登録日時
+        let expireBorder = Date(timeIntervalSinceNow: -lifeSpan) // 有効期限切れとなる登録日時
         for (key, handle) in map where handle.result.date < expireBorder { // 古くなったキャッシュデータを列挙
             map.removeValue(forKey: key) // 登録解除
             handle.storage = nil

@@ -32,7 +32,7 @@ extension FileMakerRecord {
     }
 }
 
-public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheElement {
+public struct 資材使用記録Data型: FileMakerSyncData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_5"
     public static var db: FileMakerDB { .system }
     public var 登録日時: Date
@@ -133,7 +133,7 @@ public struct 資材使用記録Data型: DMSystemRecordData, Equatable, DMCacheE
     }
 }
 
-public final class 資材使用記録型: DMSystemRecord<資材使用記録Data型>,登録日時比較可能型 {
+public final class 資材使用記録型: FileMakerSyncObject<資材使用記録Data型>,登録日時比較可能型 {
     public var 登録日時: Date {
         get { data.登録日時 }
     }
@@ -333,7 +333,7 @@ struct 資材使用記録キャッシュData型: DMCacheElement {
 }
 
 class 資材使用記録キャッシュ型: DMDBCache<伝票番号型, 資材使用記録キャッシュData型> {
-    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeTime: 1*60*60, nilCache: false) {
+    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeSpan: 1*60*60, nilCache: false) {
         let list = try 資材使用記録型.find(伝票番号: $0)
         if list.isEmpty { return nil }
         return 資材使用記録キャッシュData型(list: list)

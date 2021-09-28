@@ -26,7 +26,7 @@ public struct 箱文字優先度キャッシュKey型: Hashable, DMCacheElement,
 }
 
 public class 箱文字優先度キャッシュ型: DMDBCache<箱文字優先度キャッシュKey型, 箱文字優先度型> {
-    public static let shared: 箱文字優先度キャッシュ型 = 箱文字優先度キャッシュ型(lifeTime: 10 * 60, nilCache: true) {
+    public static let shared: 箱文字優先度キャッシュ型 = 箱文字優先度キャッシュ型(lifeSpan: 10 * 60, nilCache: true) {
         let number = $0.number
         let process = $0.process
         return try 箱文字優先度型.findDirect(伝票番号: number, 工程: process)

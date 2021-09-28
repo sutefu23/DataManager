@@ -33,7 +33,7 @@ extension FileMakerRecord {
     }
 }
 
-public struct 資材入庫状況Data型: DMSystemRecordData, Equatable, DMCacheElement {
+public struct 資材入庫状況Data型: FileMakerSyncData, Equatable, DMCacheElement {
     public static let layout = "DataAPI_4"
     public static var db: FileMakerDB { .system }
     public var 指定注文番号:  指定注文番号型
@@ -64,7 +64,7 @@ public struct 資材入庫状況Data型: DMSystemRecordData, Equatable, DMCacheE
     }
 }
 
-public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data型> {
+public final class 資材入庫状況型: FileMakerSyncObject<資材入庫状況Data型> {
 //    var 指定注文番号: 指定注文番号型 {
 //        get { data.指定注文番号 }
 //        set { data.指定注文番号 = newValue }
@@ -121,7 +121,7 @@ public final class 資材入庫状況型: DMSystemRecord<資材入庫状況Data�
 
 // MARK: -
 public class 資材入庫状況キャッシュ型: DMDBCache<指定注文番号型, 資材入庫状況型> {
-    public static let shared: 資材入庫状況キャッシュ型 = 資材入庫状況キャッシュ型(lifeTime: 10*60*60, nilCache: true) {
+    public static let shared: 資材入庫状況キャッシュ型 = 資材入庫状況キャッシュ型(lifeSpan: 10*60*60, nilCache: true) {
         try 資材入庫状況型.findDirect(指定注文番号: $0)
     }
     

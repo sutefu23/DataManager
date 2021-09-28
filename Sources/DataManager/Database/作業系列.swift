@@ -17,7 +17,7 @@ func flush作業系列Cache() {
     lock.unlock()
 }
 
-public struct 作業系列型: FileMakerImportObject, Hashable {
+public struct 作業系列型: FileMakerSearchObject, Hashable {
     public static let db: FileMakerDB = .pm_osakaname
     public static let layout: String = "DataAPI_9"
     

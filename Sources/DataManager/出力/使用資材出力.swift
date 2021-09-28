@@ -26,6 +26,8 @@ public struct 使用資材出力型: FileMakerExportObject {
     public var 金額: Double?
     public var 原因工程: 工程型?
 
+    public var memoryFootPrint: Int { 14 * 16 }
+
     public init(登録日時: Date,
                 伝票番号: 伝票番号型,
                 作業者: 社員型?,

@@ -39,7 +39,7 @@ public enum 変更履歴種類型: Hashable {
     }
 }
 
-public struct 指示書変更内容履歴型: FileMakerImportObject {
+public struct 指示書変更内容履歴型: FileMakerSearchObject {
     public static let layout = "DataAPI_2"
     
     public let recordId: FileMakerRecordID?

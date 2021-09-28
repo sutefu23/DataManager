@@ -22,7 +22,7 @@ extension FileMakerRecord {
     }
 }
 
-public struct IDカードData型: DMSystemRecordData {
+public struct IDカードData型: FileMakerSyncData {
     public static let layout = "DataAPI_8"
     public static var db: FileMakerDB { .system }
 
@@ -66,7 +66,7 @@ public struct IDカードData型: DMSystemRecordData {
     }
 }
 
-public class IDカード型: DMSystemRecord<IDカードData型> {
+public class IDカード型: FileMakerSyncObject<IDカードData型> {
 //    public var 社員番号: String {
 //        get { data.社員番号 }
 //        set { data.社員番号 = newValue }

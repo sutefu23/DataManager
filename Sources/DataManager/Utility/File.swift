@@ -50,10 +50,10 @@ class PikerDelegate: NSObject, UIDocumentPickerDelegate {
 
 private var pickerDelegate: PikerDelegate?
 public extension UIViewController {
-    func selectExportFile(filename: String, data: Data) {
+    func selectExportFile(filename: String, rawValue: Data) {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(filename)
         do {
-            try data.write(to: url)
+            try rawValue.write(to: url)
             let documentPicker = UIDocumentPickerViewController(url: url, in: .exportToService)
             self.present(documentPicker, animated: true)
         } catch {

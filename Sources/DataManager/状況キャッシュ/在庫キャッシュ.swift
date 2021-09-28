@@ -9,7 +9,7 @@
 import Foundation
 
 public class 在庫数キャッシュ型: DMDBCache<図番型, Int> {
-    public static let shared: 在庫数キャッシュ型 = 在庫数キャッシュ型(lifeTime: 10*60, nilCache: true) {
+    public static let shared: 在庫数キャッシュ型 = 在庫数キャッシュ型(lifeSpan: 10*60, nilCache: true) {
         guard let item2 = try 資材型.find(図番: $0) else {
             throw FileMakerError.notFound(message: " 資材 図番:\($0)")
         }

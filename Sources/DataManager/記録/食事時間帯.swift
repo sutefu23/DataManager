@@ -9,7 +9,7 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public struct 食事時間帯Data型: DMSystemRecordData {
+public struct 食事時間帯Data型: FileMakerSyncData {
     public static let layout = "DataAPI_9"
     public static var db: FileMakerDB { .system }
 
@@ -46,7 +46,7 @@ public struct 食事時間帯Data型: DMSystemRecordData {
     }
 }
 
-public class 食事時間帯型: DMSystemRecord<食事時間帯Data型> {
+public class 食事時間帯型: FileMakerSyncObject<食事時間帯Data型> {
 //    public var 提供パターン: String {
 //        get { data.提供パターン }
 //        set { data.提供パターン = newValue }

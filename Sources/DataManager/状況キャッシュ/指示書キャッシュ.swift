@@ -9,7 +9,7 @@
 import Foundation
 
 public class 指示書伝票番号キャッシュ型: DMDBCache<伝票番号型, 指示書型> {
-    public static let shared: 指示書伝票番号キャッシュ型 = 指示書伝票番号キャッシュ型(lifeTime: 10*60*60, nilCache: false) {
+    public static let shared: 指示書伝票番号キャッシュ型 = 指示書伝票番号キャッシュ型(lifeSpan: 10*60*60, nilCache: false) {
         guard let order = try 指示書型.findDirect(伝票番号: $0) else { return nil }
         指示書UUIDキャッシュ型.shared.regist(order, forKey: order.uuid)
         伝票番号キャッシュ型.shared.regist(order.伝票番号, forKey: order.伝票番号.整数値)
@@ -24,7 +24,7 @@ public class 指示書伝票番号キャッシュ型: DMDBCache<伝票番号型,
 }
 
 public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {
-    public static let shared: 指示書UUIDキャッシュ型 = 指示書UUIDキャッシュ型(lifeTime: 10*60*60, nilCache: false) {
+    public static let shared: 指示書UUIDキャッシュ型 = 指示書UUIDキャッシュ型(lifeSpan: 10*60*60, nilCache: false) {
         guard let order = try 指示書型.findDirect(uuid: $0) else { return nil }
         指示書伝票番号キャッシュ型.shared.regist(order, forKey: order.伝票番号)
         伝票番号キャッシュ型.shared.regist(order.伝票番号, forKey: order.伝票番号.整数値)
@@ -39,7 +39,7 @@ public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {
 }
 
 public class 伝票番号キャッシュ型: DMDBCache<Int, 伝票番号型> {
-    public static let shared: 伝票番号キャッシュ型 = 伝票番号キャッシュ型(lifeTime: 4*60*60, nilCache: false) {
+    public static let shared: 伝票番号キャッシュ型 = 伝票番号キャッシュ型(lifeSpan: 4*60*60, nilCache: false) {
         try 伝票番号型(invalidNumber: $0)
     }
     

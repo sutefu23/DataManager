@@ -19,7 +19,7 @@ struct 入出庫キャッシュData型: DMCacheElement {
 }
 
 class 入出庫キャッシュ型: DMDBCache<図番型, 入出庫キャッシュData型> {
-    static let shared: 入出庫キャッシュ型 = 入出庫キャッシュ型(lifeTime: 15*60, nilCache: false) {
+    static let shared: 入出庫キャッシュ型 = 入出庫キャッシュ型(lifeSpan: 15*60, nilCache: false) {
         return 入出庫キャッシュData型(array: try 資材入出庫型.find(図番: $0))
     }
     

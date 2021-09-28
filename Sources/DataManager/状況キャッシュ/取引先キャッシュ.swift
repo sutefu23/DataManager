@@ -9,7 +9,7 @@
 import Foundation
 
 public class 取引先キャッシュ型: DMDBCache<会社コード型, 取引先型> {
-    public static let shared: 取引先キャッシュ型 = 取引先キャッシュ型(lifeTime: 1*60*60, nilCache: false) {
+    public static let shared: 取引先キャッシュ型 = 取引先キャッシュ型(lifeSpan: 1*60*60, nilCache: false) {
         return try 取引先型.find(会社コード: $0)
     }
     

@@ -1,5 +1,5 @@
 //
-//  DMSystemRecord.swift
+//  FileMakerSyncRecord.swift
 //  DataManager
 //
 //  Created by manager on 2020/03/25.
@@ -10,7 +10,7 @@ import Foundation
 
 /// systemデータベースファイル上のテーブルのレコードのデータとその状態
 @dynamicMemberLookup
-public class DMSystemRecord<R: DMSystemRecordData>: DMSystemRecordManager {
+public class FileMakerSyncObject<R: FileMakerSyncData>: FileMakerSyncObjectProtocol {
     /// 管理するデータ型
     public typealias RecordData = R
     /// サーバー上のデータ
@@ -114,7 +114,7 @@ public class DMSystemRecord<R: DMSystemRecordData>: DMSystemRecordManager {
 }
 
 /// systemデータベースファイル上のテーブルのレコードのデータ
-public protocol DMSystemRecordData: DMCacheElement, Equatable {
+public protocol FileMakerSyncData: DMCacheElement, Equatable {
     /// テーブルのあるDBファイル
     static var db: FileMakerDB { get }
     /// テーブル操作用のレイアウト名
@@ -127,13 +127,13 @@ public protocol DMSystemRecordData: DMCacheElement, Equatable {
 }
 
 /// systemデータベースファイル上のテーブルのレコードの管理メカニズム
-public protocol DMSystemRecordManager: FileMakerImportObject {
-    associatedtype RecordData: DMSystemRecordData
+public protocol FileMakerSyncObjectProtocol: FileMakerSearchObject {
+    associatedtype RecordData: FileMakerSyncData
     init(_ record: FileMakerRecord) throws
     static var queue: OperationQueue { get }
 }
 
-extension DMSystemRecordManager {
+extension FileMakerSyncObjectProtocol {
     /// テーブルのあるDBファイル
     public static var db: FileMakerDB { RecordData.db }
     /// テーブル操作用のレイアウト名

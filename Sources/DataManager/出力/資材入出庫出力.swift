@@ -20,6 +20,8 @@ public struct 資材入出庫出力型: FileMakerExportObject {
     public let 社員: 社員型
     public let 入力区分: 入力区分型
     
+    public var memoryFootPrint: Int { 8 * 16 }
+    
     public init?(登録日: Day? = nil, 登録時間: Time? = nil, 資材: 資材型, 部署: 部署型?, 入庫数: Int, 出庫数: Int, 社員: 社員型, 入力区分: 入力区分型) {
         guard let sec = 部署 ?? 社員.部署 else { return nil }
         let day = 登録日 ?? Day()
