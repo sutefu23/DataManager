@@ -95,7 +95,6 @@ public enum FileMakerCommand: Codable {
                 .insert(db: let db, layout: _, fields: _):
             return db
         }
-        
     }
     
     /// 出力を実行する

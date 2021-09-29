@@ -46,10 +46,10 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         func makeError(_ key: String) -> Error {
             record.makeInvalidRecordError(name: Self.name, mes: "\(key): \(numberStr)")
         }
-        guard let number = Int(numberStr), 伝票番号型.isValidNumber(number) else { throw makeError("伝票番号[\(numberStr)]") }
+        guard let orderNumber = 伝票番号型(invalidNumber: numberStr) else { throw makeError("伝票番号[\(numberStr)]") }
         guard var 工程 = record.工程(forKey: "工程コード") ?? record.工程(forKey: "工程名称") else { throw makeError("工程") }
         if 進捗型.立ち上り進捗統合 && 工程 == .立ち上がり_溶接 { 工程 = .立ち上がり }
-        self.伝票番号 = 伝票番号型(validNumber: number)
+        self.伝票番号 = orderNumber
         guard let 作業内容 = record.作業内容(forKey: "進捗コード") else { throw makeError("進捗") }
         guard let name = record.string(forKey: "社員名称"), let num = record.integer(forKey: "社員番号") else { throw makeError("作業者") }
         guard let 登録日 = record.day(forKey: "登録日") else { throw makeError("登録日") }

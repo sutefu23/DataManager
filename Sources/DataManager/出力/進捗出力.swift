@@ -91,7 +91,7 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
         if cols.count < 6 { throw ProgressDBError.invalidCSV(line) }
         guard let day = Day(fmDate: cols[0]) else { throw ProgressDBError.invalidCSV(line) }
         guard let time = Time(fmTime: cols[1]) else { throw ProgressDBError.invalidCSV(line) }
-        guard let number = try 伝票番号型(invalidString: cols[2]) else { throw ProgressDBError.invalidCSV(line) }
+        guard let number = try 伝票番号キャッシュ型.shared.find(cols[2]) else { throw ProgressDBError.invalidCSV(line) }
         guard let process = 工程型(cols[3]) else { throw ProgressDBError.invalidCSV(line) }
         guard let state = 作業内容型(cols[4]) else { throw ProgressDBError.invalidCSV(line) }
         guard let worker = 社員型(社員コード: cols[5]) else { throw ProgressDBError.invalidCSV(line) }
@@ -128,13 +128,12 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
     }
         
     public func is登録済み() throws -> Bool? {
-        guard let records = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.進捗一覧, !records.isEmpty else { return false }
-        return !records.contains { data in
-            return  self.伝票番号 == data.伝票番号 &&
-                    self.工程 == data.工程 &&
-                    self.作業内容 == data.作業内容 &&
-                    self.作業種別 == data.作業種別
+        guard let records = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.工程別進捗一覧[self.工程] else { return false }
+        for progress in records.reversed() {
+            if progress.作業内容 != self.作業内容 { break }
+            if progress.作業種別 == self.作業種別 && progress.作業者 == self.社員 && progress.作業系列 == self.作業系列 { return true }
         }
+        return false
     }
     
     public func makeExportRecord() -> FileMakerFields {

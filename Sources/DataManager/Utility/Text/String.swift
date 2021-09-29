@@ -367,7 +367,7 @@ extension String {
     /// idがabcなどの26進数付きかどうかを判別
     public func is26進数付きID()-> Bool{
         let pattern = "[a-zA-Z]+[0-9]+"
-        return self.contain(pattern)
+        return self.containPattern(pattern)
     }
     /// idから26進数を取得。存在しなければ空文字
     public func filter26進数ID()-> String{
@@ -395,7 +395,7 @@ extension String {
 /// 正規表現パターンマッチ
 extension String {
     /// 正規表現を含むか否か
-    public func contain(_ pattern: String) -> Bool {
+    public func containPattern(_ pattern: String) -> Bool {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options()) else {
             return false
         }

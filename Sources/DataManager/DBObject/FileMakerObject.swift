@@ -10,8 +10,11 @@ import Foundation
 /// レコードの内容をオブジェクト化したものの共通インターフェース
 /// recordIdは内容ではなく管理タグのため、共通インターフェースとしては含めない
 public protocol FileMakerObject: DMCacheElement, DMLogger {
+    /// テーブルのあるデータベースファイル
     static var db: FileMakerDB { get }
+    /// 使用するレイアウト
     static var layout: String { get }
+    /// オブジェクトの名前
     static var name: String { get }
 
     /// 指定された検索条件で検索し、生データを返す
@@ -21,7 +24,7 @@ public protocol FileMakerObject: DMCacheElement, DMLogger {
 }
 
 extension FileMakerObject {
-    public static var name: String { classNameBody(of: self) }
+    public static var name: String { classNameBody(of: self) } // クラス名から動的に名称を作成する
     
     /// ログシステムにレコードを記録する
     public func registLogData<T: DMRecordData>(_ data: T, _ level: DMLogLevel) {

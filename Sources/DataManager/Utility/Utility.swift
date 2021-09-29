@@ -20,18 +20,9 @@ public final class DataManagerController {
     }
     
     public func flushAllCache() {
-        clear伝票番号Cache()
         flush工程名称DB()
         出勤日DB型.shared.flushCache()
         flush作業系列Cache()
-//        最終発注単価キャッシュ型.shared.flushCache()
-//        箱文字優先度キャッシュ型.shared.removeAll()
-//        在庫数キャッシュ型.shared.removeAllCache()
-//        入出庫キャッシュ型.shared.removeAllCache()
-//        資材発注キャッシュ型.shared.removeAllCache()
-//        取引先キャッシュ型.shared.removeAllCache()
-//        指示書進捗キャッシュ型.shared.removeAllCache()
-//        資材入庫状況キャッシュ型.shared.flushAllCache()
         DMCacheSystem.shared.removeAllCache()
     }
     
@@ -40,21 +31,12 @@ public final class DataManagerController {
     }
 }
 
-func className(of object: Any) -> String {
-    var name = String(describing: type(of: object))
-    if name.hasSuffix(".Type") {
-        name.removeLast(5)
-    }
-    return name
-}
-
+/// objectの型を文字列として意味のある部分を返す（名前に使う）
 func classNameBody(of object: Any) -> String {
-    let name = className(of: object)
-    if name.hasSuffix("型") {
-        return String(name.dropLast())
-    } else {
-        return name
-    }
+    var name = String(describing: type(of: object))
+    if name.hasSuffix(".Type") { name.removeLast(5) } // メタタイプはタイプ扱いとする
+    if name.hasSuffix("型") { name.removeLast() } // ~型の末尾は不要
+    return name
 }
 
 #if os(iOS) || os(tvOS)
@@ -139,7 +121,6 @@ extension Error {
         alert.runModal()
     }
 }
-
 #endif
 
 #if os(macOS) || os(iOS) || os(tvOS)

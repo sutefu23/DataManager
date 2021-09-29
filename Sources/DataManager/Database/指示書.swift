@@ -309,10 +309,10 @@ public final class 指示書型: FileMakerSearchObject {
     }()
     
     public var is原稿封筒社名印刷あり: Bool {
-        if self.管理用メモ.contain("原稿封筒社名必要") { return true }
-        if self.管理用メモ.contain("原稿封筒社名不要") { return false }
-        if self.備考.contain("原稿封筒社名必要") { return true }
-        if self.備考.contain("原稿封筒社名不要") { return false }
+        if self.管理用メモ.contains("原稿封筒社名必要") { return true }
+        if self.管理用メモ.contains("原稿封筒社名不要") { return false }
+        if self.備考.contains("原稿封筒社名必要") { return true }
+        if self.備考.contains("原稿封筒社名不要") { return false }
         return self.取引先?.is原稿社名不要 != true
     }
     
@@ -1179,7 +1179,7 @@ public extension 指示書型 {
     }
 
     static func findDirect(伝票番号文字列: String?) throws -> 指示書型? {
-        guard let str = 伝票番号文字列, let number = try 伝票番号型(invalidString: str) else { return nil }
+        guard let str = 伝票番号文字列, let number = try 伝票番号キャッシュ型.shared.find(str) else { return nil }
         return try findDirect(伝票番号: number)
     }
     
@@ -1234,15 +1234,18 @@ public extension 指示書型 {
         return try (normalFind(query1, filter: filter) + normalFind(query2, filter: filter)).sorted { $0.伝票番号 < $1.伝票番号 }
     }
     
-    static func normalFind(製作納期 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
+    static func normalFind(受注日: ClosedRange<Day>? = nil, 製作納期: ClosedRange<Day>? = nil, 出荷納期: ClosedRange<Day>? = nil, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
         var query = FileMakerQuery()
-        query["製作納期"] = makeQueryDayString(range)
-        return try normalFind(query, filter: filter)
-    }
-
-    static func normalFind(出荷納期 range: ClosedRange<Day>, filter: (指示書型) -> Bool = { _ in return true }) throws -> [指示書型] {
-        var query = FileMakerQuery()
-        query["出荷納期"] = makeQueryDayString(range)
+        if let range = 受注日 {
+            query["受注日"] = makeQueryDayString(range)
+        }
+        if let range = 製作納期 {
+            query["製作納期"] = makeQueryDayString(range)
+        }
+        if let range = 出荷納期 {
+            query["出荷納期"] = makeQueryDayString(range)
+        }
+        if query.isEmpty { return [] }
         return try normalFind(query, filter: filter)
     }
 }

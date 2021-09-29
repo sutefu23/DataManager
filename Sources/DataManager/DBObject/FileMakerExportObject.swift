@@ -39,20 +39,19 @@ extension Array where Element: FileMakerExportObject {
         let targets: [Element]
         if 登録済み除外 {
             session.log("\(Element.layout)登録済みチェック開始[\(self.count)]件")
-            /// 重複件数
-            var registeredCount = 0
+            var 登録済み件数 = 0
             targets = try self.filter {
                 if try $0.is登録済み() == true {
-                    registeredCount += 1
+                    登録済み件数 += 1
                     return false // 登録済みなら作業対象外
                 } else {
                     return true // 未登録なら作業対象
                 }
             }
-            if registeredCount == 0 {
+            if 登録済み件数 == 0 {
                 session.log("\(Element.layout)登録済みなし")
             } else {
-                session.log("\(Element.layout)登録済み[\(registeredCount)]件 残り: \(targets.count)件")
+                session.log("\(Element.layout)登録済み[\(登録済み件数)]件 残り: \(targets.count)件")
                 if targets.isEmpty { return } // 全て重複ならやることがなくなる
             }
         } else {

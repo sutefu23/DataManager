@@ -45,6 +45,11 @@ public class 指示書進捗キャッシュ型: DMDBCache<伝票番号型, 進�
         return try self.find(伝票番号, noCache: false)
     }
     
+    public func prepare(_ order: 伝票番号型?) throws {
+        guard let order = order else { return }
+        let _ = try self.find(order, noCache: false)
+    }
+    
     public func has受取(number: 伝票番号型, process: 工程型, member: 社員型?) throws -> Bool {
         return try hasComplete(number: number, process: process, work: .受取, member: member)
     }

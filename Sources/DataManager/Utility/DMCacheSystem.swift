@@ -645,7 +645,7 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
     }
 
     /// 指定されたパラメータで検索を行う
-    public final func find(_ keySource: Key, noCache: Bool = false) throws -> R? {
+    public func find(_ keySource: Key, noCache: Bool = false) throws -> R? {
         return try basic_convert(forceUpdate: noCache, forKey: keySource)
     }
     

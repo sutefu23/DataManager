@@ -14,46 +14,35 @@ import Foundation
 import UIKit
 #endif
 
-private let lock = NSLock()
-
-/// 存在確認された伝票の伝票番号
-private var testCache: Set<Int> = Set<Int>()
-
-func clear伝票番号Cache() {
-    lock.lock()
-    testCache.removeAll()
-    lock.unlock()
-}
-
 public final class 伝票番号解析型 {
     private var mainNumber: 伝票番号型?
     private var subNumber: 伝票番号型?
     private var mainChecked: Bool
     
     public init<S: StringProtocol>(_ value: S) {
-        if let number = Int(value) {
-            let order = 伝票番号型(validNumber: number)
-            if order.isValidNumber {
-                self.mainNumber = nil
-                self.subNumber = order
-                self.mainChecked = true
-                return
-            }
+        if let order = 伝票番号型(invalidNumber: value) {
+            self.mainNumber = nil
+            self.subNumber = order
+            self.mainChecked = true
+        } else {
+            self.mainNumber = nil
+            self.subNumber = nil
+            self.mainChecked = true
         }
-        self.mainNumber = nil
-        self.subNumber = nil
-        self.mainChecked = true
     }
-    
+    /// 存在確認済み
     public var 本番号: 伝票番号型? {
-        if !mainChecked {
-            if (try? subNumber?.testIsValid()) == true {
-                mainNumber = subNumber
+        get throws {
+            if !mainChecked, let number = subNumber?.整数値 {
+                if try 伝票番号キャッシュ型.shared.isExists(number) {
+                    mainNumber = subNumber
+                }
+                mainChecked = true
             }
-            mainChecked = true
+            return mainNumber
         }
-        return mainNumber
     }
+    /// 存在未確認
     public var 仮番号: 伝票番号型? {
         return subNumber
     }
@@ -61,52 +50,38 @@ public final class 伝票番号解析型 {
 
 public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
     public let 整数値: Int
+
+    public init?<S: StringProtocol>(invalidNumber: S) {
+        guard let number = Int(String(invalidNumber.filter{ $0.isASCIINumber })) else { return nil }
+        self.init(invalidNumber: number)
+    }
     
-    public init(validNumber: Int) {
-        self.整数値 = validNumber
+    public init?(invalidNumber: Int?) {
+        guard let number = invalidNumber else { return nil }
+        self.整数値 = number
+        guard self.isValidNumber() else { return nil }
     }
 
-    public init?<S: StringProtocol>(invalidString: S?) throws {
-        guard let invalidString = invalidString,
-              let number = Int(invalidString) ?? Int(String(invalidString.filter{ $0.isASCIINumber })) else { return nil }
-        try self.init(invalidNumber:number)
+    public init(validNumber: Int) {
+        self.整数値 = validNumber
     }
 
     public init(integerLiteral: Int) {
         self.init(validNumber: integerLiteral)
     }
     
-    public init?(invalidNumber: Int) throws {
-        self.整数値 = invalidNumber
-        if !self.isValidNumber { return nil }
-        if try testIsValid() == false { return nil }
-    }
-    
-    public init?(month: Month, lowNumber: Int) {
+    public init?(month: Month, lowNumber: Int) throws {
         if lowNumber <= 0 { return nil }
+        let number: Int
         if lowNumber <= 9999 {
-            let number = (month.shortYear * 100 + month.month) * 10000 + lowNumber
-            try? self.init(invalidNumber: number)
+            number = (month.shortYear * 100 + month.month) * 10000 + lowNumber
         } else if lowNumber <= 9_9999 {
-            let number = (month.shortYear * 100 + month.month) * 100000 + lowNumber
-            try? self.init(invalidNumber: number)
+            number = (month.shortYear * 100 + month.month) * 100000 + lowNumber
         } else {
-            try? self.init(invalidNumber: lowNumber)
+            number = lowNumber
         }
-    }
-    
-    public func testIsValid() throws -> Bool {
-        guard FileMakerDB.isEnabled else { return self.isValidNumber }
-        lock.lock()
-        defer { lock.unlock() }
-        
-        if testCache.contains(self.整数値) { return true }
-        if try 伝票番号型.isExist(伝票番号: self) {
-            testCache.insert(self.整数値)
-            return true
-        } else {
-            return false
-        }
+        guard let result = try 伝票番号キャッシュ型.shared.find(number) else { return nil }
+        self = result
     }
     
     public var memoryFootPrint: Int {
@@ -128,16 +103,9 @@ public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByInt
     }
     
     // MARK: -
-    public static func isValidNumber(_ number: String) -> Bool {
-        guard let number = Int(number) else { return false }
-        return isValidNumber(number)
-    }
-
-    public static func isValidNumber(_ number: Int) -> Bool { 伝票番号型(validNumber: number).isValidNumber }
-
-    public var isValidNumber: Bool {
+    func isValidNumber() -> Bool {
         let low = self.下位整数値
-        if is旧伝票暗号 {
+        if self.is旧伝票暗号 {
             guard low >= 1 && low <= 999999 else { return false }
         } else {
             guard low >= 1 && low <= 99999 else { return false }
@@ -259,10 +227,8 @@ extension 伝票番号型 {
     static let dbName = "DataAPI_10"
     
     static func isExist(伝票番号: 伝票番号型) throws -> Bool {
-        var query = [String: String]()
-        query["伝票番号"] = "==\(伝票番号)"
         let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 伝票番号型.dbName, query: [query])
+        let list = try db.find(layout: 伝票番号型.dbName, query: [["伝票番号" : "==\(伝票番号)"]])
         return list.count == 1
     }
 }
