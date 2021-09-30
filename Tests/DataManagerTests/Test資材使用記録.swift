@@ -12,7 +12,7 @@ let execDBTest = false
 
 private let item1 = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "992133B")! // 1.2t 2B 4x8
 private let worker1 = 社員型(社員コード: "023")! // 四熊
-private let order1 = try! 伝票番号型(invalidString: "20041413")!
+private let order1 = try! 伝票番号キャッシュ型.shared.find("20041413")!
 private let date1 = Date(year: 2020, month: 04, day: 17, hour: 15, minute: 30)!
 
 class TestUseItemRecord: XCTestCase {

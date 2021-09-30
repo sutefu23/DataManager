@@ -26,14 +26,18 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
     
     public let 会社コード: 会社コード型
     public let 規格2: String
+
+    let 種類data: 資材種類内容型
     public let 種類: String
+    public var 旧図番: Set<String>? { 種類data.旧図番 }
+    public var ボルト等種類: Set<選択ボルト等種類型>? { 種類data.ボルト等種類 }
     
     public let 単位: String
 
     public let 登録日: Day
 
     public var memoryFootPrint: Int {
-        return (3 * 1 + 2 * 10 + 3 + 1) * 8
+        return (3 * 1 + 2 * 10 + 3 + 1) * 8 + 種類data.memoryFootPrint
     }
     
     init(_ record: FileMakerRecord) throws {
@@ -43,14 +47,12 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
             return string
         }
         guard let 登録日 = record.day(forKey: "登録日") else { throw makeError("登録日") }
+        guard let 種類 = record.string(forKey: "種類") else { throw makeError("種類") }
+        self.種類 = 種類
         self.登録日 = 登録日
         
         let 図番 = try getString("f13", "図番")
-//        if 図番 == "996068" {
-//            self.図番 = "990120"
-//        } else {
-            self.図番 = 図番
-//        }
+        self.図番 = 図番
         self.製品名称 = try getString("f3", "製品名称")
         self.規格 = try getString("f15", "規格")
         self.版数 = try getString("f14", "版数")
@@ -60,7 +62,7 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
         self.発注先名称 = record.string(forKey: "dbo.ZB_T1:f6") ?? ""
         self.会社コード = record.string(forKey: "会社コード") ?? ""
         self.規格2 = record.string(forKey: "規格2") ?? ""
-        self.種類 = record.string(forKey: "種類") ?? ""
+        self.種類data = 資材種類内容型(種類: 種類)
         self.単位 = record.string(forKey: "dbo.SYS_T2:f4") ?? ""
         
         self.箱入り数 = record.double(forKey: "f43") ?? 1
@@ -83,6 +85,7 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
         self.会社コード = item.会社コード
         self.規格2 = item.規格2
         self.種類 = item.種類
+        self.種類data = item.種類data
         self.単位 = item.単位
         self.登録日 = item.登録日
     }
@@ -273,7 +276,19 @@ public extension 資材型 {
         var query = FileMakerQuery()
         query["f13"] = "==\(図番)"
         let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
-        return try list.compactMap { try 資材型($0) }.first
+        return try list.map { try 資材型($0) }.first
+    }
+    
+    static func find新図番資材(元図番: 図番型) throws -> [資材型] {
+        if 元図番.isEmpty { return [] }
+        let db = FileMakerDB.pm_osakaname
+        var query = FileMakerQuery()
+        query["種類"] = 元図番
+        let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
+        return try list.compactMap {
+            let item = try 資材型($0)
+            return (item.旧図番?.contains(元図番) == true) ? item : nil
+        }
     }
 }
 
