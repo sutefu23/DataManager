@@ -32,6 +32,7 @@ public enum 選択ボルト等種類型: String, Hashable {
     case ブラインドリベット
     case 真鍮釘, ステンレス釘
     case 角パイプD, 角パイプF, 角パイプHL
+    case コイル材
     
     public init?(図番: 図番型) {
         guard let bolt = boltMap[図番] else { return nil }
