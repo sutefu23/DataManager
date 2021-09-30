@@ -52,7 +52,7 @@ public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByInt
     public let 整数値: Int
 
     public init?<S: StringProtocol>(invalidNumber: S) {
-        guard let number = Int(String(invalidNumber.filter{ $0.isASCIINumber })) else { return nil }
+        guard let number = Int(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
         self.init(invalidNumber: number)
     }
     
@@ -218,8 +218,8 @@ public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByInt
 
 extension FileMakerRecord {
     func 伝票番号(forKey key: String) -> 伝票番号型? {
-        guard let number = self.integer(forKey: key) else { return nil }
-        return 伝票番号型(validNumber: number)
+        guard let number = self.string(forKey: key) else { return nil }
+        return 伝票番号型(invalidNumber: number)
     }
 }
 

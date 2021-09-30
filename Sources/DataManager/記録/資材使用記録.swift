@@ -73,12 +73,15 @@ public struct 資材使用記録Data型: FileMakerSyncData, Equatable, DMCacheEl
     }
     
     public init(_ record: FileMakerRecord) throws {
-        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材使用記録", mes: key) }
+        func makeError0(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材使用記録", mes: key) }
+        guard let 伝票番号 = record.伝票番号(forKey: "伝票番号") else { throw makeError0("伝票番号") }
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材使用記録: \(伝票番号.整数文字列)", mes: key) }
         guard let 登録日 = record.date(dayKey: "登録日", timeKey: "登録時間") else { throw makeError("登録日") }
-        guard let 伝票番号 = record.伝票番号(forKey: "伝票番号") else { throw makeError("伝票番号") }
         guard let 工程 = record.工程(forKey: "工程コード") else { throw makeError("工程") }
         guard let 作業者 = record.社員(forKey: "作業者コード") else { throw makeError("作業者") }
-        guard let 資材 = record.資材(forKey: "図番") else { throw makeError("図番") }
+        guard let 資材 = record.資材(forKey: "図番") else {
+            throw makeError("図番[\(record.string(forKey: "図番") ?? "nil")]")
+        }
         
         self.登録日時 = 登録日
         self.伝票番号 = 伝票番号
@@ -299,14 +302,12 @@ extension 資材使用記録型 {
         return try find(query: query)
     }
     
-    public static func find(伝票番号: 伝票番号型, 図番: 図番型, 表示名: String, 工程: 工程型? = nil) throws -> [資材使用記録型] {
+    public static func find(伝票番号: 伝票番号型, 図番: 図番型, 表示名: String? = nil, 工程: 工程型? = nil) throws -> [資材使用記録型] {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号)"
         query["図番"] = "==\(図番)"
-        query["表示名"] = "==\(表示名)"
-        if let 工程 = 工程 {
-            query["工程コード"] = "==\(工程.code)"
-        }
+        if let 表示名 = 表示名 { query["表示名"] = "==\(表示名)" }
+        if let 工程 = 工程 { query["工程コード"] = "==\(工程.code)" }
         return try find(query: query)
     }
     
@@ -326,28 +327,28 @@ extension 資材使用記録型 {
     }
 }
 
-struct 資材使用記録キャッシュData型: DMCacheElement {
+public struct 資材使用記録キャッシュData型: DMCacheElement {
     let list: [資材使用記録型]
     
-    var memoryFootPrint: Int { return list.reduce(16) { $0 + $1.memoryFootPrint } }
+    public var memoryFootPrint: Int { return list.reduce(16) { $0 + $1.memoryFootPrint } }
 }
 
-class 資材使用記録キャッシュ型: DMDBCache<伝票番号型, 資材使用記録キャッシュData型> {
-    static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeSpan: 1*60*60, nilCache: false) {
+public class 資材使用記録キャッシュ型: DMDBCache<伝票番号型, 資材使用記録キャッシュData型> {
+    public static let shared: 資材使用記録キャッシュ型 = 資材使用記録キャッシュ型(lifeSpan: 1*60*60, nilCache: false) {
         let list = try 資材使用記録型.find(伝票番号: $0)
         if list.isEmpty { return nil }
         return 資材使用記録キャッシュData型(list: list)
     }
     
-    func 現在資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+    public func 現在資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
         return try find(伝票番号, noCache: true)?.list
     }
 
-    func キャッシュ資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
+    public func キャッシュ資材使用記録(伝票番号: 伝票番号型) throws -> [資材使用記録型]? {
         return try find(伝票番号, noCache: false)?.list
     }
 
-    func flush(伝票番号: 伝票番号型) {
+    public func flush(伝票番号: 伝票番号型) {
         removeCache(forKey: 伝票番号)
     }
 }

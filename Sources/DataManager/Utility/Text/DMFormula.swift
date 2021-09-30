@@ -79,7 +79,7 @@ public struct DMFormula: ExpressibleByStringLiteral {
         }
     }
     private enum CalcOperator: Int8, Comparable {
-        static let map: [Character: CalcOperator] = [ "+": .plus, "-": .minus, "*": .mul, "/": .div, "%": .mod ]
+        static let map: [Character: CalcOperator] = [ "+": .plus, "-": .minus, "*": .mul, "/": .div, "%": .mod, "×": .mul]
         case mul = 0
         case div = 1
         case mod = 2

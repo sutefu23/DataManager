@@ -67,9 +67,12 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
 //        return ["登録セッションUUID": "==\(exportUUID.uuidString)"]
 //    }
     
-    public static func find(登録日:ClosedRange<Day>) throws -> [使用資材型] {
+    public static func find(登録日:ClosedRange<Day>, 工程: 工程型? = nil) throws -> [使用資材型] {
         var query = [String: String]()
         query["登録日"] = makeQueryDayString(登録日)
+        if let 工程 = 工程 {
+            query["工程コード"] = 工程.code
+        }
         return try find(query: query)
     }
     
@@ -132,15 +135,18 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
 }
 extension 使用資材型 {
     public func setup使用情報() throws -> Bool {
-        guard 金額 != nil, let item = try 資材キャッシュ型.shared.find(図番), let price = item.単価, price > 0 else { return false }
-        
+        guard 金額 == nil, let item = try 資材キャッシュ型.shared.find(図番), let price = item.単価, price > 0 else { return false }
         let text = self.使用量.全角半角日本語規格化().spaceStripped
         if text.hasPrefix("=") {
             guard let use = try item.calcコイル使用情報(text) else { return false }
             self.単位数 = use.単位数
             self.単位量 = use.単位量
-        } else if text.hasPrefix("H") {
+        } else if text.contains(oneOf: "X", "×", "*", "x") {
             guard let use = try item.calc短冊使用情報(text) else { return false }
+            self.単位数 = use.単位数
+            self.単位量 = use.単位量
+        } else {
+            guard let use = try item.calcコイル使用情報(text) else { return false }
             self.単位数 = use.単位数
             self.単位量 = use.単位量
         }
@@ -155,9 +161,9 @@ extension 使用資材型 {
 
 extension 資材型 {
     func calcコイル使用情報(_ text: String) throws -> (単位量: Double, 単位数: Double)? {
-        var scanner = DMScanner(text)
-        guard scanner.scanCharacter("="),
-              let length = scanner.scanDouble() else { return nil }
+        var scanner = DMScanner(text, upperCased: true)
+        scanner.scanCharacter("=")
+        guard let length = try? Double(formula: scanner.string.replacingOccurrences(of: "X", with: "*")), length > 0 else { return nil }
         let coil = 資材コイル情報型(製品名称: self.製品名称, 規格: self.規格)
         guard coil.種類 == "コイル" else { return nil }
         let kg1mm = 1.0 * coil.高さ * coil.板厚 * 7.93 / (10 * 10 * 10 * 1000)
@@ -166,12 +172,12 @@ extension 資材型 {
     
     func calc短冊使用情報(_ text: String) throws -> (単位量: Double, 単位数: Double)? {
         var scanner = DMScanner(text, upperCased: true)
-        guard scanner.scanCharacter("H"),
-              let width = scanner.scanDouble(),
-              scanner.scanCharacters("X", "×"),
-              let count = scanner.scanDouble() else { return nil }
+        scanner.scanCharacters("H", "D")
+        guard let width = scanner.scanDouble(),
+              scanner.scanCharacters("X", "×", "*"),
+              let count = scanner.scanDouble(), scanner.isAtEnd else { return nil }
         let sheet = 資材板情報型(製品名称: self.製品名称, 規格: self.規格)
-        guard !sheet.種類.isEmpty,
+        guard !sheet.材質.isEmpty || !sheet.種類.isEmpty,
               let height = sheet.高さ, height > 0 else { return nil }
         return ((width / height), count)
     }

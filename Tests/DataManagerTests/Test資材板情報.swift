@@ -112,6 +112,15 @@ class TestSizaiSheetInfo: XCTestCase {
     
     // MARK: - 真鍮
     func test真鍮() {
+        info = 資材板情報型(製品名称: "BSP板　SPV", 規格: "0.5t　小板(365×1200)")
+        XCTAssertEqual(info.材質, "BSP")
+        XCTAssertEqual(info.種類, "")
+        XCTAssertEqual(info.板厚, "0.5")
+        XCTAssertEqual(info.サイズ, "小板")
+        XCTAssertEqual(info.高さ, 365)
+        XCTAssertEqual(info.横幅, 1200)
+        XCTAssertEqual(info.備考, "SPV")
+
         info = 資材板情報型(製品名称: "BSP板　SPV", 規格: "5.0t　1×1(2枚1組)")
         XCTAssertEqual(info.材質, "BSP")
         XCTAssertEqual(info.種類, "")
