@@ -15,9 +15,12 @@ public enum 分類型: String{
     case 発注先 = "発注先"
 }
 
-public final class 取引先型: DMCacheElement, Identifiable {
+public final class 取引先型: FileMakerSearchObject, Identifiable {
+    public static var layout: String { "DataAPI_14" }
+
     static let 外注先会社コード: Set<String> = ["2971", "2993", "4442",  "3049", "3750"]
 
+    public let recordId: FileMakerRecordID?
     public let 会社コード: 会社コード型
     public let 会社名: String
     public let 印字会社名: String
@@ -35,7 +38,7 @@ public final class 取引先型: DMCacheElement, Identifiable {
         return 12*16
     }
     
-    init(_ record: FileMakerRecord) throws {
+    public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "取引先", mes: key) }
         func getString(_ key: String) throws -> String {
             guard let string = record.string(forKey: key) else { throw makeError(key) }
@@ -53,10 +56,10 @@ public final class 取引先型: DMCacheElement, Identifiable {
         self.代表TEL = try getString("代表TEL")
         self.直通TEL = try getString("直通TEL")
         self.社員名称 = try getString("社員名称")
+        self.recordId = record.recordId
     }
     public convenience init?(会社コード: String) throws {
-        let db = FileMakerDB.pm_osakaname
-        guard let record = try db.find(layout: 取引先型.dbName, query: [["会社コード" : "==\(会社コード)"]]).first else { return nil }
+        guard let record = try Self.findRecords(query: ["会社コード" : "==\(会社コード)"]).first else { return nil }
         try self.init(record)
     }
 
@@ -86,21 +89,14 @@ public final class 取引先型: DMCacheElement, Identifiable {
 }
 
 extension 取引先型 {
-    static let dbName = "DataAPI_14"
-
+//    static let dbName = "DataAPI_14"
+//
     public static func find(会社コード: 会社コード型) throws -> 取引先型? {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [["会社コード" : "==\(会社コード)"]])
-        return try list.map { try 取引先型($0) }.first
+        return try find(query: ["会社コード" : "==\(会社コード)"]).first
     }
 
-    public static func find(分類: 分類型) throws -> [取引先型]? {
-        let db = FileMakerDB.pm_osakaname
-        var query = FileMakerQuery()
-        query["分類"] = "\(分類)"
-        
-        let list: [FileMakerRecord] = try db.find(layout: 取引先型.dbName, query: [query])
-        return try list.map { try 取引先型($0) }
+    public static func find(分類: 分類型) throws -> [取引先型] {
+        return try find(query: ["分類" : "\(分類)"])
     }
 }
 

@@ -48,7 +48,10 @@ public final class 伝票番号解析型 {
     }
 }
 
-public struct 伝票番号型: DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
+public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static var layout: String { "DataAPI_10" }
+
     public let 整数値: Int
 
     public init?<S: StringProtocol>(invalidNumber: S) {
@@ -224,12 +227,8 @@ extension FileMakerRecord {
 }
 
 extension 伝票番号型 {
-    static let dbName = "DataAPI_10"
-    
     static func isExist(伝票番号: 伝票番号型) throws -> Bool {
-        let db = FileMakerDB.pm_osakaname
-        let list = try db.find(layout: 伝票番号型.dbName, query: [["伝票番号" : "==\(伝票番号)"]])
-        return list.count == 1
+        return try findRecords(query: ["伝票番号" : "==\(伝票番号)"]).count == 1
     }
 }
 

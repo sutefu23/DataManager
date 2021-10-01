@@ -88,12 +88,7 @@ public struct 作業系列型: FileMakerSearchObject, Hashable {
 }
 
 extension 作業系列型 {
-//    static let dbName = "DataAPI_9"
-    
     public static func find(系列コード: String) throws -> 作業系列型? {
         return try self.find(query: ["系列コード": 系列コード]).first
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 作業系列型.dbName, query: [["系列コード": 系列コード]])
-//        return try list.map { try 作業系列型($0) }.first
     }
 }

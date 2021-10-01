@@ -38,8 +38,7 @@ extension FileMakerSearchObject {
     }
 
     public static func fetchAll() throws -> [Self] {
-        let list = try db.fetch(layout: layout)
-        return list.compactMap { try? Self($0) }
+        return try fetchAllRecords().compactMap { try? Self($0) }
     }
 
     public static func find(query: FileMakerQuery) throws -> [Self] {
@@ -47,7 +46,7 @@ extension FileMakerSearchObject {
     }
 
     public static func find(querys: [FileMakerQuery]) throws -> [Self] {
-        let records: [FileMakerRecord] = try Self.db.execute { try basic_find(querys: querys, session: $0) }
+        let records: [FileMakerRecord] = try findRecords(querys: querys)
         return try records.map { try Self($0) }
     }
 

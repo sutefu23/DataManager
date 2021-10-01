@@ -9,7 +9,7 @@
 import Foundation
 
 public final class 部署型: FileMakerSearchObject, Comparable, Hashable, Codable {
-    public static let layout = "DataAPI_11"
+    public static var layout: String { "DataAPI_11" }
     
     public var 部署記号: String { return "\(self.部署番号)" }
     public var 部署名: String

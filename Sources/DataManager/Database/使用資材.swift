@@ -63,10 +63,6 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
         self.recordId = record.recordId
     }
 
-//    public static func makeExportCheckQuery(exportUUID: UUID) -> FileMakerQuery {
-//        return ["登録セッションUUID": "==\(exportUUID.uuidString)"]
-//    }
-    
     public static func find(登録日:ClosedRange<Day>, 工程: 工程型? = nil) throws -> [使用資材型] {
         var query = [String: String]()
         query["登録日"] = makeQueryDayString(登録日)

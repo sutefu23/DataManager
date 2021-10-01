@@ -128,11 +128,11 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
     }
         
     public func is登録済み() throws -> Bool? {
-        guard let records = try 指示書進捗キャッシュ型.shared.キャッシュ一覧(self.伝票番号)?.工程別進捗一覧[self.工程] else { return false }
+        guard let records = try 指示書進捗キャッシュ型.工程別進捗一覧(伝票番号: self.伝票番号)?[self.工程] else { return false }
         for progress in records.reversed() {
             if progress.作業内容 != self.作業内容 || progress.作業種別 != self.作業種別 { break }
             if let series1 = self.作業系列, let series2 = progress.作業系列 {
-                if  series1 == series2 { return true }
+                if series1 == series2 { return true }
             } else {
                 if self.社員 == progress.作業者 { return true }
             }

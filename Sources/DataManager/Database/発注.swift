@@ -139,8 +139,6 @@ extension FileMakerRecord {
 }
 
 extension 発注型 {
-    public static let dbName = "DataAPI_4"
-    
     public static func find(伝票番号: 伝票番号型, 発注種類: 発注種類型?) throws -> [発注型] {
         var query = FileMakerQuery()
         query["伝票番号"] = "==\(伝票番号.整数値)"
@@ -151,8 +149,7 @@ extension 発注型 {
     static func find(API識別キー: UUID, session: FileMakerSession) throws -> [発注型] {
         var query = FileMakerQuery()
         query["API識別キー"] = "==\(API識別キー.uuidString)"
-        let list: [FileMakerRecord] = try session.find(layout: 発注型.dbName, query: [query])
-        return try list.map { try 発注型($0) }
+        return try find(query: query)
     }
     
     public static func find(登録期間: ClosedRange<Day>, 発注種類: 発注種類型, 版数: String?) throws -> [発注型] {
@@ -170,8 +167,7 @@ extension 発注型 {
         var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(登録期間)
         query["発注種類"] = 発注種類型.資材.description
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.find(layout: 発注型.dbName, query: [query])
+        let list = try findRecords(query: query)
         for record in list {
             guard let day = record.day(forKey: "登録日") else { continue }
             guard let string = record.string(forKey: "指定注文番号") else { continue }

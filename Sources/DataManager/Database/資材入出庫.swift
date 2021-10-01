@@ -57,14 +57,6 @@ public final class 資材入出庫型: FileMakerSearchObject {
 }
 
 extension 資材入出庫型 {
-    public static let dbName = "DataAPI_12"
-    
-    public static func fetchAll() throws -> [資材入出庫型] {
-        let db = FileMakerDB.pm_osakaname
-        let list = try db.fetch(layout: 資材入出庫型.dbName)
-        return try list.map { try 資材入出庫型($0) }
-    }
-    
     public static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil) throws -> [資材入出庫型] {
         var query = FileMakerQuery()
         query["登録日"] = 登録日?.fmString
@@ -88,31 +80,6 @@ extension 資材入出庫型 {
         return try self.find(query: ["資材番号" : 図番])
     }
 
-//    static func find(登録日: Day? = nil, 登録時間: Time? = nil, 社員: 社員型? = nil, 入力区分: 入力区分型? = nil, 資材: 資材型? = nil, 入庫数: Int? = nil, 出庫数: Int? = nil, session: FileMakerSession?) throws -> [資材入出庫型] {
-//        var query = FileMakerQuery()
-//        query["登録日"] = 登録日?.fmString
-//        query["登録時間"] = 登録時間?.fmImportString
-//        query["社員番号"] = 社員?.Hなし社員コード
-//        query["入力区分"] = 入力区分?.name
-//        query["資材番号"] = 資材?.図番
-//        if let num = 入庫数, num > 0 {
-//            query["入庫数"] = String(num)
-//        }
-//        if let num = 出庫数, num > 0 {
-//            query["出庫数"] = String(num)
-//        }
-//        if query.isEmpty {
-//            return []
-//        }
-//        let list: [FileMakerRecord]
-//        if let session = session {
-//            list = try session.find(layout: 資材入出庫型.dbName, query: [query])
-//        } else {
-//            list = try FileMakerDB.pm_osakaname.find(layout: 資材入出庫型.dbName, query: [query])
-//        }
-//        return try list.map { try 資材入出庫型($0) }
-//    }
-//
     public static func find(期間: ClosedRange<Day>, 入力区分: 入力区分型? = nil, 部署: 部署型? = nil, 図番: String? = nil) throws -> [資材入出庫型] {
         var query = FileMakerQuery()
         query["登録日"] = makeQueryDayString(期間)

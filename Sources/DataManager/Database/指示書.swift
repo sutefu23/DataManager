@@ -942,14 +942,6 @@ public enum 立ち上がりランク型: Int, Comparable, Hashable {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
-//    static let dbName = "DataAPI_1"
-//    static func find(_ query: FileMakerQuery) throws -> [指示書型] {
-//        let db = FileMakerDB.pm_osakaname
-//        let list: [FileMakerRecord] = try db.find(layout: 指示書型.dbName, query: [query])
-//        let orders = try list.map { try 指示書型($0) }
-//        return orders
-//    }
-
     /// 通常種類の指示書を検索する
     internal static func normalFind(_ query: FileMakerQuery, filter: (指示書型) -> Bool) throws -> [指示書型] {
         var result: [指示書型] = []

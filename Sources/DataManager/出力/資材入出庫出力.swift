@@ -83,7 +83,7 @@ public struct 資材入出庫出力型: FileMakerExportObject {
     
     public static func makeExportCommand(fields: [FileMakerFields]) -> FileMakerCommand {
         return .export(db: db, layout: layout,
-                       prepare: (layout: 資材入出庫型.dbName, field:"UUID"),
+                       prepare: (layout: 資材入出庫型.layout, field: "UUID"),
                        fields: fields,
                        uuidField: "識別キー",
                        script: "DataAPI_MaterialEntry_RecordSet",

@@ -15,8 +15,10 @@ extension FileMakerRecord {
     }
 }
 
-public struct 工程型: Hashable, Comparable, Codable, DMCacheElement {
-    public static let dbName = "DataAPI_7"
+public struct 工程型: FileMakerObject, Hashable, Comparable, Codable {
+    public static var db: FileMakerDB { .pm_osakaname }
+    
+    public static let layout = "DataAPI_7"
     let number: Int
 
     public init?<S: StringProtocol>(_ name: S) {
@@ -183,8 +185,7 @@ class 工程名称DB型 {
 }
 
 private let db_全工程: [FileMakerRecord] = {
-    let db = FileMakerDB.pm_osakaname
-    return (try? db.fetch(layout: 工程型.dbName)) ?? []
+    return (try? 工程型.fetchAllRecords()) ?? []
 }()
 
 var is製作工程Set: Set<工程型> = {
@@ -328,5 +329,3 @@ public let 第3製造グループ2: [工程型] = [
 public let 第3製造グループ3: [工程型] = [
     .ボンド, .裏加工, .裏加工_溶接
 ]
-
-

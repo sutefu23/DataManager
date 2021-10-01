@@ -71,7 +71,10 @@ public class 注文番号キャッシュ型 {
     }
 }
 
-public class 注文番号型: Hashable, Codable {
+public class 注文番号型: FileMakerObject, Hashable, Codable {
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static let layout = "DataAPI_13"
+
     public static let 経理 = 注文番号キャッシュ型.shared["B"]!
     public static let 管理・資材 = 注文番号キャッシュ型.shared["C"]!
     public static let 外注 = 注文番号キャッシュ型.shared["D"]!
@@ -101,7 +104,9 @@ public class 注文番号型: Hashable, Codable {
     public let 記号: String
     public let 名称: String
     
-    init(_ record: FileMakerRecord) throws {
+    public var memoryFootPrint: Int { 記号.memoryFootPrint + 名称.memoryFootPrint }
+    
+    public init(_ record: FileMakerRecord) throws {
         guard let mark = record.string(forKey: "記号"), !mark.isEmpty else { throw FileMakerError.notFound(message: "注文番号型:記号") }
         guard let name = record.string(forKey: "名称") else { throw FileMakerError.notFound(message: "注文番号型:名称") }
         self.記号 = mark
@@ -149,11 +154,8 @@ extension FileMakerRecord {
     }
 }
 extension 注文番号型 {
-    static let dbName = "DataAPI_13"
-
     static func 注文番号一覧読み込み() throws -> [注文番号型] {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.fetch(layout: 注文番号型.dbName)
-        return try list.compactMap { try 注文番号型($0) }.sorted { $0.記号 < $1.記号 }
+        let list: [FileMakerRecord] = try fetchAllRecords()
+        return list.compactMap { try? 注文番号型($0) }.sorted { $0.記号 < $1.記号 }
     }
 }

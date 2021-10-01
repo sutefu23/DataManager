@@ -51,7 +51,7 @@ public struct 資材要求出力型: FileMakerExportObject {
     
     public static func makeExportCommand(fields: [FileMakerFields]) -> FileMakerCommand {
         return .export(db: db, layout: layout,
-                       prepare: (layout: 発注型.dbName, field: "API識別キー"),
+                       prepare: (layout: 発注型.layout, field: "API識別キー"),
                        fields: fields,
                        uuidField: "識別キー",
                        script: "DataAPI_MaterialRequestments_RecordSet",

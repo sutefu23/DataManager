@@ -10,7 +10,11 @@ import Foundation
 
 public typealias 図番型 = String
 
-public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
+public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashable {
+    public static var layout: String { "DataAPI_5" }
+    
+    public let recordId: FileMakerRecordID?
+
     public let 図番: 図番型
     public let 製品名称: String
     public let 規格: String
@@ -40,7 +44,7 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
         return (3 * 1 + 2 * 10 + 3 + 1) * 8 + 種類data.memoryFootPrint
     }
     
-    init(_ record: FileMakerRecord) throws {
+    public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材", mes: key) }
         func getString(_ key: String, _ mes: String? = nil) throws -> String {
             guard let string = record.string(forKey: key) else { throw makeError(mes ?? key) }
@@ -68,9 +72,12 @@ public final class 資材型: DMCacheElement, Codable, Comparable, Hashable {
         self.箱入り数 = record.double(forKey: "f43") ?? 1
         self.レコード在庫数 = record.integer(forKey: "f32") ?? 0
         self.is棚卸し対象 = record.string(forKey: "棚卸し対象")?.isEmpty == false
+        
+        self.recordId = record.recordId
     }
     
     init(_ item: 資材型) {
+        self.recordId = item.recordId
         self.図番 = item.図番
         self.製品名称 = item.製品名称
         self.規格 = item.規格
@@ -261,34 +268,18 @@ extension FileMakerRecord {
 
 // MARK: - 検索
 public extension 資材型 {
-    static let dbName = "DataAPI_5"
-    
-    /// 全資材の読み込み
-    static func fetchAll() throws -> [資材型] {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.fetch(layout: 資材型.dbName)
-        return try list.compactMap { try 資材型($0) }.sorted()
-    }
-    
     static func find(図番: 図番型) throws -> 資材型? {
         if 図番.isEmpty { return nil }
-        let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
         query["f13"] = "==\(図番)"
-        let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
-        return try list.map { try 資材型($0) }.first
+        return try self.find(query: query).first
     }
     
     static func find新図番資材(元図番: 図番型) throws -> [資材型] {
         if 元図番.isEmpty { return [] }
-        let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
-        query["種類"] = 元図番
-        let list: [FileMakerRecord] = try db.find(layout: 資材型.dbName, query: [query])
-        return try list.compactMap {
-            let item = try 資材型($0)
-            return (item.旧図番?.contains(元図番) == true) ? item : nil
-        }
+        query["種類"] = "[\(元図番)]"
+        return try self.find(query: query).filter { $0.旧図番?.contains(元図番) == true }
     }
 }
 

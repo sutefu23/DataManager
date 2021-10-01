@@ -21,7 +21,13 @@ private func calc社員番号<S: StringProtocol>(_ code: S) -> Int? {
 
 private var 全社員一覧cache: [社員型]? = nil
 
-public final class 社員型: Hashable, Codable {
+public final class 社員型: FileMakerObject, Hashable, Codable {
+    public static var db: FileMakerDB { .pm_osakaname }
+    public static let layout = "DataAPI_8"
+    
+    public var memoryFootPrint: Int {
+        return 8 + 社員名称.memoryFootPrint + 社員_姓ふりがな.memoryFootPrint + 社員_名ふりがな.memoryFootPrint + 補足情報.memoryFootPrint + 16
+    }
     static let 社員番号マップ: [Int: 社員型] = {
         var map = [Int: 社員型]()
         for member in 社員型.全社員一覧 {
@@ -278,19 +284,14 @@ extension FileMakerRecord {
 
 // MARK: -
 extension 社員型 {
-    static let dbName = "DataAPI_8"
-    
     static func fetchAll() throws -> [社員型] {
-        let db = FileMakerDB.pm_osakaname
-        let list: [FileMakerRecord] = try db.fetch(layout: 社員型.dbName)
-        return list.compactMap { try? 社員型($0) }
+        return try fetchAllRecords().compactMap { try? 社員型($0) }
     }
     
     static func findDirect(_ 社員番号: Int) throws -> 社員型? {
-        let db = FileMakerDB.pm_osakaname
         var query = FileMakerQuery()
         query["社員番号"] = "==\(String(format: "%03d",社員番号))"
-        let list = try db.find(layout: 社員型.dbName, query: [query])
-        return try list.map { try 社員型($0) }.first
+        guard let record = try findRecords(query: query).first else { return nil }
+        return try 社員型(record)
     }
 }

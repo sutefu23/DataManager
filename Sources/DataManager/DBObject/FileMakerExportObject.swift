@@ -57,7 +57,7 @@ extension Array where Element: FileMakerExportObject {
         } else {
             targets = self
         }
-        let fields = self.map { $0.makeExportRecord() }
+        let fields = targets.map { $0.makeExportRecord() }
         let command = Element.makeExportCommand(fields: fields)
         for retryCount in 0...1 {
             defer { self.forEach { $0.flushCache() } }
