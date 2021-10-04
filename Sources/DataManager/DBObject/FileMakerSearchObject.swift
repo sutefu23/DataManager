@@ -14,7 +14,6 @@ public protocol FileMakerSearchObject: FileMakerObject {
     
     /// 指定されたレコードデータで初期化する
     init(_ record: FileMakerRecord) throws
-
     
     /// 全レコード読み出し
     static func fetchAll() throws -> [Self]

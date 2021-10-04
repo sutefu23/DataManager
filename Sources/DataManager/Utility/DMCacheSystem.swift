@@ -713,3 +713,7 @@ extension UUID: DMCacheElement {
 extension Date: DMCacheElement {
     public var memoryFootPrint: Int { return MemoryLayout<Date>.stride }
 }
+
+extension Array: DMCacheElement where Element: DMCacheElement {
+    public var memoryFootPrint: Int { return reduce(0) { $0 + $1.memoryFootPrint }}
+}

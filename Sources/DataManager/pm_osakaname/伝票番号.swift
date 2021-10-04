@@ -113,7 +113,7 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
         } else {
             guard low >= 1 && low <= 99999 else { return false }
         }
-        guard let yearMonth = self.yearMonth else { return false }
+        guard let yearMonth = self.newYearMonth else { return self.is旧伝票暗号 } // 伝票番号から年月が取り出せない場合、旧伝票番号の形式を満たしていればokとする
         let month = yearMonth.month
         guard month >= 1 && month <= 12 else { return false }
         let year = yearMonth.longYear
@@ -145,17 +145,25 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     public var 下位文字列: String {
         String(format: "%04d", 下位整数値)
     }
-    
-    public var yearMonth: Month? {
-        guard is旧伝票暗号 else {
+
+    /// 新形式の伝票番号から計算される年月
+    public var newYearMonth: Month? {
+        if is旧伝票暗号 {
+            return nil
+        } else {
             let year = 2000 + 上位整数値 / 100
             let month = 上位整数値 % 100
             return Month(year, month)
         }
-        do {
-            guard let date = try 指示書型.findDirect(伝票番号: self)?.受注日 else { return nil }
+    }
+
+    /// 伝票番号から計算される年月（旧形式の伝票番号の場合、検索して年月を確かめる）
+    public var yearMonth: Month? {
+        if let yearMonth = self.newYearMonth { // 新伝票番号なら伝票番号から年月を取り出す
+            return yearMonth
+        } else if self.is旧伝票暗号, let date = self.キャッシュ指示書?.受注日 { // 旧伝票番号なら指示書の受注日から年月を取り出す
             return Month(date.year, date.month)
-        } catch {
+        } else { // 不正な伝票番号
             return nil
         }
     }

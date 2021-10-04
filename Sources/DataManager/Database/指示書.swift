@@ -141,7 +141,10 @@ public final class 指示書型: FileMakerSearchObject {
     public var memoryFootPrint: Int { return 200 * 8 } // 仮設定のため適当
     
     public required init(_ record: FileMakerRecord) throws {
-        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
+        func makeError0(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
+        guard let 伝票番号 = 伝票番号型(invalidNumber: record.integer(forKey: "伝票番号")) else { throw makeError0("伝票番号") }
+        self.伝票番号 = 伝票番号
+        func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: "\(key)[\(伝票番号)]") }
         func getString(_ key: String) throws -> String {
             guard let string = record.string(forKey: key) else { throw makeError(key) }
             return string
@@ -165,7 +168,8 @@ public final class 指示書型: FileMakerSearchObject {
         guard let 承認状態 = record.承認状態(forKey: "承認状態") else { throw makeError("承認状態") }
         guard let 製作納期 = record.day(forKey: "製作納期") ?? record.day(forKey: "出荷納期") else { throw makeError("製作納期") }
         guard let 出荷納期 = record.day(forKey: "出荷納期") ?? record.day(forKey: "製作納期") else { throw makeError("出荷納期") }
-        guard let 部門 = record.部門(forKey: "部門コード") else { throw makeError("部門") }
+        guard let 部門code = record.string(forKey: "部門コード") else { throw makeError("部門") }
+        let 部門 = 部門型(code: 部門code) ?? .本社
         guard let 伝票種別str = record.string(forKey: "伝票種別"), let 伝票種別 = 伝票種別型(伝票種別str) else { throw makeError("伝票種別") }
         guard let 経理状態 = record.経理状態(forKey: "経理状態") else { throw makeError("経理状態") }
         guard let uuidStr = record.string(forKey: "UUID"), let uuid = UUID(uuidString: uuidStr) else { throw makeError("UUID") }
@@ -182,7 +186,6 @@ public final class 指示書型: FileMakerSearchObject {
         self.uuid = uuid
         
         self.略号 = try make略号(getString("略号"))
-        self.伝票番号 = try 伝票番号型(validNumber: getInteger("伝票番号"))
         self.品名 = try getString("品名")
         self.仕様 = try getString("仕様")
         self.寸法 = try getString("寸法")

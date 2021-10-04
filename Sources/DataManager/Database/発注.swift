@@ -16,6 +16,7 @@ public final class 発注型: FileMakerSearchObject {
     public let recordId: FileMakerRecordID?
 
     public let 資材: 資材型?
+    public let 資材図番: 図番型?
     public let 指定注文番号: 指定注文番号型
     
     public let 注文番号: 注文番号型
@@ -54,12 +55,14 @@ public final class 発注型: FileMakerSearchObject {
         
         switch 発注種類 {
         case .資材:
-            guard let 資材 = record.資材(forKey: "図番") else { throw makeError("図番") }
-            self.資材 = 資材
+            guard let itemID = record.string(forKey: "図番") else { throw makeError("図番") }
+            self.資材図番 = itemID
+            self.資材 = try 資材キャッシュ型.shared.キャッシュ資材(図番: itemID)
             guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else { throw makeError("指定注文番号") }
             self.指定注文番号 = 指定注文番号
         case .外注:
             self.資材 = nil
+            self.資材図番 = nil
             self.指定注文番号 = try 指定注文番号型(text: getString("指定注文番号"))
         }
         self.注文番号 = 注文番号
@@ -185,7 +188,9 @@ extension 発注型 {
         query["注文番号"] = 注文番号?.記号
         query["発注種類"] = 発注種類?.description
         query["依頼社員番号"] = 社員?.Hなし社員コード
-        query["資材番号"] = 資材番号
+        if let 資材番号 = 資材番号, !資材番号.isEmpty {
+            query["資材番号"] = "==\(資材番号)"
+        }
         if let num = 数量 {
             query["発注数量"] = "\(num)"
         }
