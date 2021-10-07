@@ -67,6 +67,18 @@ public final class 取引先型: FileMakerSearchObject, Identifiable {
     public var is原稿社名不要: Bool { self.会社コード.is原稿社名不要会社コード }
     public var is管理用: Bool { self.会社コード.is管理用会社コード }
     
+    public lazy var 株有なし社名 = self.calc株有なし社名()
+    private func calc株有なし社名() -> String {
+        var name = self.会社名.toJapaneseNormal
+        if name.hasPrefix("㈱") || name.hasPrefix("㈲") { name.removeFirst() }
+        if name.hasPrefix("(株)") || name.hasPrefix("(有)") { name.removeFirst(3) }
+        if name.hasSuffix("㈱") || name.hasSuffix("㈲") { name.removeLast() }
+        if name.hasSuffix("(株)") || name.hasSuffix("(有)") { name.removeLast(3) }
+        while name.hasPrefix(" ") { name.removeFirst() }
+        while name.hasSuffix(" ") { name.removeLast() }
+        return name
+    }
+    
     public func is社名マッチ(to name: String) -> Bool {
         let name = name.比較用文字列
         if name.contains("(仮)") { return true }

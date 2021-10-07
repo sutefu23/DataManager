@@ -15,9 +15,10 @@ import Foundation
 #endif
 
 @dynamicMemberLookup
-public final class 指示書型: FileMakerSearchObject {
+public final class 指示書型: FileMakerSearchObject, Identifiable {
     public static let layout: String = "DataAPI_1"
-
+    public var id: 伝票番号型 { self.伝票番号 }
+    
     private let lock = NSRecursiveLock()
     
     public let recordId: FileMakerRecordID?
@@ -831,6 +832,12 @@ public enum 立ち上がりランク型: Int, Comparable, Hashable {
 
 // MARK: - 検索パターン
 public extension 指示書型 {
+    static func find(query: FileMakerQuery) throws -> [指示書型] {
+        let orders = try self.find(querys: [query])
+        orders.forEach { 指示書伝票番号キャッシュ型.shared.regist($0) }
+        return orders
+    }
+    
     /// 通常種類の指示書を検索する
     internal static func normalFind(_ query: FileMakerQuery, filter: (指示書型) -> Bool) throws -> [指示書型] {
         var result: [指示書型] = []
@@ -1128,6 +1135,22 @@ public extension 指示書型 {
         }
         if query.isEmpty { return [] }
         return try normalFind(query, filter: filter)
+    }
+    
+    static func find(完了待ち取引先: 取引先型) throws -> [指示書型] {
+        guard var seriesList = 作業系列型.外注系列一覧[完了待ち取引先.会社コード] else { return [] }
+        seriesList = [.塗装外注]
+        let today = Day()
+        let progressList: [進捗型] = try seriesList.reduce([]) { try $0 + 進捗型.find(工程: .外注, 作業系列: $1, 最小出荷納期: today) }
+        let orderMap = Dictionary(grouping: progressList) { $0.伝票番号 }
+        let orders: [指示書型] = orderMap.compactMap {
+            guard let order = $0.key.キャッシュ指示書, order.isActive else { return nil }
+            let list = $0.value.sorted { $0.登録日時 < $1.登録日時 }
+            guard list.last?.作業内容 == .開始 else { return nil }
+            return order
+        
+        }
+        return orders
     }
 }
 

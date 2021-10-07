@@ -398,4 +398,12 @@ extension 進捗型 {
         query["登録時間"] = "\(開始日時.time.fmImportString)...24:00:00"
         return try find(query: query)
     }
+    
+    static func find(工程: 工程型, 作業系列: 作業系列型, 最小出荷納期: Day) throws -> [進捗型] {
+        var query = FileMakerQuery()
+        query["工程コード"] = "=\(工程.code)"
+        query["作業系列コード"] = "=\(作業系列.系列コード)"
+        query["出荷納期"] = ">=\(最小出荷納期.fmString)"
+        return try find(query: query)
+    }
 }

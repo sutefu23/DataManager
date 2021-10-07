@@ -108,8 +108,8 @@ class FileMakerDetailedError: FilemakerErrorProtocol {
     
     var errorDescription: String? {
         var message: String = "\(table): \(work.title)失敗"
-        if let code = self.response?.code {
-            message += "(code\(code))"
+        if let response = self.response {
+            message += "(code\(response.code):\(response.message))"
         }
         if retryCount > 1 {
             message += "\(retryCount)回目"

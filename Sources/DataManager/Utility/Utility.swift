@@ -22,7 +22,6 @@ public final class DataManagerController {
     public func flushAllCache() {
         flush工程名称DB()
         出勤日DB型.shared.flushCache()
-        flush作業系列Cache()
         DMCacheSystem.shared.removeAllCache()
     }
     
