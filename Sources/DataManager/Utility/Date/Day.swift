@@ -8,33 +8,45 @@
 
 import Foundation
 
-public struct Day: Hashable, Strideable, Codable {
-    public var year: Int
-    public var month: Int
-    public var day: Int
+public struct Day: Hashable, Strideable, Codable, Comparable {
+    public typealias YearType = Int16
+    public typealias MonthType = Int8
+    public typealias DayType = Int8
+    
+    public var year: YearType // 西暦32767年まで対応。それ以降は考えない
+    public var month: MonthType
+    public var day: DayType
     
     public init() {
         let date = Date()
-        self.year = date.yearNumber
-        self.month = date.monthNumber
-        self.day = date.dayNumber
+        self.year = YearType(date.yearNumber)
+        self.month = MonthType(date.monthNumber)
+        self.day = DayType(date.dayNumber)
     }
-    
+
     public init(year: Int, month: Int, day: Int) {
+        self.init(YearType(year), MonthType(month), DayType(day))
+    }
+
+    public init(year: YearType, month: MonthType, day: DayType) {
         self.init(year, month, day)
     }
 
     public init(month: Int, day: Int) {
+        self.init(MonthType(month), DayType(day))
+    }
+
+    public init(month: MonthType, day: DayType) {
         self.init(month, day)
     }
 
-    public init(_ month: Int, _ day: Int) {
+    public init(_ month: MonthType, _ day: DayType) {
         let date = Date()
-        let year = date.yearNumber
+        let year = Int16(date.yearNumber)
         self.init(year, month, day)
     }
 
-    public init(_ year: Int, _ month: Int, _ day: Int) {
+    public init(_ year: YearType, _ month: MonthType, _ day: DayType) {
         self.year = year
         self.month = month
         self.day = day
@@ -43,26 +55,28 @@ public struct Day: Hashable, Strideable, Codable {
     init?(fmJSONDay: String) {
         let parts = fmJSONDay.split(separator: "/")
         guard parts.count == 3 else { return nil }
-        guard let day0 = Int(parts[0]) else { return nil }
-        guard let day1 = Int(parts[1]) else { return nil }
-        guard let day2 = Int(parts[2]) else { return nil }
+        guard let day0 = YearType(parts[0]) else { return nil }
+        guard let day1 = YearType(parts[1]) else { return nil }
+        guard let day2 = YearType(parts[2]) else { return nil }
         
         if day0 > day2 {
             self.year = day0
-            self.month = day1
-            self.day = day2
+            guard let month = MonthType(exactly: day1), let day = DayType(exactly: day2) else { return nil }
+            self.month = month
+            self.day = day
         } else {
             self.year = day2
-            self.month = day0
-            self.day = day1
+            guard let month = MonthType(exactly: day0), let day = DayType(exactly: day1) else { return nil }
+            self.month = month
+            self.day = day
         }
     }
     public init?<S: StringProtocol>(yyyymmdd: S) {
         let numbers = yyyymmdd.toHalfCharacters
         guard numbers.count == 8,
-              let year = Int(numbers.prefix(4)), year > 2000,
-              let month = Int(numbers.dropFirst(4).prefix(2)), month >= 1 && month <= 12,
-              let day = Int(numbers.dropFirst(6)), day >= 1 && day <= 31
+              let year = YearType(numbers.prefix(4)), year > 2000,
+              let month = MonthType(numbers.dropFirst(4).prefix(2)), month >= 1 && month <= 12,
+              let day = DayType(numbers.dropFirst(6)), day >= 1 && day <= 31
         else { return nil }
         self.init(year, month, day)
     }
@@ -75,10 +89,10 @@ public struct Day: Hashable, Strideable, Codable {
 
     /// 4桁の数字mmddまたは6桁の数字yymmddから初期化
     public init?<S: StringProtocol>(numbers: S?) {
-        guard let numbers = numbers, let value = Int(numbers), value > 0 else { return nil }
-        self.year = value <= 100_00 ? Day().year : 2000 + (value / 100_00)
-        self.month = (value % 100_00) / 100
-        self.day = value % 100
+        guard let numbers = numbers, let value = Int(numbers), value > 0 && value <= 10000_00_00 else { return nil }
+        self.year = YearType(value <= 100_00 ? Date().yearNumber : 2000 + (value / 100_00))
+        self.month = MonthType((value % 100_00) / 100)
+        self.day = DayType(value % 100)
         guard year >= 2000 && year <= 2200 && month >= 1 && month <= 12 && day >= 1 && day <= 31 else { return nil }
     }
 
@@ -87,12 +101,12 @@ public struct Day: Hashable, Strideable, Codable {
         let digs = fmDate.split(separator: "/")
         switch digs.count {
         case 2:
-            guard let month = Int(digs[0]), let day = Int(digs[1]) else { return nil }
+            guard let month = MonthType(digs[0]), let day = DayType(digs[1]) else { return nil }
             self.year = Day().year
             self.month = month
             self.day = day
         case 3:
-            guard let year = Int(digs[0]), let month = Int(digs[1]), let day = Int(digs[2]) else { return nil }
+            guard let year = YearType(digs[0]), let month = MonthType(digs[1]), let day = DayType(digs[2]) else { return nil }
             self.year = year
             self.month = month
             self.day = day
@@ -114,9 +128,9 @@ public struct Day: Hashable, Strideable, Codable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.year = try values.decode(Int.self, forKey: .year)
-        self.month = try values.decodeIfPresent(Int.self, forKey: .month) ?? 1
-        self.day = try values.decodeIfPresent(Int.self, forKey: .day) ?? 1
+        self.year = try values.decode(YearType.self, forKey: .year)
+        self.month = try values.decodeIfPresent(MonthType.self, forKey: .month) ?? 1
+        self.day = try values.decodeIfPresent(DayType.self, forKey: .day) ?? 1
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -150,19 +164,19 @@ public struct Day: Hashable, Strideable, Codable {
     
     // MARK: - 文字列表現
     public var fmString: String {
-        return "\(make2dig(month))/\(make2dig(day))/\(make4dig(year))"
+        return "\(monthString)/\(dayString)/\(yearString)"
     }
     
     public var fmImportString: String {
-        return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
+        return "\(yearString)/\(monthString)/\(dayString)"
     }
     
     public var yearMonthString: String {
-        return "\(year)/\(make2dig(month))"
+        return "\(year)/\(monthString)"
     }
 
     public var monthDayString: String {
-        return "\(make2dig(month))/\(make2dig(day))"
+        return "\(monthString)/\(dayString)"
     }
 
     public var monthDayJString: String {
@@ -178,11 +192,11 @@ public struct Day: Hashable, Strideable, Codable {
     }
 
     public var yearMonthDayString: String {
-        return "\(year)/\(make2dig(month))/\(make2dig(day))"
+        return "\(year)/\(monthString)/\(dayString)"
     }
 
     public var yearMonthDayNumberString: String {
-        return "\(year)\(make2dig(month))\(make2dig(day))"
+        return "\(year)\(monthString)\(dayString)"
     }
 
     public var shortYearMonthDayString: String {
@@ -202,7 +216,7 @@ public struct Day: Hashable, Strideable, Codable {
     }
     
     public var description: String {
-        return "\(make4dig(year))/\(make2dig(month))/\(make2dig(day))"
+        return "\(yearString)/\(monthString)/\(dayString)"
     }
     
     // MARK: - 変更
@@ -224,13 +238,13 @@ public struct Day: Hashable, Strideable, Codable {
     
     func prev(month: Int) -> Day {
         var year = self.year
-        var month = self.month-month
+        var month = Int(self.month)-month
         if month == 0 {
             month += 12
             year -= 1
         }
         let day = min(self.day, 28)
-        return Day(year, month, day)
+        return Day(year, Int8(month), day)
     }
 
     public var prevWorkDay: Day {
@@ -324,21 +338,21 @@ extension Date {
     
     public init(_ day: Day) {
         var comp = DateComponents()
-        comp.year = day.year
-        comp.month = day.month
-        comp.day = day.day
+        comp.year = Int(day.year)
+        comp.month = Int(day.month)
+        comp.day = Int(day.day)
         let date = cal.date(from: comp)!
         self = date
     }
     
     public init(_ day: Day, _ time: Time) {
         var comp = DateComponents()
-        comp.year = day.year
-        comp.month = day.month
-        comp.day = day.day
-        comp.hour = time.hour
-        comp.minute = time.minute
-        comp.second = time.second
+        comp.year = Int(day.year)
+        comp.month = Int(day.month)
+        comp.day = Int(day.day)
+        comp.hour = Int(time.hour)
+        comp.minute = Int(time.minute)
+        comp.second = Int(time.second)
         let date = cal.date(from: comp)!
         self = date
     }
@@ -357,7 +371,7 @@ public extension ClosedRange where Bound == Day {
             let digs2 = digs[1].split(separator: "/")
             switch digs2.count {
             case 1:
-                guard let day = Int(digs2[0]) else { return nil }
+                guard let day = Day.DayType(digs2[0]) else { return nil }
                 var to = from
                 if day < from.day {
                     to.month += 1
@@ -366,14 +380,14 @@ public extension ClosedRange where Bound == Day {
                 to.normalize()
                 self = from...to
             case 2:
-                guard let month = Int(digs2[0]), let day = Int(digs2[1]) else { return nil }
+                guard let month = Day.MonthType(digs2[0]), let day = Day.DayType(digs2[1]) else { return nil }
                 var to = Day(from.year, month, day)
                 if to < from {
                     to.year += 1
                 }
                 self = from...to
             case 3:
-                guard let year = Int(digs2[0]), let month = Int(digs2[1]), let day = Int(digs2[2]) else { return nil }
+                guard let year = Day.YearType(digs2[0]), let month = Day.MonthType(digs2[1]), let day = Day.DayType(digs2[2]) else { return nil }
                 let to = Day(year, month, day)
                 if from > to { return nil }
                 self = from...to

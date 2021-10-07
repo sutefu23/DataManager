@@ -12,7 +12,7 @@ public final class 部署型: FileMakerSearchObject, Comparable, Hashable, Codab
     public static var layout: String { "DataAPI_11" }
     
     public var 部署記号: String { return "\(self.部署番号)" }
-    public var 部署名: String
+    public let 部署名: String
     public let 部署番号: Int
     public let recordId: FileMakerRecordID?
     

@@ -14,34 +14,32 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
     public static var layout: String { "DataAPI_5" }
     
     public let recordId: FileMakerRecordID?
-
+    private let data: 資材種類Data型
+    private let 社名コードData: 社名コードData型
+    
+    public let 登録日: Day
     public let 図番: 図番型
     public let 製品名称: String
     public let 規格: String
-    public let 単価: Double?
+    public let 規格2: String
+    public let 備考: String
 
+    public let 単価: Double?
     public let 箱入り数: Double
     public let レコード在庫数: Int
-    public let 版数: String
     public let is棚卸し対象: Bool
-    public let 備考: String
     
-    public let 発注先名称: String
-    
-    public let 会社コード: 会社コード型
-    public let 規格2: String
+    public var 発注先名称: String { 社名コードData.会社名 }
+    public var 会社コード: 会社コード型 { 社名コードData.会社コード }
 
-    let 種類data: 資材種類内容型
-    public let 種類: String
-    public var 旧図番: Set<String>? { 種類data.旧図番 }
-    public var ボルト等種類: Set<選択ボルト等種類型>? { 種類data.ボルト等種類 }
-    
-    public let 単位: String
-
-    public let 登録日: Day
+    public var 版数: String { data.版数 }
+    public var 種類: String { data.種類 }
+    public var 旧図番: Set<String>? { data.種類data.旧図番 }
+    public var ボルト等種類: Set<選択ボルト等種類型>? { data.種類data.ボルト等種類 }
+    public var 単位: String { data.単位 }
 
     public var memoryFootPrint: Int {
-        return (3 * 1 + 2 * 10 + 3 + 1) * 8 + 種類data.memoryFootPrint
+        return (3 * 1 + 2 * 10 + 3 + 1) * 8 + data.memoryFootPrint
     }
     
     public init(_ record: FileMakerRecord) throws {
@@ -51,23 +49,18 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
             return string
         }
         guard let 登録日 = record.day(forKey: "登録日") else { throw makeError("登録日") }
-        guard let 種類 = record.string(forKey: "種類") else { throw makeError("種類") }
-        self.種類 = 種類
         self.登録日 = 登録日
-        
+        self.data = 資材種類Data型.find(record)
+        self.社名コードData = 社名コードData型(record)
+
         let 図番 = try getString("f13", "図番")
         self.図番 = 図番
         self.製品名称 = try getString("f3", "製品名称")
         self.規格 = try getString("f15", "規格")
-        self.版数 = try getString("f14", "版数")
         self.備考 = try getString("備考")
 
         self.単価 = record.double(forKey: "f88")
-        self.発注先名称 = record.string(forKey: "dbo.ZB_T1:f6") ?? ""
-        self.会社コード = record.string(forKey: "会社コード") ?? ""
         self.規格2 = record.string(forKey: "規格2") ?? ""
-        self.種類data = 資材種類内容型(種類: 種類)
-        self.単位 = record.string(forKey: "dbo.SYS_T2:f4") ?? ""
         
         self.箱入り数 = record.double(forKey: "f43") ?? 1
         self.レコード在庫数 = record.integer(forKey: "f32") ?? 0
@@ -78,6 +71,9 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
     
     init(_ item: 資材型) {
         self.recordId = item.recordId
+        self.data = item.data
+        self.社名コードData = item.社名コードData
+
         self.図番 = item.図番
         self.製品名称 = item.製品名称
         self.規格 = item.規格
@@ -85,15 +81,9 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
         
         self.箱入り数 = item.箱入り数
         self.レコード在庫数 = item.レコード在庫数
-        self.版数 = item.版数
         self.is棚卸し対象 = item.is棚卸し対象
         self.備考 = item.備考
-        self.発注先名称 = item.発注先名称
-        self.会社コード = item.会社コード
         self.規格2 = item.規格2
-        self.種類 = item.種類
-        self.種類data = item.種類data
-        self.単位 = item.単位
         self.登録日 = item.登録日
     }
     
@@ -299,4 +289,50 @@ extension 資材型 {
     public var 標準表示名: String {
         (self.規格.isEmpty ? self.製品名称 : "\(self.製品名称) \(self.規格)").全角半角日本語規格化()
     }
+}
+
+final class 資材種類Data型: DMLightWeightObject, FileMakerRecordCacheData {
+    static let cache = FileMakerRecordCache<資材種類Data型>()
+    static let empty = 資材種類Data型()
+
+    let 種類: String
+    let 単位: String
+    let 版数: String
+    let 種類data: 資材種類内容型
+
+    required init(_ record: FileMakerRecord) {
+        self.単位 = record.string(forKey: "dbo.SYS_T2:f4") ?? ""
+        self.版数 = record.string(forKey: "f14") ?? ""
+        self.種類 = record.string(forKey: "種類") ?? ""
+        self.種類data = 資材種類内容型(種類: 種類)
+    }
+    deinit { self.cleanUp() }
+
+    var cachedData: [String] { [種類, 単位, 版数] }
+}
+
+final class 社名コードData型: DMLightWeightObject, FileMakerRecordCacheData {
+    static let cache = FileMakerRecordCache<社名コードData型>()
+    static let empty = 社名コードData型()
+
+    let 会社名: String
+    let 会社コード: 会社コード型
+
+    required init(_ record: FileMakerRecord) {
+        self.会社名 = record.string(forKey: "dbo.ZB_T1:f6") ?? ""
+        self.会社コード = record.string(forKey: "会社コード") ?? ""
+    }
+
+    init(発注 record: FileMakerRecord) {
+        self.会社名 = record.string(forKey: "会社名") ?? ""
+        self.会社コード = record.string(forKey: "会社コード") ?? ""
+    }
+
+    init(指示書 record: FileMakerRecord) {
+        self.会社名 = record.string(forKey: "社名") ?? ""
+        self.会社コード = record.string(forKey: "会社コード") ?? ""
+    }
+    deinit { self.cleanUp() }
+
+    var cachedData: [String] { [会社名, 会社コード]}
 }

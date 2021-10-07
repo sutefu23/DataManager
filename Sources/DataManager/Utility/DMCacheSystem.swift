@@ -46,7 +46,7 @@ public class DMCacheSystem {
     
     // MARK: ハンドルリスト（先頭が古い）
     /// ハンドル操作用のqueue
-    private let queue = DispatchQueue(label: "cacheSystem.ncengine", qos: .utility)
+    fileprivate let queue = DispatchQueue(label: "cacheSystem.ncengine", qos: .utility)
     ///最古のキャッシュハンドル
     private var firstHandle: CacheHandle?
     /// 最新のキャッシュハンドル
@@ -194,14 +194,19 @@ public class DMCacheSystem {
         self.execClearLimit(limit: self.maxBytesData)
     }
     
+    private func execRemoveInvalidCache(_ storage: CacheStorage) {
+        let handles = storage.removeInvalidCache()
+        if !handles.isEmpty {
+            handles.forEach { self.execRemoveHandle(handle: $0) }
+        }
+    }
+    
     /// メモリの使用量を指定されたサイズまで削減する
     private func execClearLimit(limit: Int) {
         guard currentBytesData > limit else { return }
         // まずは無効なキャッシュを削除する
         lock.lock()
-        self.storageList.forEach {
-            $0.removeInvalidCache().forEach { self.execRemoveHandle(handle: $0) }
-        }
+        self.storageList.forEach { self.execRemoveInvalidCache($0) }
         lock.unlock()
         while currentBytesData > limit, let handle = self.firstHandle {
             if let storage = handle.storage {
@@ -564,7 +569,7 @@ public struct DMResultCacheResult<R2: DMCacheElement>: BasicCacheResult {
 }
 
 /// 変換エラーのない変換キャッシュ
-public final class DMCachingConverter<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Key, DMResultCacheResult<R>, R> {
+public class DMCachingConverter<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Key, DMResultCacheResult<R>, R> {
     // MARK: - 固有外部インターフェース
     public func convert(_ keySource: Key) -> R {
         return try! basic_convert(forceUpdate: false, forKey: keySource)
@@ -686,6 +691,186 @@ public class DMDBCache<Key: DMCacheKey, R: DMCacheElement>: BasicCacheStorage<Ke
             handles.append(handle)
         }
         return handles // 呼び出し元のCacheSystemでhanldeListからの解除を行う
+    }
+}
+
+// MARK: - lightweightキャッシュ（ハンドル操作はしない）
+public enum DMCacheState {
+    /// 未登録
+    case noCheck
+    /// 登録済みでキャッシュのクリア時に消去される
+    case registered
+    /// 登録済みで、キャッシュのクリア時に消去されない
+    case permanent
+}
+///// lightweightキャッシュ対象オブジェクト
+//public protocol DMLightWeightObject: DMCacheElement & Hashable & AnyObject {
+//    var isRegistered: DMCacheState { get set }
+//}
+public protocol DMLightWeightObjectProtocol: DMLightWeightObject, DMCacheElement, Hashable {}
+open class DMLightWeightObject {
+    public init() {}
+    public internal(set) var isRegistered: DMCacheState = .noCheck
+}
+
+/// クリーンアップの間隔。この間隔でまとめて実行する
+private let cleanUpInterval = 1
+/// lightweightキャッシュ（ハンドル操作はせずパージ通知のみ利用する）
+public class LightWeightStorage<Object: DMLightWeightObjectProtocol>: CacheStorage {
+    /// 個別キャッシュデータの操作インターフェース + キャッシュデータ
+    private class WeakKeyObject<Object: DMLightWeightObjectProtocol> {
+        let key: Int
+        weak var object: Object? // 制約:読み書きはlock内でのみ行う
+        
+        init(map: CacheStorage, object: Object, key: Int) {
+            self.key = key
+            self.object = object
+        }
+    }
+    /// 管理用ロック
+    private let lock = NSLock()
+    /// キャッシュデータ
+    private var map: [Int: [WeakKeyObject<Object>]] = [:]
+
+    public init() {
+        DMCacheSystem.shared.appendCache(self)
+    }
+    
+    public var count: Int {
+        lock.lock(); defer { lock.unlock() }
+        self.execRemoveInvalidCache()
+        return map.reduce(0) { $0 + $1.value.count }
+    }
+    
+    // MARK: - 共有外部インターフェース
+    /// 外部で計算したキャッシュデータを登録する
+    public final func regist(_ object: Object) -> Object {
+        lock.lock(); defer { lock.unlock() }
+        return self.execRegist(object)
+    }
+
+    public final func registPermanent(_ object: Object) -> Object {
+        lock.lock(); defer { lock.unlock() }
+        switch object.isRegistered {
+        case .permanent:
+            return object
+        case .registered:
+            object.isRegistered = .permanent
+            return object
+        case .noCheck:
+            let object = self.execRegist(object)
+            object.isRegistered = .permanent
+            return object
+        }
+    }
+    /// 全クリア
+    public final func removeAllCache() {
+        lock.lock(); defer { lock.unlock() }
+        self.execRemoveAllCache()
+    }
+
+    /// 無効なキャッシュデータを削除する
+    public func cleanUp() {
+        lock.lock(); defer { lock.unlock() }
+        self.execRemoveInvalidCache()
+    }
+    
+    // クリーンアップ
+    private var cleanupWaiting: Set<Int> = []
+    /// 指定されたオブジェクトに関して非同期で存在確認を行う（deinitで実行を想定）
+    public func asyncCleanUp(of object: Object) {
+        let key = object.hashValue
+        lock.lock(); defer { lock.unlock() }
+        let needsStart = cleanupWaiting.isEmpty
+        cleanupWaiting.insert(key)
+        if needsStart {
+            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + .seconds(cleanUpInterval)) {
+                self.doAsyncCleanUp()
+            }
+        }
+    }
+    /// cleanupWaitingで設定された行をクリーンアップ処理してcleanupWaitingをクリアする
+    private func doAsyncCleanUp() {
+        lock.lock(); defer { lock.unlock() }
+        for key in cleanupWaiting {
+            guard let list = map[key] else { continue }
+            let newList = list.filter { $0.object != nil }
+            if list.count != newList.count {
+                map[key] = newList.isEmpty ? nil : newList
+            }
+        }
+        cleanupWaiting.removeAll()
+    }
+
+    // MARK: - 内部コール
+    private func execRegist(_ object: Object) -> Object {
+        guard object.isRegistered == .noCheck else { return object }
+        let key = object.hashValue
+        if let list = map[key] {
+            for handle in list {
+                if let target = handle.object, target == object {
+                    return target
+                }
+            }
+            object.isRegistered = .registered
+            let handle = WeakKeyObject<Object>(map: self, object: object, key: key)
+            map[key] = list + [handle]
+        } else {
+            object.isRegistered = .registered
+            let handle = WeakKeyObject<Object>(map: self, object: object, key: key)
+            map[key] = [handle]
+        }
+        return object
+    }
+
+    private func execRemoveAllCache() {
+        var nextMap: [Int: [WeakKeyObject<Object>]] = [:]
+        map.forEach {
+            let newList = $0.value.filter {
+                guard let object = $0.object else { return false }
+                switch object.isRegistered {
+                case .registered:
+                    object.isRegistered = .noCheck
+                    return false
+                case .noCheck:
+                    return false
+                case .permanent:
+                    return true
+                }
+            }
+            if !newList.isEmpty {
+                nextMap[$0.key] = newList
+            }
+        }
+        map = nextMap
+    }
+
+    private func execRemoveInvalidCache() {
+        for (key, list) in map {
+            guard list.contains(where: { $0.object == nil }) else { continue }
+            let newList = list.filter { $0.object != nil }
+            map[key] = newList.isEmpty ? nil : newList
+        }
+    }
+    
+    // MARK: DMCacheSystemからの内部操作インターフェース
+    /// ハンドルに対応するキャッシュをパージする
+    fileprivate final func removeHandle(for handle: CacheHandle) {}
+    /// キャッシュの全消去の準備
+    fileprivate final func prepareClearAllCache() {
+        lock.lock()
+        self.execRemoveAllCache()
+        lock.unlock() // clearAll中にdeinitの可能性があるので、ハンドル登録しないことも含めて期間中はロックしない
+    }
+    /// キャッシュの全消去完了時の処理
+    fileprivate final func completeClearAllCache() {
+    }
+    
+    /// 無効なデータを削除して対応するハンドルを返す
+    fileprivate func removeInvalidCache() -> [CacheHandle] {
+        lock.lock(); defer { lock.unlock() }
+        self.execRemoveInvalidCache()
+        return []
     }
 }
 

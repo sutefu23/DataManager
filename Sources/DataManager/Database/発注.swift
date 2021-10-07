@@ -14,14 +14,13 @@ public final class 発注型: FileMakerSearchObject {
     public static let layout = "DataAPI_4"
 
     public let recordId: FileMakerRecordID?
-
+    private let 社名コードData: 社名コードData型
+    
     public let 資材: 資材型?
     public let 資材図番: 図番型?
     public let 指定注文番号: 指定注文番号型
     
     public let 注文番号: 注文番号型
-    public let 会社名: String
-    public let 会社コード: 会社コード型
     public let 金額: String
     public let 発注日: Day
     public let 登録日: Day
@@ -37,6 +36,9 @@ public final class 発注型: FileMakerSearchObject {
     public let 発注数量: Int?
     public let 状態: 発注状態型
     public let 発注種類: 発注種類型
+
+    public var 会社名: String { 社名コードData.会社名 }
+    public var 会社コード: 会社コード型 { 社名コードData.会社コード }
 
     public var memoryFootPrint: Int { return 22 * 8} // 仮設定のため適当
 
@@ -68,8 +70,6 @@ public final class 発注型: FileMakerSearchObject {
         self.注文番号 = 注文番号
         self.発注種類 = 発注種類
 
-        self.会社名 = try getString("会社名")
-        self.会社コード = try getString("会社コード")
         self.金額 = try getString("金額")
         self.発注日 = try getDay("発注日")
         self.登録日 = try getDay("登録日")
@@ -80,6 +80,7 @@ public final class 発注型: FileMakerSearchObject {
         self.備考 = try getString("備考")
         self.発注数量文字列 = try getString("発注数量")
         
+        self.社名コードData = 社名コードData型(発注: record)
         self.recordId = record.recordId
 
         self.状態 = record.発注状態(forKey: "状態") ?? .処理済み

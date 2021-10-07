@@ -48,7 +48,7 @@ private func makeOrder3() -> 資材要求出力型 {
     let order = 注文番号型.管理・資材
     let client = 社員型(社員番号: 023)!
     let item = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "5904")! // セメダイン
-    let count = time.second + 1
+    let count = Int(time.second) + 1
     let limit = Day(2020, 3, 17)
     let memo = "自動発注システムのテストです"
     return 資材要求出力型(登録日: day, 登録時間: time, 注文番号: order, 社員: client, 資材: item, 数量: count, 希望納期: limit, 備考: memo)
@@ -60,7 +60,7 @@ private func makeOrder4() -> 資材要求出力型 {
     let order = 注文番号型.管理・資材
     let client = 社員型(社員番号: 023)!
     let item = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "5904")! // セメダイン
-    let count = time.second + 1
+    let count = Int(time.second) + 1
     let limit = Day(2020, 3, 16)
     let memo = "自動発注システムのテストです"
     return 資材要求出力型(登録日: day, 登録時間: time, 注文番号: order, 社員: client, 資材: item, 数量: count, 希望納期: limit, 備考: memo)
@@ -72,7 +72,7 @@ private func makeOrder5() -> 資材要求出力型 {
     let order = 注文番号型.レーザ･ウォーター
     let client = 社員型(社員番号: 023)!
     let item = try! 資材キャッシュ型.shared.キャッシュ資材(図番: "5904")! // セメダイン
-    let count = time.second + 1
+    let count = Int(time.second) + 1
     let limit = Day(2020, 3, 16)
     let memo = "自動発注システムのテストです"
     return 資材要求出力型(登録日: day, 登録時間: time, 注文番号: order, 社員: client, 資材: item, 数量: count, 希望納期: limit, 備考: memo)

@@ -318,6 +318,16 @@ public struct DMScanner: RandomAccessCollection {
         return Int(self.scanIntegerString())
     }
 
+    /// 8ビット整数値を取り出す
+    public mutating func scanInteger8() -> Int8? {
+        return Int8(self.scanIntegerString())
+    }
+
+    /// 16ビット整数値を取り出す
+    public mutating func scanInteger16() -> Int16? {
+        return Int16(self.scanIntegerString())
+    }
+
     public mutating func scanIntegerString() -> String {
         var hasSign: Bool = false
         var hasNumber: Bool = false
@@ -713,12 +723,12 @@ public struct DMScanner: RandomAccessCollection {
             }
             index = source.index(after: index)
         }
-        if minutesStr.count == 2, let hours = Int(hoursStr),
+        if minutesStr.count == 2, let hours = Int8(hoursStr),
            (hoursStr.count == 2 || hoursStr.count == 1 && hours < 10) && hours < 24,
-           let minutes = Int(minutesStr), minutes < 60 {
+           let minutes = Int8(minutesStr), minutes < 60 {
             assert(hours >= 0 && minutes >= 0) // マイナス記号がないため
             if hasCol2 {
-                if secondsStr.count == 2, let seconds = Int(secondsStr), seconds < 60 {
+                if secondsStr.count == 2, let seconds = Int8(secondsStr), seconds < 60 {
                     assert(seconds >= 0) // マイナス記号がないため
                     self.startIndex = index
                     return Time(hours, minutes, seconds)
@@ -819,7 +829,7 @@ public struct DMScanner: RandomAccessCollection {
             self.startIndex = currentIndex
             return nil
         }
-        return Day(month, day)
+        return Day(month: month, day: day)
     }
     
     // MARK: -

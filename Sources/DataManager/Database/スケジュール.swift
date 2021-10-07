@@ -11,8 +11,13 @@ import Foundation
 struct スケジュール型: FileMakerSearchObject {
     static let layout: String = "DataAPI_6" 
     
+    let 種類: String
+    let 開始日: Day
+    let 開始時刻: Time?
+    let 終了日: Day?
+    let 終了時刻: Time?
     let recordId: FileMakerRecordID?
-    
+
     init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "スケジュール", mes: key) }
         guard let 種類 = record.string(forKey: "種類") else { throw makeError("種類") }
@@ -24,11 +29,6 @@ struct スケジュール型: FileMakerSearchObject {
         self.終了時刻 = record.time(forKey: "終了時刻")
         self.recordId = record.recordId
     }
-    let 種類: String
-    let 開始日: Day
-    let 開始時刻: Time?
-    let 終了日: Day?
-    let 終了時刻: Time?
     
     var memoryFootPrint: Int { return MemoryLayout<スケジュール型>.stride }
 }

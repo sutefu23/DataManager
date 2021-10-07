@@ -234,15 +234,15 @@ extension StringProtocol {
     }
 }
 
-func make2dig(_ value: Int) -> String {
+func make2dig<T: SignedInteger>(_ value: T) -> String {
     return value >= 0 && value <= 9 ? "0\(value)" : String(value)
 }
 
-func make2digS(_ value: Int) -> String {
+func make2digS<T: SignedInteger>(_ value: T) -> String {
     return value >= 0 && value <= 9 ? " \(value)" : String(value)
 }
 
-func make4dig(_ value: Int) -> String {
+func make4dig<T: SignedInteger>(_ value: T) -> String {
     switch value {
     case 1000...:
         return String(value)

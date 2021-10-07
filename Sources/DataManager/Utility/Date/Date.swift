@@ -33,12 +33,12 @@ public enum 週型: Int {
 
 extension Date {
     // MARK: 初期化
-    public init?(year: Int, month: Int, day: Int) {
+    public init?(year: Int16, month: Int8, day: Int8) {
         let date = Day(year: year, month: month, day: day)
         self = Date(date)
     }
     
-    public init?(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int = 0) {
+    public init?(year: Int16, month: Int8, day: Int8, hour: Int8, minute: Int8, second: Int8 = 0) {
         let day = Day(year: year, month: month, day: day)
         let time = Time(hour, minute, second)
         self = Date(day, time)

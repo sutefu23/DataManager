@@ -8,18 +8,25 @@
 
 import Foundation
 
-public struct Month: Hashable, Strideable, Codable {
-    public var longYear: Int
-    public var month: Int
-    public var shortYear: Int { longYear % 100 }
+public struct Month: Hashable, Strideable, Codable, Comparable {
+    public typealias YearType = Day.YearType
+    public typealias MonthType = Day.MonthType
+
+    public var longYear: YearType
+    public var month: MonthType
+    public var shortYear: YearType { longYear % 100 }
     
     public init() {
         let date = Date()
-        self.longYear = date.yearNumber
-        self.month = date.monthNumber
+        self.longYear = YearType(date.yearNumber)
+        self.month = MonthType(date.monthNumber)
     }
 
     public init(year: Int, month: Int) {
+        self.init(YearType(year), MonthType(month))
+    }
+
+    public init(year: YearType, month: MonthType) {
         self.init(year, month)
     }
     
@@ -39,12 +46,12 @@ public struct Month: Hashable, Strideable, Codable {
                 return nil
             }
         }
-        guard let year = Int(digs[0]), let month = Int(digs[1]) else { return nil }
+        guard let year = YearType(digs[0]), let month = MonthType(digs[1]) else { return nil }
         self.longYear = year
         self.month = month
     }
     
-    init(_ year: Int, _ month: Int) {
+    init(_ year: YearType, _ month: Int8) {
         self.longYear = year
         self.month = month
     }
@@ -56,8 +63,8 @@ public struct Month: Hashable, Strideable, Codable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.longYear = try values.decode(Int.self, forKey: .year)
-        self.month = try values.decodeIfPresent(Int.self, forKey: .month) ?? 1
+        self.longYear = try values.decode(YearType.self, forKey: .year)
+        self.month = try values.decodeIfPresent(MonthType.self, forKey: .month) ?? 1
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -218,11 +225,10 @@ extension Date {
 
     public init(_ month: Month) {
         var comp = DateComponents()
-        comp.year = month.longYear
-        comp.month = month.month
+        comp.year = Int(month.longYear)
+        comp.month = Int(month.month)
         comp.day = 1
         let date = cal.date(from: comp)!
         self = date
     }
-
 }

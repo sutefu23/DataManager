@@ -16,11 +16,12 @@ public struct 進捗出力型: FileMakerExportObject, Hashable, Codable {
 
     public let 伝票番号: 伝票番号型
     public let 工程: 工程型
-    public let 作業内容: 作業内容型
-    public let 作業種別: 作業種別型
 
     public let 社員: 社員型
     public let 作業系列: 作業系列型?
+
+    public let 作業内容: 作業内容型
+    public let 作業種別: 作業種別型
 
     public var 登録日時: Date { return Date(self.登録日, self.登録時間) }
     

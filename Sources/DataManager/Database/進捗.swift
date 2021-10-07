@@ -18,12 +18,12 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
 
     public let 登録日: Day // 24
     public let 登録時間: Time // 24
-    public let 製作納期: Day // 24
+//    public let 製作納期: Day? // 24
     public let 伝票番号: 伝票番号型 // 8
     public let 登録日時: Date // 8
     public var 工程: 工程型 //8
-    public let 作業系列: 作業系列型? // 8
     public let 作業者: 社員型
+    public let 作業系列: 作業系列型? // 8
 
     public let 伝票種類: 伝票種類型 // 1
     public var 作業内容: 作業内容型 // 1
@@ -55,7 +55,6 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         guard let 登録日 = record.day(forKey: "登録日") else { throw makeError("登録日") }
         guard let 登録時間 = record.time(forKey: "登録時間") else { throw makeError("登録時間") }
         guard let 伝票種類 = record.伝票種類(forKey: "伝票種類") else { throw makeError("伝票種類") }
-        guard let 製作納期 = record.day(forKey: "製作納期") else { throw makeError("製作納期") }
         self.工程 = 工程
         self.作業内容 = 作業内容
         self.登録日 = 登録日
@@ -64,7 +63,7 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         self.作業種別 = 作業種別型(record.string(forKey: "作業種別コード") ?? "")
         self.作業系列 = 作業系列型(系列コード: record.string(forKey: "作業系列コード") ?? "")
         self.伝票種類 = 伝票種類
-        self.製作納期 = 製作納期
+//        self.製作納期 = record.day(forKey: "製作納期")
         self.作業者 = prepare社員(社員番号: num, 社員名称: name)
     }
     
@@ -81,7 +80,7 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         self.作業種別 = original.作業種別
         self.作業系列 = original.作業系列
         self.伝票種類 = original.伝票種類
-        self.製作納期 = original.製作納期
+//        self.製作納期 = original.製作納期
     }
     
     public func makeClone() -> 進捗型 {

@@ -77,9 +77,9 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
         if lowNumber <= 0 { return nil }
         let number: Int
         if lowNumber <= 9999 {
-            number = (month.shortYear * 100 + month.month) * 10000 + lowNumber
+            number = (Int(month.shortYear) * 100 + Int(month.month)) * 10000 + lowNumber
         } else if lowNumber <= 9_9999 {
-            number = (month.shortYear * 100 + month.month) * 100000 + lowNumber
+            number = (Int(month.shortYear) * 100 + Int(month.month)) * 100000 + lowNumber
         } else {
             number = lowNumber
         }
@@ -153,7 +153,7 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
         } else {
             let year = 2000 + 上位整数値 / 100
             let month = 上位整数値 % 100
-            return Month(year, month)
+            return Month(year: year, month: month)
         }
     }
 

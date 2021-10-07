@@ -9,21 +9,31 @@
 import Foundation
 
 public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
-    public var hour: Int
-    public var minute: Int
-    public var second: Int
+    public typealias HourType = Int8
+    public typealias MinuteType = Int8
+    public typealias SecondType = Int8
+
+    public var hour: HourType
+    public var minute: MinuteType
+    public var second: SecondType
     
     public init() {
         self = Date().time
     }
-    
+
     public init(hour: Int, minute: Int, second: Int = 0) {
+        self.hour = HourType(hour)
+        self.minute = MinuteType(minute)
+        self.second = SecondType(second)
+    }
+    
+    public init(hour: HourType, minute: MinuteType, second: SecondType = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
     }
 
-    public init(_ hour: Int, _ minute: Int, _ second: Int = 0) {
+    public init(_ hour: HourType, _ minute: MinuteType, _ second: SecondType = 0) {
         self.init(hour:hour, minute:minute, second:second)
     }
 
@@ -34,9 +44,9 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
 
     /// 4桁の数字hhmmから初期化
     public init?<S: StringProtocol>(numbers: S?) {
-        guard let numbers = numbers, let value = Int(numbers), value >= 0 else { return nil }
-        self.hour = value / 100
-        self.minute = value % 100
+        guard let numbers = numbers, let value = Int(numbers), value > 0 && value < 10000 else { return nil }
+        self.hour = HourType(value / 100)
+        self.minute = MinuteType(value % 100)
         self.second = 0
         guard hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 else { return nil }
     }
@@ -44,14 +54,14 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
     init?<T>(fmJSONTime: T?) where T: StringProtocol {
         guard let parts = fmJSONTime?.split(separator: ":") else { return nil }
         if parts.count == 3 {
-            guard let hour = Int(parts[0]), (0...23).contains(hour) else { return nil }
-            guard let minute = Int(parts[1]), (0...59).contains(minute) else { return nil }
-            guard let second = Int(parts[2]), (0...60).contains(second) else { return nil }
-            self.init(hour:hour, minute:minute, second:second)
+            guard let hour = HourType(parts[0]), (0...23).contains(hour) else { return nil }
+            guard let minute = MinuteType(parts[1]), (0...59).contains(minute) else { return nil }
+            guard let second = SecondType(parts[2]), (0...60).contains(second) else { return nil }
+            self.init(hour: hour, minute: minute, second: second)
         } else if parts.count == 2 {
-            guard let hour = Int(parts[0]), (0...23).contains(hour) else { return nil }
-            guard let minute = Int(parts[1]), (0...59).contains(minute) else { return nil }
-            self.init(hour:hour, minute:minute, second:0)
+            guard let hour = HourType(parts[0]), (0...23).contains(hour) else { return nil }
+            guard let minute = MinuteType(parts[1]), (0...59).contains(minute) else { return nil }
+            self.init(hour: hour, minute: minute, second: 0)
         } else {
             return nil
         }
@@ -66,9 +76,9 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.hour = try values.decodeIfPresent(Int.self, forKey: .hour) ?? 0
-        self.minute = try values.decodeIfPresent(Int.self, forKey: .minute) ?? 0
-        self.second = try values.decodeIfPresent(Int.self, forKey: .second) ?? 0
+        self.hour = try values.decodeIfPresent(HourType.self, forKey: .hour) ?? 0
+        self.minute = try values.decodeIfPresent(MinuteType.self, forKey: .minute) ?? 0
+        self.second = try values.decodeIfPresent(SecondType.self, forKey: .second) ?? 0
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -107,19 +117,14 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
     }
     
     var allSeconds: Int {
-        return hour * 60 * 60 + minute * 60 + second
+        return Int(hour) * 60 * 60 + Int(minute) * 60 + Int(second)
     }
     
     public func appendMinutes(_ minutes: Int) -> Time {
-        var hour = self.hour
-        var minute = self.minute + minutes
-        while minute >= 60 {
-            minute -= 60
-            hour += 1
-            if hour >= 24 { hour -= 24 }
-        }
-        let second = self.second
-        return Time(hour, minute, second)
+        assert(minutes >= 0)
+        let newMinutes = Int(self.minute) + minutes
+        let newHours = Int(self.hour) + newMinutes / 60
+        return Time(HourType(newHours % 24), MinuteType(newMinutes % 60), self.second)
     }
     
     public func isSameHourMinutes(to time: Time) -> Bool {
