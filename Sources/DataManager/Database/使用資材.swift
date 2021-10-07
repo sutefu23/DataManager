@@ -16,22 +16,22 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
     
     public let recordId: FileMakerRecordID?
     
-    public var 登録日: Day
-    public var 登録時間: Time
-    public var 伝票番号: 伝票番号型
-    public var 作業者: 社員型?
-    public var 工程: 工程型?
-    public var 用途: 用途型?
-    public var 図番: 図番型
-    public var 表示名: String
-    public var 使用量: String
-    public var 面積: String?
-    public var 印刷対象: 印刷対象型?
+    public let 登録日: Day
+    public let 登録時間: Time
+    public let 伝票番号: 伝票番号型
+    public let 作業者: 社員型?
+    public let 工程: 工程型?
+    public let 用途: 用途型?
+    public let 図番: 図番型
+    public let 表示名: String
+    public let 使用量: String
+    public let 面積: String?
+    public let 印刷対象: 印刷対象型?
     public var 単位量: Double?
     public var 単位数: Double?
     public var 金額: Double?
-    public var 原因工程: 工程型?
-    public var 登録セッションUUID: String?
+    public let 原因工程: 工程型?
+    public let 登録セッションUUID: UUID?
 
     public var 登録日時: Date { Date(self.登録日, self.登録時間) }
     
@@ -59,7 +59,7 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
         self.金額 = record.double(forKey: "金額")
         self.原因工程 = record.工程(forKey: "原因工程")
         self.面積 = record.string(forKey: "面積")
-        self.登録セッションUUID = record.string(forKey: "登録セッションUUID") ?? ""
+        self.登録セッションUUID = record.uuid(forKey: "登録セッションUUID")
         self.recordId = record.recordId
     }
 

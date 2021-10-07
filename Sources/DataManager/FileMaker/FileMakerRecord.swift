@@ -177,6 +177,11 @@ public struct FileMakerRecord {
         return Date(fmJSONDay: day, fmJSONTime: time)
     }
 
+    func uuid(forKey key: String) -> UUID? {
+        guard let uuidString = string(forKey: key) else { return nil }
+        return UUID(uuidString: uuidString)
+    }
+    
     /// 指定されたキーに対応するURLを返す
     func url(forKey key: String) -> URL? {
         guard let url = string(forKey: key) else { return nil }

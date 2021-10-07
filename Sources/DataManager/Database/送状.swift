@@ -199,7 +199,7 @@ public class 送状型: Identifiable, FileMakerSearchObject {
             guard let string = record.string(forKey: key) else { throw makeError(key) }
             return string
         }
-        guard let 指示書UUID = try UUID(uuidString: getString("指示書UUID")) else { throw makeError("指示書UUID") }
+        guard let 指示書UUID = record.uuid(forKey: "指示書UUID") else { throw makeError("指示書UUID") }
         self.指示書UUID = 指示書UUID
         
         self.管理番号 = try getString("管理番号")

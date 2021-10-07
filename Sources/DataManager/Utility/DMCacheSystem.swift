@@ -777,6 +777,7 @@ public class LightWeightStorage<Object: DMLightWeightObjectProtocol>: CacheStora
     
     // クリーンアップ
     private var cleanupWaiting: Set<Int> = []
+
     /// 指定されたオブジェクトに関して非同期で存在確認を行う（deinitで実行を想定）
     public func asyncCleanUp(of object: Object) {
         let key = object.hashValue
@@ -859,7 +860,7 @@ public class LightWeightStorage<Object: DMLightWeightObjectProtocol>: CacheStora
     /// キャッシュの全消去の準備
     fileprivate final func prepareClearAllCache() {
         lock.lock()
-        self.execRemoveAllCache()
+        self.execRemoveInvalidCache() // lightWeighの性質上、無効なもののみ消去で良い
         lock.unlock() // clearAll中にdeinitの可能性があるので、ハンドル登録しないことも含めて期間中はロックしない
     }
     /// キャッシュの全消去完了時の処理

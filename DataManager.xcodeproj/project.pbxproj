@@ -71,7 +71,7 @@
 		149D95F225B95FAB000F97B5 /* 福山通運.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149D95F125B95FAB000F97B5 /* 福山通運.swift */; };
 		14A0C10025BA9DE800C44167 /* Test板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */; };
 		14A0C10625BAA00E00C44167 /* TestTableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */; };
-		14CC173E270C15B100E11BCD /* FileMakerRecordCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CC173D270C15B100E11BCD /* FileMakerRecordCache.swift */; };
+		14CC173E270C15B100E11BCD /* FileMakerLightWeightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */; };
 		14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */; };
 		14DF962926E050B5003CC5BE /* LogSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DF962826E050B5003CC5BE /* LogSystem.swift */; };
 		14DF962B26E050BF003CC5BE /* LogData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DF962A26E050BF003CC5BE /* LogData.swift */; };
@@ -332,7 +332,7 @@
 		149D95F125B95FAB000F97B5 /* 福山通運.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "福山通運.swift"; sourceTree = "<group>"; };
 		14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
 		14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableGenerator.swift; sourceTree = "<group>"; };
-		14CC173D270C15B100E11BCD /* FileMakerRecordCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRecordCache.swift; sourceTree = "<group>"; };
+		14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerLightWeightData.swift; sourceTree = "<group>"; };
 		14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "同期進捗キャッシュ.swift"; sourceTree = "<group>"; };
 		14DF962826E050B5003CC5BE /* LogSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSystem.swift; sourceTree = "<group>"; };
 		14DF962A26E050BF003CC5BE /* LogData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogData.swift; sourceTree = "<group>"; };
@@ -530,7 +530,7 @@
 				OBJ_134 /* FileMakerSyncObject.swift */,
 				8E7D23A826FEE9B600C1B1C2 /* FileMakerCommand.swift */,
 				141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */,
-				14CC173D270C15B100E11BCD /* FileMakerRecordCache.swift */,
+				14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */,
 			);
 			path = DBObject;
 			sourceTree = "<group>";
@@ -1119,7 +1119,7 @@
 				OBJ_213 /* Date.swift in Sources */,
 				OBJ_214 /* Day.swift in Sources */,
 				OBJ_215 /* Month.swift in Sources */,
-				14CC173E270C15B100E11BCD /* FileMakerRecordCache.swift in Sources */,
+				14CC173E270C15B100E11BCD /* FileMakerLightWeightData.swift in Sources */,
 				OBJ_216 /* Time.swift in Sources */,
 				OBJ_217 /* File.swift in Sources */,
 				8E7D23A926FEE9B600C1B1C2 /* FileMakerCommand.swift in Sources */,

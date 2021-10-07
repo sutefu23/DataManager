@@ -14,6 +14,7 @@ public final class 発注型: FileMakerSearchObject {
     public static let layout = "DataAPI_4"
 
     public let recordId: FileMakerRecordID?
+    private let 発注資材情報: 発注資材情報型
     private let 社名コードData: 社名コードData型
     
     public let 資材: 資材型?
@@ -24,10 +25,10 @@ public final class 発注型: FileMakerSearchObject {
     public let 金額: String
     public let 発注日: Day
     public let 登録日: Day
-    public let 版数: String
-    public let 製品名称: String
-    public let 規格: String
-    public let 規格2: String
+    public var 版数: String { 発注資材情報.版数 }
+    public var 製品名称: String { 発注資材情報.製品名称 }
+    public var 規格: String { 発注資材情報.規格 }
+    public var 規格2: String { 発注資材情報.規格2 }
     public let 発注数量文字列: String
     public let 備考: String
     public let 納品日: Day?
@@ -73,15 +74,12 @@ public final class 発注型: FileMakerSearchObject {
         self.金額 = try getString("金額")
         self.発注日 = try getDay("発注日")
         self.登録日 = try getDay("登録日")
-        self.版数 = try getString("版数")
-        self.製品名称 = try getString("製品名称")
-        self.規格 = try getString("規格")
-        self.規格2 = try getString("規格2")
         self.備考 = try getString("備考")
         self.発注数量文字列 = try getString("発注数量")
         
-        self.社名コードData = 社名コードData型(発注: record)
         self.recordId = record.recordId
+        self.発注資材情報 = 発注資材情報型(発注: record).regist()
+        self.社名コードData = 社名コードData型(発注: record).regist()
 
         self.状態 = record.発注状態(forKey: "状態") ?? .処理済み
         self.納品日 = record.day(forKey: "納品日")
@@ -221,3 +219,32 @@ extension Sequence where Element == 発注型 {
         }
     }
 }
+
+// MARK: -
+final class 発注資材情報型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<発注資材情報型>()
+
+    let 版数: String
+    let 製品名称: String
+    let 規格: String
+    let 規格2: String
+
+    init(発注 record: FileMakerRecord) {
+        self.版数 = record.string(forKey: "版数") ?? ""
+        self.製品名称 = record.string(forKey: "製品名称") ?? ""
+        self.規格 = record.string(forKey: "規格") ?? ""
+        self.規格2 = record.string(forKey: "規格2") ?? ""
+    }
+
+    init(資材 record: FileMakerRecord) {
+        self.版数 = record.string(forKey: "f14") ?? ""
+        self.製品名称 = record.string(forKey: "f3") ?? ""
+        self.規格 = record.string(forKey: "f15") ?? ""
+        self.規格2 = record.string(forKey: "規格2") ?? ""
+    }
+
+    deinit { self.cleanUp() }
+
+    var cachedData: [String] { [版数, 製品名称, 規格, 規格2]}
+}
+

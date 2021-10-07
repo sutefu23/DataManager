@@ -141,7 +141,7 @@ public final class 指示書型: FileMakerSearchObject {
         let 部門 = 部門型(code: 部門code) ?? .本社
         guard let 伝票種別str = record.string(forKey: "伝票種別"), let 伝票種別 = 伝票種別型(伝票種別str) else { throw makeError("伝票種別") }
         guard let 経理状態 = record.経理状態(forKey: "経理状態") else { throw makeError("経理状態") }
-        guard let uuidStr = record.string(forKey: "UUID"), let uuid = UUID(uuidString: uuidStr) else { throw makeError("UUID") }
+        guard let uuid = record.uuid(forKey: "UUID") else { throw makeError("UUID") }
         self.登録日時 = 登録日時
         self.受注日 = 受注日
         self.伝票種類 = 伝票種類
@@ -177,12 +177,6 @@ public final class 指示書型: FileMakerSearchObject {
         self.板厚1 = try getString("板厚1")
         self.板厚2 = try getString("板厚2")
 
-        self.日程表テキスト = 日程表テキスト型.find(record)
-
-        self.担当者1 = get社員("社員番号1", "担当者1")
-        self.担当者2 = get社員("社員番号2", "担当者2")
-        self.担当者3 = get社員("社員番号3", "担当者3")
-        
         self.その他1 = try getString("その他1")
         self.その他2 = try getString("その他2")
 
@@ -195,12 +189,12 @@ public final class 指示書型: FileMakerSearchObject {
         self.枠寸法2 = try getString("枠寸法2")
         self.枠寸法3 = try getString("枠寸法3")
         self.台板寸法 = try getString("台板寸法")
-        
-        self.社名コードData = 社名コードData型(指示書: record)
-        
-        self.ボルト等 = ボルト等型.find(record)
-        self.ボルト本数 = ボルト本数型.find(record)
-        self.付属品リスト = 付属品型.find(record)
+
+        self.担当者1 = get社員("社員番号1", "担当者1")
+        self.担当者2 = get社員("社員番号2", "担当者2")
+        self.担当者3 = get社員("社員番号3", "担当者3")
+
+        self.社名コードData = 社名コードData型(指示書: record).regist()
 
         self.図URL = record.url(forKey: "図")
         self.伝票状態 = record.伝票状態(forKey: "伝票状態") ?? .未製作
@@ -212,7 +206,12 @@ public final class 指示書型: FileMakerSearchObject {
         self.合計金額 = record.double(forKey: "合計金額") ?? 0
         self.出荷時間 = try Time(fmTime: getString("連絡欄1"))
         self.発送事項 = record.string(forKey: "発送事項") ?? ""
+
         self.recordId = record.recordId
+        self.ボルト等 = ボルト等型(指示書: record).regist()
+        self.ボルト本数 = ボルト本数型(指示書: record).regist()
+        self.付属品リスト = 付属品型(指示書: record).regist()
+        self.日程表テキスト = 日程表テキスト型(指示書: record).regist()
     }
         
     public lazy var 比較用伝票番号: Int = {
@@ -1163,10 +1162,9 @@ private let 出荷時間文言リスト2: [String] = make出荷時間文言リ�
 private let 出荷時間文言リスト3: [String] = make出荷時間文言リスト23("時半")
 
 // MARK: - 付属品
-public final class 付属品型: DMLightWeightObject, FileMakerRecordCacheData {
+public final class 付属品型: DMLightWeightObject, FileMakerLightWeightData {
     private static let lock = NSLock()
-    static let cache = FileMakerRecordCache<付属品型>()
-    static let empty = 付属品型()
+    static let cache = LightWeightStorage<付属品型>()
     
     public let 付属品1: String
     public let 付属品2: String
@@ -1183,7 +1181,7 @@ public final class 付属品型: DMLightWeightObject, FileMakerRecordCacheData {
         return set
     }
     
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.付属品1 = record.string(forKey: "付属品1") ?? ""
         self.付属品2 = record.string(forKey: "付属品2") ?? ""
         self.付属品3 = record.string(forKey: "付属品3") ?? ""
@@ -1197,9 +1195,8 @@ public final class 付属品型: DMLightWeightObject, FileMakerRecordCacheData {
 
 
 // MARK: - 日程表テキスト
-public final class 日程表テキスト型: DMLightWeightObject, FileMakerRecordCacheData {
-    static let cache = FileMakerRecordCache<日程表テキスト型>()
-    static let empty = 日程表テキスト型()
+public final class 日程表テキスト型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<日程表テキスト型>()
 
     public let 上段左: String
     public let 上段中央: String
@@ -1208,7 +1205,7 @@ public final class 日程表テキスト型: DMLightWeightObject, FileMakerRecor
     public let 下段中央: String
     public let 下段右: String
         
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.上段左 = record.string(forKey: "上段左") ?? ""
         self.上段中央 = record.string(forKey: "上段中央") ?? ""
         self.上段右 = record.string(forKey: "上段右") ?? ""
@@ -1222,9 +1219,8 @@ public final class 日程表テキスト型: DMLightWeightObject, FileMakerRecor
 }
 
 // MARK: - ボルト等
-public final class ボルト等型: DMLightWeightObject, FileMakerRecordCacheData {
-    static let cache = FileMakerRecordCache<ボルト等型>()
-    static let empty = ボルト等型()
+public final class ボルト等型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<ボルト等型>()
 
     public let ボルト等1: String
     public let ボルト等2: String
@@ -1244,7 +1240,7 @@ public final class ボルト等型: DMLightWeightObject, FileMakerRecordCacheDat
     public var ボルト等14: String { 下位データ.ボルト等14 }
     public var ボルト等15: String { 下位データ.ボルト等15 }
     
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.ボルト等1  = record.string(forKey: "ボルト等1") ?? ""
         self.ボルト等2  = record.string(forKey: "ボルト等2") ?? ""
         self.ボルト等3  = record.string(forKey: "ボルト等3") ?? ""
@@ -1253,16 +1249,15 @@ public final class ボルト等型: DMLightWeightObject, FileMakerRecordCacheDat
         self.ボルト等6  = record.string(forKey: "ボルト等6") ?? ""
         self.ボルト等7  = record.string(forKey: "ボルト等7") ?? ""
         self.ボルト等8  = record.string(forKey: "ボルト等8") ?? ""
-        self.下位データ = ボルト等下位型.find(record)
+        self.下位データ = ボルト等下位型(指示書: record).regist()
     }
     deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト等1, ボルト等2, ボルト等3, ボルト等4, ボルト等5, ボルト等6, ボルト等7, ボルト等8] + 下位データ.cachedData }
 }
 
-final class ボルト等下位型: DMLightWeightObject, FileMakerRecordCacheData {
-    static let cache = FileMakerRecordCache<ボルト等下位型>()
-    static let empty = ボルト等下位型()
+final class ボルト等下位型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<ボルト等下位型>()
     
     let ボルト等9: String
     let ボルト等10: String
@@ -1272,7 +1267,7 @@ final class ボルト等下位型: DMLightWeightObject, FileMakerRecordCacheData
     let ボルト等14: String
     let ボルト等15: String
 
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.ボルト等9  = record.string(forKey: "ボルト等9") ?? ""
         self.ボルト等10 = record.string(forKey: "ボルト等10") ?? ""
         self.ボルト等11 = record.string(forKey: "ボルト等11") ?? ""
@@ -1287,9 +1282,8 @@ final class ボルト等下位型: DMLightWeightObject, FileMakerRecordCacheData
 }
 
 // MARK: - ボルト本数
-public final class ボルト本数型: DMLightWeightObject, FileMakerRecordCacheData {
-    static let cache = FileMakerRecordCache<ボルト本数型>()
-    static let empty = ボルト本数型()
+public final class ボルト本数型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<ボルト本数型>()
 
     public let ボルト本数1: String
     public let ボルト本数2: String
@@ -1309,7 +1303,7 @@ public final class ボルト本数型: DMLightWeightObject, FileMakerRecordCache
     public var ボルト本数14: String { 下位データ.ボルト本数14 }
     public var ボルト本数15: String { 下位データ.ボルト本数15 }
 
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.ボルト本数1  = record.string(forKey: "ボルト本数1") ?? ""
         self.ボルト本数2  = record.string(forKey: "ボルト本数2") ?? ""
         self.ボルト本数3  = record.string(forKey: "ボルト本数3") ?? ""
@@ -1318,16 +1312,15 @@ public final class ボルト本数型: DMLightWeightObject, FileMakerRecordCache
         self.ボルト本数6  = record.string(forKey: "ボルト本数6") ?? ""
         self.ボルト本数7  = record.string(forKey: "ボルト本数7") ?? ""
         self.ボルト本数8  = record.string(forKey: "ボルト本数8") ?? ""
-        self.下位データ = ボルト本数下位型.find(record)
+        self.下位データ = ボルト本数下位型(指示書: record).regist()
     }
     deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト本数1, ボルト本数2, ボルト本数3, ボルト本数4, ボルト本数5, ボルト本数6, ボルト本数7, ボルト本数8] + 下位データ.cachedData }
 }
 
-final class ボルト本数下位型: DMLightWeightObject, FileMakerRecordCacheData {
-    static let cache = FileMakerRecordCache<ボルト本数下位型>()
-    public static let empty = ボルト本数下位型()
+final class ボルト本数下位型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<ボルト本数下位型>()
 
     let ボルト本数9: String
     let ボルト本数10: String
@@ -1337,7 +1330,7 @@ final class ボルト本数下位型: DMLightWeightObject, FileMakerRecordCacheD
     let ボルト本数14: String
     let ボルト本数15: String
 
-    required init(_ record: FileMakerRecord) {
+    init(指示書 record: FileMakerRecord) {
         self.ボルト本数9  = record.string(forKey: "ボルト本数9") ?? ""
         self.ボルト本数10 = record.string(forKey: "ボルト本数10") ?? ""
         self.ボルト本数11 = record.string(forKey: "ボルト本数11") ?? ""
