@@ -125,13 +125,5 @@ class TestTextReader: XCTestCase {
         let data = try! Data(contentsOf: url)
         let text = try! TextReader(data: data, encoding: String.Encoding.shiftJIS)
         XCTAssert(text.lines.count > 100)
-    }
-    
-//    func testDataPerformance() {
-//        let url = bundle.url(forResource: "13939", withExtension: "dxf")!
-//        let data = try! Data(contentsOf: url)
-//        self.measure {
-//            let _ = try! TextReader(data: data, encoding: String.Encoding.shiftJIS)
-//        }
-//    }
+    }    
 }
