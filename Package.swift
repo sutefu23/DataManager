@@ -14,7 +14,7 @@ let package = Package(
             targets: ["DataManager"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-server/async-http-client", from: "1.5.1"), // Linuxで必要
+        .package(url: "https://github.com/apple/swift-nio", .branch("main")), // Linuxで必要
     ],
     targets: [
         .target(
