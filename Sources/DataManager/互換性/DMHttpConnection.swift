@@ -52,7 +52,7 @@ struct DMHttpContentType {
 }
 
 // MARK: - Apple系OSへの対応
-#if os(macOS) || os(iOS) || os(tvOS)
+#if os(macOS) || os(iOS) || os(Windows)
 extension DMHttpMethod {
     /// 文字列表現
     var string: String {
@@ -132,7 +132,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
 }
 
 // MARK: - Linux/Windowsへの対応
-#elseif os(Linux) || os(Windows)
+#elseif os(Linux)
 import AsyncHTTPClient
 import NIO
 import NIOHTTP1
