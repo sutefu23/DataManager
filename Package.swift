@@ -14,13 +14,13 @@ let package = Package(
             targets: ["DataManager"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-nio", .branch("main")), // Linuxで必要
+//        .package(url: "https://github.com/apple/swift-nio", .branch("main")), // Linuxで必要
     ],
     targets: [
         .target(
             name: "DataManager",
             dependencies: [
-                .product(name: "AsyncHTTPClient", package: "swift-nio")
+//                .product(name: "AsyncHTTPClient", package: "swift-nio")
             ],
             resources: [
                 .process("Resources"),
