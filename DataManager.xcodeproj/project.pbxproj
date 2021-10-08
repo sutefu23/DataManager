@@ -598,13 +598,6 @@
 			path = CSV;
 			sourceTree = "<group>";
 		};
-		14A8F6DB270FD83F00944A90 /* ラベル印刷 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "ラベル印刷";
-			sourceTree = "<group>";
-		};
 		14DF962726E05098003CC5BE /* 動作ログ */ = {
 			isa = PBXGroup;
 			children = (
@@ -875,7 +868,6 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
-				14A8F6DB270FD83F00944A90 /* ラベル印刷 */,
 				14DF962726E05098003CC5BE /* 動作ログ */,
 				14310E6C2643D3CE00F062CA /* アクションライン */,
 				149D95F025B95F68000F97B5 /* CSV */,
