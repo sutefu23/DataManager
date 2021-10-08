@@ -25,9 +25,14 @@ class TestOrder : XCTestCase {
     }
 
     func testProperty() {
-        var order : 指示書型?
+        var order: 指示書型?
         let num = 伝票番号型(validNumber: 19013047)
-        order = try? 指示書型.find(伝票番号: num).first
+        do {
+            order = try 指示書型.find(伝票番号: num).first
+        } catch {
+            NSLog(error.localizedDescription)
+            fatalError()
+        }
         
         XCTAssertEqual(num, order?.伝票番号)
         XCTAssertNotNil(order?.表示用伝票番号)

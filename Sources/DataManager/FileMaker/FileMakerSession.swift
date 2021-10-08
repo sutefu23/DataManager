@@ -341,8 +341,13 @@ public final class FileMakerSession: DMLogger {
 
     /// オブジェクトをダウンロードする
     func download(_ url: URL) throws -> Data {
+//        log("ダウンロード", detail: "url=\(url.path)")
+//        return try connection.call(url: url, method: .GET, authorization: nil, contentType: nil, body: nil) ?? Data()
+
         log("ダウンロード", detail: "url=\(url.path)")
-        return try connection.call(url: url, method: .GET, authorization: nil, contentType: nil, body: nil) ?? Data()
+        let token = try self.prepareToken()
+        return try connection.call(url: url, method: .GET, authorization: .Bearer(token: token), contentType: nil, body: nil) ?? Data()
+
     }
     
     /// スクリプトを実行する
