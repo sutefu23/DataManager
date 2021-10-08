@@ -330,7 +330,6 @@
 		149D95F125B95FAB000F97B5 /* 福山通運.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "福山通運.swift"; sourceTree = "<group>"; };
 		14A0C0FF25BA9DE800C44167 /* Test板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test板加工在庫.swift"; sourceTree = "<group>"; };
 		14A0C10525BAA00E00C44167 /* TestTableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableGenerator.swift; sourceTree = "<group>"; };
-		14A8F6E0270FD9E300944A90 /* BarCode2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarCode2.swift; sourceTree = "<group>"; };
 		14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerLightWeightData.swift; sourceTree = "<group>"; };
 		14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "同期進捗キャッシュ.swift"; sourceTree = "<group>"; };
 		14EF40362548170300DA8FF9 /* 食事時間帯.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "食事時間帯.swift"; sourceTree = "<group>"; };
@@ -602,7 +601,6 @@
 		14A8F6DF270FD9E300944A90 /* ラベル印刷 */ = {
 			isa = PBXGroup;
 			children = (
-				14A8F6E0270FD9E300944A90 /* BarCode2.swift */,
 			);
 			path = "ラベル印刷";
 			sourceTree = "<group>";
