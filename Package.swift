@@ -20,7 +20,7 @@ let package = Package(
         .target(
             name: "DataManager",
             dependencies: [
-                .product(name: "AsyncHTTPClient", package: "async-http-client")
+                .product(name: "AsyncHTTPClient", package: "swift-nio")
             ],
             resources: [
                 .process("Resources"),
