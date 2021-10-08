@@ -137,14 +137,16 @@ extension 使用資材型 {
             guard let use = try item.calcコイル使用情報(text) else { return false }
             self.単位数 = use.単位数
             self.単位量 = use.単位量
-        } else if text.contains(oneOf: "X", "×", "*", "x") {
+        } else if text.hasPrefix("H") || text.hasPrefix("h") {
+//        } else if text.contains(oneOf: "X", "×", "*", "x") {
             guard let use = try item.calc短冊使用情報(text) else { return false }
             self.単位数 = use.単位数
             self.単位量 = use.単位量
-        } else {
-            guard let use = try item.calcコイル使用情報(text) else { return false }
+        } else if let use = try item.calcコイル使用情報(text) ?? item.calc短冊使用情報(text) {
             self.単位数 = use.単位数
             self.単位量 = use.単位量
+        } else {
+            return false
         }
         if let unit = self.単位量, let count = self.単位数, unit > 0 && count > 0 {
             self.金額 = price * unit * count
