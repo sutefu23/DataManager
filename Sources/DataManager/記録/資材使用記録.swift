@@ -10,10 +10,26 @@ import Foundation
 
 private let lock = NSRecursiveLock()
 
-public enum 印刷対象型: String, Hashable {
+public enum 印刷対象型: RawRepresentable, Hashable {
     public static let 仮印刷対象工程: Set<工程型> = [.裏加工, .裏加工_溶接]
     case 全て
     case なし
+    
+    public init?(rawValue: String) {
+        switch rawValue {
+        case "なし": self = .なし
+        case "全て": self = .全て
+        default:
+            return nil
+        }
+    }
+    
+    public var rawValue: String {
+        switch self {
+        case .なし: return "なし"
+        case .全て: return "全て"
+        }
+    }
     
     public var is封筒印刷あり: Bool {
         switch self {

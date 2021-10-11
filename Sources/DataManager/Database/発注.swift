@@ -242,7 +242,6 @@ final class 発注資材情報型: DMLightWeightObject, FileMakerLightWeightData
         self.規格 = record.string(forKey: "f15") ?? ""
         self.規格2 = record.string(forKey: "規格2") ?? ""
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [版数, 製品名称, 規格, 規格2]}
 }

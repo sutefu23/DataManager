@@ -1187,7 +1187,7 @@ private let 出荷時間文言リスト3: [String] = make出荷時間文言リ�
 // MARK: - 付属品
 public final class 付属品型: DMLightWeightObject, FileMakerLightWeightData {
     private static let lock = NSLock()
-    static let cache = LightWeightStorage<付属品型>()
+    public static let cache = LightWeightStorage<付属品型>()
     
     public let 付属品1: String
     public let 付属品2: String
@@ -1211,15 +1211,14 @@ public final class 付属品型: DMLightWeightObject, FileMakerLightWeightData {
         self.付属品4 = record.string(forKey: "付属品4") ?? ""
         self.付属品5 = record.string(forKey: "付属品5") ?? ""
     }
-//    deinit { self.cleanUp() }
-
+    
     var cachedData: [String] { [付属品1, 付属品2, 付属品3, 付属品4, 付属品5] }
 }
 
 
 // MARK: - 日程表テキスト
 public final class 日程表テキスト型: DMLightWeightObject, FileMakerLightWeightData {
-    static let cache = LightWeightStorage<日程表テキスト型>()
+    public static let cache = LightWeightStorage<日程表テキスト型>()
 
     public let 上段左: String
     public let 上段中央: String
@@ -1236,14 +1235,13 @@ public final class 日程表テキスト型: DMLightWeightObject, FileMakerLight
         self.下段中央 = record.string(forKey: "下段中央") ?? ""
         self.下段右 = record.string(forKey: "下段右") ?? ""
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [上段左, 上段中央, 上段右, 下段左, 下段中央, 下段右] }
 }
 
 // MARK: - ボルト等
 public final class ボルト等型: DMLightWeightObject, FileMakerLightWeightData {
-    static let cache = LightWeightStorage<ボルト等型>()
+    public static let cache = LightWeightStorage<ボルト等型>()
 
     public let ボルト等1: String
     public let ボルト等2: String
@@ -1274,7 +1272,6 @@ public final class ボルト等型: DMLightWeightObject, FileMakerLightWeightDat
         self.ボルト等8  = record.string(forKey: "ボルト等8") ?? ""
         self.下位データ = ボルト等下位型(指示書: record).regist()
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト等1, ボルト等2, ボルト等3, ボルト等4, ボルト等5, ボルト等6, ボルト等7, ボルト等8] + 下位データ.cachedData }
 }
@@ -1299,14 +1296,13 @@ final class ボルト等下位型: DMLightWeightObject, FileMakerLightWeightData
         self.ボルト等14 = record.string(forKey: "ボルト等14") ?? ""
         self.ボルト等15 = record.string(forKey: "ボルト等15") ?? ""
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト等9, ボルト等10, ボルト等11, ボルト等12, ボルト等13, ボルト等14, ボルト等15] }
 }
 
 // MARK: - ボルト本数
 public final class ボルト本数型: DMLightWeightObject, FileMakerLightWeightData {
-    static let cache = LightWeightStorage<ボルト本数型>()
+    public static let cache = LightWeightStorage<ボルト本数型>()
 
     public let ボルト本数1: String
     public let ボルト本数2: String
@@ -1337,7 +1333,6 @@ public final class ボルト本数型: DMLightWeightObject, FileMakerLightWeight
         self.ボルト本数8  = record.string(forKey: "ボルト本数8") ?? ""
         self.下位データ = ボルト本数下位型(指示書: record).regist()
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト本数1, ボルト本数2, ボルト本数3, ボルト本数4, ボルト本数5, ボルト本数6, ボルト本数7, ボルト本数8] + 下位データ.cachedData }
 }
@@ -1362,7 +1357,6 @@ final class ボルト本数下位型: DMLightWeightObject, FileMakerLightWeightD
         self.ボルト本数14 = record.string(forKey: "ボルト本数14") ?? ""
         self.ボルト本数15 = record.string(forKey: "ボルト本数15") ?? ""
     }
-//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [ボルト本数9, ボルト本数10, ボルト本数11, ボルト本数12, ボルト本数13, ボルト本数14, ボルト本数15] }
 }

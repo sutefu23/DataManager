@@ -7,6 +7,28 @@
 
 import Foundation
 
+private final class 用途Data型: DMLightWeightObject, DMLightWeightObjectProtocol {
+    static let cache = LightWeightStorage<用途Data型>()
+
+    let 用途コード: String
+    let 用途名: String
+    
+    init(用途コード: String, 用途名: String) {
+        self.用途コード = 用途コード
+        self.用途名 = 用途名
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(用途コード)
+        hasher.combine(用途名)
+    }
+    
+    static func == (left: 用途Data型, right: 用途Data型) -> Bool {
+        if left === right { return true }
+        return left.用途コード == right.用途コード && left.用途名 == right.用途名
+    }
+}
+
 public struct 用途型: Hashable {
     public static let 天板 = 用途型(用途コード: "Y001", 用途名: "天板")
     public static let 底板 = 用途型(用途コード: "Y002", 用途名: "底板")
@@ -14,17 +36,17 @@ public struct 用途型: Hashable {
     public static let 作直 = 用途型(用途コード: "Y100", 用途名: "作直")
     public static let 部署内やり直し = 用途型(用途コード: "Y101", 用途名: "部署内やり直し")
 
-    public var 用途コード: String
-    public var 用途名: String
+    public var 用途コード: String { data.用途コード }
+    public var 用途名: String { data.用途名 }
+    private let data: 用途Data型
     
     init(用途コード: String, 用途名: String) {
-        self.用途コード = 用途コード
-        self.用途名 = 用途名
+        self.data = 用途Data型(用途コード: 用途コード, 用途名: 用途名).regist()
     }
 
     public init?(用途名: String?) {
         guard let name = 用途名, let yoto = map2[name] else { return nil }
-        self = yoto
+        self.data = yoto.data
     }
 }
 

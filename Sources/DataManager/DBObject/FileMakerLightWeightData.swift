@@ -7,8 +7,7 @@
 
 import Foundation
 
-protocol FileMakerLightWeightData: DMLightWeightObjectProtocol {
-    static var cache: LightWeightStorage<Self> { get }
+protocol FileMakerLightWeightData: DMLightWeightObjectProtocol, DMCacheElement {
     /// キャッシュされているデータ
     var cachedData: [String] { get }
 }
@@ -24,10 +23,4 @@ extension FileMakerLightWeightData {
     public static func == (left: Self, right: Self) -> Bool {
         return left.cachedData == right.cachedData
     }
-    func regist() -> Self {
-        return Self.cache.regist(self)
-    }
-//    func cleanUp() {
-//        Self.cache.asyncCleanUp(of: self)
-//    }
 }

@@ -751,7 +751,21 @@ public enum DMCacheState {
     case permanent
 }
 /// lightweightキャッシュ対象オブジェクト
-public protocol DMLightWeightObjectProtocol: DMLightWeightObject, DMCacheElement, Hashable {}
+public protocol DMLightWeightObjectProtocol: DMLightWeightObject, Hashable {
+    /// データの保存場所
+    static var cache: LightWeightStorage<Self> { get }
+}
+public extension DMLightWeightObjectProtocol {
+    /// 登録されたオブジェクトを返す
+    func regist() -> Self {
+        return Self.cache.regist(self)
+    }
+    /// 永続データとして登録されたオブジェクトを返す
+    func registPermanent() -> Self {
+        return Self.cache.registPermanent(self)
+    }
+}
+
 open class DMLightWeightObject {
     public init() {}
     public internal(set) var isRegistered: DMCacheState = .noCheck
@@ -927,6 +941,15 @@ extension Optional: DMCacheElement where Wrapped: DMCacheElement {
 }
 extension Int: DMCacheElement {
     public var memoryFootPrint: Int { return MemoryLayout<Int>.stride }
+}
+extension Int32: DMCacheElement {
+    public var memoryFootPrint: Int { return MemoryLayout<Int32>.stride }
+}
+extension Int16: DMCacheElement {
+    public var memoryFootPrint: Int { return MemoryLayout<Int16>.stride }
+}
+extension Int8: DMCacheElement {
+    public var memoryFootPrint: Int { return MemoryLayout<Int8>.stride }
 }
 extension Double: DMCacheElement {
     public var memoryFootPrint: Int { return MemoryLayout<Double>.stride }

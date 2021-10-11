@@ -19,7 +19,8 @@ public struct 工程型: FileMakerObject, Hashable, Comparable, Codable {
     public static var db: FileMakerDB { .pm_osakaname }
     
     public static let layout = "DataAPI_7"
-    let number: Int
+    typealias RawValue = Int16
+    let number: RawValue
 
     public init?<S: StringProtocol>(_ name: S) {
         let name = String(name)
@@ -29,9 +30,9 @@ public struct 工程型: FileMakerObject, Hashable, Comparable, Codable {
             self.init(code: name)
         }
     }
-    public var memoryFootPrint: Int { number.memoryFootPrint }
+    public var memoryFootPrint: Int { MemoryLayout<工程型>.stride }
 
-    init(_ number: Int) { self.number = number }
+    init(_ number: RawValue) { self.number = number }
     
     init(name: String, code: String) {
         assert(!name.isEmpty)
@@ -42,19 +43,19 @@ public struct 工程型: FileMakerObject, Hashable, Comparable, Codable {
     
     public init?(code: String?) {
         guard let code = code else { return nil }
-        var main: Int = 0
-        var sub: Int = 0
+        var main: RawValue = 0
+        var sub: RawValue = 0
         for (index, ch) in code.uppercased().enumerated() {
             if ch.isASCIINumber {
                 guard let ascii = ch.asciiValue else { return nil }
-                main = main*10 + Int(ascii) - 48
+                main = main*10 + RawValue(ascii) - 48
             } else {
                 if index == 0 {
                     if ch != "P" { return nil }
                 } else {
                     guard let ascii = ch.asciiValue else { return nil }
                     if ascii < 65 || ascii >= 65 + 26 { return nil }
-                    sub = Int(ascii) - 64
+                    sub = RawValue(ascii) - 64
                 }
             }
         }
@@ -99,7 +100,7 @@ public struct 工程型: FileMakerObject, Hashable, Comparable, Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 //        var dv = try container.decode(Double.self)
-        var number = try container.decode(Int.self)
+        var number = try container.decode(RawValue.self)
         if number < 100 || (number % 100) > 25 {
             number = (number / 10)*100 + number % 100
         }
@@ -329,3 +330,25 @@ public let 第3製造グループ2: [工程型] = [
 public let 第3製造グループ3: [工程型] = [
     .ボンド, .裏加工, .裏加工_溶接
 ]
+
+// MARK: -
+public enum 作業グループ型: Equatable {
+    static let 作業グループmap: [工程型: 作業グループ型] = [
+        .半田: .半田,
+        .立ち上がり: .半田,
+        .裏加工: .半田,
+        .ボンド: .半田,
+        .溶接: .溶接,
+        .立ち上がり_溶接: .溶接,
+        .裏加工_溶接: .溶接
+    ]
+    
+    case 半田
+    case 溶接
+}
+
+extension 工程型 {
+    public var 作業グループ: 作業グループ型? {
+        return 作業グループ型.作業グループmap[self]
+    }
+}

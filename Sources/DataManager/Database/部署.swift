@@ -8,23 +8,55 @@
 
 import Foundation
 
+private final class 部署Data型: DMLightWeightObject, DMLightWeightObjectProtocol, DMCacheElement {
+    static let cache = LightWeightStorage<部署Data型>()
+    
+    let 部署名: String
+    let 部署番号: Int
+    let recordId: FileMakerRecordID?
+    
+    let 部署記号: String
+    
+    init(部署名: String, 部署番号: Int, recordId: FileMakerRecordID?) {
+        self.部署名 = 部署名
+        self.部署番号 = 部署番号
+        self.recordId = recordId
+        self.部署記号 = "\(部署番号)"
+    }
+    
+    var memoryFootPrint: Int {
+        var memoryFootPrint = 部署名.memoryFootPrint + 部署番号.memoryFootPrint + 部署記号.memoryFootPrint
+        if let mem = recordId?.memoryFootPrint {
+            memoryFootPrint += mem
+        }
+        return memoryFootPrint
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(部署名)
+        hasher.combine(部署番号)
+        hasher.combine(recordId)
+    }
+    
+    static func == (left: 部署Data型, right: 部署Data型) -> Bool {
+        return left.部署名 == right.部署名 && left.部署番号 == right.部署番号 && left.recordId == right.recordId
+    }
+}
+
 public final class 部署型: FileMakerSearchObject, Comparable, Hashable, Codable {
     public static var layout: String { "DataAPI_11" }
     
-    public var 部署記号: String { return "\(self.部署番号)" }
-    public let 部署名: String
-    public let 部署番号: Int
-    public let recordId: FileMakerRecordID?
+    public var 部署記号: String { data.部署記号 }
+    public var 部署名: String { data.部署名 }
+    public var 部署番号: Int { data.部署番号 }
+    public var recordId: FileMakerRecordID? { data.recordId }
+    private let data: 部署Data型
     
     public init(_ 部署番号: Int, _ 部署名: String) {
         if let sec = 部署型.部署番号マップ[部署番号] {
-            self.部署名 = sec.部署名
-            self.部署番号 = sec.部署番号
-            self.recordId = sec.recordId
+            self.data = sec.data
         } else {
-            self.部署名 = 部署名
-            self.部署番号 = 部署番号
-            self.recordId = nil
+            self.data = 部署Data型(部署名: 部署名, 部署番号: 部署番号, recordId: nil).regist()
         }
     }
     
@@ -35,12 +67,10 @@ public final class 部署型: FileMakerSearchObject, Comparable, Hashable, Codab
                   throw makeError("部署記号")
               }
         guard let name = record.string(forKey: "部署名") else { throw makeError("部署名") }
-        self.recordId = record.recordId
-        self.部署番号 = number
-        self.部署名 = name
+        self.data = 部署Data型(部署名: name, 部署番号: number, recordId: record.recordId).regist()
     }
     
-    public var memoryFootPrint: Int { return 部署名.memoryFootPrint + 部署番号.memoryFootPrint + recordId.memoryFootPrint }
+    public var memoryFootPrint: Int { return data.memoryFootPrint }
 
     // MARK: - Coable
     enum CodingKeys: String, CodingKey {
