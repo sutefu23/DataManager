@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreLocation
+//import CoreLocation
 
 public enum 送り状番号状態型 {
     /// 送り状番号指定もれ
@@ -296,7 +296,7 @@ public class 送状型: Identifiable, FileMakerSearchObject {
 extension 送状型 {
     public static func find(伝票番号: String? = nil, 送状番号: String? = nil, 運送会社名: String = "") throws -> [送状型] {
         var query = FileMakerQuery()
-        if let number = 伝票番号, let order = try 指示書型.findDirect(伝票番号文字列: number) {
+        if let number = 伝票番号型(invalidNumber: 伝票番号), let order = try 指示書伝票番号キャッシュ型.shared.find(number) {
             query["指示書UUID"] = order.uuid.uuidString
         }
         query["送り状番号"] = 送状番号
@@ -408,18 +408,18 @@ extension 住所型 {
         return 郵便番号 == to.郵便番号 && 住所1.hasPrefix(to.住所1) && 住所2.hasPrefix(to.住所2) && 名前.contains(to.名前) && 電話番号 == 電話番号
     }
 
-    public static func 郵便番号存在チェック(_ zip: String) -> ([CLPlacemark]?, error: Error?){
-        let sem = DispatchSemaphore(value: 0)
-        let geocoder = CLGeocoder()
-        var result: (place: [CLPlacemark]?, error: Error?) = (nil, nil)
-        DispatchQueue.global().async {
-            geocoder.geocodeAddressString(zip, completionHandler: {(placemarks, error) -> Void in
-                result = (placemarks, error)
-                sem.signal()
-            })
-        }
-        return result
-    }
+//    public static func 郵便番号存在チェック(_ zip: String) -> ([CLPlacemark]?, error: Error?){
+//        let sem = DispatchSemaphore(value: 0)
+//        let geocoder = CLGeocoder()
+//        var result: (place: [CLPlacemark]?, error: Error?) = (nil, nil)
+//        DispatchQueue.global().async {
+//            geocoder.geocodeAddressString(zip, completionHandler: {(placemarks, error) -> Void in
+//                result = (placemarks, error)
+//                sem.signal()
+//            })
+//        }
+//        return result
+//    }
 }
 
 extension String {

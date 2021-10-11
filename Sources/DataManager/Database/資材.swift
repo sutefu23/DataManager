@@ -303,7 +303,7 @@ final class 資材種類Data型: DMLightWeightObject, FileMakerLightWeightData {
         self.種類 = record.string(forKey: "種類") ?? ""
         self.種類data = 資材種類内容型(種類: 種類)
     }
-    deinit { self.cleanUp() }
+//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [種類, 単位] }
 }
@@ -328,7 +328,7 @@ final class 社名コードData型: DMLightWeightObject, FileMakerLightWeightDat
         self.会社名 = record.string(forKey: "社名") ?? ""
         self.会社コード = record.string(forKey: "会社コード") ?? ""
     }
-    deinit { self.cleanUp() }
+//    deinit { self.cleanUp() }
 
     var cachedData: [String] { [会社名, 会社コード]}
 }

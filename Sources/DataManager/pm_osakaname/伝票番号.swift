@@ -54,8 +54,9 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
 
     public let 整数値: Int
 
-    public init?<S: StringProtocol>(invalidNumber: S) {
-        guard let number = Int(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
+    public init?<S: StringProtocol>(invalidNumber: S?) {
+        guard let invalidNumber = invalidNumber,
+              let number = Int(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
         self.init(invalidNumber: number)
     }
     

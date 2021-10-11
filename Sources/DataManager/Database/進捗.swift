@@ -18,7 +18,6 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
 
     public let 登録日: Day // 24
     public let 登録時間: Time // 24
-//    public let 製作納期: Day? // 24
     public let 伝票番号: 伝票番号型 // 8
     public let 登録日時: Date // 8
     public var 工程: 工程型 //8
@@ -63,7 +62,6 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         self.作業種別 = 作業種別型(record.string(forKey: "作業種別コード") ?? "")
         self.作業系列 = 作業系列型(系列コード: record.string(forKey: "作業系列コード") ?? "")
         self.伝票種類 = 伝票種類
-//        self.製作納期 = record.day(forKey: "製作納期")
         self.作業者 = prepare社員(社員番号: num, 社員名称: name)
     }
     
@@ -80,7 +78,6 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
         self.作業種別 = original.作業種別
         self.作業系列 = original.作業系列
         self.伝票種類 = original.伝票種類
-//        self.製作納期 = original.製作納期
     }
     
     public func makeClone() -> 進捗型 {
@@ -148,7 +145,7 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
 }
 
 public extension 進捗型 {
-    var 指示書: 指示書型? { try? 指示書型.find(伝票番号: self.伝票番号).first }
+    var キャッシュ指示書: 指示書型? { try? 指示書伝票番号キャッシュ型.shared.find(self.伝票番号) }
     
     var レーザー加工機: レーザー加工機型? {
         switch self.作業系列 {

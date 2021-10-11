@@ -25,7 +25,7 @@ extension UserDefaults {
         dataManagerDefaultValuesRegistered = true
         return [
             "programName": mainBundleName,
-            "maxCacheRate": 40,
+            "maxCacheRate": 30,
         ]
     }
     /// キャッシュに使用できるメモリの全メモリに対する割合(%)）

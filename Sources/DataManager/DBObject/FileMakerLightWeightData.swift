@@ -27,7 +27,7 @@ extension FileMakerLightWeightData {
     func regist() -> Self {
         return Self.cache.regist(self)
     }
-    func cleanUp() {
-        Self.cache.asyncCleanUp(of: self)
-    }
+//    func cleanUp() {
+//        Self.cache.asyncCleanUp(of: self)
+//    }
 }
