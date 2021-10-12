@@ -328,6 +328,11 @@ public struct DMScanner: RandomAccessCollection {
         return Int16(self.scanIntegerString())
     }
 
+    /// 32ビット整数値を取り出す
+    public mutating func scanInteger32() -> Int32? {
+        return Int32(self.scanIntegerString())
+    }
+
     public mutating func scanIntegerString() -> String {
         var hasSign: Bool = false
         var hasNumber: Bool = false

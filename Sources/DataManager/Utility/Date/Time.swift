@@ -27,14 +27,10 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
         self.second = SecondType(second)
     }
     
-    public init(hour: HourType, minute: MinuteType, second: SecondType = 0) {
+    public init(_ hour: HourType, _ minute: MinuteType, _ second: SecondType = 0) {
         self.hour = hour
         self.minute = minute
         self.second = second
-    }
-
-    public init(_ hour: HourType, _ minute: MinuteType, _ second: SecondType = 0) {
-        self.init(hour:hour, minute:minute, second:second)
     }
 
     public init?<S: StringProtocol>(fmTime: S?) {
@@ -57,11 +53,11 @@ public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
             guard let hour = HourType(parts[0]), (0...23).contains(hour) else { return nil }
             guard let minute = MinuteType(parts[1]), (0...59).contains(minute) else { return nil }
             guard let second = SecondType(parts[2]), (0...60).contains(second) else { return nil }
-            self.init(hour: hour, minute: minute, second: second)
+            self.init(hour, minute, second)
         } else if parts.count == 2 {
             guard let hour = HourType(parts[0]), (0...23).contains(hour) else { return nil }
             guard let minute = MinuteType(parts[1]), (0...59).contains(minute) else { return nil }
-            self.init(hour: hour, minute: minute, second: 0)
+            self.init(hour, minute, 0)
         } else {
             return nil
         }
@@ -139,18 +135,18 @@ extension Date {
     // MARK: 時間計算
     public var time: Time {
         let comp = cal.dateComponents([.hour, .minute, .second], from: self)
-        return Time(hour: comp.hour!, minute: comp.minute!, second: comp.second!)
+        return Time(Time.HourType(comp.hour!), Time.MinuteType(comp.minute!), Time.SecondType(comp.second!))
     }
 }
 
-let time0400 = Time(hour: 4, minute: 0)
-let time0830 = Time(hour: 8, minute: 30)
-let time1000 = Time(hour: 10, minute: 00)
-let time1010 = Time(hour: 10, minute: 10)
-let time1200 = Time(hour: 12, minute: 00)
-let time1300 = Time(hour: 13, minute: 00)
-let time1500 = Time(hour: 15, minute: 00)
-let time1510 = Time(hour: 15, minute: 10)
-let time1730 = Time(hour: 17, minute: 30)
-let time1740 = Time(hour: 17, minute: 40)
-let time2200 = Time(hour: 22, minute: 00)
+let time0400 = Time(4, 0)
+let time0830 = Time(8, 30)
+let time1000 = Time(10, 00)
+let time1010 = Time(10, 10)
+let time1200 = Time(12, 00)
+let time1300 = Time(13, 00)
+let time1500 = Time(15, 00)
+let time1510 = Time(15, 10)
+let time1730 = Time(17, 30)
+let time1740 = Time(17, 40)
+let time2200 = Time(22, 00)

@@ -11,7 +11,7 @@ public protocol 登録日時比較可能型 {
     var 登録日時:Date { get }
 }
 
-public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 {
+public class 使用資材型: FileMakerSearchObject, 登録日時比較可能型 {
     public static var layout: String { "DataAPI_17" }
     
     public let recordId: FileMakerRecordID?
@@ -19,20 +19,23 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
     public let 登録日: Day
     public let 登録時間: Time
     public let 伝票番号: 伝票番号型
-    public let 作業者: 社員型?
-    public let 工程: 工程型?
     public let 用途: 用途型?
-    public let 図番: 図番型
-    public let 表示名: String
+
     public let 使用量: String
     public let 面積: String?
-    public let 印刷対象: 印刷対象型?
     public var 単位量: Double?
     public var 単位数: Double?
     public var 金額: Double?
-    public let 原因工程: 工程型?
     public let 登録セッションUUID: UUID?
 
+    public var 図番: 図番型 { data.図番! }
+    public var 表示名: String { data.表示名 }
+    public var 印刷対象: 印刷対象型? { data.印刷対象 }
+    public var 原因工程: 工程型? { data.原因工程 }
+    public var 工程: 工程型? { data.工程 }
+    public var 作業者: 社員型? { data.作業者 }
+    private let data: 使用資材Data型
+    
     public var 登録日時: Date { Date(self.登録日, self.登録時間) }
     
     public var memoryFootPrint: Int { return 30 * 8 } // 仮設定のため適当
@@ -47,19 +50,18 @@ public class 使用資材型: FileMakerSearchObject,登録日時比較可能型 
         self.登録日 = day
         self.登録時間 = time
         self.伝票番号 = order
-        self.図番 = item
-        self.表示名 = title
         self.使用量 = use
-        self.作業者 = record.社員(forKey: "作業者コード")
-        self.工程 = record.工程(forKey: "工程コード")
+        let 作業者 = record.社員(forKey: "作業者コード")
+        let 工程 = record.工程(forKey: "工程コード")
         self.用途 = record.用途(forKey: "用途コード")
-        self.印刷対象 = record.印刷対象(forKey: "印刷対象")
+        let 印刷対象 = record.印刷対象(forKey: "印刷対象")
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
         self.金額 = record.double(forKey: "金額")
-        self.原因工程 = record.工程(forKey: "原因工程")
+        let 原因工程 = record.工程(forKey: "原因工程")
         self.面積 = record.string(forKey: "面積")
         self.登録セッションUUID = record.uuid(forKey: "登録セッションUUID")
+        self.data = 使用資材Data型(図番: item, 表示名: title, 印刷対象: 印刷対象, 原因工程: 原因工程, 工程: 工程, 作業者: 作業者).regist()
         self.recordId = record.recordId
     }
 
@@ -174,9 +176,49 @@ extension 資材型 {
         guard let width = scanner.scanDouble(),
               scanner.scanCharacters("X", "×", "*"),
               let count = scanner.scanDouble(), scanner.isAtEnd else { return nil }
-        let sheet = 資材板情報型(製品名称: self.製品名称, 規格: self.規格)
+        let sheet = 資材板情報型.find(self)
         guard !sheet.材質.isEmpty || !sheet.種類.isEmpty,
               let height = sheet.高さ, height > 0 else { return nil }
         return ((width / height), count)
+    }
+}
+
+// MARK: -
+public final class 使用資材Data型: DMLightWeightObject, DMLightWeightObjectProtocol {
+    public static let cache = LightWeightStorage<使用資材Data型>()
+    
+    public let 表示名: String
+    public let 図番: 図番型?
+
+    public let 印刷対象: 印刷対象型?
+    public let 原因工程: 工程型?
+    public let 工程: 工程型?
+    public let 作業者: 社員型?
+
+    public init(図番: 図番型?, 表示名: String, 印刷対象: 印刷対象型?, 原因工程: 工程型?, 工程: 工程型?, 作業者: 社員型?) {
+        self.図番 = 図番
+        self.表示名 = 表示名
+        self.印刷対象 = 印刷対象
+        self.原因工程 = 原因工程
+        self.工程 = 工程
+        self.作業者 = 作業者
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(図番)
+        hasher.combine(表示名)
+        hasher.combine(印刷対象)
+        hasher.combine(原因工程)
+        hasher.combine(工程)
+        hasher.combine(作業者)
+    }
+    
+    public static func ==(left: 使用資材Data型, right: 使用資材Data型) -> Bool {
+        return left.図番 == right.図番 &&
+        left.表示名 == right.表示名 &&
+        (left.印刷対象 ?? .なし) == (right.印刷対象 ?? .なし) &&
+        left.原因工程 == right.原因工程 &&
+        left.工程 == right.工程 &&
+        left.作業者 == right.作業者
     }
 }

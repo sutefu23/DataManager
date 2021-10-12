@@ -101,16 +101,14 @@ public class 注文番号型: FileMakerObject, Hashable, Codable {
     public static let 品質管理 = 注文番号キャッシュ型.shared["Y"]!
     public static let 予備 = 注文番号キャッシュ型.shared["Z"]!
 
-    public let 記号: String
-    public let 名称: String
+    public var 記号: String { data.記号 }
+    public var 名称: String { data.名称 }
+    private let data: 注文番号Data型
     
     public var memoryFootPrint: Int { 記号.memoryFootPrint + 名称.memoryFootPrint }
     
     public init(_ record: FileMakerRecord) throws {
-        guard let mark = record.string(forKey: "記号"), !mark.isEmpty else { throw FileMakerError.notFound(message: "注文番号型:記号") }
-        guard let name = record.string(forKey: "名称") else { throw FileMakerError.notFound(message: "注文番号型:名称") }
-        self.記号 = mark
-        self.名称 = name
+        self.data = try 注文番号Data型(record).regist()
     }
     
     public var 対応部署: 部署型? {
@@ -137,8 +135,7 @@ public class 注文番号型: FileMakerObject, Hashable, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let mark = try values.decode(String.self, forKey: .記号)
         guard let result = 注文番号キャッシュ型.shared[mark] else { throw FileMakerError.notFound(message: "不明な注文番号（\(mark)）")}
-        self.記号 = result.記号
-        self.名称 = result.名称
+        self.data = result.data
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -158,4 +155,21 @@ extension 注文番号型 {
         let list: [FileMakerRecord] = try fetchAllRecords()
         return list.compactMap { try? 注文番号型($0) }.sorted { $0.記号 < $1.記号 }
     }
+}
+
+// MARK: -
+private final class 注文番号Data型: DMLightWeightObject, FileMakerLightWeightData {
+    static let cache = LightWeightStorage<注文番号Data型>()
+    
+    let 記号: String
+    let 名称: String
+
+    init(_ record: FileMakerRecord) throws {
+        guard let mark = record.string(forKey: "記号"), !mark.isEmpty else { throw FileMakerError.notFound(message: "注文番号型:記号") }
+        guard let name = record.string(forKey: "名称") else { throw FileMakerError.notFound(message: "注文番号型:名称") }
+        self.記号 = mark
+        self.名称 = name
+    }
+
+    var cachedData: [String] { [記号, 名称] }
 }

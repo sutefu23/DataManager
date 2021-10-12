@@ -38,18 +38,18 @@ public class 指示書UUIDキャッシュ型: DMDBCache<UUID, 指示書型> {
     }
 }
 
-public class 伝票番号キャッシュ型: DMDBCache<Int, 伝票番号型> {
+public class 伝票番号キャッシュ型: DMDBCache<伝票番号型.RawValue, 伝票番号型> {
     public static let shared: 伝票番号キャッシュ型 = 伝票番号キャッシュ型(lifeSpan: 30*60, nilCache: true) {
         let number = 伝票番号型(validNumber: $0)
-        return try 伝票番号型.isExist(伝票番号: number) ? number : nil
+        return try 伝票番号型.directCheckIsExist(伝票番号: number) ? number : nil
     }
     
     public func find<S: StringProtocol>(_ number: S, noCache: Bool = false) throws -> 伝票番号型? {
-        guard let number = Int(String(number.filter{ $0.isASCIINumber })) else { return nil }
+        guard let number = 伝票番号型.RawValue(String(number.filter{ $0.isASCIINumber })) else { return nil }
         return try self.find(number, noCache: noCache)
     }
 
-    public override func find(_ number: Int?, noCache: Bool = false) throws -> 伝票番号型? {
+    public override func find(_ number: 伝票番号型.RawValue?, noCache: Bool = false) throws -> 伝票番号型? {
         guard let number = number, let orderNumber = 伝票番号型(invalidNumber: number) else { return nil }
         if 指示書伝票番号キャッシュ型.shared.isCaching(forKey: orderNumber) {
             self.regist(orderNumber, forKey: number)
@@ -63,7 +63,7 @@ public class 伝票番号キャッシュ型: DMDBCache<Int, 伝票番号型> {
         return try isExists(orderNumber.整数値)
     }
     
-    public func isExists(_ number: Int) throws -> Bool {
+    public func isExists(_ number: 伝票番号型.RawValue) throws -> Bool {
         if self.isCaching(forKey: number) { return true }
         guard let orderNumber = 伝票番号型(invalidNumber: number) else { return false }
         if 指示書伝票番号キャッシュ型.shared.isCaching(forKey: orderNumber) {

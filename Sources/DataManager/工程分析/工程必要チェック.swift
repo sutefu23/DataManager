@@ -52,6 +52,6 @@ extension 指示書型 {
 }
 
 // MARK: - フィルム不要伝票番号数一覧
-private let フィルム不要伝票番号数一覧: [Int] = [
+private let フィルム不要伝票番号数一覧: [伝票番号型.RawValue] = [
     2003_17665,
 ]

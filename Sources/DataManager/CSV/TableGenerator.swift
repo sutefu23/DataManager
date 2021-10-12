@@ -297,7 +297,14 @@ public extension TableGenerator {
         col.aggregator = IntegerColumnAggregator(type: resultType, format: resultFormat ?? resultFormat2(), getter: getter)
         return appending(col)
     }
-    
+
+    func integer(_ title: String, _ format: IntFormat = .native, resultType: ResultType? = nil, resultFormat: DoubleFormat? = nil, getter: @escaping (S) -> Int32?) -> TableGenerator<S> {
+        return self.integer(title, format, resultType: resultType, resultFormat: resultFormat) { (source: S) -> Int? in
+            guard let result = getter(source) else { return nil }
+            return Int(result)
+        }
+    }
+
     func double(_ title: String, _ format: DoubleFormat = .native, resultType: ResultType? = nil, resultFormat: DoubleFormat? = nil, _ getter: @escaping (S) -> Double?) -> TableGenerator<S> {
         let col = TableColumn<S>(title: title) {
             guard let value = getter($0) else { return nil }

@@ -25,8 +25,8 @@ public struct 箱文字優先度Data型: FileMakerSyncData, Equatable, DMCacheEl
     }
     
     public init(_ record: FileMakerRecord) throws {
-        if let number = record.integer(forKey: "伝票番号") {
-            self.伝票番号 = 伝票番号型(validNumber: number)
+        if let number = record.伝票番号(forKey: "伝票番号") {
+            self.伝票番号 = number
         }
         if let code = record.string(forKey: "優先設定") {
             self.優先設定 = 優先設定型(code)
@@ -66,14 +66,6 @@ public struct 箱文字優先度Data型: FileMakerSyncData, Equatable, DMCacheEl
 public final class 箱文字優先度型: FileMakerSyncObject<箱文字優先度Data型> {
     public static let 自動有効期限: Time = Time(15, 00)
     
-//    public var 伝票番号: 伝票番号型? {
-//        get { data.伝票番号 }
-//        set { data.伝票番号 = newValue }
-//    }
-//    public var 優先設定: 優先設定型 {
-//        get { data.優先設定 }
-//        set { data.優先設定 = newValue }
-//    }
     public var 表示設定: 表示設定型 {
         get {
             return data.表示設定

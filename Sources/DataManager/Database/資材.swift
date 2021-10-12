@@ -10,7 +10,7 @@ import Foundation
 
 public typealias 図番型 = String
 
-public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashable {
+public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashable, CustomStringConvertible {
     public static var layout: String { "DataAPI_5" }
     
     public let recordId: FileMakerRecordID?
@@ -42,6 +42,8 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
     public var memoryFootPrint: Int {
         return (3 * 1 + 2 * 10 + 3 + 1) * 8 + data.memoryFootPrint
     }
+    
+    public var description: String { return 図番 }
     
     public init(_ record: FileMakerRecord) throws {
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: "資材", mes: key) }

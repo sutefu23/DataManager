@@ -256,11 +256,11 @@ public enum 金額計算タイプ型 {
         case .個数物:
             return 1.0
         case .平面形状(area: let area):
-            if let sheetArea = 資材板情報型(item).面積 {
+            if let sheetArea = 資材板情報型.find(item).面積 {
                 return area / sheetArea
             }
         case .平面板(height: let height, width: let width):
-            if let sheetArea = 資材板情報型(item).面積 {
+            if let sheetArea = 資材板情報型.find(item).面積 {
                 let area = width * height
                 return area / sheetArea
             }

@@ -23,13 +23,20 @@ public struct Month: Hashable, Strideable, Codable, Comparable {
     }
 
     public init(year: Int, month: Int) {
+        var year = year < 1000 ? year + 2000 : year
+        var month = month
+        if month < 1 {
+            let d = month / 12
+            year = year + (d - 1)
+            month = month - (d-1)*12
+        } else if month > 12 {
+            let d = month / 12
+            year = year + d
+            month = month - d*12
+        }
         self.init(YearType(year), MonthType(month))
     }
 
-    public init(year: YearType, month: MonthType) {
-        self.init(year, month)
-    }
-    
     public init(_ day: Day) {
         self.init(day.year, day.month)
     }
@@ -51,7 +58,7 @@ public struct Month: Hashable, Strideable, Codable, Comparable {
         self.month = month
     }
     
-    init(_ year: YearType, _ month: Int8) {
+    public init(_ year: YearType, _ month: Month.MonthType) {
         self.longYear = year
         self.month = month
     }
@@ -75,23 +82,19 @@ public struct Month: Hashable, Strideable, Codable, Comparable {
 
     // MARK: -
     public var prevMonth: Month {
-        var year = self.longYear
-        var month = self.month-1
-        if month < 1 {
-            month = 12
-            year -= 1
+        if self.month > 1 {
+            return Month(self.longYear, self.month-1)
+        } else {
+            return Month(self.longYear-1, 12)
         }
-        return Month(year: year, month: month)
     }
     
     public var nextMonth: Month {
-        var year = self.longYear
-        var month = self.month+1
-        if month > 12 {
-            month = 1
-            year += 1
+        if self.month < 12 {
+            return Month(self.longYear, self.month+1)
+        } else {
+            return Month(self.longYear+1, 1)
         }
-        return Month(year, month)
     }
     
     public var shortYearMonthString: String {
@@ -115,14 +118,11 @@ public struct Month: Hashable, Strideable, Codable, Comparable {
     public var yearMonthJString: String { "\(longYear)年\(month)月" }
     /// ４桁年文字列
     public var longYearString: String { String(longYear) }
-    public var shotYear2String: String {
-        shortYear < 10 ? "0\(shortYear)" : String(shortYear)
-    }
     /// 2桁固定の年文字列
     public var shortYear2String: String {
         shortYear < 10 ? "0\(shortYear)" : String(shortYear)
     }
-    
+
     /// 2桁固定の月番号文字列
     public var month2String: String {
         month < 10 ? "0\(month)" : String(month)
@@ -220,7 +220,7 @@ public extension ClosedRange where Bound == Month {
 extension Date {
     public var month: Month {
         let comp = cal.dateComponents([.year, .month], from: self)
-        return Month(year: comp.year!, month: comp.month!)
+        return Month(Month.YearType(comp.year!), Month.MonthType(comp.month!))
     }
 
     public init(_ month: Month) {

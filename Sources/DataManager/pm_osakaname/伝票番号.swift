@@ -14,78 +14,45 @@ import Foundation
 import UIKit
 #endif
 
-public final class 伝票番号解析型 {
-    private var mainNumber: 伝票番号型?
-    private var subNumber: 伝票番号型?
-    private var mainChecked: Bool
-    
-    public init<S: StringProtocol>(_ value: S) {
-        if let order = 伝票番号型(invalidNumber: value) {
-            self.mainNumber = nil
-            self.subNumber = order
-            self.mainChecked = true
-        } else {
-            self.mainNumber = nil
-            self.subNumber = nil
-            self.mainChecked = true
-        }
-    }
-    /// 存在確認済み
-    public var 本番号: 伝票番号型? {
-        get throws {
-            if !mainChecked, let number = subNumber?.整数値 {
-                if try 伝票番号キャッシュ型.shared.isExists(number) {
-                    mainNumber = subNumber
-                }
-                mainChecked = true
-            }
-            return mainNumber
-        }
-    }
-    /// 存在未確認
-    public var 仮番号: 伝票番号型? {
-        return subNumber
-    }
-}
-
 public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
     public static var db: FileMakerDB { .pm_osakaname }
     public static var layout: String { "DataAPI_10" }
 
-    public let 整数値: Int
+    public typealias RawValue = Int32
+    
+    public let 整数値: RawValue
 
     public init?<S: StringProtocol>(invalidNumber: S?) {
         guard let invalidNumber = invalidNumber,
-              let number = Int(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
+              let number = RawValue(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
         self.init(invalidNumber: number)
     }
     
-    public init?(invalidNumber: Int?) {
+    public init?(invalidNumber: RawValue?) {
         guard let number = invalidNumber else { return nil }
         self.整数値 = number
         guard self.isValidNumber() else { return nil }
     }
 
-    public init(validNumber: Int) {
+    public init(validNumber: RawValue) {
         self.整数値 = validNumber
     }
 
-    public init(integerLiteral: Int) {
+    public init(integerLiteral: RawValue) {
         self.init(validNumber: integerLiteral)
     }
     
-    public init?(month: Month, lowNumber: Int) throws {
+    public init?(month: Month, invalidLowNumber lowNumber: RawValue) {
         if lowNumber <= 0 { return nil }
-        let number: Int
+        let number: RawValue
         if lowNumber <= 9999 {
-            number = (Int(month.shortYear) * 100 + Int(month.month)) * 10000 + lowNumber
+            number = (RawValue(month.shortYear) * 100 + RawValue(month.month)) * 10000 + lowNumber
         } else if lowNumber <= 9_9999 {
-            number = (Int(month.shortYear) * 100 + Int(month.month)) * 100000 + lowNumber
+            number = (RawValue(month.shortYear) * 100 + RawValue(month.month)) * 100000 + lowNumber
         } else {
             number = lowNumber
         }
-        guard let result = try 伝票番号キャッシュ型.shared.find(number) else { return nil }
-        self = result
+        self.整数値 = number
     }
     
     public var memoryFootPrint: Int {
@@ -98,7 +65,7 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.整数値 = try values.decode(Int.self, forKey: .number)
+        self.整数値 = try values.decode(RawValue.self, forKey: .number)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -107,6 +74,14 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     }
     
     // MARK: -
+    public var isExists: Bool? {
+        do {
+            return try 伝票番号キャッシュ型.shared.find(self.整数値) != nil
+        } catch {
+            return nil
+        }
+    }
+    
     func isValidNumber() -> Bool {
         let low = self.下位整数値
         if self.is旧伝票暗号 {
@@ -134,12 +109,12 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     // MARK: - パーツ
     public var is旧伝票暗号: Bool { 整数値 <= 999_9999 }
     
-    public var 上位整数値: Int {
+    public var 上位整数値: RawValue {
         if is旧伝票暗号 { return 0 }
         return 整数値 > 9999_9999 ? 整数値 / 1000_00 : 整数値 / 100_00
     }
 
-    public var 下位整数値: Int {
+    public var 下位整数値: RawValue {
         if is旧伝票暗号 { return 整数値 }
         return 整数値 > 9999_9999 ? 整数値 % 1000_00 : 整数値 % 100_00
     }
@@ -154,7 +129,7 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
         } else {
             let year = 2000 + 上位整数値 / 100
             let month = 上位整数値 % 100
-            return Month(year: year, month: month)
+            return Month(Month.YearType(year), Month.MonthType(month))
         }
     }
 
@@ -210,13 +185,13 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     public init?(validStructured url: URL?) {
         guard var url = url else { return nil }
         if url.isFileURL { url = url.deletingPathExtension() }
-        guard let low = Int(url.lastPathComponent), 0 < low && low <= 99999  else { return nil }
+        guard let low = RawValue(url.lastPathComponent), 0 < low && low <= 99999  else { return nil }
         url = url.deletingLastPathComponent()
-        guard let middle = Int(url.lastPathComponent), 1 <= middle && middle <= 31 else { return nil }
+        guard let middle = RawValue(url.lastPathComponent), 1 <= middle && middle <= 31 else { return nil }
         url = url.deletingLastPathComponent()
-        guard var high = Int(url.lastPathComponent), 2000 <= high && high <= 9999 else { return nil }
+        guard var high = RawValue(url.lastPathComponent), 2000 <= high && high <= 9999 else { return nil }
         high = (high-2000) * 100 + middle
-        let number: Int
+        let number: RawValue
         if low < 10000 {
             number = high * 10000 + low
         } else {
@@ -236,7 +211,7 @@ extension FileMakerRecord {
 }
 
 extension 伝票番号型 {
-    static func isExist(伝票番号: 伝票番号型) throws -> Bool {
+    static func directCheckIsExist(伝票番号: 伝票番号型) throws -> Bool {
         return try findRecords(query: ["伝票番号" : "==\(伝票番号)"]).count == 1
     }
 }
@@ -247,3 +222,39 @@ extension 伝票番号型 {
         return self.キャッシュ指示書?.伝票種類
     }
 }
+
+// MARK: - 伝票番号の解析
+public final class 伝票番号解析型 {
+    private var mainNumber: 伝票番号型?
+    private var subNumber: 伝票番号型?
+    private var mainChecked: Bool
+    
+    public init<S: StringProtocol>(_ value: S) {
+        if let order = 伝票番号型(invalidNumber: value) {
+            self.mainNumber = nil
+            self.subNumber = order
+            self.mainChecked = true
+        } else {
+            self.mainNumber = nil
+            self.subNumber = nil
+            self.mainChecked = true
+        }
+    }
+    /// 存在確認済み
+    public var 本番号: 伝票番号型? {
+        get throws {
+            if !mainChecked, let number = subNumber?.整数値 {
+                if try 伝票番号キャッシュ型.shared.isExists(number) {
+                    mainNumber = subNumber
+                }
+                mainChecked = true
+            }
+            return mainNumber
+        }
+    }
+    /// 存在未確認
+    public var 仮番号: 伝票番号型? {
+        return subNumber
+    }
+}
+

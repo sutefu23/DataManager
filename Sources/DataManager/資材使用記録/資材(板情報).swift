@@ -18,16 +18,25 @@ public extension 資材情報型 {
     }
 }
 
-public struct 資材板情報型: 資材情報型 {
-    public private(set) var 材質: String // SUS304
-    public private(set) var 種類: String // HL
-    public private(set) var 板厚: String // 3.0
-    public private(set) var サイズ: String // 4x8
-    public private(set) var 高さ: Double? // 1219
-    public private(set) var 横幅: Double? // 2438
-    public private(set) var 備考: String
+public struct 資材板情報型: 資材情報型, DMCacheElement {
+    public static func find(_ item: 資材型) -> 資材板情報型 { return cache.convert(item) }
+    static let cache = DMCachingConverter<資材型, 資材板情報型>() {
+        return 資材板情報型($0)
+    }
+    private let data: 資材板情報種類Data型
+    private let data2: 資材板情報サイズData型
     
-    var アクリル種類: アクリル種類型?
+    public var 材質: String { data.材質 } // SUS304
+    public var 種類: String { data.種類 }// HL
+    public var 板厚: String { data.板厚 }// 3.0
+    public var サイズ: String { data2.サイズ } // 4x8
+    public var 高さ: Double? { data2.高さ }// 1219
+    public var 横幅: Double? { data2.横幅 }// 2438
+    public let 備考: String
+    
+    var アクリル種類: アクリル種類型? { data.アクリル種類 }
+    
+    public var memoryFootPrint: Int { 8 * 16 }
     
     public var 面積: Double? {
         guard let height = self.高さ, let width = self.横幅 else { return nil }
@@ -173,17 +182,61 @@ public struct 資材板情報型: 資材情報型 {
                 width = w
             }
         }
-        self.材質 = material
-        self.種類 = type
-        self.板厚 = thin
-        self.サイズ = square
-        self.高さ = height
-        self.横幅 = width
+        self.data = 資材板情報種類Data型(材質: material, 種類: type, 板厚: thin, アクリル種類: aktype).regist()
+        self.data2 = 資材板情報サイズData型(サイズ: square, 高さ: height, 横幅: width).regist()
         self.備考 = memo
-        self.アクリル種類 = aktype
+    }
+}
+private final class 資材板情報種類Data型: DMLightWeightObject, DMLightWeightObjectProtocol {
+    static let cache = LightWeightStorage<資材板情報種類Data型>()
+    
+    let 材質: String // SUS304
+    let 種類: String // HL
+    let 板厚: String // 3.0
+    let アクリル種類: アクリル種類型?
+
+    init(材質: String, 種類: String, 板厚: String, アクリル種類: アクリル種類型? = nil) {
+        self.材質 = 材質
+        self.種類 = 種類
+        self.板厚 = 板厚
+        self.アクリル種類 = アクリル種類
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(材質)
+        hasher.combine(種類)
+        hasher.combine(板厚)
+        hasher.combine(アクリル種類)
+    }
+    
+    static func == (left: 資材板情報種類Data型, right: 資材板情報種類Data型) -> Bool {
+        return left.材質 == right.材質 && left.種類 == right.種類 && left.板厚 == right.板厚 && left.アクリル種類 == right.アクリル種類
     }
 }
 
+private final class 資材板情報サイズData型: DMLightWeightObject, DMLightWeightObjectProtocol {
+    static let cache = LightWeightStorage<資材板情報サイズData型>()
+    
+    let サイズ: String // 4x8
+    let 高さ: Double? // 1219
+    let 横幅: Double? // 2438
+
+    init(サイズ: String, 高さ: Double?, 横幅: Double?) {
+        self.サイズ = サイズ
+        self.高さ = 高さ
+        self.横幅 = 横幅
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(サイズ)
+        hasher.combine(高さ)
+        hasher.combine(横幅)
+    }
+    
+    static func == (left: 資材板情報サイズData型, right: 資材板情報サイズData型) -> Bool {
+        return left.サイズ == right.サイズ && left.高さ == right.高さ && left.横幅 == right.横幅
+    }
+}
 // MARK: -
 enum 板材質型 {
     case ステンレス

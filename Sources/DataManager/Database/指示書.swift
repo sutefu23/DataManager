@@ -112,7 +112,7 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     
     public required init(_ record: FileMakerRecord) throws {
         func makeError0(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: key) }
-        guard let 伝票番号 = 伝票番号型(invalidNumber: record.integer(forKey: "伝票番号")) else { throw makeError0("伝票番号") }
+        guard let 伝票番号 = record.伝票番号(forKey: "伝票番号") else { throw makeError0("伝票番号") }
         self.伝票番号 = 伝票番号
         func makeError(_ key: String) -> Error { record.makeInvalidRecordError(name: Self.name, mes: "\(key)[\(伝票番号)]") }
         func getString(_ key: String) throws -> String {

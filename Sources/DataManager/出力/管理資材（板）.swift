@@ -27,7 +27,7 @@ public class 管理板材型: 管理資材型 {
     }
     
     func updateSheetParameters() {
-        let param = 資材板情報型(self.資材)
+        let param = 資材板情報型.find(self.資材)
         self.材質 = param.材質
         self.種類 = param.種類
         self.板厚 = param.板厚
@@ -66,7 +66,7 @@ public class 管理板材型: 管理資材型 {
         let values = try decoder.container(keyedBy: SheetCodingKeys.self)
         self.板厚数値 = Double(self.板厚)
         try super.init(from: decoder)
-        let param = 資材板情報型(self.資材)
+        let param = 資材板情報型.find(self.資材)
         self.材質 = try values.decodeIfPresent(String.self, forKey: .材質) ?? param.材質
         self.種類 = try values.decodeIfPresent(String.self, forKey: .種類) ?? param.種類
         self.板厚 = try values.decodeIfPresent(String.self, forKey: .板厚) ?? param.板厚

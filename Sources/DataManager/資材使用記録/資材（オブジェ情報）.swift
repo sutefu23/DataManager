@@ -13,7 +13,7 @@ public class オブジェ資材型 {
         self.金額計算タイプ = .平面形状(area: 面積)
         guard let item = try? 資材型.find(図番: 図番) else { return nil }
         self.資材 = item
-        let sheet = 資材板情報型(item)
+        let sheet = 資材板情報型.find(item)
         self.表示名 = "\(sheet.板厚)t \(sheet.材質)"
     }
     

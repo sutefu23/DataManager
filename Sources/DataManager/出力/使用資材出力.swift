@@ -12,19 +12,21 @@ public struct 使用資材出力型: FileMakerExportObject {
 
     public var 登録日時: Date
     
-    public var 伝票番号: 伝票番号型
-    public var 作業者: 社員型?
-    public var 工程: 工程型?
-    public var 用途: 用途型?
-    public var 図番: 図番型
-    public var 表示名: String
-    public var 使用量: String
-    public var 面積: String?
-    public var 印刷対象: 印刷対象型?
-    public var 単位量: Double?
-    public var 単位数: Double?
-    public var 金額: Double?
-    public var 原因工程: 工程型?
+    public let 用途: 用途型?
+    public let 伝票番号: 伝票番号型
+    public let 使用量: String
+    public let 単位量: Double?
+    public let 単位数: Double?
+    public let 金額: Double?
+    public let 面積: String?
+
+    public var 図番: 図番型 { data.図番! }
+    public var 表示名: String { data.表示名 }
+    public var 印刷対象: 印刷対象型? { data.印刷対象 }
+    public var 原因工程: 工程型? { data.原因工程 }
+    public var 作業者: 社員型? { data.作業者 }
+    public var 工程: 工程型? { data.工程 }
+    private let data: 使用資材Data型
 
     public var memoryFootPrint: Int { 14 * 16 }
 
@@ -45,55 +47,48 @@ public struct 使用資材出力型: FileMakerExportObject {
     ) {
         self.登録日時 = 登録日時
         self.伝票番号 = 伝票番号
-        self.作業者 = 作業者
-        self.工程 = 工程
         self.用途 = 用途
-        self.図番 = 図番
-        self.表示名 = 表示名
         self.使用量 = 使用量
         self.面積 = 面積
-        self.印刷対象 = 印刷対象
         self.単位量 = 単位量
         self.単位数 = 単位数
         self.金額 = 金額
-        self.原因工程 = 原因工程
+        self.data = 使用資材Data型(図番: 図番, 表示名: 表示名, 印刷対象: 印刷対象, 原因工程: 原因工程, 工程: 工程, 作業者: 作業者)
     }
     
     init?(_ record: FileMakerRecord) {
         guard let date = record.date(dayKey: "登録日", timeKey: "登録時間") else { return nil }
         guard let number = record.伝票番号(forKey: "伝票番号") else { return nil }
         guard let item = record.資材(forKey: "図番") else { return nil }
-        
         self.登録日時 = date
         self.伝票番号 = number
-        self.工程 = record.工程(forKey: "工程コード")
-        self.作業者 = record.社員(forKey: "作業者コード")
-        self.図番 = item.図番
         self.使用量 = record.string(forKey: "使用量") ?? ""
         self.用途 = record.用途(forKey: "用途")
         self.金額 = record.double(forKey: "金額")
-        if let title = record.string(forKey: "表示名"), !title.isEmpty {
-            self.表示名 = title.全角半角日本語規格化()
-        } else {
-            self.表示名 = item.標準表示名
-        }
         self.面積 = record.string(forKey: "面積")
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
-        self.印刷対象 = record.印刷対象(forKey: "印刷対象")
-        self.原因工程 = record.工程(forKey: "原因工程コード")
+
+        let 表示名: String
+        if let title = record.string(forKey: "表示名"), !title.isEmpty {
+            表示名 = title.全角半角日本語規格化()
+        } else {
+            表示名 = item.標準表示名
+        }
+        let 工程 = record.工程(forKey: "工程コード")
+        let 作業者 = record.社員(forKey: "作業者コード")
+        let 図番 = item.図番
+        let 印刷対象 = record.印刷対象(forKey: "印刷対象")
+        let 原因工程 = record.工程(forKey: "原因工程コード")
+        self.data = 使用資材Data型(図番: 図番, 表示名: 表示名, 印刷対象: 印刷対象, 原因工程: 原因工程, 工程: 工程, 作業者: 作業者)
     }
     
     public init(_ record: 資材使用記録型) {
         self.登録日時 = record.登録日時
         self.伝票番号 = record.伝票番号
-        self.工程 = record.工程
-        self.作業者 = record.作業者
-        self.図番 = record.図番
         self.使用量 = record.使用量 ?? ""
         self.用途 = 用途型(用途名: record.用途)
         self.金額 = record.金額
-        self.表示名 = record.表示名
         if let val = record.使用面積 {
             self.面積 = "\(val)"
         } else {
@@ -101,8 +96,14 @@ public struct 使用資材出力型: FileMakerExportObject {
         }
         self.単位量 = record.単位量
         self.単位数 = record.単位数
-        self.印刷対象 = record.印刷対象
-        self.原因工程 = record.原因工程
+
+        let 表示名 = record.表示名
+        let 工程 = record.工程
+        let 作業者 = record.作業者
+        let 図番 = record.図番
+        let 印刷対象 = record.印刷対象
+        let 原因工程 = record.原因工程
+        self.data = 使用資材Data型(図番: 図番, 表示名: 表示名, 印刷対象: 印刷対象, 原因工程: 原因工程, 工程: 工程, 作業者: 作業者)
     }
     
     func isEqual(to order: 使用資材型) -> Bool {
