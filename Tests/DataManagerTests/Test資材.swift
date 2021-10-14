@@ -26,6 +26,15 @@ class TestItem: XCTestCase {
         return
     }
 
+    func testCurrency() {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let result = formatter.number(from: " 28,810")
+        XCTAssertEqual(result, 28810)
+        guard doTest, let item = try? 資材型.find(図番: "999500") else { return }
+        XCTAssertEqual(item.単価, 28810)
+    }
+    
     func testItemBarcode() {
         var code: String
 

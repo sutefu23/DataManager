@@ -13,7 +13,6 @@ public typealias 図番型 = String
 public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashable, CustomStringConvertible {
     public static var layout: String { "DataAPI_5" }
     
-    public let recordId: FileMakerRecordID?
     private let data2: 発注資材情報型
     private let data: 資材種類Data型
     private let 社名コードData: 社名コードData型
@@ -28,6 +27,7 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
     public let 単価: Double?
     public let 箱入り数: Double
     public let レコード在庫数: Int
+    public let recordId: FileMakerRecordID?
     public let is棚卸し対象: Bool
     
     public var 発注先名称: String { 社名コードData.会社名 }
@@ -58,7 +58,7 @@ public final class 資材型: FileMakerSearchObject, Codable, Comparable, Hashab
         self.図番 = 図番
         self.備考 = try getString("備考")
 
-        self.単価 = record.double(forKey: "f88")
+        self.単価 = record.decimal(forKey: "f88")
         
         self.箱入り数 = record.double(forKey: "f43") ?? 1
         self.レコード在庫数 = record.integer(forKey: "f32") ?? 0

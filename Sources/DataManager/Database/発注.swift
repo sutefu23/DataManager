@@ -22,7 +22,7 @@ public final class 発注型: FileMakerSearchObject {
     public let 指定注文番号: 指定注文番号型
     
     public let 注文番号: 注文番号型
-    public let 金額: String
+    public let 金額: Double?
     public let 発注日: Day
     public let 登録日: Day
     public var 版数: String { 発注資材情報.版数 }
@@ -71,15 +71,16 @@ public final class 発注型: FileMakerSearchObject {
         self.注文番号 = 注文番号
         self.発注種類 = 発注種類
 
-        self.金額 = try getString("金額")
         self.発注日 = try getDay("発注日")
         self.登録日 = try getDay("登録日")
         self.備考 = try getString("備考")
         self.発注数量文字列 = try getString("発注数量")
-        
-        self.recordId = record.recordId
+
         self.発注資材情報 = 発注資材情報型(発注: record).regist()
         self.社名コードData = 社名コードData型(発注: record).regist()
+
+        self.recordId = record.recordId
+        self.金額 = record.decimal(forKey: "金額")
 
         self.状態 = record.発注状態(forKey: "状態") ?? .処理済み
         self.納品日 = record.day(forKey: "納品日")

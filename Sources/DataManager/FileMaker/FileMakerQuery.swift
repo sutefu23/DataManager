@@ -10,6 +10,14 @@ import Foundation
 // MARK: - クエリ
 public typealias FileMakerQuery = [String: String]
 
+public extension FileMakerQuery {
+    /// 値がnilでない場合、文字列に変換してkeyに挿入する
+    mutating func insertFlatMap<T>(_ value: T?, forKey key: String, converter: (T) -> String) {
+        guard let value = value else { return }
+        self[key] = converter(value)
+    }
+}
+
 /// ポータル取得情報
 struct FileMakerPortal {
     let name: String

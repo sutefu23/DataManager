@@ -168,6 +168,8 @@ public final class DMLogSystem: DMLogger {
 extension DMLogger {
     /// 指定された場所に、指定されたレベル以上のログを出力する
     public func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws {
+        #if os(tvOS) // tvOSでは何もしない
+        #else
         let gen = TableGenerator<DMLogRecord>()
             .string("種類") {
                 switch $0.level {
@@ -184,5 +186,6 @@ extension DMLogger {
         let hostname = ProcessInfo.processInfo.hostName.replacingOccurrences(of: ".local", with: "")
         let log = self.currentLog(minLevel: minLevel)
         try gen.share(log, format: .excel(header: true), base: type.dir, title: "\(defaults.programName)[\(type.rawValue)](\(hostname)).csv", shareButton: shareButton)
+        #endif
     }
 }

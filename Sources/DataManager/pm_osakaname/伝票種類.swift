@@ -8,27 +8,16 @@
 
 import Foundation
 
-public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
+public enum 伝票種類型: Int, DMStringEnum, Comparable {
+    public static let stringMap: [String : 伝票種類型] = makeStringMap()
+    
     case 箱文字 = 1
     case 切文字 = 2
     case 加工 = 3
     case エッチング = 4
     case 外注 = 5
     case 校正 = 6
-    
-    public init?<T>(_ name: T?) where T: StringProtocol {
-        guard let name = name else { return nil }
-        switch name {
-        case "箱文字": self = .箱文字
-        case "切文字": self = .切文字
-        case "エッチング": self = .エッチング
-        case "加工": self = .加工
-        case "外注": self = .外注
-        case "校正": self = .校正
-        default:
-            return nil
-        }
-    }
+    case 赤伝 = 7
     
     public var description: String { return fmString }
 
@@ -40,6 +29,7 @@ public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
         case .加工: return "加工"
         case .外注: return "外注"
         case .校正: return "校正"
+        case .赤伝: return "赤伝"
         }
     }
     
@@ -55,7 +45,7 @@ public enum 伝票種類型: Int, CustomStringConvertible, Comparable {
             return DMColor.orange.dark(brightnessRatio: 0.5)
         case .エッチング:
             return DMColor.magenta.dark(brightnessRatio: 0.75)
-        case .外注, .校正:
+        case .外注, .校正, .赤伝:
             return DMColor.black
         }
     }

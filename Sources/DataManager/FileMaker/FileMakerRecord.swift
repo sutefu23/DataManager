@@ -149,6 +149,14 @@ public struct FileMakerRecord {
         }
     }
     
+    func decimal(forKey key: String) -> Double? {
+        if case let value as Double = self[key] { return value }
+        guard let str = string(forKey: key) else { return nil }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.number(from: str)?.doubleValue
+    }
+    
     /// 指定されたキーに対応する日付を返す
     func day(forKey key: String) -> Day? {
         guard let day = string(forKey: key) else { return nil }

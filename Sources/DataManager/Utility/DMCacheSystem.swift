@@ -191,7 +191,7 @@ public class DMCacheSystem {
     // MARK: - serialqueue上で実行
     /// 最大キャッシュ容量を変更する
     private func execChangeMaxByte(maxBytes: Int) {
-        if maxBytes <= 0 { return }
+        guard maxBytes > 0 else { return }
         self.maxBytesData = maxBytes
     }
     
@@ -222,20 +222,21 @@ public class DMCacheSystem {
 
     /// メモリの使用量を指定されたサイズまで削減する
     private func execClearLimit(limit: Int) {
-        guard currentBytesData > limit else { return }
         self.execRemoveInvalidCache() // まずは無効なキャッシュを削除する
-        while currentBytesData > limit, let handle = self.firstHandle {
+        if currentBytesData <= limit { return }
+        while let handle = self.firstHandle {
             if let storage = handle.storage {
                 storage.removeHandle(for: handle)
                 handle.storage = nil
             }
-            self.currentBytesData -= handle.memoryFootPrint
             self.firstHandle = handle.next
             handle.prev = nil // メモリリーク対策
             handle.next = nil
+            self.currentBytesData -= handle.memoryFootPrint
+            if currentBytesData <= limit { break }
         }
         if let firstHandle = self.firstHandle {
-            if firstHandle.prev != nil { firstHandle.prev = nil }
+            firstHandle.prev = nil
         } else {
             lastHandle = nil
         }

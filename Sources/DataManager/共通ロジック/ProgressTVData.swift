@@ -92,7 +92,7 @@ public final class ProgressTVData {
     public var 伝票状態: 伝票状態型 { return self.指示書.伝票状態 }
     public var 品名: String { return self.指示書.品名 }
     public var 伝票番号: 伝票番号型 { return self.指示書.伝票番号 }
-    public var 略号: Set<略号型> { return self.指示書.略号 }
+    public var 略号情報: 略号情報型 { return self.指示書.略号情報 }
     public var 伝言欄: String { return self.指示書.管理用メモ }
     public var 進捗一覧: [進捗型] { return self.指示書.進捗一覧 }
 
@@ -487,7 +487,7 @@ public final class ProgressTVCore {
             switch data.指示書.伝票種類 {
             case .箱文字:
                 limitDay = 3
-            case .エッチング, .切文字, .加工, .外注, .校正:
+            case .エッチング, .切文字, .加工, .外注, .校正, .赤伝:
                 limitDay = 1
             }
             let day3 = Day().appendWorkDays(limitDay)

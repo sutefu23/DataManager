@@ -18,7 +18,7 @@ public struct 使用資材出力型: FileMakerExportObject {
     public let 単位量: Double?
     public let 単位数: Double?
     public let 金額: Double?
-    public let 面積: String?
+    public let 面積: Double?
 
     public var 図番: 図番型 { data.図番! }
     public var 表示名: String { data.表示名 }
@@ -38,7 +38,7 @@ public struct 使用資材出力型: FileMakerExportObject {
                 図番: 図番型,
                 表示名: String,
                 使用量: String,
-                面積: String?,
+                面積: Double?,
                 印刷対象: 印刷対象型? = nil,
                 単位量: Double? = nil,
                 単位数: Double? = nil,
@@ -65,7 +65,7 @@ public struct 使用資材出力型: FileMakerExportObject {
         self.使用量 = record.string(forKey: "使用量") ?? ""
         self.用途 = record.用途(forKey: "用途")
         self.金額 = record.double(forKey: "金額")
-        self.面積 = record.string(forKey: "面積")
+        self.面積 = record.double(forKey: "面積")
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
 
@@ -89,11 +89,7 @@ public struct 使用資材出力型: FileMakerExportObject {
         self.使用量 = record.使用量 ?? ""
         self.用途 = 用途型(用途名: record.用途)
         self.金額 = record.金額
-        if let val = record.使用面積 {
-            self.面積 = "\(val)"
-        } else {
-            self.面積 = nil
-        }
+        self.面積 = record.使用面積
         self.単位量 = record.単位量
         self.単位数 = record.単位数
 
@@ -148,18 +144,11 @@ public struct 使用資材出力型: FileMakerExportObject {
         record["原因部署"] = 原因工程?.code
         record["用途コード"] = 用途?.用途コード
         record["印刷対象"] = 印刷対象?.rawValue
-        if let area = self.面積 {
-            record["面積"] = area
-        }
-        if let value = self.単位量 {
-            record["単位量"] = "\(value)"
-        }
-        if let value = self.単位数 {
-            record["単位数"] = "\(value)"
-        }
-        if let charge = self.金額 {
-            record["金額"] = "\(charge)"
-        }
+
+        record.insertFlatMap(self.面積, forKey: "面積") { "\($0)" }
+        record.insertFlatMap(self.単位量, forKey: "単位量") { "\($0)" }
+        record.insertFlatMap(self.単位数, forKey: "単位数") { "\($0)" }
+        record.insertFlatMap(self.金額, forKey: "金額") { "\($0)" }
         return record
     }
     

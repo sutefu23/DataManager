@@ -16,7 +16,7 @@ public class 発注キャッシュ型: DMDBCache<図番型, [発注型]> {
     
     public func 最終発注単価(_ itemId: 図番型, noCache: Bool = false) throws -> Double? {
         let list = try self.find(itemId, noCache: noCache)
-        guard let order = list?.last, let value = Double(order.金額), let num = order.発注数量, value > 0 && num > 0 else { return nil }
+        guard let order = list?.last, let value = order.金額, let num = order.発注数量, value > 0 && num > 0 else { return nil }
         return value / Double(num)
     }
 }

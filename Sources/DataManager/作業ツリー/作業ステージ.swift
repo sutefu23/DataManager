@@ -66,7 +66,7 @@ final class 作業計画型 {
 
         stage = 作業ステージ型(種類: .材料)
         stage.関連工程 = [.レーザー, .照合検査]
-        if order.略号.contains(.腐食) {
+        if order.略号情報.contains(.腐食) {
             stage.関連工程.insert(.腐蝕)
         }
         self.材料作業ステージ = stage

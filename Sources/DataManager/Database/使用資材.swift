@@ -22,7 +22,7 @@ public class 使用資材型: FileMakerSearchObject, 登録日時比較可能型
     public let 用途: 用途型?
 
     public let 使用量: String
-    public let 面積: String?
+    public let 面積: Double?
     public var 単位量: Double?
     public var 単位数: Double?
     public var 金額: Double?
@@ -57,9 +57,9 @@ public class 使用資材型: FileMakerSearchObject, 登録日時比較可能型
         let 印刷対象 = record.印刷対象(forKey: "印刷対象")
         self.単位量 = record.double(forKey: "単位量")
         self.単位数 = record.double(forKey: "単位数")
-        self.金額 = record.double(forKey: "金額")
+        self.金額 = record.decimal(forKey: "金額")
         let 原因工程 = record.工程(forKey: "原因工程")
-        self.面積 = record.string(forKey: "面積")
+        self.面積 = record.double(forKey: "面積")
         self.登録セッションUUID = record.uuid(forKey: "登録セッションUUID")
         self.data = 使用資材Data型(図番: item, 表示名: title, 印刷対象: 印刷対象, 原因工程: 原因工程, 工程: 工程, 作業者: 作業者).regist()
         self.recordId = record.recordId

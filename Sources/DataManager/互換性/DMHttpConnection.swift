@@ -52,7 +52,7 @@ struct DMHttpContentType {
 }
 
 // MARK: - Apple系OSへの対応
-#if os(macOS) || os(iOS) || os(Windows)
+#if os(macOS) || os(iOS) || os(Windows) || os(tvOS)
 extension DMHttpMethod {
     /// 文字列表現
     var string: String {

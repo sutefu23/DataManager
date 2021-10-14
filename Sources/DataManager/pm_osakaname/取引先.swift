@@ -9,10 +9,20 @@
 import Foundation
 public typealias 会社コード型 = String
 
-public enum 分類型: String{
-    case 見込み = "見込み"
-    case 顧客 = "顧客"
-    case 発注先 = "発注先"
+public enum 分類型: DMStringEnum {
+    public static let stringMap: [String : 分類型] = makeStringMap()
+    
+    case 見込み
+    case 顧客
+    case 発注先
+    
+    public var description: String {
+        switch self {
+        case .見込み: return "見込み"
+        case .顧客: return "顧客"
+        case .発注先: return "発注先"
+        }
+    }
 }
 
 public final class 取引先型: FileMakerSearchObject, Identifiable {
@@ -24,7 +34,6 @@ public final class 取引先型: FileMakerSearchObject, Identifiable {
     public let 会社コード: 会社コード型
     public let 会社名: String
     public let 印字会社名: String
-    public let 分類: 分類型?
     public let 郵便番号: String
     public let 住所1: String
     public let 住所2: String
@@ -33,6 +42,7 @@ public final class 取引先型: FileMakerSearchObject, Identifiable {
     public let 代表TEL: String
     public let 直通TEL: String
     public let 社員名称: String
+    public let 分類: 分類型?
 
     public var memoryFootPrint: Int {
         return 12*16
@@ -47,7 +57,7 @@ public final class 取引先型: FileMakerSearchObject, Identifiable {
         self.会社コード = try getString("会社コード")
         self.会社名 = try getString("会社名")
         self.印字会社名 = try getString("印字会社名")
-        self.分類 = 分類型(rawValue: try getString("分類"))
+        self.分類 = 分類型(try getString("分類"))
         self.郵便番号 = try getString("郵便番号")
         self.住所1 = try getString("住所1")
         self.住所2 = try getString("住所2")

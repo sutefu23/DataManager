@@ -174,7 +174,7 @@ extension URL {
         return url
     }
     
-    /// URLのディレクトリを準備する
+    /// URLの一つ上のディレクトリを準備する
     public func prepareBaseDirectory() throws {
         let dir = self.deletingLastPathComponent()
         try dir.prepareDirectory()

@@ -21,18 +21,18 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     
     private let lock = NSRecursiveLock()
     
-    public let recordId: FileMakerRecordID?
     public let uuid: UUID
+    public let recordId: FileMakerRecordID?
     private let 社名コードData: 社名コードData型
     let 図URL: URL?
 
     public var 表示用伝票番号: String { 伝票番号.表示用文字列 }
-    public let 略号: Set<略号型>
     public let 伝票番号: 伝票番号型
 
     public let 登録日時: Date
     public let 受注日: Day
     public let 出荷時間: Time?
+    public let 略号情報: 略号情報型
     public let 伝票種類: 伝票種類型
     public let 伝票状態: 伝票状態型
 
@@ -56,17 +56,20 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     public let 営業用メモ: String
 
     public let 材質1: String
-    public let 材質2: String
-    public let 表面仕上1: String
-    public let 表面仕上2: String
-    public let 側面仕上1: String
-    public let 側面仕上2: String
-    public let 側面の高さ1: String
-    public let 側面の高さ2: String
-
     public let 板厚1: String
-    public let 板厚2: String
+    public let 表面仕上1: String
+    public let 側面仕上1: String
+    public let 側面の高さ1: String
+    public let その他1: String
 
+    public var 材質2: String { 仕様情報2?.材質 ?? "" }
+    public var 板厚2: String { 仕様情報2?.板厚 ?? "" }
+    public var 表面仕上2: String { 仕様情報2?.表面仕上 ?? "" }
+    public var 側面仕上2: String { 仕様情報2?.側面仕上 ?? "" }
+    public var 側面の高さ2: String { 仕様情報2?.側面の高さ ?? "" }
+    public var その他2: String { 仕様情報2?.その他 ?? "" }
+    private let 仕様情報2: 仕様情報型?
+    
     private let 日程表テキスト: 日程表テキスト型
     public subscript<T>(dynamicMember keyPath: KeyPath<日程表テキスト型, T>) -> T { return 日程表テキスト[keyPath: keyPath] }
 
@@ -87,19 +90,18 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     private let 付属品リスト: 付属品型
     public subscript<T>(dynamicMember keyPath: KeyPath<付属品型, T>) -> T { return 付属品リスト[keyPath: keyPath] }
     
-    public let その他1: String
-    public let その他2: String
-
-    public let 枠材質: String
-    public let 台板材質: String
     public let 裏仕様: String
-
-    public let 枠仕上: String
-    public let 枠寸法1: String
-    public let 枠寸法2: String
-    public let 枠寸法3: String
-    public let 台板寸法: String
     
+    public var 枠材質: String { 枠台盤情報?.枠材質 ?? "" }
+    public var 枠仕上: String { 枠台盤情報?.枠仕上 ?? "" }
+    public var 枠寸法1: String { 枠台盤情報?.枠寸法1 ?? "" }
+    public var 枠寸法2: String { 枠台盤情報?.枠寸法2 ?? "" }
+    public var 枠寸法3: String { 枠台盤情報?.枠寸法3 ?? "" }
+    
+    public var 台板寸法: String { 枠台盤情報?.台板寸法 ?? "" }
+    public var 台板材質: String { 枠台盤情報?.台板材質 ?? "" }
+    private let 枠台盤情報: 枠台盤情報型?
+
     public let 合計金額: Double
     
     public let 担当者1: 社員型?
@@ -155,7 +157,7 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
         self.経理状態 = 経理状態
         self.uuid = uuid
         
-        self.略号 = try make略号(getString("略号"))
+        self.略号情報 = try 略号情報型(getString("略号"))
         self.品名 = try getString("品名")
         self.仕様 = try getString("仕様")
         self.寸法 = try getString("寸法")
@@ -167,36 +169,24 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
         self.営業用メモ = try getString("営業用メモ")
 
         self.材質1 = try getString("材質1")
-        self.材質2 = try getString("材質2")
         self.表面仕上1 = try getString("表面仕上1")
-        self.表面仕上2 = try getString("表面仕上2")
         self.側面仕上1 = try getString("側面仕上1")
-        self.側面仕上2 = try getString("側面仕上2")
         self.側面の高さ1 = try getString("側面の高さ1")
-        self.側面の高さ2 = try getString("側面の高さ2")
 
         self.板厚1 = try getString("板厚1")
-        self.板厚2 = try getString("板厚2")
 
         self.その他1 = try getString("その他1")
-        self.その他2 = try getString("その他2")
 
-        self.枠材質 = try getString("枠材質")
-        self.台板材質 = try getString("台板材質")
         self.裏仕様 = try getString("裏仕様")
+        self.出荷時間 = try Time(fmTime: getString("連絡欄1"))
 
-        self.枠仕上 = try getString("枠仕上")
-        self.枠寸法1 = try getString("枠寸法1")
-        self.枠寸法2 = try getString("枠寸法2")
-        self.枠寸法3 = try getString("枠寸法3")
-        self.台板寸法 = try getString("台板寸法")
+        self.仕様情報2 = 仕様情報型(仕様2: record)
 
         self.担当者1 = get社員("社員番号1", "担当者1")
         self.担当者2 = get社員("社員番号2", "担当者2")
         self.担当者3 = get社員("社員番号3", "担当者3")
 
-        self.社名コードData = 社名コードData型(指示書: record).regist()
-
+        self.枠台盤情報 = 枠台盤情報型(record)
         self.図URL = record.url(forKey: "図")
         self.伝票状態 = record.伝票状態(forKey: "伝票状態") ?? .未製作
         
@@ -205,10 +195,10 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
         self.単価4 = record.double(forKey: "単価4") ?? 0
         self.単価5 = record.double(forKey: "単価5") ?? 0
         self.合計金額 = record.double(forKey: "合計金額") ?? 0
-        self.出荷時間 = try Time(fmTime: getString("連絡欄1"))
         self.発送事項 = record.string(forKey: "発送事項") ?? ""
 
         self.recordId = record.recordId
+        self.社名コードData = 社名コードData型(指示書: record).regist()
         self.ボルト等 = ボルト等型(指示書: record).regist()
         self.ボルト本数 = ボルト本数型(指示書: record).regist()
         self.付属品リスト = 付属品型(指示書: record).regist()
@@ -334,7 +324,7 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
         case .箱文字:
             let type = self.仕様
             return type.contains("W") || type.contains("Ｗ") || type.contains("リング") || (type.contains("表") && type.contains("バック"))
-        case .切文字, .エッチング, .加工, .外注, .校正:
+        case .切文字, .エッチング, .加工, .外注, .校正, .赤伝:
             return false
         }
     }
@@ -361,13 +351,13 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     
     /// 半田かどうか
     public var is半田あり: Bool {
-        return self.略号.contains(.半田) || self.is旧半田
+        return self.略号情報.contains(.半田) || self.is旧半田
     }
     var is旧半田 : Bool { self.伝票種類 == .箱文字 && (self.上段右.contains("ハ") || self.下段右.contains("ハ")) }
 
     /// 溶接かどうか
     public var is溶接あり: Bool {
-        return self.略号.contains(.溶接) || self.is旧溶接
+        return self.略号情報.contains(.溶接) || self.is旧溶接
     }
     var is旧溶接 : Bool { self.伝票種類 == .箱文字 && (self.上段右.contains("ヨ") || self.下段右.contains("ヨ")) }
 
@@ -384,11 +374,11 @@ public final class 指示書型: FileMakerSearchObject, Identifiable {
     }
     
     public var isフォーミングのみ: Bool {
-        return self.略号.contains(.フォーミング) && !self.略号.contains(.レーザー)
+        return self.略号情報.contains(.フォーミング) && !self.略号情報.contains(.レーザー)
     }
     
     public var isレーザーのみ: Bool {
-        return !self.略号.contains(.フォーミング) && self.略号.contains(.レーザー)
+        return !self.略号情報.contains(.フォーミング) && self.略号情報.contains(.レーザー)
     }
     
     public var 金額: Double {
@@ -667,7 +657,7 @@ extension 指示書型 {
     #else
     public func 色付き略号(fontSize: CGFloat = 12, colorMapper:(略号型) -> DMColor = { $0.表示色 } ) -> NSMutableAttributedString {
         let result = NSMutableAttributedString()
-        for mark in self.略号.sorted() {
+        for mark in self.略号情報.略号一覧.sorted() {
             let color: DMColor = colorMapper(mark) 
             result.append(mark.code.makeAttributedString(color: color, size: fontSize, fontName: nil))
         }
@@ -688,7 +678,7 @@ extension 指示書型 {
     }
     public var セット数値: Double {
         switch self.伝票種類 {
-        case .切文字, .箱文字, .校正, .外注:
+        case .切文字, .箱文字, .校正, .赤伝, .外注:
             var result = 1.0
             var scanner = DMScanner(self.セット数, normalizedFullHalf: true, skipSpaces: true)
             while !scanner.isAtEnd {
@@ -795,7 +785,7 @@ extension 指示書型 {
     /// 伝票状態が正常ならtrueを返す
     public var isValid伝票状態: Bool {
         switch self.伝票種類 {
-        case .校正:
+        case .校正, .赤伝:
             switch self.伝票状態 {
             case .キャンセル, .未製作:
                 return true
@@ -1359,4 +1349,50 @@ final class ボルト本数下位型: DMLightWeightObject, FileMakerLightWeightD
     }
 
     var cachedData: [String] { [ボルト本数9, ボルト本数10, ボルト本数11, ボルト本数12, ボルト本数13, ボルト本数14, ボルト本数15] }
+}
+
+// MARK: - 空欄が多い欄に対する対策
+private class 枠台盤情報型 {
+    let 枠材質: String
+    let 枠仕上: String
+    let 枠寸法1: String
+    let 枠寸法2: String
+    let 枠寸法3: String
+
+    let 台板寸法: String
+    let 台板材質: String
+
+    init?(_ record: FileMakerRecord) {
+        self.枠材質 = record.string(forKey: "枠材質") ?? ""
+        self.枠仕上 = record.string(forKey: "枠仕上") ?? ""
+        self.枠寸法1 = record.string(forKey: "枠寸法1") ?? ""
+        self.枠寸法2 = record.string(forKey: "枠寸法2") ?? ""
+        self.枠寸法3 = record.string(forKey: "枠寸法3") ?? ""
+
+        self.台板寸法 = record.string(forKey: "台板寸法") ?? ""
+        self.台板材質 = record.string(forKey: "台板材質") ?? ""
+
+        if self.枠材質.isEmpty && self.枠仕上.isEmpty && self.枠寸法1.isEmpty && self.枠寸法2.isEmpty && self.枠寸法3.isEmpty && self.台板寸法.isEmpty && self.台板材質.isEmpty { return nil }
+    }
+}
+
+private class 仕様情報型 {
+    let 材質: String
+    let 板厚: String
+    let 表面仕上: String
+    let 側面仕上: String
+    let 側面の高さ: String
+    let その他: String
+
+    init?(仕様2 record: FileMakerRecord) {
+        self.材質 = record.string(forKey: "材質2") ?? ""
+        self.板厚 = record.string(forKey: "板厚2") ?? ""
+
+        self.表面仕上 = record.string(forKey: "表面仕上2") ?? ""
+        self.側面仕上 = record.string(forKey: "側面仕上2") ?? ""
+        self.側面の高さ = record.string(forKey: "側面の高さ2") ?? ""
+        self.その他 = record.string(forKey: "その他2") ?? ""
+
+        if self.材質.isEmpty && self.板厚.isEmpty && self.表面仕上.isEmpty && self.側面仕上.isEmpty && self.側面の高さ.isEmpty && self.その他.isEmpty { return nil }
+    }
 }

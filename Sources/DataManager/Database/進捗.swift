@@ -16,13 +16,13 @@ public final class 進捗型: FileMakerSearchObject, Equatable, Identifiable {
     private(set) var recordID: FileMakerRecordID
     public var id: FileMakerRecordID { recordID }
 
-    public let 登録日: Day // 24
-    public let 登録時間: Time // 24
+    public let 登録日: Day // 4
+    public let 登録時間: Time //3
     public let 伝票番号: 伝票番号型 // 8
     public var 工程: 工程型 //8
     public let 登録日時: Date // 8
     public let 作業者: 社員型
-    public let 作業系列: 作業系列型? // 8
+    public let 作業系列: 作業系列型? // 9
     public let 伝票種類: 伝票種類型 // 1
     public var 作業内容: 作業内容型 // 1
     public let 作業種別: 作業種別型 // 1

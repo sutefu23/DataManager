@@ -62,14 +62,14 @@ class CountCell {
     let waitingOrders2: [指示書型]
     let todayOrders2: [指示書型]
     
-    init(工程:工程型, 日付:Day, 種類:伝票種類型, 略号:略号型?) {
+    init(工程:工程型, 日付:Day, 種類:伝票種類型, 略号: 略号型?) {
         self.種類 = 種類
         self.工程 = 工程
         
         let source = (try? 指示書型.find(伝票種類: 種類, 製作納期: 日付)) ?? []
         let orders : [指示書型] = source.filter {
             if let ryaku = 略号 {
-                return $0.略号.contains(ryaku)
+                return $0.略号情報.contains(ryaku)
             }
             return true
         }
@@ -129,7 +129,7 @@ class CountCell {
             waitingOrders = newWaitingOrder
         }
         if let num = 必要略号リスト[工程] {
-            waitingOrders = waitingOrders.filter { $0.略号.contains(num) }
+            waitingOrders = waitingOrders.filter { $0.略号情報.contains(num) }
         }
         if 工程 == .立ち上がり {
             var newCompleteOrders: [指示書型] = []
@@ -172,7 +172,7 @@ class CountCell {
                         } else {
                             main.append(order)
                         }
-                    case .切文字, .外注, .校正, .箱文字:
+                    case .切文字, .外注, .校正, .箱文字, .赤伝:
                         main.append(order)
                     }
                 case .照合検査:
@@ -189,18 +189,18 @@ class CountCell {
                         } else {
                             main.append(order)
                         }
-                    case .切文字, .外注, .校正, .箱文字:
+                    case .切文字, .外注, .校正, .箱文字, .赤伝:
                         main.append(order)
                     }
                 case .フォーミング:
                     switch order.伝票種類 {
                     case .加工, .エッチング:
-                        if order.isレーザーのみ || (order.isオブジェ && !order.略号.contains(.フォーミング)) {
+                        if order.isレーザーのみ || (order.isオブジェ && !order.略号情報.contains(.フォーミング)) {
                             sub.append(order)
                         } else {
                             main.append(order)
                         }
-                    case .切文字, .外注, .校正, .箱文字:
+                    case .切文字, .外注, .校正, .赤伝, .箱文字:
                         main.append(order)
                     }
                 default:
@@ -211,7 +211,7 @@ class CountCell {
                         } else {
                             main.append(order)
                         }
-                    case .切文字, .外注, .校正, .箱文字, .エッチング:
+                    case .切文字, .外注, .校正, .赤伝, .箱文字, .エッチング:
                         main.append(order)
                     }
                 }
@@ -418,7 +418,7 @@ public struct DetailInfo {
     
     public var 表示モード: ProgressChecker表示モード型 {
         switch self.伝票種類 {
-        case .エッチング, .切文字, .加工, .外注, .校正:
+        case .エッチング, .切文字, .加工, .外注, .校正, .赤伝:
             return .通常モード
         case .箱文字:
             guard let process = self.工程 else { return .通常モード }

@@ -8,35 +8,9 @@
 
 import Foundation
 
-private let codeMap: [String: 略号型] = {
-    var map = [String: 略号型]()
-    for item in 略号型.allCases {
-        map[item.code] = item
-    }
-    return map
-}()
-
-func make略号(_ line: String) -> Set<略号型> {
-    var set = Set<略号型>()
-    for ch in line {
-        if let item = 略号型(String(ch)) {
-            set.insert(item)
-        }
-    }
-    return set
-}
-
-extension Set where Element  == 略号型 {
-    public var code: String {
-        var code = ""
-        for item in self {
-            code += item.code
-        }
-        return code
-    }
-}
-
-public enum 略号型: Int, CaseIterable, Comparable {
+public enum 略号型: UInt8, DMStringEnum, Comparable {
+    public static let stringMap: [String : 略号型] = makeStringMap()
+    
     case 外注 = 0
     case 腐食
     case 印刷
@@ -55,11 +29,9 @@ public enum 略号型: Int, CaseIterable, Comparable {
     case 送り先未定
     case その他未定
 
-    public init?(_ code: String) {
-        guard let item = codeMap[code] else { return nil }
-        self = item
-    }
     public static func < (lhs: 略号型, rhs: 略号型) -> Bool { lhs.rawValue < rhs.rawValue }
+    
+    public var description: String { code }
     
     public var code: String {
         switch self {
@@ -95,8 +67,49 @@ public enum 略号型: Int, CaseIterable, Comparable {
     #endif
 }
 
-public extension Sequence where Element == 略号型 {
-    var code: String {
-        return self.reduce("") { $0 + $1.code }
+public struct 略号情報型: OptionSet {
+    public typealias Element = 略号情報型
+    
+    public let rawValue: UInt32
+    
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+    
+    public init(_ line: String) {
+        self.rawValue = 0
+        for ch in line {
+            if let item = 略号型(String(ch)) {
+                self.insert(item)
+            }
+        }
+    }
+    
+    public mutating func insert(_ option: 略号型) {
+        self.insert(略号情報型(rawValue: 1 << option.rawValue))
+    }
+    
+    public func contains(_ option: 略号型) -> Bool {
+        return self.contains(略号情報型(rawValue: 1 << option.rawValue))
+    }
+    
+    public var 略号一覧: [略号型] {
+        return 略号型.allCases.filter { self.contains($0) }
+    }
+    
+    public var code: String {
+        var code = ""
+        for item in 略号型.allCases {
+            if self.contains(item) {
+                code += item.code
+            }
+        }
+        return code
     }
 }
+
+//public extension Sequence where Element == 略号型 {
+//    var code: String {
+//        return self.reduce("") { $0 + $1.code }
+//    }
+//}

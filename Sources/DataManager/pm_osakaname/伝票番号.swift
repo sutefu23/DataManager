@@ -14,24 +14,41 @@ import Foundation
 import UIKit
 #endif
 
-public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable, ExpressibleByIntegerLiteral {
+public struct 伝票番号型: FileMakerObject, DMCacheKey, RawRepresentable, Codable, Comparable, ExpressibleByIntegerLiteral {
     public static var db: FileMakerDB { .pm_osakaname }
     public static var layout: String { "DataAPI_10" }
 
-    public typealias RawValue = Int32
+    public typealias RawValue = Int32 // 厳密にはUInt32だがビットは十分なので他のコードの共有を図る
     
     public let 整数値: RawValue
+    
+    @inlinable public var rawValue: RawValue { 整数値 }
+    
+    @inlinable public var intRawValue: Int { Int(整数値) }
 
     public init?<S: StringProtocol>(invalidNumber: S?) {
         guard let invalidNumber = invalidNumber,
               let number = RawValue(String(invalidNumber.toHalfCharacters.filter{ $0.isASCIINumber })) else { return nil }
         self.init(invalidNumber: number)
     }
-    
+
+    public init?(invalidNumber: Int?) {
+        guard let number = invalidNumber else { return nil }
+        self.init(rawValue: RawValue(number))
+    }
+
     public init?(invalidNumber: RawValue?) {
         guard let number = invalidNumber else { return nil }
-        self.整数値 = number
+        self.init(rawValue: number)
+    }
+    
+    public init?(rawValue: RawValue) {
+        self.整数値 = rawValue
         guard self.isValidNumber() else { return nil }
+    }
+
+    public init(validNumber: Int) {
+        self.整数値 = RawValue(validNumber)
     }
 
     public init(validNumber: RawValue) {
@@ -74,6 +91,7 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
     }
     
     // MARK: -
+    /// 存在チェックして存在すればtrueを返す。チェックできなかった時はnilを返す
     public var isExists: Bool? {
         do {
             return try 伝票番号キャッシュ型.shared.find(self.整数値) != nil
@@ -81,6 +99,10 @@ public struct 伝票番号型: FileMakerObject, DMCacheKey, Codable, Comparable,
             return nil
         }
     }
+    
+    /// 存在しないのが確定した場合truer
+    @inlinable
+    public var noExists: Bool { return isExists == false }
     
     func isValidNumber() -> Bool {
         let low = self.下位整数値

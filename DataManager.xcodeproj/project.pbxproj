@@ -56,6 +56,7 @@
 		1479BD1A27054FAD00C11804 /* Test資材種類内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD1927054FAD00C11804 /* Test資材種類内容.swift */; };
 		147A63132559277B0077634B /* 工程分解.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147A63122559277B0077634B /* 工程分解.swift */; };
 		1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1485E4932553DA570006DA8D /* 進捗集計.swift */; };
+		148760052715622800C5EE39 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148760042715622800C5EE39 /* Enum.swift */; };
 		148CA55225367D98002CE1D4 /* ICCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55125367D98002CE1D4 /* ICCard.swift */; };
 		148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55B25367E50002CE1D4 /* TestICCardID.swift */; };
 		148CA5612536801C002CE1D4 /* scanICCard.py in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
@@ -317,6 +318,7 @@
 		1479BD1927054FAD00C11804 /* Test資材種類内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材種類内容.swift"; sourceTree = "<group>"; };
 		147A63122559277B0077634B /* 工程分解.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程分解.swift"; sourceTree = "<group>"; };
 		1485E4932553DA570006DA8D /* 進捗集計.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗集計.swift"; sourceTree = "<group>"; };
+		148760042715622800C5EE39 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		148CA55025367D73002CE1D4 /* scanICCard.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanICCard.py; sourceTree = "<group>"; };
 		148CA55125367D98002CE1D4 /* ICCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICCard.swift; sourceTree = "<group>"; };
 		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
@@ -796,6 +798,7 @@
 				OBJ_61 /* UserDefaultsUtility.swift */,
 				OBJ_63 /* Version.swift */,
 				00AAB9102595D9A500ACB725 /* SendMail.swift */,
+				148760042715622800C5EE39 /* Enum.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1171,6 +1174,7 @@
 				OBJ_247 /* 工程.swift in Sources */,
 				143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */,
 				OBJ_248 /* 工程状態.swift in Sources */,
+				148760052715622800C5EE39 /* Enum.swift in Sources */,
 				OBJ_249 /* 承認状態.swift in Sources */,
 				1409A34426783B9800B4530A /* 送り状エラー.swift in Sources */,
 				OBJ_250 /* 指定注文番号型.swift in Sources */,

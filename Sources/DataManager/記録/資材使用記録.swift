@@ -160,7 +160,8 @@ public final class 資材使用記録型: FileMakerSyncObject<資材使用記録
     typealias RecordData = 資材使用記録Data型
 
     public var 登録日: Day { return data.登録日時.day }
-    
+    public var 登録時間: Time { return data.登録日時.time }
+
 //    public var 登録日時: Date {
 //        get { data.登録日時 }
 //        set { data.登録日時 = newValue }
@@ -327,7 +328,7 @@ extension 資材使用記録型 {
         return try find(query: query)
     }
     
-    public static func find(伝票番号: 伝票番号型?, 工程: 工程型?, 登録期間: ClosedRange<Day>?) throws -> [資材使用記録型] {
+    public static func find(伝票番号: 伝票番号型? = nil, 工程: 工程型?, 登録期間: ClosedRange<Day>?) throws -> [資材使用記録型] {
         var query = FileMakerQuery()
         if let number = 伝票番号 {
             query["伝票番号"] = "==\(number)"

@@ -9,18 +9,6 @@
 import Foundation
 
 public final class TextReader {
-    public enum TextReaderError: LocalizedError {
-        /// データを指定したエンコードで文字列かできない
-        case invalidStringCoding
-        
-        public var errorDescription: String? {
-            switch self {
-            case .invalidStringCoding:
-                return "データを指定したエンコードで文字列化できない"
-            }
-        }
-    }
-    
 // MARK: 初期化
     public init(_ strings: [String] = []) {
         self.lines = strings.isEmpty ? [""] : strings

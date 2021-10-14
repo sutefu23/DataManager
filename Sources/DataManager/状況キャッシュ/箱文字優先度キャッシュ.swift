@@ -80,7 +80,7 @@ extension 指示書型 {
         return false
     }
     func 切文字優先状態(for target: [工程型]) -> Bool {
-        if self.略号.contains(.看板) { return true }
+        if self.略号情報.contains(.看板) { return true }
         switch self.伝票種別 {
         case .クレーム, .再製:
             return true
@@ -172,7 +172,7 @@ extension 指示書型 {
                 default: // 3営業日後
                     days = 1
                 }
-            case .外注, .校正:
+            case .外注, .校正, .赤伝:
                 days = 0
             }
             let limit = Day().appendWorkDays(days)
@@ -180,7 +180,7 @@ extension 指示書型 {
             switch self.伝票種類 {
             case .箱文字:
                 if check($0) { return true }
-            case .切文字, .エッチング, .加工, .外注, .校正:
+            case .切文字, .エッチング, .加工, .外注, .校正, .赤伝:
                 break
             }
             switch $0 {
