@@ -14,12 +14,6 @@ import Foundation
     return try block()
 }
 
-public extension NSAttributedString {
-    convenience init() {
-        self.init(string: "")
-    }
-}
-
 // MARK: - ダミーオブジェクト
 public class DMColor {
     public static let black = DMColor()

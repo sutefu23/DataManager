@@ -28,7 +28,7 @@
 		141585B927029BC5009AE92F /* FileMakerRetrySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */; };
 		14167AE326E985AE009B50B3 /* FileMakerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14167AE226E985AE009B50B3 /* FileMakerServer.swift */; };
 		1417EA5B2612B7710026FDA4 /* WorkingTimesAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417EA5A2612B7710026FDA4 /* WorkingTimesAnalysis.swift */; };
-		141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */; };
+		141CFF1A253FC7A0002F17D2 /* MaterialsObjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141CFF19253FC7A0002F17D2 /* MaterialsObjectInfo.swift */; };
 		141CFF24253FD10B002F17D2 /* ObujeList.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* ObujeList.csv */; };
 		142149DE268D8F7200A13F6A /* UsingMaterialsOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DD268D8F7200A13F6A /* UsingMaterialsOutput.swift */; };
 		142149E0268D975300A13F6A /* UsingMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DF268D975300A13F6A /* UsingMaterials.swift */; };
@@ -201,11 +201,11 @@
 		OBJ_298 /* FileMakerSyncObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_134 /* FileMakerSyncObject.swift */; };
 		OBJ_299 /* MaterialsUseRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_135 /* MaterialsUseRecord.swift */; };
 		OBJ_300 /* MaterialsReceivingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_136 /* MaterialsReceivingStatus.swift */; };
-		OBJ_301 /* 板加工在庫.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_138 /* 板加工在庫.swift */; };
-		OBJ_302 /* 資材(コイル情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_139 /* 資材(コイル情報).swift */; };
-		OBJ_303 /* 資材(板情報).swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_140 /* 資材(板情報).swift */; };
-		OBJ_304 /* 資材（パイプ情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_141 /* 資材（パイプ情報）.swift */; };
-		OBJ_305 /* 資材（ボルト情報）.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_142 /* 資材（ボルト情報）.swift */; };
+		OBJ_301 /* BoardProcessingInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_138 /* BoardProcessingInventory.swift */; };
+		OBJ_302 /* MaterialsCoilInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_139 /* MaterialsCoilInfo.swift */; };
+		OBJ_303 /* MaterialsBoardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_140 /* MaterialsBoardInfo.swift */; };
+		OBJ_304 /* MaterialsPipeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_141 /* MaterialsPipeInfo.swift */; };
+		OBJ_305 /* MaterialsBoltInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_142 /* MaterialsBoltInfo.swift */; };
 		OBJ_312 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_323 /* DataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_146 /* DataManagerTests.swift */; };
 		OBJ_324 /* TestDMScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_147 /* TestDMScanner.swift */; };
@@ -291,7 +291,7 @@
 		141585B827029BC5009AE92F /* FileMakerRetrySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerRetrySystem.swift; sourceTree = "<group>"; };
 		14167AE226E985AE009B50B3 /* FileMakerServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerServer.swift; sourceTree = "<group>"; };
 		1417EA5A2612B7710026FDA4 /* WorkingTimesAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingTimesAnalysis.swift; sourceTree = "<group>"; };
-		141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（オブジェ情報）.swift"; sourceTree = "<group>"; };
+		141CFF19253FC7A0002F17D2 /* MaterialsObjectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsObjectInfo.swift; sourceTree = "<group>"; };
 		141CFF23253FD0FE002F17D2 /* ObujeList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObujeList.csv; sourceTree = "<group>"; };
 		142149DD268D8F7200A13F6A /* UsingMaterialsOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingMaterialsOutput.swift; sourceTree = "<group>"; };
 		142149DF268D975300A13F6A /* UsingMaterials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingMaterials.swift; sourceTree = "<group>"; };
@@ -391,12 +391,12 @@
 		OBJ_134 /* FileMakerSyncObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerSyncObject.swift; sourceTree = "<group>"; };
 		OBJ_135 /* MaterialsUseRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsUseRecord.swift; sourceTree = "<group>"; };
 		OBJ_136 /* MaterialsReceivingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsReceivingStatus.swift; sourceTree = "<group>"; };
-		OBJ_138 /* 板加工在庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "板加工在庫.swift"; sourceTree = "<group>"; };
-		OBJ_139 /* 資材(コイル情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(コイル情報).swift"; sourceTree = "<group>"; };
+		OBJ_138 /* BoardProcessingInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardProcessingInventory.swift; sourceTree = "<group>"; };
+		OBJ_139 /* MaterialsCoilInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsCoilInfo.swift; sourceTree = "<group>"; };
 		OBJ_14 /* WorkingSerial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingSerial.swift; sourceTree = "<group>"; };
-		OBJ_140 /* 資材(板情報).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材(板情報).swift"; sourceTree = "<group>"; };
-		OBJ_141 /* 資材（パイプ情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（パイプ情報）.swift"; sourceTree = "<group>"; };
-		OBJ_142 /* 資材（ボルト情報）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材（ボルト情報）.swift"; sourceTree = "<group>"; };
+		OBJ_140 /* MaterialsBoardInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsBoardInfo.swift; sourceTree = "<group>"; };
+		OBJ_141 /* MaterialsPipeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsPipeInfo.swift; sourceTree = "<group>"; };
+		OBJ_142 /* MaterialsBoltInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsBoltInfo.swift; sourceTree = "<group>"; };
 		OBJ_145 /* maru.ita */ = {isa = PBXFileReference; lastKnownFileType = text; path = maru.ita; sourceTree = "<group>"; };
 		OBJ_146 /* DataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerTests.swift; sourceTree = "<group>"; };
 		OBJ_147 /* TestDMScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDMScanner.swift; sourceTree = "<group>"; };
@@ -680,12 +680,12 @@
 		OBJ_137 /* MaterialsUseRecord */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_138 /* 板加工在庫.swift */,
-				OBJ_139 /* 資材(コイル情報).swift */,
-				OBJ_140 /* 資材(板情報).swift */,
-				141CFF19253FC7A0002F17D2 /* 資材（オブジェ情報）.swift */,
-				OBJ_141 /* 資材（パイプ情報）.swift */,
-				OBJ_142 /* 資材（ボルト情報）.swift */,
+				OBJ_138 /* BoardProcessingInventory.swift */,
+				OBJ_139 /* MaterialsCoilInfo.swift */,
+				OBJ_140 /* MaterialsBoardInfo.swift */,
+				141CFF19253FC7A0002F17D2 /* MaterialsObjectInfo.swift */,
+				OBJ_141 /* MaterialsPipeInfo.swift */,
+				OBJ_142 /* MaterialsBoltInfo.swift */,
 			);
 			path = MaterialsUseRecord;
 			sourceTree = "<group>";
@@ -1143,7 +1143,7 @@
 				142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */,
 				14167AE326E985AE009B50B3 /* FileMakerServer.swift in Sources */,
 				143C9B14269C055000D69D3E /* YamatoInvoiceNo.swift in Sources */,
-				141CFF1A253FC7A0002F17D2 /* 資材（オブジェ情報）.swift in Sources */,
+				141CFF1A253FC7A0002F17D2 /* MaterialsObjectInfo.swift in Sources */,
 				OBJ_231 /* TextWriter.swift in Sources */,
 				142149E0268D975300A13F6A /* UsingMaterials.swift in Sources */,
 				148CA55225367D98002CE1D4 /* ICCard.swift in Sources */,
@@ -1247,11 +1247,11 @@
 				OBJ_299 /* MaterialsUseRecord.swift in Sources */,
 				14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */,
 				OBJ_300 /* MaterialsReceivingStatus.swift in Sources */,
-				OBJ_301 /* 板加工在庫.swift in Sources */,
-				OBJ_302 /* 資材(コイル情報).swift in Sources */,
-				OBJ_303 /* 資材(板情報).swift in Sources */,
-				OBJ_304 /* 資材（パイプ情報）.swift in Sources */,
-				OBJ_305 /* 資材（ボルト情報）.swift in Sources */,
+				OBJ_301 /* BoardProcessingInventory.swift in Sources */,
+				OBJ_302 /* MaterialsCoilInfo.swift in Sources */,
+				OBJ_303 /* MaterialsBoardInfo.swift in Sources */,
+				OBJ_304 /* MaterialsPipeInfo.swift in Sources */,
+				OBJ_305 /* MaterialsBoltInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
