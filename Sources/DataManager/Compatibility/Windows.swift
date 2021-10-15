@@ -21,24 +21,31 @@ public extension NSAttributedString {
 }
 
 // MARK: - ダミーオブジェクト
-class DMColor {}
-class DMView {}
-class DMViewController {}
+public class DMColor {
+    public static let black = DMColor()
+    public static let red = DMColor()
+    public static let blue = DMColor()
+    public static let yellow = DMColor()
+    public static let magenta = DMColor()
+    public static let white = DMColor()
+}
+public class DMView {}
+public class DMViewController {}
 
-class DMTextField {}
-class DMPrintInfo {}
-class DMButton {}
+public class DMTextField {}
+public class DMPrintInfo {}
+public class DMButton {}
 
-class DMGraphicsContext {}
-class DMFont {}
-class DMBezierPath {}
-class DMScreen {}
-class DMImage {}
+public class DMGraphicsContext {}
+public class DMFont {}
+public class DMBezierPath {}
+public class DMScreen {}
+public class DMImage {}
 
-class DMEvent {}
-class DMApplicationtton {}
+public class DMEvent {}
+public class DMApplicationtton {}
 
-class DMTextStorage {}
-class DMTextContainer {}
-class DMLayoutManager {}
+public class DMTextStorage {}
+public class DMTextContainer {}
+public class DMLayoutManager {}
 #endif

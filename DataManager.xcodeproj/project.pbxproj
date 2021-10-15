@@ -32,7 +32,7 @@
 		141CFF24253FD10B002F17D2 /* ObujeList.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 141CFF23253FD0FE002F17D2 /* ObujeList.csv */; };
 		142149DE268D8F7200A13F6A /* 使用資材出力.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DD268D8F7200A13F6A /* 使用資材出力.swift */; };
 		142149E0268D975300A13F6A /* UsingMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DF268D975300A13F6A /* UsingMaterials.swift */; };
-		142149E2268D9D1F00A13F6A /* 用途.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E1268D9D1F00A13F6A /* 用途.swift */; };
+		142149E2268D9D1F00A13F6A /* Usage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E1268D9D1F00A13F6A /* Usage.swift */; };
 		142149E4268DA0B600A13F6A /* Test使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E3268DA0B600A13F6A /* Test使用資材.swift */; };
 		14246BA9271955C600D4FDED /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14246BA8271955C600D4FDED /* Windows.swift */; };
 		1424B4E726C1F154002C5B72 /* DatManager.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1424B4E626C1F154002C5B72 /* DatManager.docc */; };
@@ -53,7 +53,7 @@
 		14767133251D5D5000429C17 /* maru.ita in Resources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* maru.ita */; };
 		14767166251D630C00429C17 /* CharacterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14767165251D630C00429C17 /* CharacterType.swift */; };
 		14788CCB2538267900995762 /* MaruPipeList.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 14788CCA2538266F00995762 /* MaruPipeList.csv */; };
-		1479BD182705451100C11804 /* 資材種類内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD172705451100C11804 /* 資材種類内容.swift */; };
+		1479BD182705451100C11804 /* MaterialsTypeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD172705451100C11804 /* MaterialsTypeContent.swift */; };
 		1479BD1A27054FAD00C11804 /* Test資材種類内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD1927054FAD00C11804 /* Test資材種類内容.swift */; };
 		147A63132559277B0077634B /* 工程分解.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147A63122559277B0077634B /* 工程分解.swift */; };
 		1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1485E4932553DA570006DA8D /* 進捗集計.swift */; };
@@ -139,23 +139,23 @@
 		OBJ_235 /* UserDefaultsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* UserDefaultsUtility.swift */; };
 		OBJ_236 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* Utility.swift */; };
 		OBJ_237 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Version.swift */; };
-		OBJ_238 /* レーザー加工機.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* レーザー加工機.swift */; };
-		OBJ_239 /* 伝票状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* 伝票状態.swift */; };
-		OBJ_240 /* 伝票番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* 伝票番号.swift */; };
-		OBJ_241 /* 伝票種別.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* 伝票種別.swift */; };
-		OBJ_242 /* 伝票種類.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* 伝票種類.swift */; };
-		OBJ_243 /* 作業内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_70 /* 作業内容.swift */; };
-		OBJ_244 /* 入力区分.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* 入力区分.swift */; };
-		OBJ_245 /* 分量.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_72 /* 分量.swift */; };
-		OBJ_246 /* 取引先.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* 取引先.swift */; };
-		OBJ_247 /* 工程.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* 工程.swift */; };
-		OBJ_248 /* 工程状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* 工程状態.swift */; };
-		OBJ_249 /* 承認状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* 承認状態.swift */; };
-		OBJ_250 /* 指定注文番号型.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_77 /* 指定注文番号型.swift */; };
-		OBJ_251 /* 注文番号.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* 注文番号.swift */; };
-		OBJ_252 /* 略号.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* 略号.swift */; };
-		OBJ_253 /* 発注状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_80 /* 発注状態.swift */; };
-		OBJ_254 /* 経理状態.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_81 /* 経理状態.swift */; };
+		OBJ_238 /* LaserProcessingMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* LaserProcessingMachine.swift */; };
+		OBJ_239 /* SlipState.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* SlipState.swift */; };
+		OBJ_240 /* SlipNo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* SlipNo.swift */; };
+		OBJ_241 /* SlipType2.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* SlipType2.swift */; };
+		OBJ_242 /* SlipType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* SlipType.swift */; };
+		OBJ_243 /* WorkDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_70 /* WorkDetail.swift */; };
+		OBJ_244 /* InputKubun.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* InputKubun.swift */; };
+		OBJ_245 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_72 /* Amount.swift */; };
+		OBJ_246 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* Client.swift */; };
+		OBJ_247 /* Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* Process.swift */; };
+		OBJ_248 /* ProcessState.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* ProcessState.swift */; };
+		OBJ_249 /* ApprovalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* ApprovalState.swift */; };
+		OBJ_250 /* SpecifiedOrderNoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_77 /* SpecifiedOrderNoType.swift */; };
+		OBJ_251 /* OrderNo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* OrderNo.swift */; };
+		OBJ_252 /* Abbreviation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* Abbreviation.swift */; };
+		OBJ_253 /* OrderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_80 /* OrderState.swift */; };
+		OBJ_254 /* AccountingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_81 /* AccountingState.swift */; };
 		OBJ_255 /* BarCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_83 /* BarCode.swift */; };
 		OBJ_256 /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* Cocoa.swift */; };
 		OBJ_257 /* KeyModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* KeyModifiers.swift */; };
@@ -295,7 +295,7 @@
 		141CFF23253FD0FE002F17D2 /* ObujeList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObujeList.csv; sourceTree = "<group>"; };
 		142149DD268D8F7200A13F6A /* 使用資材出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材出力.swift"; sourceTree = "<group>"; };
 		142149DF268D975300A13F6A /* UsingMaterials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingMaterials.swift; sourceTree = "<group>"; };
-		142149E1268D9D1F00A13F6A /* 用途.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "用途.swift"; sourceTree = "<group>"; };
+		142149E1268D9D1F00A13F6A /* Usage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usage.swift; sourceTree = "<group>"; };
 		142149E3268DA0B600A13F6A /* Test使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test使用資材.swift"; sourceTree = "<group>"; };
 		14246BA8271955C600D4FDED /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		1424B4E626C1F154002C5B72 /* DatManager.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DatManager.docc; sourceTree = "<group>"; };
@@ -315,7 +315,7 @@
 		14767126251D5CA600429C17 /* ItaKakouZaikoIchiran.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ItaKakouZaikoIchiran.csv; sourceTree = "<group>"; };
 		14767165251D630C00429C17 /* CharacterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterType.swift; sourceTree = "<group>"; };
 		14788CCA2538266F00995762 /* MaruPipeList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MaruPipeList.csv; sourceTree = "<group>"; };
-		1479BD172705451100C11804 /* 資材種類内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材種類内容.swift"; sourceTree = "<group>"; };
+		1479BD172705451100C11804 /* MaterialsTypeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsTypeContent.swift; sourceTree = "<group>"; };
 		1479BD1927054FAD00C11804 /* Test資材種類内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材種類内容.swift"; sourceTree = "<group>"; };
 		147A63122559277B0077634B /* 工程分解.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程分解.swift"; sourceTree = "<group>"; };
 		1485E4932553DA570006DA8D /* 進捗集計.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "進捗集計.swift"; sourceTree = "<group>"; };
@@ -474,23 +474,23 @@
 		OBJ_61 /* UserDefaultsUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtility.swift; sourceTree = "<group>"; };
 		OBJ_62 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		OBJ_63 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
-		OBJ_65 /* レーザー加工機.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "レーザー加工機.swift"; sourceTree = "<group>"; };
-		OBJ_66 /* 伝票状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票状態.swift"; sourceTree = "<group>"; };
-		OBJ_67 /* 伝票番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票番号.swift"; sourceTree = "<group>"; };
-		OBJ_68 /* 伝票種別.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種別.swift"; sourceTree = "<group>"; };
-		OBJ_69 /* 伝票種類.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "伝票種類.swift"; sourceTree = "<group>"; };
-		OBJ_70 /* 作業内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業内容.swift"; sourceTree = "<group>"; };
-		OBJ_71 /* 入力区分.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入力区分.swift"; sourceTree = "<group>"; };
-		OBJ_72 /* 分量.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "分量.swift"; sourceTree = "<group>"; };
-		OBJ_73 /* 取引先.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "取引先.swift"; sourceTree = "<group>"; };
-		OBJ_74 /* 工程.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程.swift"; sourceTree = "<group>"; };
-		OBJ_75 /* 工程状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程状態.swift"; sourceTree = "<group>"; };
-		OBJ_76 /* 承認状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "承認状態.swift"; sourceTree = "<group>"; };
-		OBJ_77 /* 指定注文番号型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指定注文番号型.swift"; sourceTree = "<group>"; };
-		OBJ_78 /* 注文番号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "注文番号.swift"; sourceTree = "<group>"; };
-		OBJ_79 /* 略号.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "略号.swift"; sourceTree = "<group>"; };
-		OBJ_80 /* 発注状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "発注状態.swift"; sourceTree = "<group>"; };
-		OBJ_81 /* 経理状態.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "経理状態.swift"; sourceTree = "<group>"; };
+		OBJ_65 /* LaserProcessingMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserProcessingMachine.swift; sourceTree = "<group>"; };
+		OBJ_66 /* SlipState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlipState.swift; sourceTree = "<group>"; };
+		OBJ_67 /* SlipNo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlipNo.swift; sourceTree = "<group>"; };
+		OBJ_68 /* SlipType2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlipType2.swift; sourceTree = "<group>"; };
+		OBJ_69 /* SlipType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlipType.swift; sourceTree = "<group>"; };
+		OBJ_70 /* WorkDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkDetail.swift; sourceTree = "<group>"; };
+		OBJ_71 /* InputKubun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKubun.swift; sourceTree = "<group>"; };
+		OBJ_72 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		OBJ_73 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		OBJ_74 /* Process.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process.swift; sourceTree = "<group>"; };
+		OBJ_75 /* ProcessState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessState.swift; sourceTree = "<group>"; };
+		OBJ_76 /* ApprovalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalState.swift; sourceTree = "<group>"; };
+		OBJ_77 /* SpecifiedOrderNoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecifiedOrderNoType.swift; sourceTree = "<group>"; };
+		OBJ_78 /* OrderNo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderNo.swift; sourceTree = "<group>"; };
+		OBJ_79 /* Abbreviation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Abbreviation.swift; sourceTree = "<group>"; };
+		OBJ_80 /* OrderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderState.swift; sourceTree = "<group>"; };
+		OBJ_81 /* AccountingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountingState.swift; sourceTree = "<group>"; };
 		OBJ_83 /* BarCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarCode.swift; sourceTree = "<group>"; };
 		OBJ_85 /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
 		OBJ_86 /* KeyModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifiers.swift; sourceTree = "<group>"; };
@@ -843,25 +843,25 @@
 		OBJ_64 /* pm_osakaname */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_65 /* レーザー加工機.swift */,
-				OBJ_66 /* 伝票状態.swift */,
-				OBJ_67 /* 伝票番号.swift */,
-				OBJ_68 /* 伝票種別.swift */,
-				OBJ_69 /* 伝票種類.swift */,
-				OBJ_70 /* 作業内容.swift */,
-				OBJ_71 /* 入力区分.swift */,
-				OBJ_72 /* 分量.swift */,
-				OBJ_73 /* 取引先.swift */,
-				OBJ_74 /* 工程.swift */,
-				OBJ_75 /* 工程状態.swift */,
-				OBJ_76 /* 承認状態.swift */,
-				OBJ_77 /* 指定注文番号型.swift */,
-				OBJ_78 /* 注文番号.swift */,
-				OBJ_79 /* 略号.swift */,
-				OBJ_80 /* 発注状態.swift */,
-				OBJ_81 /* 経理状態.swift */,
-				142149E1268D9D1F00A13F6A /* 用途.swift */,
-				1479BD172705451100C11804 /* 資材種類内容.swift */,
+				OBJ_65 /* LaserProcessingMachine.swift */,
+				OBJ_66 /* SlipState.swift */,
+				OBJ_67 /* SlipNo.swift */,
+				OBJ_68 /* SlipType2.swift */,
+				OBJ_69 /* SlipType.swift */,
+				OBJ_70 /* WorkDetail.swift */,
+				OBJ_71 /* InputKubun.swift */,
+				OBJ_72 /* Amount.swift */,
+				OBJ_73 /* Client.swift */,
+				OBJ_74 /* Process.swift */,
+				OBJ_75 /* ProcessState.swift */,
+				OBJ_76 /* ApprovalState.swift */,
+				OBJ_77 /* SpecifiedOrderNoType.swift */,
+				OBJ_78 /* OrderNo.swift */,
+				OBJ_79 /* Abbreviation.swift */,
+				OBJ_80 /* OrderState.swift */,
+				OBJ_81 /* AccountingState.swift */,
+				142149E1268D9D1F00A13F6A /* Usage.swift */,
+				1479BD172705451100C11804 /* MaterialsTypeContent.swift */,
 			);
 			path = pm_osakaname;
 			sourceTree = "<group>";
@@ -1139,7 +1139,7 @@
 				OBJ_228 /* NSAttributedString.swift in Sources */,
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
-				1479BD182705451100C11804 /* 資材種類内容.swift in Sources */,
+				1479BD182705451100C11804 /* MaterialsTypeContent.swift in Sources */,
 				142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */,
 				14167AE326E985AE009B50B3 /* FileMakerServer.swift in Sources */,
 				143C9B14269C055000D69D3E /* YamatoInvoiceNo.swift in Sources */,
@@ -1156,35 +1156,35 @@
 				OBJ_237 /* Version.swift in Sources */,
 				8E29B92526EF531400A0D40A /* FileMakerExportObject.swift in Sources */,
 				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
-				OBJ_238 /* レーザー加工機.swift in Sources */,
+				OBJ_238 /* LaserProcessingMachine.swift in Sources */,
 				14A8F6E6270FE0AF00944A90 /* LogData.swift in Sources */,
 				14246BA9271955C600D4FDED /* Windows.swift in Sources */,
-				OBJ_239 /* 伝票状態.swift in Sources */,
-				142149E2268D9D1F00A13F6A /* 用途.swift in Sources */,
-				OBJ_240 /* 伝票番号.swift in Sources */,
+				OBJ_239 /* SlipState.swift in Sources */,
+				142149E2268D9D1F00A13F6A /* Usage.swift in Sources */,
+				OBJ_240 /* SlipNo.swift in Sources */,
 				14EF40372548170300DA8FF9 /* 食事時間帯.swift in Sources */,
-				OBJ_241 /* 伝票種別.swift in Sources */,
+				OBJ_241 /* SlipType2.swift in Sources */,
 				8E106DB1251E1E8C00FB059D /* Linux.swift in Sources */,
-				OBJ_242 /* 伝票種類.swift in Sources */,
+				OBJ_242 /* SlipType.swift in Sources */,
 				1485E4942553DA570006DA8D /* 進捗集計.swift in Sources */,
-				OBJ_243 /* 作業内容.swift in Sources */,
-				OBJ_244 /* 入力区分.swift in Sources */,
-				OBJ_245 /* 分量.swift in Sources */,
+				OBJ_243 /* WorkDetail.swift in Sources */,
+				OBJ_244 /* InputKubun.swift in Sources */,
+				OBJ_245 /* Amount.swift in Sources */,
 				14767118251D577A00429C17 /* DMColor.swift in Sources */,
 				8E7D23A526FE173C00C1B1C2 /* FileMakerSearchObject.swift in Sources */,
-				OBJ_246 /* 取引先.swift in Sources */,
-				OBJ_247 /* 工程.swift in Sources */,
+				OBJ_246 /* Client.swift in Sources */,
+				OBJ_247 /* Process.swift in Sources */,
 				143DC50C265CAF4A009D547F /* ProgressChecker.swift in Sources */,
-				OBJ_248 /* 工程状態.swift in Sources */,
+				OBJ_248 /* ProcessState.swift in Sources */,
 				148760052715622800C5EE39 /* Enum.swift in Sources */,
-				OBJ_249 /* 承認状態.swift in Sources */,
+				OBJ_249 /* ApprovalState.swift in Sources */,
 				1409A34426783B9800B4530A /* InvoiceError.swift in Sources */,
-				OBJ_250 /* 指定注文番号型.swift in Sources */,
-				OBJ_251 /* 注文番号.swift in Sources */,
-				OBJ_252 /* 略号.swift in Sources */,
-				OBJ_253 /* 発注状態.swift in Sources */,
+				OBJ_250 /* SpecifiedOrderNoType.swift in Sources */,
+				OBJ_251 /* OrderNo.swift in Sources */,
+				OBJ_252 /* Abbreviation.swift in Sources */,
+				OBJ_253 /* OrderState.swift in Sources */,
 				142149DE268D8F7200A13F6A /* 使用資材出力.swift in Sources */,
-				OBJ_254 /* 経理状態.swift in Sources */,
+				OBJ_254 /* AccountingState.swift in Sources */,
 				OBJ_255 /* BarCode.swift in Sources */,
 				OBJ_256 /* Cocoa.swift in Sources */,
 				OBJ_257 /* KeyModifiers.swift in Sources */,
