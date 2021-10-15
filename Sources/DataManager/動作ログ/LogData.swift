@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 public enum DumpType: String {
     /// エラーダンプ
