@@ -35,7 +35,7 @@ public class DMCacheSystem {
     
     public static func calcMaxCacheBytes(for rate: Int? = nil) -> Int {
         let rate = rate ?? defaults.maxCacheRate
-        return (Int(ProcessInfo().physicalMemory) * rate) / 100
+        return (Int(ProcessInfo.processInfo.physicalMemory) * rate) / 100
     }
     /// キャッシュとして必要な最小容量
     static let minMB = 256

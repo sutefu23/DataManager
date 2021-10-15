@@ -36,7 +36,7 @@ class TestOrder : XCTestCase {
         
         XCTAssertEqual(num, order?.伝票番号)
         XCTAssertNotNil(order?.表示用伝票番号)
-        XCTAssertNotNil(order?.略号)
+        XCTAssertNotNil(order?.略号情報)
 
         XCTAssertNotNil(order?.受注日)
         XCTAssertNotNil(order?.伝票種類)

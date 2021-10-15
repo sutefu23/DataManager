@@ -30,7 +30,7 @@ struct 板加工在庫型 {
 }
 
 let 板加工在庫一覧: [板加工在庫型] = {
-    let bundle = Bundle(for: FileMakerDB.self)
+    let bundle = Bundle.dataManagerBundle
     let url = bundle.url(forResource: "ItaKakouZaikoIchiran", withExtension: "csv")!
     let text = try! String(contentsOf: url, encoding: .utf8)
     var list: [板加工在庫型] = []
