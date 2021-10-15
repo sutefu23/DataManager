@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if os(Windows)
+import FoundationNetworking
+#endif
+
 // MARK: - HTTP接続
 /// HTTP接続インターフェース（Apple系とApple以外でHTTP接続の実態が異なるため用意）
 protocol DMHttpConnectionProtocol: AnyObject {

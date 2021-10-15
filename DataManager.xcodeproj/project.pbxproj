@@ -34,6 +34,7 @@
 		142149E0268D975300A13F6A /* 使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149DF268D975300A13F6A /* 使用資材.swift */; };
 		142149E2268D9D1F00A13F6A /* 用途.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E1268D9D1F00A13F6A /* 用途.swift */; };
 		142149E4268DA0B600A13F6A /* Test使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E3268DA0B600A13F6A /* Test使用資材.swift */; };
+		14246BA9271955C600D4FDED /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14246BA8271955C600D4FDED /* Windows.swift */; };
 		1424B4E726C1F154002C5B72 /* DatManager.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1424B4E626C1F154002C5B72 /* DatManager.docc */; };
 		142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */; };
 		14310E6E2643D3E400F062CA /* ActionLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14310E6D2643D3E400F062CA /* ActionLine.swift */; };
@@ -296,6 +297,7 @@
 		142149DF268D975300A13F6A /* 使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材.swift"; sourceTree = "<group>"; };
 		142149E1268D9D1F00A13F6A /* 用途.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "用途.swift"; sourceTree = "<group>"; };
 		142149E3268DA0B600A13F6A /* Test使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test使用資材.swift"; sourceTree = "<group>"; };
+		14246BA8271955C600D4FDED /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		1424B4E626C1F154002C5B72 /* DatManager.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DatManager.docc; sourceTree = "<group>"; };
 		142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材キャッシュ.swift"; sourceTree = "<group>"; };
 		14310E6D2643D3E400F062CA /* ActionLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLine.swift; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 				OBJ_86 /* KeyModifiers.swift */,
 				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
 				14767117251D577A00429C17 /* DMColor.swift */,
+				14246BA8271955C600D4FDED /* Windows.swift */,
 			);
 			path = "互換性";
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
 				OBJ_238 /* レーザー加工機.swift in Sources */,
 				14A8F6E6270FE0AF00944A90 /* LogData.swift in Sources */,
+				14246BA9271955C600D4FDED /* Windows.swift in Sources */,
 				OBJ_239 /* 伝票状態.swift in Sources */,
 				142149E2268D9D1F00A13F6A /* 用途.swift in Sources */,
 				OBJ_240 /* 伝票番号.swift in Sources */,

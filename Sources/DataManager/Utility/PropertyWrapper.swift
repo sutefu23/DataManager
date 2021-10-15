@@ -8,6 +8,28 @@
 
 import Foundation
 
+#if os(Windows)
+/// 排他的な読み書きを提供する
+@propertyWrapper public struct DMSynchronized<T> {
+    private var value: T
+    private var mutext = NSLock()
+
+    public init(wrappedValue: T) {
+        self.value = wrappedValue
+    }
+    
+    public var wrappedValue: T {
+        mutating get {
+            lock.lock(); defer { lock.unlock() }
+            return value
+        }
+        set {
+            lock.lock(); defer { lock.unlock() }
+            self.value = newValue
+        }
+    }
+}
+#else
 /// 排他的な読み書きを提供する
 @propertyWrapper public struct DMSynchronized<T> {
     private var value: T
@@ -31,3 +53,4 @@ import Foundation
         }
     }
 }
+#endif
