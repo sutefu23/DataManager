@@ -538,12 +538,12 @@
 			path = DBObject;
 			sourceTree = "<group>";
 		};
-		14310E6C2643D3CE00F062CA /* アクションライン */ = {
+		14310E6C2643D3CE00F062CA /* ActionLine */ = {
 			isa = PBXGroup;
 			children = (
 				14310E6D2643D3E400F062CA /* ActionLine.swift */,
 			);
-			path = "アクションライン";
+			path = ActionLine;
 			sourceTree = "<group>";
 		};
 		14767125251D5CA600429C17 /* Resources */ = {
@@ -572,15 +572,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		147A6311255927610077634B /* 工程分解 */ = {
+		147A6311255927610077634B /* ProcessDecomposition */ = {
 			isa = PBXGroup;
 			children = (
 				147A63122559277B0077634B /* 工程分解.swift */,
 			);
-			path = "工程分解";
+			path = ProcessDecomposition;
 			sourceTree = "<group>";
 		};
-		1485E4922553DA330006DA8D /* 集計 */ = {
+		1485E4922553DA330006DA8D /* Aggregate */ = {
 			isa = PBXGroup;
 			children = (
 				1485E4932553DA570006DA8D /* 進捗集計.swift */,
@@ -588,7 +588,7 @@
 				1434714A2625664B00F06E4C /* 資源量分析.swift */,
 				143471422625651E00F06E4C /* WorkMap.swift */,
 			);
-			path = "集計";
+			path = Aggregate;
 			sourceTree = "<group>";
 		};
 		149D95F025B95F68000F97B5 /* CSV */ = {
@@ -604,17 +604,17 @@
 			path = CSV;
 			sourceTree = "<group>";
 		};
-		14DF962726E05098003CC5BE /* 動作ログ */ = {
+		14DF962726E05098003CC5BE /* OperationLog */ = {
 			isa = PBXGroup;
 			children = (
 				14A8F6E4270FE0AF00944A90 /* LogData.swift */,
 				14A8F6E5270FE0AF00944A90 /* LogSystem.swift */,
 			);
-			name = "動作ログ";
+			name = OperationLog;
 			path = "動作ログ";
 			sourceTree = "<group>";
 		};
-		OBJ_105 /* 工程分析 */ = {
+		OBJ_105 /* ProcessAnalysis */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_106 /* 作業パターン.swift */,
@@ -622,10 +622,10 @@
 				OBJ_108 /* 箱文字工程優先度.swift */,
 				140C4E30269D6E150066E221 /* 作業区間.swift */,
 			);
-			path = "工程分析";
+			path = ProcessAnalysis;
 			sourceTree = "<group>";
 		};
-		OBJ_109 /* 工程図 */ = {
+		OBJ_109 /* ProcessDiagram */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_110 /* カレンダ情報.swift */,
@@ -639,10 +639,10 @@
 				OBJ_118 /* 必要資源情報.swift */,
 				OBJ_119 /* 資源マスタ情報.swift */,
 			);
-			path = "工程図";
+			path = ProcessDiagram;
 			sourceTree = "<group>";
 		};
-		OBJ_120 /* 状況キャッシュ */ = {
+		OBJ_120 /* StatusCache */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_121 /* 入出庫キャッシュ.swift */,
@@ -657,10 +657,10 @@
 				142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */,
 				14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */,
 			);
-			path = "状況キャッシュ";
+			path = StatusCache;
 			sourceTree = "<group>";
 		};
-		OBJ_130 /* 記録 */ = {
+		OBJ_130 /* Record */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_132 /* 箱文字優先度.swift */,
@@ -674,10 +674,10 @@
 				OBJ_133 /* 箱文字日報.swift */,
 				OBJ_131 /* 指示書文字数.swift */,
 			);
-			path = "記録";
+			path = Record;
 			sourceTree = "<group>";
 		};
-		OBJ_137 /* 資材使用記録 */ = {
+		OBJ_137 /* MaterialsUseRecord */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_138 /* 板加工在庫.swift */,
@@ -687,7 +687,7 @@
 				OBJ_141 /* 資材（パイプ情報）.swift */,
 				OBJ_142 /* 資材（ボルト情報）.swift */,
 			);
-			path = "資材使用記録";
+			path = MaterialsUseRecord;
 			sourceTree = "<group>";
 		};
 		OBJ_143 /* Tests */ = {
@@ -877,32 +877,32 @@
 		OBJ_8 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
-				14DF962726E05098003CC5BE /* 動作ログ */,
-				14310E6C2643D3CE00F062CA /* アクションライン */,
+				14DF962726E05098003CC5BE /* OperationLog */,
+				14310E6C2643D3CE00F062CA /* ActionLine */,
 				149D95F025B95F68000F97B5 /* CSV */,
-				147A6311255927610077634B /* 工程分解 */,
+				147A6311255927610077634B /* ProcessDecomposition */,
 				14767125251D5CA600429C17 /* Resources */,
-				1485E4922553DA330006DA8D /* 集計 */,
-				OBJ_89 /* 作業ツリー */,
-				OBJ_94 /* 共通ロジック */,
-				OBJ_97 /* 出力 */,
-				OBJ_105 /* 工程分析 */,
-				OBJ_109 /* 工程図 */,
-				OBJ_120 /* 状況キャッシュ */,
-				OBJ_130 /* 記録 */,
-				OBJ_137 /* 資材使用記録 */,
+				1485E4922553DA330006DA8D /* Aggregate */,
+				OBJ_89 /* WorkingTree */,
+				OBJ_94 /* CommonLogic */,
+				OBJ_97 /* Output */,
+				OBJ_105 /* ProcessAnalysis */,
+				OBJ_109 /* ProcessDiagram */,
+				OBJ_120 /* StatusCache */,
+				OBJ_130 /* Record */,
+				OBJ_137 /* MaterialsUseRecord */,
 				OBJ_9 /* Database */,
 				OBJ_64 /* pm_osakaname */,
 				141585B727028DD2009AE92F /* DBObject */,
 				OBJ_27 /* FileMaker */,
-				OBJ_84 /* 互換性 */,
+				OBJ_84 /* Compatibility */,
 				OBJ_32 /* Utility */,
 			);
 			name = DataManager;
 			path = Sources/DataManager;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_84 /* 互換性 */ = {
+		OBJ_84 /* Compatibility */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_85 /* Cocoa.swift */,
@@ -913,10 +913,10 @@
 				OBJ_86 /* KeyModifiers.swift */,
 				14767117251D577A00429C17 /* DMColor.swift */,
 			);
-			path = "互換性";
+			path = Compatibility;
 			sourceTree = "<group>";
 		};
-		OBJ_89 /* 作業ツリー */ = {
+		OBJ_89 /* WorkingTree */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_90 /* 作業.swift */,
@@ -924,7 +924,7 @@
 				OBJ_92 /* 指示書分析.swift */,
 				OBJ_93 /* 部署作業者分析.swift */,
 			);
-			path = "作業ツリー";
+			path = WorkingTree;
 			sourceTree = "<group>";
 		};
 		OBJ_9 /* Database */ = {
@@ -953,17 +953,17 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		OBJ_94 /* 共通ロジック */ = {
+		OBJ_94 /* CommonLogic */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_95 /* ProgressTVData.swift */,
 				OBJ_96 /* TargetMode.swift */,
 				143DC50B265CAF4A009D547F /* ProgressChecker.swift */,
 			);
-			path = "共通ロジック";
+			path = CommonLogic;
 			sourceTree = "<group>";
 		};
-		OBJ_97 /* 出力 */ = {
+		OBJ_97 /* Output */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_99 /* 管理資材.swift */,
@@ -975,7 +975,7 @@
 				142149DD268D8F7200A13F6A /* 使用資材出力.swift */,
 				140DC63F2696D3920010F86E /* 送状番号出力.swift */,
 			);
-			path = "出力";
+			path = Output;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
