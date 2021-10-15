@@ -164,6 +164,14 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
         guard let body = response.body else { return nil }
         return Data(buffer: body)
     }
+    
+    /// 無効化ずみならtrue
+    private var isInvalidated: Bool = false
+    
+    func invalidate() {
+        // 無効済みとする
+        isInvalidated = true
+    }
 }
 extension DMHttpMethod {
     var nioMethod: HTTPMethod {
