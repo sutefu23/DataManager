@@ -40,15 +40,6 @@ public extension UserDefaults {
             self.removeObject(forKey: key)
         }
     }
-    // MARK: - CGFloat
-    func set(_ value: CGFloat, forKey key: String) {
-        self.set(Double(value), forKey: key)
-    }
-    
-    func cgfloat(forKey key: String) -> CGFloat {
-        return CGFloat(self.double(forKey: key))
-    }
-    
     // MARK: - nil拡張
     func nullable<T>(forKey key: String) -> T? {
         self.object(forKey: key) as? T
