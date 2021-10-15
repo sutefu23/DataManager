@@ -18,7 +18,12 @@ public protocol DMLogger {
     func currentLog(minLevel: DMLogLevel) -> [DMLogRecord]
     
     /// 指定された場所に、指定されたレベル以上のログを出力する
+    #if os(Windows)
+    func dumplog(type: DumpType, minLevel: DMLogLevel) throws
+    #else
     func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws
+    #endif
+
     /// エラー時の自動ダンプ
     func errorDump()
     
@@ -54,7 +59,9 @@ public extension DMLogger {
     /// エラー時の自動ダンプ
     func errorDump() {
         // デフォルトではデスクトップ環境時のみ自動ダンプ
-        #if os(macOS) || os(Linux) || os(Windows) || targetEnvironment(macCatalyst)
+        #if os(Windows)
+        try? dumplog(type: .error, minLevel: .all)
+        #elseif os(macOS) || os(Linux) || targetEnvironment(macCatalyst)
         try? dumplog(type: .error, minLevel: .all, shareButton: nil)
         #endif
     }
@@ -166,10 +173,14 @@ public final class DMLogSystem: DMLogger {
 
 // MARK: - テキスト出力
 extension DMLogger {
+
+    
     /// 指定された場所に、指定されたレベル以上のログを出力する
+    #if os(Windows) // Windowsでは何もしない & DMButtonを外す
+    public func dumplog(type: DumpType, minLevel: DMLogLevel) throws {}
+    #elseif os(tvOS) // tvOSでは何もしない
+    #else
     public func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws {
-        #if os(tvOS) // tvOSでは何もしない
-        #else
         let gen = TableGenerator<DMLogRecord>()
             .string("種類") {
                 switch $0.level {
@@ -186,6 +197,6 @@ extension DMLogger {
         let hostname = ProcessInfo.processInfo.hostName.replacingOccurrences(of: ".local", with: "")
         let log = self.currentLog(minLevel: minLevel)
         try gen.share(log, format: .excel(header: true), base: type.dir, title: "\(defaults.programName)[\(type.rawValue)](\(hostname)).csv", shareButton: shareButton)
-        #endif
     }
+    #endif
 }

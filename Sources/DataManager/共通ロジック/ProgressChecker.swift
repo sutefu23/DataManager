@@ -334,14 +334,14 @@ class CountColumn {
     func makeOutline(row:Int, index:Int) -> NSAttributedString {
         let cell = self[row]
         switch index {
-        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString() }
-        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString() }
-        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString() }
-        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString() }
-        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString() }
+        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString(string: "") }
+        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString(string: "") }
+        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString(string: "") }
+        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString(string: "") }
+        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString(string: "") }
         default: break
         }
-        return cell?.makeOutline(index: index) ?? NSAttributedString()
+        return cell?.makeOutline(index: index) ?? NSAttributedString(string: "")
     }
     
     func detailOrder(row:Int, index:Int) -> DetailInfo? {

@@ -189,7 +189,7 @@ func searcボルト欄パイプ等カット(ボルト欄: String) -> (info: 資�
 }
 
 public let 資材パイプリスト: [資材パイプ情報型] = {
-    let list = ["FB一覧", "角パイプ一覧", "丸パイプ一覧"].concurrentMap {
+    let list = ["FBList", "KakuPipeList", "MaruPipeList"].concurrentMap {
         makeList($0)
     }.flatMap { $0 }
     return list
