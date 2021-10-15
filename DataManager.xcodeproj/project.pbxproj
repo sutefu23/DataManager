@@ -55,7 +55,7 @@
 		14788CCB2538267900995762 /* MaruPipeList.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 14788CCA2538266F00995762 /* MaruPipeList.csv */; };
 		1479BD182705451100C11804 /* MaterialsTypeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD172705451100C11804 /* MaterialsTypeContent.swift */; };
 		1479BD1A27054FAD00C11804 /* Test資材種類内容.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479BD1927054FAD00C11804 /* Test資材種類内容.swift */; };
-		147A63132559277B0077634B /* 工程分解.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147A63122559277B0077634B /* 工程分解.swift */; };
+		147A63132559277B0077634B /* ProcessDecomposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147A63122559277B0077634B /* ProcessDecomposition.swift */; };
 		1485E4942553DA570006DA8D /* ProgressAggregate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1485E4932553DA570006DA8D /* ProgressAggregate.swift */; };
 		148760052715622800C5EE39 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148760042715622800C5EE39 /* Enum.swift */; };
 		148CA55225367D98002CE1D4 /* ICCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55125367D98002CE1D4 /* ICCard.swift */; };
@@ -160,10 +160,10 @@
 		OBJ_256 /* Cocoa.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* Cocoa.swift */; };
 		OBJ_257 /* KeyModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* KeyModifiers.swift */; };
 		OBJ_259 /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_88 /* UIKit.swift */; };
-		OBJ_260 /* 作業.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* 作業.swift */; };
-		OBJ_261 /* 作業ステージ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_91 /* 作業ステージ.swift */; };
-		OBJ_262 /* 指示書分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_92 /* 指示書分析.swift */; };
-		OBJ_263 /* 部署作業者分析.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_93 /* 部署作業者分析.swift */; };
+		OBJ_260 /* Working.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* Working.swift */; };
+		OBJ_261 /* WorkingStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_91 /* WorkingStage.swift */; };
+		OBJ_262 /* DirectionsAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_92 /* DirectionsAnalysis.swift */; };
+		OBJ_263 /* DivisionWorkerAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_93 /* DivisionWorkerAnalysis.swift */; };
 		OBJ_264 /* ProgressTVData.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_95 /* ProgressTVData.swift */; };
 		OBJ_265 /* TargetMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_96 /* TargetMode.swift */; };
 		OBJ_266 /* TableGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_98 /* TableGenerator.swift */; };
@@ -317,7 +317,7 @@
 		14788CCA2538266F00995762 /* MaruPipeList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MaruPipeList.csv; sourceTree = "<group>"; };
 		1479BD172705451100C11804 /* MaterialsTypeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsTypeContent.swift; sourceTree = "<group>"; };
 		1479BD1927054FAD00C11804 /* Test資材種類内容.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材種類内容.swift"; sourceTree = "<group>"; };
-		147A63122559277B0077634B /* 工程分解.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程分解.swift"; sourceTree = "<group>"; };
+		147A63122559277B0077634B /* ProcessDecomposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessDecomposition.swift; sourceTree = "<group>"; };
 		1485E4932553DA570006DA8D /* ProgressAggregate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAggregate.swift; sourceTree = "<group>"; };
 		148760042715622800C5EE39 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		148CA55025367D73002CE1D4 /* scanICCard.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanICCard.py; sourceTree = "<group>"; };
@@ -495,10 +495,10 @@
 		OBJ_85 /* Cocoa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocoa.swift; sourceTree = "<group>"; };
 		OBJ_86 /* KeyModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifiers.swift; sourceTree = "<group>"; };
 		OBJ_88 /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
-		OBJ_90 /* 作業.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業.swift"; sourceTree = "<group>"; };
-		OBJ_91 /* 作業ステージ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "作業ステージ.swift"; sourceTree = "<group>"; };
-		OBJ_92 /* 指示書分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書分析.swift"; sourceTree = "<group>"; };
-		OBJ_93 /* 部署作業者分析.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "部署作業者分析.swift"; sourceTree = "<group>"; };
+		OBJ_90 /* Working.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Working.swift; sourceTree = "<group>"; };
+		OBJ_91 /* WorkingStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingStage.swift; sourceTree = "<group>"; };
+		OBJ_92 /* DirectionsAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsAnalysis.swift; sourceTree = "<group>"; };
+		OBJ_93 /* DivisionWorkerAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivisionWorkerAnalysis.swift; sourceTree = "<group>"; };
 		OBJ_95 /* ProgressTVData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTVData.swift; sourceTree = "<group>"; };
 		OBJ_96 /* TargetMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetMode.swift; sourceTree = "<group>"; };
 		OBJ_98 /* TableGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGenerator.swift; sourceTree = "<group>"; };
@@ -575,7 +575,7 @@
 		147A6311255927610077634B /* ProcessDecomposition */ = {
 			isa = PBXGroup;
 			children = (
-				147A63122559277B0077634B /* 工程分解.swift */,
+				147A63122559277B0077634B /* ProcessDecomposition.swift */,
 			);
 			path = ProcessDecomposition;
 			sourceTree = "<group>";
@@ -919,10 +919,10 @@
 		OBJ_89 /* WorkingTree */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_90 /* 作業.swift */,
-				OBJ_91 /* 作業ステージ.swift */,
-				OBJ_92 /* 指示書分析.swift */,
-				OBJ_93 /* 部署作業者分析.swift */,
+				OBJ_90 /* Working.swift */,
+				OBJ_91 /* WorkingStage.swift */,
+				OBJ_92 /* DirectionsAnalysis.swift */,
+				OBJ_93 /* DivisionWorkerAnalysis.swift */,
 			);
 			path = WorkingTree;
 			sourceTree = "<group>";
@@ -1152,7 +1152,7 @@
 				OBJ_235 /* UserDefaultsUtility.swift in Sources */,
 				00AAB9112595D9A500ACB725 /* SendMail.swift in Sources */,
 				OBJ_236 /* Utility.swift in Sources */,
-				147A63132559277B0077634B /* 工程分解.swift in Sources */,
+				147A63132559277B0077634B /* ProcessDecomposition.swift in Sources */,
 				OBJ_237 /* Version.swift in Sources */,
 				8E29B92526EF531400A0D40A /* FileMakerExportObject.swift in Sources */,
 				143471432625651E00F06E4C /* WorkMap.swift in Sources */,
@@ -1189,11 +1189,11 @@
 				OBJ_256 /* Cocoa.swift in Sources */,
 				OBJ_257 /* KeyModifiers.swift in Sources */,
 				OBJ_259 /* UIKit.swift in Sources */,
-				OBJ_260 /* 作業.swift in Sources */,
+				OBJ_260 /* Working.swift in Sources */,
 				141585B927029BC5009AE92F /* FileMakerRetrySystem.swift in Sources */,
-				OBJ_261 /* 作業ステージ.swift in Sources */,
-				OBJ_262 /* 指示書分析.swift in Sources */,
-				OBJ_263 /* 部署作業者分析.swift in Sources */,
+				OBJ_261 /* WorkingStage.swift in Sources */,
+				OBJ_262 /* DirectionsAnalysis.swift in Sources */,
+				OBJ_263 /* DivisionWorkerAnalysis.swift in Sources */,
 				OBJ_264 /* ProgressTVData.swift in Sources */,
 				OBJ_265 /* TargetMode.swift in Sources */,
 				OBJ_266 /* TableGenerator.swift in Sources */,
