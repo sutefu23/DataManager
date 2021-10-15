@@ -36,7 +36,7 @@
 		142149E4268DA0B600A13F6A /* Test使用資材.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142149E3268DA0B600A13F6A /* Test使用資材.swift */; };
 		14246BA9271955C600D4FDED /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14246BA8271955C600D4FDED /* Windows.swift */; };
 		1424B4E726C1F154002C5B72 /* DatManager.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1424B4E626C1F154002C5B72 /* DatManager.docc */; };
-		142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */; };
+		142E2D562692AA3F00BF3301 /* UsingMaterialsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E2D552692AA3F00BF3301 /* UsingMaterialsCache.swift */; };
 		14310E6E2643D3E400F062CA /* ActionLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14310E6D2643D3E400F062CA /* ActionLine.swift */; };
 		143471432625651E00F06E4C /* WorkMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143471422625651E00F06E4C /* WorkMap.swift */; };
 		1434714B2625664B00F06E4C /* ResourceAmountAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434714A2625664B00F06E4C /* ResourceAmountAnalysis.swift */; };
@@ -76,7 +76,7 @@
 		14A8F6E6270FE0AF00944A90 /* LogData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A8F6E4270FE0AF00944A90 /* LogData.swift */; };
 		14A8F6E7270FE0AF00944A90 /* LogSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A8F6E5270FE0AF00944A90 /* LogSystem.swift */; };
 		14CC173E270C15B100E11BCD /* FileMakerLightWeightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */; };
-		14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */; };
+		14D244FD26A6696500BC920B /* SyncProgressCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D244FC26A6696500BC920B /* SyncProgressCache.swift */; };
 		14EF40372548170300DA8FF9 /* MealTimePeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EF40362548170300DA8FF9 /* MealTimePeriod.swift */; };
 		14F3DFE7251DAEA0003D4BCA /* TestFileMakerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F3DFE6251DAEA0003D4BCA /* TestFileMakerSession.swift */; };
 		67227BD025D63F79003D6C50 /* NAS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14083ED625CD07E900A326ED /* NAS.swift */; };
@@ -186,15 +186,15 @@
 		OBJ_283 /* ProcessDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_117 /* ProcessDrawing.swift */; };
 		OBJ_284 /* RequiredResourceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_118 /* RequiredResourceInfo.swift */; };
 		OBJ_285 /* ResourceMasterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_119 /* ResourceMasterInfo.swift */; };
-		OBJ_286 /* 入出庫キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_121 /* 入出庫キャッシュ.swift */; };
-		OBJ_287 /* 取引先キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_122 /* 取引先キャッシュ.swift */; };
-		OBJ_288 /* 在庫キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_123 /* 在庫キャッシュ.swift */; };
-		OBJ_289 /* 指示書キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* 指示書キャッシュ.swift */; };
-		OBJ_290 /* 指示書進捗キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_125 /* 指示書進捗キャッシュ.swift */; };
-		OBJ_291 /* 最終発注単価キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_126 /* 最終発注単価キャッシュ.swift */; };
-		OBJ_292 /* 箱文字優先度キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* 箱文字優先度キャッシュ.swift */; };
-		OBJ_293 /* 資材キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_128 /* 資材キャッシュ.swift */; };
-		OBJ_294 /* 資材発注キャッシュ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* 資材発注キャッシュ.swift */; };
+		OBJ_286 /* ReceiveIssueCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_121 /* ReceiveIssueCache.swift */; };
+		OBJ_287 /* ClientCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_122 /* ClientCache.swift */; };
+		OBJ_288 /* InventoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_123 /* InventoryCache.swift */; };
+		OBJ_289 /* DirectionsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* DirectionsCache.swift */; };
+		OBJ_290 /* DirectionsProgressCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_125 /* DirectionsProgressCache.swift */; };
+		OBJ_291 /* LastOrderUnitPriceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_126 /* LastOrderUnitPriceCache.swift */; };
+		OBJ_292 /* BoxCharacterPriorityCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* BoxCharacterPriorityCache.swift */; };
+		OBJ_293 /* MaterialsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_128 /* MaterialsCache.swift */; };
+		OBJ_294 /* MaterialsOrderCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* MaterialsOrderCache.swift */; };
 		OBJ_295 /* DirectionsLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_131 /* DirectionsLength.swift */; };
 		OBJ_296 /* BoxCharacterPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_132 /* BoxCharacterPriority.swift */; };
 		OBJ_297 /* BoxCharacterDailyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_133 /* BoxCharacterDailyReport.swift */; };
@@ -299,7 +299,7 @@
 		142149E3268DA0B600A13F6A /* Test使用資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test使用資材.swift"; sourceTree = "<group>"; };
 		14246BA8271955C600D4FDED /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		1424B4E626C1F154002C5B72 /* DatManager.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DatManager.docc; sourceTree = "<group>"; };
-		142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "使用資材キャッシュ.swift"; sourceTree = "<group>"; };
+		142E2D552692AA3F00BF3301 /* UsingMaterialsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingMaterialsCache.swift; sourceTree = "<group>"; };
 		14310E6D2643D3E400F062CA /* ActionLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLine.swift; sourceTree = "<group>"; };
 		143471422625651E00F06E4C /* WorkMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkMap.swift; sourceTree = "<group>"; };
 		1434714A2625664B00F06E4C /* ResourceAmountAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceAmountAnalysis.swift; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 		14A8F6E4270FE0AF00944A90 /* LogData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogData.swift; sourceTree = "<group>"; };
 		14A8F6E5270FE0AF00944A90 /* LogSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogSystem.swift; sourceTree = "<group>"; };
 		14CC173D270C15B100E11BCD /* FileMakerLightWeightData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMakerLightWeightData.swift; sourceTree = "<group>"; };
-		14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "同期進捗キャッシュ.swift"; sourceTree = "<group>"; };
+		14D244FC26A6696500BC920B /* SyncProgressCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncProgressCache.swift; sourceTree = "<group>"; };
 		14EF40362548170300DA8FF9 /* MealTimePeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTimePeriod.swift; sourceTree = "<group>"; };
 		14F3DFE1251D810F003D4BCA /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		14F3DFE6251DAEA0003D4BCA /* TestFileMakerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFileMakerSession.swift; sourceTree = "<group>"; };
@@ -375,15 +375,15 @@
 		OBJ_118 /* RequiredResourceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequiredResourceInfo.swift; sourceTree = "<group>"; };
 		OBJ_119 /* ResourceMasterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMasterInfo.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		OBJ_121 /* 入出庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入出庫キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_122 /* 取引先キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "取引先キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_123 /* 在庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "在庫キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_124 /* 指示書キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_125 /* 指示書進捗キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書進捗キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_126 /* 最終発注単価キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "最終発注単価キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_127 /* 箱文字優先度キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "箱文字優先度キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_128 /* 資材キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材キャッシュ.swift"; sourceTree = "<group>"; };
-		OBJ_129 /* 資材発注キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材発注キャッシュ.swift"; sourceTree = "<group>"; };
+		OBJ_121 /* ReceiveIssueCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveIssueCache.swift; sourceTree = "<group>"; };
+		OBJ_122 /* ClientCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCache.swift; sourceTree = "<group>"; };
+		OBJ_123 /* InventoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCache.swift; sourceTree = "<group>"; };
+		OBJ_124 /* DirectionsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsCache.swift; sourceTree = "<group>"; };
+		OBJ_125 /* DirectionsProgressCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProgressCache.swift; sourceTree = "<group>"; };
+		OBJ_126 /* LastOrderUnitPriceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastOrderUnitPriceCache.swift; sourceTree = "<group>"; };
+		OBJ_127 /* BoxCharacterPriorityCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxCharacterPriorityCache.swift; sourceTree = "<group>"; };
+		OBJ_128 /* MaterialsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsCache.swift; sourceTree = "<group>"; };
+		OBJ_129 /* MaterialsOrderCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsOrderCache.swift; sourceTree = "<group>"; };
 		OBJ_13 /* WorkingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingType.swift; sourceTree = "<group>"; };
 		OBJ_131 /* DirectionsLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsLength.swift; sourceTree = "<group>"; };
 		OBJ_132 /* BoxCharacterPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxCharacterPriority.swift; sourceTree = "<group>"; };
@@ -645,17 +645,17 @@
 		OBJ_120 /* StatusCache */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_121 /* 入出庫キャッシュ.swift */,
-				OBJ_122 /* 取引先キャッシュ.swift */,
-				OBJ_123 /* 在庫キャッシュ.swift */,
-				OBJ_124 /* 指示書キャッシュ.swift */,
-				OBJ_125 /* 指示書進捗キャッシュ.swift */,
-				OBJ_126 /* 最終発注単価キャッシュ.swift */,
-				OBJ_127 /* 箱文字優先度キャッシュ.swift */,
-				OBJ_128 /* 資材キャッシュ.swift */,
-				OBJ_129 /* 資材発注キャッシュ.swift */,
-				142E2D552692AA3F00BF3301 /* 使用資材キャッシュ.swift */,
-				14D244FC26A6696500BC920B /* 同期進捗キャッシュ.swift */,
+				OBJ_121 /* ReceiveIssueCache.swift */,
+				OBJ_122 /* ClientCache.swift */,
+				OBJ_123 /* InventoryCache.swift */,
+				OBJ_124 /* DirectionsCache.swift */,
+				OBJ_125 /* DirectionsProgressCache.swift */,
+				OBJ_126 /* LastOrderUnitPriceCache.swift */,
+				OBJ_127 /* BoxCharacterPriorityCache.swift */,
+				OBJ_128 /* MaterialsCache.swift */,
+				OBJ_129 /* MaterialsOrderCache.swift */,
+				142E2D552692AA3F00BF3301 /* UsingMaterialsCache.swift */,
+				14D244FC26A6696500BC920B /* SyncProgressCache.swift */,
 			);
 			path = StatusCache;
 			sourceTree = "<group>";
@@ -1140,7 +1140,7 @@
 				OBJ_229 /* String.swift in Sources */,
 				OBJ_230 /* TextReader.swift in Sources */,
 				1479BD182705451100C11804 /* MaterialsTypeContent.swift in Sources */,
-				142E2D562692AA3F00BF3301 /* 使用資材キャッシュ.swift in Sources */,
+				142E2D562692AA3F00BF3301 /* UsingMaterialsCache.swift in Sources */,
 				14167AE326E985AE009B50B3 /* FileMakerServer.swift in Sources */,
 				143C9B14269C055000D69D3E /* YamatoInvoiceNo.swift in Sources */,
 				141CFF1A253FC7A0002F17D2 /* MaterialsObjectInfo.swift in Sources */,
@@ -1221,23 +1221,23 @@
 				OBJ_284 /* RequiredResourceInfo.swift in Sources */,
 				OBJ_285 /* ResourceMasterInfo.swift in Sources */,
 				8E9E604D251E439B00B4858E /* MealRequestType.swift in Sources */,
-				OBJ_286 /* 入出庫キャッシュ.swift in Sources */,
-				OBJ_287 /* 取引先キャッシュ.swift in Sources */,
+				OBJ_286 /* ReceiveIssueCache.swift in Sources */,
+				OBJ_287 /* ClientCache.swift in Sources */,
 				14A8F6E7270FE0AF00944A90 /* LogSystem.swift in Sources */,
 				14310E6E2643D3E400F062CA /* ActionLine.swift in Sources */,
 				143C9B16269C0B2700D69D3E /* InvoiceShippingAchievement.swift in Sources */,
-				OBJ_288 /* 在庫キャッシュ.swift in Sources */,
-				OBJ_289 /* 指示書キャッシュ.swift in Sources */,
-				OBJ_290 /* 指示書進捗キャッシュ.swift in Sources */,
+				OBJ_288 /* InventoryCache.swift in Sources */,
+				OBJ_289 /* DirectionsCache.swift in Sources */,
+				OBJ_290 /* DirectionsProgressCache.swift in Sources */,
 				1424B4E726C1F154002C5B72 /* DatManager.docc in Sources */,
 				1498B067252429CB001698DF /* IDCardType.swift in Sources */,
-				OBJ_291 /* 最終発注単価キャッシュ.swift in Sources */,
-				OBJ_292 /* 箱文字優先度キャッシュ.swift in Sources */,
-				OBJ_293 /* 資材キャッシュ.swift in Sources */,
+				OBJ_291 /* LastOrderUnitPriceCache.swift in Sources */,
+				OBJ_292 /* BoxCharacterPriorityCache.swift in Sources */,
+				OBJ_293 /* MaterialsCache.swift in Sources */,
 				8E9A4E532526045600476B2E /* DMHttpConnection.swift in Sources */,
 				149D95F225B95FAB000F97B5 /* Fukuyama_Transporting.swift in Sources */,
 				1449B1B9256DED1C00FB6C0B /* MonthlyTargetType.swift in Sources */,
-				OBJ_294 /* 資材発注キャッシュ.swift in Sources */,
+				OBJ_294 /* MaterialsOrderCache.swift in Sources */,
 				OBJ_295 /* DirectionsLength.swift in Sources */,
 				OBJ_296 /* BoxCharacterPriority.swift in Sources */,
 				OBJ_297 /* BoxCharacterDailyReport.swift in Sources */,
@@ -1245,7 +1245,7 @@
 				140DC6402696D3920010F86E /* InvoiceNoOutput.swift in Sources */,
 				8E7D23A726FECDA600C1B1C2 /* FileMakerObject.swift in Sources */,
 				OBJ_299 /* MaterialsUseRecord.swift in Sources */,
-				14D244FD26A6696500BC920B /* 同期進捗キャッシュ.swift in Sources */,
+				14D244FD26A6696500BC920B /* SyncProgressCache.swift in Sources */,
 				OBJ_300 /* MaterialsReceivingStatus.swift in Sources */,
 				OBJ_301 /* BoardProcessingInventory.swift in Sources */,
 				OBJ_302 /* MaterialsCoilInfo.swift in Sources */,
