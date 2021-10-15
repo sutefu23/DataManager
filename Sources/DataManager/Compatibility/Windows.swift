@@ -17,6 +17,7 @@ import Foundation
 // MARK: - ダミーオブジェクト
 public class DMColor {
     public static let black = DMColor()
+    public static let cyan = DMColor()
     public static let red = DMColor()
     public static let blue = DMColor()
     public static let yellow = DMColor()
