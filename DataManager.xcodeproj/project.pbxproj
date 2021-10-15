@@ -91,18 +91,18 @@
 		8E9E6047251E3B9C00B4858E /* 食事メニュー.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E6046251E3B9C00B4858E /* 食事メニュー.swift */; };
 		8E9E604D251E439B00B4858E /* 食事要求型.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9E604C251E439B00B4858E /* 食事要求型.swift */; };
 		8EC5C2E926F7EA9A00A79705 /* DMCacheSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5C2E826F7EA9A00A79705 /* DMCacheSystem.swift */; };
-		OBJ_188 /* Incidentト.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Incidentト.swift */; };
+		OBJ_188 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Incident.swift */; };
 		OBJ_189 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Calendar.swift */; };
-		OBJ_190 /* Scheduleル.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Scheduleル.swift */; };
+		OBJ_190 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Schedule.swift */; };
 		OBJ_191 /* WorkingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* WorkingType.swift */; };
 		OBJ_192 /* WorkingSerial.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* WorkingSerial.swift */; };
 		OBJ_193 /* AttendanceDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* AttendanceDate.swift */; };
 		OBJ_194 /* Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Directions.swift */; };
-		OBJ_195 /* 指示書ボルト欄.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* 指示書ボルト欄.swift */; };
-		OBJ_196 /* 指示書変更内容履歴.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* 指示書変更内容履歴.swift */; };
+		OBJ_195 /* DirectionsBoltField.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* DirectionsBoltField.swift */; };
+		OBJ_196 /* DirectionsChangeContentHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* DirectionsChangeContentHistory.swift */; };
 		OBJ_197 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Order.swift */; };
 		OBJ_198 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Employee.swift */; };
-		OBJ_199 /* 製造グループ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* 製造グループ.swift */; };
+		OBJ_199 /* ProductionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ProductionGroup.swift */; };
 		OBJ_200 /* Materials.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Materials.swift */; };
 		OBJ_201 /* MaterialsReceiveIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* MaterialsReceiveIssue.swift */; };
 		OBJ_202 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Progress.swift */; };
@@ -354,7 +354,7 @@
 		8EC5C2E826F7EA9A00A79705 /* DMCacheSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMCacheSystem.swift; sourceTree = "<group>"; };
 		"DataManager::DataManager::Product" /* DataManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"DataManager::DataManagerTests::Product" /* DataManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = DataManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_10 /* Incidentト.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incidentト.swift"; sourceTree = "<group>"; };
+		OBJ_10 /* Incident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incident.swift; sourceTree = "<group>"; };
 		OBJ_100 /* 管理資材（パイプ）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（パイプ）.swift"; sourceTree = "<group>"; };
 		OBJ_101 /* 管理資材（板）.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "管理資材（板）.swift"; sourceTree = "<group>"; };
 		OBJ_102 /* 資材入出庫出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資材入出庫出力.swift"; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 		OBJ_117 /* 工程図.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "工程図.swift"; sourceTree = "<group>"; };
 		OBJ_118 /* 必要資源情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "必要資源情報.swift"; sourceTree = "<group>"; };
 		OBJ_119 /* 資源マスタ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "資源マスタ情報.swift"; sourceTree = "<group>"; };
-		OBJ_12 /* Scheduleル.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scheduleル.swift"; sourceTree = "<group>"; };
+		OBJ_12 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		OBJ_121 /* 入出庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "入出庫キャッシュ.swift"; sourceTree = "<group>"; };
 		OBJ_122 /* 取引先キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "取引先キャッシュ.swift"; sourceTree = "<group>"; };
 		OBJ_123 /* 在庫キャッシュ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "在庫キャッシュ.swift"; sourceTree = "<group>"; };
@@ -422,7 +422,7 @@
 		OBJ_167 /* Test管理板材型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test管理板材型.swift"; sourceTree = "<group>"; };
 		OBJ_168 /* Test管理資材型.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test管理資材型.swift"; sourceTree = "<group>"; };
 		OBJ_169 /* Test資材.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材.swift"; sourceTree = "<group>"; };
-		OBJ_17 /* 指示書ボルト欄.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書ボルト欄.swift"; sourceTree = "<group>"; };
+		OBJ_17 /* DirectionsBoltField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsBoltField.swift; sourceTree = "<group>"; };
 		OBJ_170 /* Test資材コイル情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材コイル情報.swift"; sourceTree = "<group>"; };
 		OBJ_171 /* Test資材使用記録.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材使用記録.swift"; sourceTree = "<group>"; };
 		OBJ_172 /* Test資材入出庫.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材入出庫.swift"; sourceTree = "<group>"; };
@@ -432,11 +432,11 @@
 		OBJ_176 /* Test進捗.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗.swift"; sourceTree = "<group>"; };
 		OBJ_177 /* Test進捗出力.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test進捗出力.swift"; sourceTree = "<group>"; };
 		OBJ_178 /* Test部署.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test部署.swift"; sourceTree = "<group>"; };
-		OBJ_18 /* 指示書変更内容履歴.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "指示書変更内容履歴.swift"; sourceTree = "<group>"; };
+		OBJ_18 /* DirectionsChangeContentHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsChangeContentHistory.swift; sourceTree = "<group>"; };
 		OBJ_182 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_19 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		OBJ_20 /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
-		OBJ_21 /* 製造グループ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "製造グループ.swift"; sourceTree = "<group>"; };
+		OBJ_21 /* ProductionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionGroup.swift; sourceTree = "<group>"; };
 		OBJ_22 /* Materials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Materials.swift; sourceTree = "<group>"; };
 		OBJ_23 /* MaterialsReceiveIssue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsReceiveIssue.swift; sourceTree = "<group>"; };
 		OBJ_24 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
@@ -930,18 +930,18 @@
 		OBJ_9 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_10 /* Incidentト.swift */,
+				OBJ_10 /* Incident.swift */,
 				OBJ_11 /* Calendar.swift */,
-				OBJ_12 /* Scheduleル.swift */,
+				OBJ_12 /* Schedule.swift */,
 				OBJ_13 /* WorkingType.swift */,
 				OBJ_14 /* WorkingSerial.swift */,
 				OBJ_15 /* AttendanceDate.swift */,
 				OBJ_16 /* Directions.swift */,
-				OBJ_17 /* 指示書ボルト欄.swift */,
-				OBJ_18 /* 指示書変更内容履歴.swift */,
+				OBJ_17 /* DirectionsBoltField.swift */,
+				OBJ_18 /* DirectionsChangeContentHistory.swift */,
 				OBJ_19 /* Order.swift */,
 				OBJ_20 /* Employee.swift */,
-				OBJ_21 /* 製造グループ.swift */,
+				OBJ_21 /* ProductionGroup.swift */,
 				OBJ_22 /* Materials.swift */,
 				OBJ_23 /* MaterialsReceiveIssue.swift */,
 				OBJ_24 /* Progress.swift */,
@@ -1090,21 +1090,21 @@
 			buildActionMask = 0;
 			files = (
 				67227BD025D63F79003D6C50 /* NAS.swift in Sources */,
-				OBJ_188 /* Incidentト.swift in Sources */,
+				OBJ_188 /* Incident.swift in Sources */,
 				OBJ_189 /* Calendar.swift in Sources */,
-				OBJ_190 /* Scheduleル.swift in Sources */,
+				OBJ_190 /* Schedule.swift in Sources */,
 				OBJ_191 /* WorkingType.swift in Sources */,
 				OBJ_192 /* WorkingSerial.swift in Sources */,
 				OBJ_193 /* AttendanceDate.swift in Sources */,
 				OBJ_194 /* Directions.swift in Sources */,
-				OBJ_195 /* 指示書ボルト欄.swift in Sources */,
+				OBJ_195 /* DirectionsBoltField.swift in Sources */,
 				1434714B2625664B00F06E4C /* 資源量分析.swift in Sources */,
-				OBJ_196 /* 指示書変更内容履歴.swift in Sources */,
+				OBJ_196 /* DirectionsChangeContentHistory.swift in Sources */,
 				148D0F4A264C9EF4009A6B0C /* YamatoTransport.swift in Sources */,
 				1417EA5B2612B7710026FDA4 /* 作業時間分析.swift in Sources */,
 				OBJ_197 /* Order.swift in Sources */,
 				OBJ_198 /* Employee.swift in Sources */,
-				OBJ_199 /* 製造グループ.swift in Sources */,
+				OBJ_199 /* ProductionGroup.swift in Sources */,
 				OBJ_200 /* Materials.swift in Sources */,
 				OBJ_201 /* MaterialsReceiveIssue.swift in Sources */,
 				OBJ_202 /* Progress.swift in Sources */,
