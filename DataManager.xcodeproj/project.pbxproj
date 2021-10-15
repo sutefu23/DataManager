@@ -62,7 +62,7 @@
 		148CA55C25367E50002CE1D4 /* TestICCardID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA55B25367E50002CE1D4 /* TestICCardID.swift */; };
 		148CA5612536801C002CE1D4 /* scanICCard.py in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA55025367D73002CE1D4 /* scanICCard.py */; };
 		148CA5802536DC58002CE1D4 /* Test資材パイプ情報.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */; };
-		148CA5852536E4A7002CE1D4 /* KakuPipeList一覧.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* KakuPipeList一覧.csv */; };
+		148CA5852536E4A7002CE1D4 /* KakuPipeList.csv in Copy Files (10 items) */ = {isa = PBXBuildFile; fileRef = 148CA57A2536D827002CE1D4 /* KakuPipeList.csv */; };
 		148D0F4A264C9EF4009A6B0C /* ヤマト運輸.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */; };
 		148DBA6925B939B100721484 /* 送状.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148DBA6825B939B100721484 /* 送状.swift */; };
 		1495333427014C5F00E3BD26 /* FileMakerQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1495333327014C5F00E3BD26 /* FileMakerQuery.swift */; };
@@ -270,7 +270,7 @@
 				141CFF24253FD10B002F17D2 /* ObujeList.csv in Copy Files (10 items) */,
 				146F88A9253E7022001F8AF1 /* FBList.csv in Copy Files (10 items) */,
 				14788CCB2538267900995762 /* MaruPipeList.csv in Copy Files (10 items) */,
-				148CA5852536E4A7002CE1D4 /* KakuPipeList一覧.csv in Copy Files (10 items) */,
+				148CA5852536E4A7002CE1D4 /* KakuPipeList.csv in Copy Files (10 items) */,
 				148CA5612536801C002CE1D4 /* scanICCard.py in Copy Files (10 items) */,
 				1498B0612524260F001698DF /* ZenkakuAsciiToHankakuAscii.txt in Copy Files (10 items) */,
 				1498B05C2524260B001698DF /* ZenkakuKanaToHankakuKana.txt in Copy Files (10 items) */,
@@ -323,7 +323,7 @@
 		148CA55025367D73002CE1D4 /* scanICCard.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanICCard.py; sourceTree = "<group>"; };
 		148CA55125367D98002CE1D4 /* ICCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICCard.swift; sourceTree = "<group>"; };
 		148CA55B25367E50002CE1D4 /* TestICCardID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestICCardID.swift; sourceTree = "<group>"; };
-		148CA57A2536D827002CE1D4 /* KakuPipeList一覧.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "KakuPipeList一覧.csv"; sourceTree = "<group>"; };
+		148CA57A2536D827002CE1D4 /* KakuPipeList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KakuPipeList.csv; sourceTree = "<group>"; };
 		148CA57F2536DC58002CE1D4 /* Test資材パイプ情報.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test資材パイプ情報.swift"; sourceTree = "<group>"; };
 		148D0F49264C9EF4009A6B0C /* ヤマト運輸.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ヤマト運輸.swift"; sourceTree = "<group>"; };
 		148DBA6825B939B100721484 /* 送状.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "送状.swift"; sourceTree = "<group>"; };
@@ -552,7 +552,7 @@
 				1498B052252413FA001698DF /* ZenkakuKanaToHankakuKana.txt */,
 				1498B05725241B45001698DF /* ZenkakuAsciiToHankakuAscii.txt */,
 				14767126251D5CA600429C17 /* ItaKakouZaikoIchiran.csv */,
-				148CA57A2536D827002CE1D4 /* KakuPipeList一覧.csv */,
+				148CA57A2536D827002CE1D4 /* KakuPipeList.csv */,
 				14788CCA2538266F00995762 /* MaruPipeList.csv */,
 				141CFF23253FD0FE002F17D2 /* ObujeList.csv */,
 				146F88A8253E7019001F8AF1 /* FBList.csv */,
