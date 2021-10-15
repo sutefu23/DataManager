@@ -905,13 +905,13 @@
 		OBJ_84 /* 互換性 */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_88 /* UIKit.swift */,
 				OBJ_85 /* Cocoa.swift */,
-				8E106DB0251E1E8C00FB059D /* Linux.swift */,
-				OBJ_86 /* KeyModifiers.swift */,
-				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
-				14767117251D577A00429C17 /* DMColor.swift */,
+				OBJ_88 /* UIKit.swift */,
 				14246BA8271955C600D4FDED /* Windows.swift */,
+				8E106DB0251E1E8C00FB059D /* Linux.swift */,
+				8E9A4E522526045600476B2E /* DMHttpConnection.swift */,
+				OBJ_86 /* KeyModifiers.swift */,
+				14767117251D577A00429C17 /* DMColor.swift */,
 			);
 			path = "互換性";
 			sourceTree = "<group>";

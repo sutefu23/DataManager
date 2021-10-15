@@ -16,7 +16,7 @@ extension UserDefaults {
         get { self.integer(forKey: "YamatoMasterOrderNumber") }
         set {
             guard 親伝票番号一覧.contains(newValue) else { return }
-            self.setValue(newValue, forKey: "YamatoMasterOrderNumber")
+            self.set(newValue, forKey: "YamatoMasterOrderNumber")
         }
     }
     /// 次回採番予定の子伝票番号（チェックディジットを除外したもの）
@@ -24,7 +24,7 @@ extension UserDefaults {
         get { self.integer(forKey: "YamatoChilOrderNumber") }
         set {
             guard 子伝票番号一覧.contains(newValue) else { return }
-            self.setValue(newValue, forKey: "YamatoChilOrderNumber")
+            self.set(newValue, forKey: "YamatoChilOrderNumber")
         }
     }
 }

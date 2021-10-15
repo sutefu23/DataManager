@@ -254,7 +254,7 @@ class CountCell {
         case 5:
             return makeString2x("新規", number: todayOrders1.count, number2: todayOrders2.count, color: .black)
         default:
-            return NSAttributedString(string: "")
+            return NSAttributedString()
         }
     }
     
@@ -334,14 +334,14 @@ class CountColumn {
     func makeOutline(row:Int, index:Int) -> NSAttributedString {
         let cell = self[row]
         switch index {
-        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString(string: "") }
-        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString(string: "") }
-        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString(string: "") }
-        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString(string: "") }
-        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString(string: "") }
+        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString() }
+        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString() }
+        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString() }
+        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString() }
+        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString() }
         default: break
         }
-        return cell?.makeOutline(index: index) ?? NSAttributedString(string: "")
+        return cell?.makeOutline(index: index) ?? NSAttributedString()
     }
     
     func detailOrder(row:Int, index:Int) -> DetailInfo? {

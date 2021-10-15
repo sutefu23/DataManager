@@ -18,11 +18,7 @@ public protocol DMLogger {
     func currentLog(minLevel: DMLogLevel) -> [DMLogRecord]
     
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    #if os(Windows)
-    func dumplog(type: DumpType, minLevel: DMLogLevel) throws
-    #else
     func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws
-    #endif
 
     /// エラー時の自動ダンプ
     func errorDump()
@@ -59,11 +55,7 @@ public extension DMLogger {
     /// エラー時の自動ダンプ
     func errorDump() {
         // デフォルトではデスクトップ環境時のみ自動ダンプ
-        #if os(Windows)
-        try? dumplog(type: .error, minLevel: .all)
-        #elseif os(macOS) || os(Linux) || targetEnvironment(macCatalyst)
         try? dumplog(type: .error, minLevel: .all, shareButton: nil)
-        #endif
     }
     // MARK: 派生実装
     /// テキストログを記録する
@@ -173,12 +165,8 @@ public final class DMLogSystem: DMLogger {
 
 // MARK: - テキスト出力
 extension DMLogger {
-
-    
     /// 指定された場所に、指定されたレベル以上のログを出力する
-    #if os(Windows) // Windowsでは何もしない & DMButtonを外す
-    public func dumplog(type: DumpType, minLevel: DMLogLevel) throws {}
-    #elseif os(tvOS) // tvOSでは何もしない
+    #if os(tvOS) // tvOSでは何もしない
     #else
     public func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws {
         let gen = TableGenerator<DMLogRecord>()

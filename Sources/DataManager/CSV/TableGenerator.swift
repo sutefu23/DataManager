@@ -457,7 +457,21 @@ public extension TableGenerator {
 import AppKit
 
 public extension TableGenerator {
-    func share(_ source: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: NSButton? = nil, concurrent: Bool = false) throws {
+    func share(_ source: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: DMButton? = nil, concurrent: Bool = false) throws {
+        var url = try base.url
+        if !dir.isEmpty {
+            url.appendPathComponent(dir)
+            if !url.isExists {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+        }
+        url.appendPathComponent(title)
+        try self.write(source, format: format, to: url, concurrent: concurrent)
+    }
+}
+#elseif os(Windows)
+public extension TableGenerator {
+    func share(_ source: [S], format: ExportType, base: CommonDirectory = .pm_statistics, dir: String = "", title: String, shareButton: DMButton? = nil, concurrent: Bool = false) throws {
         var url = try base.url
         if !dir.isEmpty {
             url.appendPathComponent(dir)

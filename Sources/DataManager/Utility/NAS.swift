@@ -328,7 +328,7 @@ public extension UserDefaults {
         get { double(forKey: "keepInterval") }
         set {
             if keepInterval == newValue { return }
-            setValue(newValue, forKey: "keepInterval")
+            set(newValue, forKey: "keepInterval")
             MountManager.shared.update()
         }
     }
