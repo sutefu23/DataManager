@@ -51,7 +51,8 @@ enum DMHttpAuthorization {
 struct DMHttpContentType {
     /// JSON
     static let JSON = DMHttpContentType(string: "application/json")
-    
+    static let Text = DMHttpContentType(string: "text/plain")
+
     var string: String
 }
 
@@ -77,7 +78,8 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
     /// 接続の本体はURLSessionだが、継承できないので内部に隠し持つことにする
     private lazy var session: URLSession = {
         let config = URLSessionConfiguration.ephemeral
-        config.httpMaximumConnectionsPerHost = 1
+//        config.httpMaximumConnectionsPerHost = 1
+        config.networkServiceType = .responsiveData
         let settion = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         return settion
     }()
@@ -107,11 +109,14 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
             request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
         request.httpBody = body
-    
+        
         var result: Result<Data, Error>? = nil
         // データを同期で読み出す
-        self.session.dataTask(with: request) { (data, _, error) in
+        self.session.dataTask(with: request) { (data, response, error) in
             if let error = error { // エラーが設定されている場合、エラーを返す
+                if let response = response {
+                    DMLogSystem.shared.log("request error", detail: "\(response.description)", level: .critical)
+                }
                 result = .failure(error)
             } else if let data = data { // データが設定されている場合、データを返す
                 result = .success(data)
