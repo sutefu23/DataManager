@@ -12,6 +12,7 @@ import Foundation
 #elseif os(macOS)
 import Cocoa
 
+// MARK: - エイリアス
 public typealias DMColor = NSColor
 public typealias DMView = NSView
 public typealias DMViewController = NSViewController
@@ -19,14 +20,6 @@ public typealias DMViewController = NSViewController
 public typealias DMTextField = NSTextField
 public typealias DMPrintInfo = NSPrintInfo
 public typealias DMButton = NSButton
-
-public func DMGraphicsPushContext(_ context: CGContext) {
-    NSGraphicsContext.saveGraphicsState()
-    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
-}
-public func DMGraphicsPopContext() {
-    NSGraphicsContext.restoreGraphicsState()
-}
 
 public typealias DMFont = NSFont
 public typealias DMBezierPath = NSBezierPath
@@ -36,6 +29,19 @@ public typealias DMImage = NSImage
 public typealias DMEvent = NSEvent
 
 public typealias DMApplication = NSApplication
+
+public typealias DMTextStorage = NSTextStorage
+public typealias DMTextContainer = NSTextContainer
+public typealias DMLayoutManager = NSLayoutManager
+
+// MARK: - 不足API補完
+public func DMGraphicsPushContext(_ context: CGContext) {
+    NSGraphicsContext.saveGraphicsState()
+    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
+}
+public func DMGraphicsPopContext() {
+    NSGraphicsContext.restoreGraphicsState()
+}
 
 public extension NSBezierPath {
     convenience init(polyline: inout [CGPoint]) {
@@ -50,29 +56,15 @@ extension DMBezierPath {
     }
 }
 
-#endif
-
-// NCEngine/Utility/ClossPlatformより移設
-
-#if os(iOS)
-#elseif os(macOS)
-
-import Cocoa
-
 extension NSColor {
-    public var srgbComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-        if let rgbColor = self.usingColorSpace(NSColorSpace.sRGB) {
-            let red = rgbColor.redComponent
-            let green = rgbColor.greenComponent
-            let blue = rgbColor.blueComponent
-            let alpha = rgbColor.alphaComponent
-            return (red, green, blue, alpha)
-            
-        } else {
-            return (0,0,0,0)
-        }
+    public var srgbComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        guard let rgbColor = self.usingColorSpace(NSColorSpace.sRGB) else { return nil }
+        let red = rgbColor.redComponent
+        let green = rgbColor.greenComponent
+        let blue = rgbColor.blueComponent
+        let alpha = rgbColor.alphaComponent
+        return (red, green, blue, alpha)
     }
-
 }
 
 public extension NSView {
@@ -151,10 +143,6 @@ public extension NSEvent {
         return modifierFlags.contains(.command)
     }
 }
-
-public typealias DMTextStorage = NSTextStorage
-public typealias DMTextContainer = NSTextContainer
-public typealias DMLayoutManager = NSLayoutManager
 
 public extension NSViewController {
     // MARK: ツリー検索

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Time: Hashable, Comparable, CustomStringConvertible, Codable {
+public struct Time: DMCacheElement, Hashable, Comparable, CustomStringConvertible, Codable {
     public typealias HourType = Int8
     public typealias MinuteType = Int8
     public typealias SecondType = Int8

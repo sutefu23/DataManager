@@ -5,22 +5,29 @@ import PackageDescription
 
 let package = Package(
     name: "DataManager",
-    platforms: [
-        .macOS(.v10_12), .iOS(.v12), .tvOS(.v13)
-    ],
     products: [
         .library(
             name: "DataManager",
             targets: ["DataManager"]),
     ],
     dependencies: [
-//        .package(url: "https://github.com/apple/swift-nio", .branch("main")), // Linuxで必要
+        #if os(Windows)
+            .package(url: "https://github.com/compnerd/swift-win32.git", .branch("main")),
+        #endif
+        #if os(Linux)
+            .package(url: "https://github.com/swift-server/async-http-client.git", .branch("main")),
+        #endif
     ],
     targets: [
         .target(
             name: "DataManager",
             dependencies: [
-//                .product(name: "AsyncHTTPClient", package: "swift-nio")
+                #if os(Windows)
+                    .product(name: "SwiftWin32", package: "SwiftWin32")
+                #endif
+                #if os(Linux)
+                    .product(name: "AsyncHTTPClient", package: "async-http-client")
+                #endif
             ],
             resources: [
                 .process("Resources"),

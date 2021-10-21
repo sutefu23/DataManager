@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(macOS)
+#if os(iOS) || os(tvOS) || os(macOS) || os(Windows)
 import CoreGraphics
 
 public extension DMColor {
@@ -26,13 +26,13 @@ public extension DMColor {
     
     var isBlack: Bool {
         if self == DMColor.black { return true }
-        let (red, green, blue, _) = self.srgbComponents
-        return red.isZero && green.isZero && blue.isZero
+        guard let (red, green, blue, alpha) = self.srgbComponents else { return false }
+        return red.isZero && green.isZero && blue.isZero && alpha == 1.0
     }
     
     var isWhite: Bool {
         if self == DMColor.white { return true }
-        let (red, green, blue, _) = self.srgbComponents
+        guard let (red, green, blue, _) = self.srgbComponents else { return false }
         return red >= 1.0 && green >= 1.0 && blue >= 1.0
     }
 }

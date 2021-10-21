@@ -27,5 +27,4 @@ extension Set where Element == Int {
         if let rest = working { result.append(rest) }
         return result
     }
-    
 }

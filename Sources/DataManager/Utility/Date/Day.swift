@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Day: Hashable, Strideable, Codable, Comparable {
+public struct Day: DMCacheElement, Hashable, Strideable, Codable, Comparable {
     public typealias YearType = Int16
     public typealias MonthType = Int8
     public typealias DayType = Int8

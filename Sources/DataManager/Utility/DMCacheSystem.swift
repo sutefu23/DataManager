@@ -32,7 +32,14 @@ private var dbCachingMode: CacheMode = .dynamic
 public class DMCacheSystem {
     /// キャッシュ管理システム本体
     public static let shared = DMCacheSystem()
-    
+
+    // プラットフォームごとのキャッシュのデフォルト使用率（仮想メモリの有無で変える）
+    #if os(macOS) || os(Windows) || os(Linux) || targetEnvironment(macCatalyst)
+    static let defaultCaheRate = 30 // 仮想メモリあり
+    #else
+    static let defaultCaheRate = 20 // 仮想メモリなし
+    #endif
+
     public static func calcMaxCacheBytes(for rate: Int? = nil) -> Int {
         let rate = rate ?? defaults.maxCacheRate
         return (Int(ProcessInfo.processInfo.physicalMemory) * rate) / 100
@@ -934,34 +941,29 @@ public protocol DMCacheElement {
     /// メモリの使用量
     var memoryFootPrint: Int { get }
 }
+
+extension DMCacheElement {
+    public var memoryFootPrint: Int { MemoryLayout<Self>.stride }
+}
+// 個別のメモリ量設定
 extension String: DMCacheElement {
-    public var memoryFootPrint: Int { return max(self.utf8.count, 16) }
+    public var memoryFootPrint: Int { return max(self.utf8.count, MemoryLayout<String>.size) }
 }
 extension Optional: DMCacheElement where Wrapped: DMCacheElement {
-    public var memoryFootPrint: Int { self?.memoryFootPrint ?? 8 }
+    public var memoryFootPrint: Int {
+        let base = MemoryLayout<Self>.stride
+        guard let data = self?.memoryFootPrint else { return base }
+        return max(base, data)
+    }
 }
-extension Int: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Int>.stride }
-}
-extension Int32: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Int32>.stride }
-}
-extension Int16: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Int16>.stride }
-}
-extension Int8: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Int8>.stride }
-}
-extension Double: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Double>.stride }
-}
-extension UUID: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<UUID>.stride }
-}
-extension Date: DMCacheElement {
-    public var memoryFootPrint: Int { return MemoryLayout<Date>.stride }
-}
+extension Int: DMCacheElement {}
+extension Int32: DMCacheElement {}
+extension Int16: DMCacheElement {}
+extension Int8: DMCacheElement {}
+extension Double: DMCacheElement {}
+extension UUID: DMCacheElement {}
+extension Date: DMCacheElement {}
 
 extension Array: DMCacheElement where Element: DMCacheElement {
-    public var memoryFootPrint: Int { return reduce(0) { $0 + $1.memoryFootPrint }}
+    public var memoryFootPrint: Int { return reduce(MemoryLayout<Self>.size) { $0 + $1.memoryFootPrint }}
 }

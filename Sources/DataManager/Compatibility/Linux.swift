@@ -18,6 +18,7 @@ public class DMColor {
     public static let magenta = DMColor()
     public static let white = DMColor()
 }
+
 public class DMView {}
 public class DMViewController {}
 
@@ -32,7 +33,7 @@ public class DMScreen {}
 public class DMImage {}
 
 public class DMEvent {}
-public class DMApplicationtton {}
+public class DMApplication {}
 
 public class DMTextStorage {}
 public class DMTextContainer {}

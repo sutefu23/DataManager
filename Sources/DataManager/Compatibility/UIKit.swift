@@ -18,10 +18,10 @@ public extension DMPrintInfo {
 }
 #endif
 
-#if os(Linux) || os(Windows)
-#elseif os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 
+// MARK: - エイリアス
 public typealias DMColor = UIColor
 public typealias DMView = UIView
 public typealias DMViewController = UIViewController
@@ -42,6 +42,11 @@ public typealias DMEvent = UIEvent
 
 public typealias DMApplication = UIApplication
 
+public typealias DMTextStorage = NSTextStorage
+public typealias DMTextContainer = NSTextContainer
+public typealias DMLayoutManager = NSLayoutManager
+
+// MARK: - 不足API補完
 public extension UIBezierPath {
     class func strokeLine(from: CGPoint, to: CGPoint) {
         let single = UIBezierPath()
@@ -109,7 +114,7 @@ public extension UIView {
         self.searchView(blockName) as? UIImageView
     }
     
-    #if os(tvOS) || os(Linux) || os(Windows)
+    #if os(tvOS)
     #else
     private func searchSwitch(_ blockName: String) -> UISwitch? {
         return self.searchView(blockName) as? UISwitch
@@ -120,8 +125,7 @@ public extension UIView {
         view.isOn = flg
         if let tag = tag { view.tag = tag }
         return view
-    }
-    
+    }    
     #endif
     
     @discardableResult
@@ -134,15 +138,6 @@ public extension UIView {
         view.text = text
         return view
     }
-
-//    @discardableResult
-//    func updateAction(_ blockName: String, target: Any?, action: Selector?) -> UITextField? {
-//        guard let view = searchTextField(blockName) else { return nil }
-//        if let target = target, let action = action {
-//            view.addTarget(target, action: action, for: .primaryActionTriggered)
-//        }
-//        return view
-//    }
 
     func updateAction(_ blockName: String, tag: Int? = nil, target: Any?, action: Selector?) {
         guard let view = searchView(blockName) else { return }
@@ -189,9 +184,7 @@ public extension UIView {
     }
     
 }
-#endif
 
-#if os(iOS)
 extension UIResponder {
     /// テキストフィールドのカーソルを持ってくる
     public func makeFirstResponder2() {
@@ -217,26 +210,19 @@ extension UIViewController {
         return nil
     }
 }
-#endif
-
-// NCEngine/Utility/ClossPlatformより移設
-#if os(iOS) || os(tvOS)
-import UIKit
 
 public extension UIColor {
-    var srgbComponents : (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-        var red : CGFloat = 0
-        var green : CGFloat = 0
-        var blue : CGFloat = 0
-        var alpha : CGFloat = 0
+    var srgbComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
         if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
             return (red, green, blue, alpha)
         }
-        var light : CGFloat = 0
-        if self.getWhite(&light, alpha: &alpha) {
-            return (light, light, light, alpha)
-        }
-        fatalError("UIColor.rgbaでrgbaが取得できなかった")
+        var light: CGFloat = 0
+        guard self.getWhite(&light, alpha: &alpha) else { return nil }
+        return (light, light, light, alpha)
     }
     
     convenience init(srgbRed red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -264,10 +250,4 @@ public extension UIFont  {
     }
 }
 
-
-public typealias DMTextStorage = NSTextStorage
-public typealias DMTextContainer = NSTextContainer
-public typealias DMLayoutManager = NSLayoutManager
-
 #endif
-
