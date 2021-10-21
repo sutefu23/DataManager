@@ -26,14 +26,16 @@ public struct 指定注文番号型: Codable, Hashable, DMCacheElement, CustomSt
     }
     
     public init?(_ string: String) {
-        var scanner = DMScanner(string, normalizedFullHalf: true, upperCased: true)
+        var scanner = DMScanner(string.spaceStripped, normalizedFullHalf: true, upperCased: true)
         let result = scanner.string
         guard let ch1 = scanner.scan1Character(), ch1.isASCIIAlphabet else { return nil }
         guard let ch2 = scanner.scan1Character(), ch2.isASCIINumber else { return nil }
         guard let ch3 = scanner.scan1Character(), ch3.isASCIINumber else { return nil }
         guard scanner.scanCharacter("-") else { return nil }
         let rest = scanner.string
-        guard rest.count == 6, let num = Int(rest), num > 0 else { return nil }
+        guard rest.count == 6, let num = Int(rest), num > 0 else {
+            return nil
+        }
         self.text = result
     }
     

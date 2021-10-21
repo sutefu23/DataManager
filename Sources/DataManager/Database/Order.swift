@@ -61,7 +61,9 @@ public final class 発注型: FileMakerSearchObject {
             guard let itemID = record.string(forKey: "図番") else { throw makeError("図番") }
             self.資材図番 = itemID
             self.資材 = try 資材キャッシュ型.shared.キャッシュ資材(図番: itemID)
-            guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else { throw makeError("指定注文番号") }
+            guard let 指定注文番号 = record.指定注文番号(forKey: "指定注文番号") else {
+                throw makeError("指定注文番号")
+            }
             self.指定注文番号 = 指定注文番号
         case .外注:
             self.資材 = nil
