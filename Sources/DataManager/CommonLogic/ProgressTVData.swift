@@ -333,7 +333,7 @@ public final class ProgressTVCore {
         item = DispatchWorkItem { [unowned item] in
             assert(!Thread.isMainThread)
             do {
-                guard let datas = try self.makeList(item) else { return }
+                guard let datas = try self.makeList(item), FileMakerDB.isEnabled else { return }
                 DispatchQueue.main.async {
                     if item?.isCancelled == true { return }
                     self.sourceDatas = datas
@@ -345,6 +345,8 @@ public final class ProgressTVCore {
                 }
 
             } catch {
+                DMLogSystem.shared.log(error, .critical)
+                return
             }
         }
         self.orderItem = item

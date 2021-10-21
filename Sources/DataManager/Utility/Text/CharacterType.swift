@@ -52,7 +52,7 @@ extension StringProtocol {
 
 let 全角ASCIIto半角ASCIIMap: [Character: Character] = {
     var map: [Character: Character] = [:]
-    let url = Bundle.dataManagerBundle.url(forResource: "全角ZenkakuAsciiToHankakuAscii半角ASCII", withExtension: "txt")!
+    let url = Bundle.dataManagerBundle.url(forResource: "ZenkakuAsciiToHankakuAscii", withExtension: "txt")!
     let reader = try! TextReader(url: url, encoding: .utf8)
      while let line = reader.nextLine() {
         if line.isEmpty { continue }

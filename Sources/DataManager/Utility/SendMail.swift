@@ -133,8 +133,8 @@ public func sendMail(mail: MailBody, server: MailServer) throws {
     
 }
 public func isValidEmail(_ string: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        let result = emailTest.evaluate(with: string)
-        return result
+    let pattern = "^[A-Z0-9a-z]+[A-Z0-9a-z._+-]*@[A-Za-z0-9]+[A-Za-z0-9.-]*\\.[A-Za-z]{2,4}$"
+    let regex = try! NSRegularExpression(pattern: pattern, options: [])
+    let results = regex.matches(in: string, options: [], range: NSRange(0..<string.count))
+    return results.count == 1
  }

@@ -167,6 +167,7 @@ public final class DMLogSystem: DMLogger {
 extension DMLogger {
     /// 指定された場所に、指定されたレベル以上のログを出力する
     #if os(tvOS) // tvOSでは何もしない
+    public func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws {}
     #else
     public func dumplog(type: DumpType, minLevel: DMLogLevel, shareButton: DMButton?) throws {
         let gen = TableGenerator<DMLogRecord>()

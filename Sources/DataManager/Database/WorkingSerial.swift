@@ -49,21 +49,67 @@ public struct 作業系列型: Hashable {
         let _ = 作業系列型.塗装外注
         let _ = 作業系列型.メッキ外注
         let _ = 作業系列型.その他外注
+        let _ = 作業系列型.ブツゴミ
+        let _ = 作業系列型.糸ゴミ
+        let _ = 作業系列型.垂れ
+        let _ = 作業系列型.色ムラ
+        let _ = 作業系列型.色違い
+        let _ = 作業系列型.側面が薄い
+        let _ = 作業系列型.その他_元が原因
+        let _ = 作業系列型.トキワ塗_塗装
+        let _ = 作業系列型.アラヤ塗_塗装
+        let _ = 作業系列型.久野塗装_塗装
+        let _ = 作業系列型.九州電化_メッキ
+        let _ = 作業系列型.西部樹脂_アクリル
+        let _ = 作業系列型.クラフト_アクリル
+        let _ = 作業系列型.福博化成_アクリル
+        let _ = 作業系列型.トウネオ_LED組
+        let _ = 作業系列型.西日本ト_LED組
+        let _ = 作業系列型.アクロス_シート全
+        let _ = 作業系列型.アイルジ_シート全
+        let _ = 作業系列型.シルク点_シルク印
+        let _ = 作業系列型.トップマ_ブラスト
+        let _ = 作業系列型.メリット_曲げ加工
+        let _ = 作業系列型.富永スチ_曲げ加工
     }
-    // レーザー
+    // レーザー加工機
     public static let null = 作業系列型(系列コード: "S000")!
     public static let gx = 作業系列型(系列コード: "S001")!
     public static let ex = 作業系列型(系列コード: "S002")!
     public static let hp = 作業系列型(系列コード: "S003")!
     public static let water = 作業系列型(系列コード: "S004")!
-    // 付属品準備
+    // 付属品準備_作業者
     public static let ボルト1 = 作業系列型(系列コード: "S011")!
     public static let ボルト2 = 作業系列型(系列コード: "S012")!
-    // 外注
+    // 品質管理_作り直し理由
+    public static let ブツゴミ = 作業系列型(系列コード: "S901")!
+    public static let 糸ゴミ = 作業系列型(系列コード: "S902")!
+    public static let 垂れ = 作業系列型(系列コード: "S903")!
+    public static let 色ムラ = 作業系列型(系列コード: "S904")!
+    public static let 色違い = 作業系列型(系列コード: "S905")!
+    public static let 側面が薄い = 作業系列型(系列コード: "S906")!
+    public static let その他_元が原因 = 作業系列型(系列コード: "S907")!
+    // 外注内容
     public static let 塗装外注 = 作業系列型(系列コード: "S021")!
     public static let メッキ外注 = 作業系列型(系列コード: "S022")!
     public static let その他外注 = 作業系列型(系列コード: "S023")!
-
+    // 外注先と内容
+    public static let トキワ塗_塗装 = 作業系列型(系列コード: "S21A")!
+    public static let アラヤ塗_塗装 = 作業系列型(系列コード: "S21B")!
+    public static let 久野塗装_塗装 = 作業系列型(系列コード: "S21C")!
+    public static let 九州電化_メッキ = 作業系列型(系列コード: "S22D")!
+    public static let 西部樹脂_アクリル = 作業系列型(系列コード: "S23E")!
+    public static let クラフト_アクリル = 作業系列型(系列コード: "S23F")!
+    public static let 福博化成_アクリル = 作業系列型(系列コード: "S23G")!
+    public static let トウネオ_LED組 = 作業系列型(系列コード: "S24H")!
+    public static let 西日本ト_LED組 = 作業系列型(系列コード: "S24I")!
+    public static let アクロス_シート全 = 作業系列型(系列コード: "S25J")!
+    public static let アイルジ_シート全 = 作業系列型(系列コード: "S25K")!
+    public static let シルク点_シルク印 = 作業系列型(系列コード: "S26L")!
+    public static let トップマ_ブラスト = 作業系列型(系列コード: "S27M")!
+    public static let メリット_曲げ加工 = 作業系列型(系列コード: "S28N")!
+    public static let 富永スチ_曲げ加工 = 作業系列型(系列コード: "S28O")!
+    
     private let data: 作業系列Data型
     public var 系列コード: String { data.系列コード }
     public var 名称: String { data.名称 }

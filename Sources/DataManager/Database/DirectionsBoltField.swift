@@ -186,6 +186,9 @@ public enum ボルト数欄型 {
         } else if scanner.scanCharacter("/") {
             guard let number2 = scanner.scanDouble() else { return nil }
             self = .分納(number * セット数, number2 * セット数)
+        } else if scanner.scanCharacters("×", "*", "X") {
+            guard let number2 = scanner.scanDouble() else { return nil }
+            self = .合計((number * number2) * セット数)
         } else {
             self = .合計(number * セット数)
         }

@@ -8,6 +8,8 @@
 
 import Foundation
 
+private let lock = NSLock()
+
 /// 検索項目
 struct FileMakerSortItem: Encodable {
     let fieldName: String
@@ -44,9 +46,25 @@ public final class FileMakerDB: DMLogger {
 
     private static var isEnabledValue = true
     public static var isEnabled: Bool {
-        get { isEnabledValue && !defaults.filemakerIsDisabled}
-        set { isEnabledValue = newValue }
+        get {
+            lock.lock(); defer { lock.unlock() }
+            return isEnabledValue && !defaults.filemakerIsDisabled
+        }
+        set {
+            lock.lock(); defer { lock.unlock() }
+            guard isEnabledValue != newValue else { return }
+            DMLogSystem.shared.log("FileMakerDB.isEnabled変更", detail: "\(isEnabledValue) -> \(newValue)", level: .information)
+            isEnabledValue = newValue
+        }
     }
+    public static func showErrorIfEnabled() -> Bool {
+        if FileMakerDB.isEnabled { return true }
+        showMessage(message: "DB接続停止中です。ネットワーク設定を確認してアプリを再起動してください\n再起動しても接続できない場合サーバーの問題のため管理者に連絡してください[エラー理由:\(disabledError?.localizedDescription ?? "")]")
+        disabledError = nil
+        return false
+    }
+    static var disabledError: Error? = nil
+
     /// DBファイルのURL
     let dbURL: URL
     /// サーバー
@@ -103,6 +121,7 @@ public final class FileMakerDB: DMLogger {
                 return try work(session)
             } catch {
                 guard error.canRetry else { throw error }
+                Thread.sleep(forTimeInterval: 0.1)
                 if error.resetToken {
                     session.checkMissing()
                 } else {
@@ -195,6 +214,7 @@ public final class FileMakerDB: DMLogger {
 
     /// 現在使用していないアイドル状態のセッションを閉じる
     public static func logoutAll() {
+        DMLogSystem.shared.log("logoutAll開始")
         FileMakerServerCache.shared.logoutAll()
     }
     /// 全てのサーバーの現在の待機数の合計

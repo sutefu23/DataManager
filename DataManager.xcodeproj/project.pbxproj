@@ -994,6 +994,8 @@
 			dependencies = (
 			);
 			name = DataManager;
+			packageProductDependencies = (
+			);
 			productName = DataManager;
 			productReference = "DataManager::DataManager::Product" /* DataManager.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1060,6 +1062,8 @@
 				ja,
 			);
 			mainGroup = OBJ_5;
+			packageReferences = (
+			);
 			productRefGroup = OBJ_179 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

@@ -85,13 +85,13 @@ extension DMHttpConnectionProtocol {
             }
             #if os(macOS) || targetEnvironment(macCatalyst)
             if let url = try? 動作履歴URL.appendingPathComponent("HTTP-Error-Response.data") {
-                try? data.write(to: url)
+                try? data.write(to: url) // エラー時のデータをデバッグ目的で保存する
             }
             #endif
             throw error
         }
     }
-    
+
     /// FileMakerSeverと通信する。その際objectをJSONでエンコードして渡す
     func callFileMaker<T: Encodable>(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization? = nil, contentType: DMHttpContentType? = .JSON, object: T) throws -> FileMakerResponse {
         try autoreleasepool {

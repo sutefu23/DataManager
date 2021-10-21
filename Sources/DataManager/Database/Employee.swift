@@ -28,7 +28,9 @@ public final class 社員型: FileMakerObject, Hashable, Codable {
     public var memoryFootPrint: Int {
         return 8 + 社員名称.memoryFootPrint + 社員_姓ふりがな.memoryFootPrint + 社員_名ふりがな.memoryFootPrint + 補足情報.memoryFootPrint + 16
     }
+    static var mapping = false
     static let 社員番号マップ: [Int: 社員型] = {
+        mapping = true; defer { mapping = false }
         var map = [Int: 社員型]()
         for member in 社員型.全社員一覧 {
             map[member.社員番号] = member
@@ -96,7 +98,7 @@ public final class 社員型: FileMakerObject, Hashable, Codable {
     }
     
     public init?(社員番号: Int?) {
-        guard let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
+        guard !Self.mapping, let 社員番号 = 社員番号, let member = 社員型.社員番号マップ[社員番号] else { return nil }
         self.社員番号 = member.社員番号
         self.社員名称 = member.社員名称
         self.部署Data = member.部署Data
@@ -106,7 +108,7 @@ public final class 社員型: FileMakerObject, Hashable, Codable {
     }
     
     public init(社員番号: Int, 社員名称: String) {
-        if let member = 社員型.社員番号マップ[社員番号] {
+        if !Self.mapping, let member = 社員型.社員番号マップ[社員番号] {
             self.社員番号 = member.社員番号
             self.社員名称 = member.社員名称
             self.部署Data = member.部署Data
@@ -208,7 +210,7 @@ public final class 社員型: FileMakerObject, Hashable, Codable {
 }
 
 func prepare社員(社員番号: Int, 社員名称: String) -> 社員型 {
-    if let member = 社員型.社員番号マップ[社員番号] {
+    if !社員型.mapping, let member = 社員型.社員番号マップ[社員番号] {
         return member
     } else {
         return 社員型(社員番号: 社員番号, 社員名称: 社員名称)

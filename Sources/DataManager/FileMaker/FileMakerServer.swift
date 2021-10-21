@@ -26,6 +26,8 @@ public extension UserDefaults {
 /// サーバーオブジェクト（セッションの管理）
 final class FileMakerServer: DMLogger {
     // MARK: - 定数
+    /// １台のサーバーへの最小同時接続数
+    static fileprivate(set) var minMaxConnection = 2
     /// １台のサーバーへの最大同時接続数
     static fileprivate(set) var maxConnection = 3
     /// 最低180秒はアクセスする
@@ -54,7 +56,7 @@ final class FileMakerServer: DMLogger {
         self.name = server
         let serverURL = URL(string: "https://\(server)/fmi/data/v1/databases/")!
         self.serverURL = serverURL
-        self.sem = DispatchSemaphore(value: FileMakerServer.maxConnection)
+        self.sem = DispatchSemaphore(value: max(FileMakerServer.minMaxConnection, FileMakerServer.maxConnection))
     }
     
     /// 現在の待機数

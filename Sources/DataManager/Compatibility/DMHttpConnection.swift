@@ -7,17 +7,16 @@
 
 import Foundation
 
-#if os(Windows)
-import FoundationNetworking
-#endif
-
 // MARK: - HTTP接続
-/// HTTP接続インターフェース（Apple系とApple以外でHTTP接続の実態が異なるため用意）
+/// HTTP接続インターフェース（プラットフォームごとにHTTP接続の実態が異なるため用意）
 protocol DMHttpConnectionProtocol: AnyObject {
     /// HTTP呼び出しを行う
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data?
     /// 接続を無効化する
     func invalidate()
+}
+extension DMHttpConnectionProtocol {
+    func invalidate() {} // 指定がなければ何もしない
 }
 
 /// HTTP接続方法
@@ -26,6 +25,16 @@ enum DMHttpMethod {
     case POST
     case DELETE
     case PATCH
+    
+    /// 文字列表現
+    var string: String {
+        switch self {
+        case .GET: return "GET"
+        case .POST: return "POST"
+        case .DELETE: return "DELETE"
+        case .PATCH: return "PATCH"
+        }
+    }
 }
 
 /// 認証方法
@@ -51,24 +60,14 @@ enum DMHttpAuthorization {
 struct DMHttpContentType {
     /// JSON
     static let JSON = DMHttpContentType(string: "application/json")
-    static let Text = DMHttpContentType(string: "text/plain")
+    ///　テキスト
+    static let Text = DMHttpContentType(string: "text/plain") // テスト用
 
     var string: String
 }
 
-// MARK: - Apple系OSへの対応
-#if os(macOS) || os(iOS) || os(Windows) || os(tvOS)
-extension DMHttpMethod {
-    /// 文字列表現
-    var string: String {
-        switch self {
-        case .GET: return "GET"
-        case .POST: return "POST"
-        case .DELETE: return "DELETE"
-        case .PATCH: return "PATCH"
-        }
-    }
-}
+#if os(macOS) || os(iOS) || os(tvOS)
+// MARK: - Apple系OSへの対応（Foundation）
 
 /// 共通名を設定する
 typealias DMHttpConnection = DMHttpAppleConnection
@@ -83,13 +82,13 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
         let settion = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         return settion
     }()
-    
+
     /// 非同期コールを同期化する為に使用
     private let sem = DispatchSemaphore(value: 0)
 
     /// 無効化ずみならtrue
     private var isInvalidated: Bool = false
-    
+
     func invalidate() {
         guard isInvalidated == false else { return }
         // 無効済みとする
@@ -97,7 +96,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
         // セッションを無効化する
         session.finishTasksAndInvalidate()
     }
-    
+
     func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {
         // HTTPリクエスト作成
         var request = URLRequest(url: url)
@@ -109,7 +108,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
             request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
         request.httpBody = body
-        
+
         var result: Result<Data, Error>? = nil
         // データを同期で読み出す
         self.session.dataTask(with: request) { (data, response, error) in
@@ -126,7 +125,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
         self.sem.wait()
         return try result?.get()
     }
-    
+
     // MARK: <URLSessionDelegate>
     /// 認証処理
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -140,7 +139,7 @@ class DMHttpAppleConnection: NSObject, URLSessionDelegate, DMHttpConnectionProto
     }
 }
 
-// MARK: - Linux/Windowsへの対応
+// MARK: - Linuxへの対応（SwiftNIO）
 #elseif os(Linux)
 import AsyncHTTPClient
 import NIO
@@ -173,15 +172,8 @@ class DMHttpNIOConnection: DMHttpConnectionProtocol {
         guard let body = response.body else { return nil }
         return Data(buffer: body)
     }
-    
-    /// 無効化ずみならtrue
-    private var isInvalidated: Bool = false
-    
-    func invalidate() {
-        // 無効済みとする
-        isInvalidated = true
-    }
 }
+
 extension DMHttpMethod {
     var nioMethod: HTTPMethod {
         switch self {
@@ -194,4 +186,41 @@ extension DMHttpMethod {
 }
 private let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount) // CPUコア数にイベントループを制限する
 
+// MARK: - Windowsへの対応（curl.exe）
+#elseif os(Windows)
+typealias DMHttpConnection = DMHttpCurlConnection
+
+class DMHttpCurlConnection: DMHttpConnectionProtocol {
+    func call(url: URL, method: DMHttpMethod, authorization: DMHttpAuthorization?, contentType: DMHttpContentType?, body: Data?) throws -> Data? {
+        let command = #"C:\Windows\System32\curl.exe"#
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: command)
+        var arguments: [String] = ["-k", "-s"] // -k:証明書チェク省略 -s:サイレントモード
+        if let contentType = contentType { // データの種類
+            arguments.append(contentsOf: ["-H", "Content-Type: \(contentType.string)"])
+        }
+        if let authorization = authorization { // 認証情報
+            arguments.append(contentsOf: ["-H", "Authorization:\(authorization.string)"])
+        }
+        arguments.append(contentsOf: ["-X", method.string]) // プロトコルメソッド指定
+        if let body = body { // 送信データ準備
+            arguments.append(contentsOf: ["-d", "@-"]) // 標準入力からPOST
+            let pipe = Pipe()
+            let inputHandle = pipe.fileHandleForWriting
+            inputHandle.write(body)
+            inputHandle.closeFile()
+            process.standardInput = pipe
+        }
+        arguments.append(url.absoluteString) // URL
+        process.arguments = arguments
+        
+        let outputPipe = Pipe()
+        process.standardOutput = outputPipe
+        process.launch()
+
+        let handle = outputPipe.fileHandleForReading
+        let data = handle.readDataToEndOfFile()
+        return data
+    }
+}
 #endif

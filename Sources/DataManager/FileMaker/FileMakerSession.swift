@@ -125,6 +125,9 @@ public final class FileMakerSession: DMLogger {
     
     /// 接続可能な状態にする
     private func prepareToken() throws -> String {
+        if FileMakerDB.isEnabled == false {
+            throw FileMakerError.dbIsDisabled
+        }
         // 使えるtokenがあるなら、再利用する
         switch state {
         case .login(token: let token, expire: let expire):
@@ -139,17 +142,25 @@ public final class FileMakerSession: DMLogger {
             break
         }
         // token申請
-        let url = self.url.appendingPathComponent("sessions")
-        let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), object: Dictionary<String, String>())
-        guard response.code == 0 && response.message == "OK", case let token as String = response["token"] else {
-            Thread.sleep(forTimeInterval: 15)
-            throw FileMakerError.tokenCreate(message: response.message, code: response.code)
-                .log(self, .critical)
+        do {
+            let url = self.url.appendingPathComponent("sessions")
+            let data = "{}".data(using: .utf8)!
+            let response = try connection.callFileMaker(url: url, method: .POST, authorization: .Basic(user: self.user, password: self.password), data: data)
+            guard response.code == 0 && response.message == "OK", case let token as String = response["token"] else {
+                Thread.sleep(forTimeInterval: 15)
+                throw FileMakerError.tokenCreate(message: response.message, code: response.code)
+                    .log(self, .critical)
+            }
+            log("token取得", detail: token)
+            // tokenと有効期限を保存する
+            self.state = .login(token: token, expire: Date(timeIntervalSinceNow: FileMakerSession.expireSeconds))
+            return token
+        } catch {
+            DMLogSystem.shared.log("token取得失敗：接続停止", detail: error.localizedDescription, level: .critical)
+            FileMakerDB.isEnabled = false
+            FileMakerDB.disabledError = error
+            throw error
         }
-        log("token取得", detail: token)
-        // tokenと有効期限を保存する
-        self.state = .login(token: token, expire: Date(timeIntervalSinceNow: FileMakerSession.expireSeconds))
-        return token
     }
     
     /// DBへの接続が可能ならtrue
