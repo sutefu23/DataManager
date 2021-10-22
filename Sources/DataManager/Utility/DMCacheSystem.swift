@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if os(iOS) || os(tvOS) || os(macOS)
 import AVFoundation
+#endif
 
 // MARK: -
 /// DBのキャッシュモード

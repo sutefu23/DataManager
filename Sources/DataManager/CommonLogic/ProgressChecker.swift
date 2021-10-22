@@ -231,14 +231,14 @@ class CountCell {
             if number == 0 && UserDefaults.standard.isShow0Cell == false { return "" }
             return " \(header):\(number)"
         }
-        func makeString2(_ header:String, number:Int, color: DMColor) -> NSAttributedString {
+        func makeString2(_ header:String, number:Int) -> NSAttributedString {
             let str = makeString(header, number: number)
-            return NSAttributedString(string: str, color: color)
+            return NSAttributedString(string: str)
         }
         func makeString2x(_ header: String, number: Int, number2: Int, color: DMColor) -> NSAttributedString {
-            if number2 == 0 { return makeString2(header, number: number, color: color) }
+            if number2 == 0 { return makeString2(header, number: number) }
             let str = " \(header):\(number)+\(number2)"
-            return NSAttributedString(string: str, color: color)
+            return NSAttributedString(string: str)
         }
         switch index {
         case 0:
@@ -254,7 +254,7 @@ class CountCell {
         case 5:
             return makeString2x("新規", number: todayOrders1.count, number2: todayOrders2.count, color: .black)
         default:
-            return NSAttributedString()
+            return NSAttributedString(string:"")
         }
     }
     
@@ -334,14 +334,14 @@ class CountColumn {
     func makeOutline(row:Int, index:Int) -> NSAttributedString {
         let cell = self[row]
         switch index {
-        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString() }
-        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString() }
-        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString() }
-        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString() }
-        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString() }
+        case 1: if !UserDefaults.standard.isShowTotal { return NSAttributedString(string:"") }
+        case 2: if !UserDefaults.standard.isShowComplete { return NSAttributedString(string:"") }
+        case 3: if !UserDefaults.standard.isShowHolding { return NSAttributedString(string:"") }
+        case 4: if !UserDefaults.standard.isShowWaiting { return NSAttributedString(string:"") }
+        case 5: if !UserDefaults.standard.isShowNew { return NSAttributedString(string:"") }
         default: break
         }
-        return cell?.makeOutline(index: index) ?? NSAttributedString()
+        return cell?.makeOutline(index: index) ?? NSAttributedString(string:"")
     }
     
     func detailOrder(row:Int, index:Int) -> DetailInfo? {

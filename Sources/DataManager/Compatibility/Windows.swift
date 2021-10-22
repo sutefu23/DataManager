@@ -42,16 +42,10 @@ public class DMLayoutManager {}
     return try block()
 }
 
-extension DMColor {
-    public var srgbComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        guard getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return nil }
-        return (red, green, blue, alpha)
-    }
+
+extension Error {
+  public func showAlert(){}
+  public func asyncShowAlert(){}
 }
 
 #endif

@@ -12,7 +12,7 @@ import Foundation
 /// 排他的な読み書きを提供する
 @propertyWrapper public struct DMSynchronized<T> {
     private var value: T
-    private var mutext = NSLock()
+    private var lock = NSLock()
 
     public init(wrappedValue: T) {
         self.value = wrappedValue

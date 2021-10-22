@@ -216,7 +216,7 @@ class DMHttpCurlConnection: DMHttpConnectionProtocol {
         
         let outputPipe = Pipe()
         process.standardOutput = outputPipe
-        process.launch()
+        try! process.run()
 
         let handle = outputPipe.fileHandleForReading
         let data = handle.readDataToEndOfFile()

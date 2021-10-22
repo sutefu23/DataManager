@@ -7,8 +7,10 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(macOS) || os(Windows)
+#if os(iOS) || os(tvOS) || os(macOS)
 import CoreGraphics
+#endif
+#if os(iOS) || os(tvOS) || os(macOS)
 
 public extension DMColor {
     var memoryFootPrint: Int { return 4 * 8 }
